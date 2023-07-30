@@ -17,24 +17,9 @@
     
     <dependencies>
         <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>2.0.29</version>
-        </dependency>
-        <dependency>
-            <groupId>org.commonmark</groupId>
-            <artifactId>commonmark</artifactId>
-            <version>0.21.0</version>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.13.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>3.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -46,7 +31,6 @@
             <artifactId>commons-cli</artifactId>
             <version>1.5.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
