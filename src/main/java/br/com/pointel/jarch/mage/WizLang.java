@@ -6,8 +6,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WizLang {
+
+    private static Logger logger = LoggerFactory.getLogger(WizLang.class);
 
     public static Boolean isWin() {
         var OS = System.getProperty("os.name").toLowerCase();
@@ -126,7 +130,7 @@ public class WizLang {
         try {
             Thread.sleep(millis);
         } catch (Exception e) {
-            WizLog.erro(e);
+            logger.error("Could not sleep.", e);
         }
     }
 
@@ -140,14 +144,14 @@ public class WizLang {
     }
 
     public static void delay(int millis, Runnable runnable) {
-        new Thread("WzdBin Delay") {
+        new Thread("WizLang Delay") {
             @Override
             public void run() {
                 try {
                     Thread.sleep(millis);
                     runnable.run();
                 } catch (Exception e) {
-                    WizLog.erro(e);
+                    logger.error("Could not delay", e);
                 }
             }
         }.start();

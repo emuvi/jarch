@@ -26,8 +26,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WizDesk {
+
+    private static Logger logger = LoggerFactory.getLogger(WizDesk.class);
 
     private static boolean started = false;
     private static String title = null;
@@ -39,7 +43,7 @@ public class WizDesk {
                 WizDesk.started = true;
                 WizDesk.title = title;
             } catch (Exception e) {
-                WizLog.erro(e);
+                logger.error("Could not start look and feel.", e);
             }
         });
     }
@@ -53,7 +57,7 @@ public class WizDesk {
     }
 
     public static void message(String message, boolean silent) {
-        WizLog.info(message);
+        logger.info(message);
         if (!silent) {
             Runnable runner = () -> {
                 JOptionPane.showMessageDialog(WizDesk.getActiveWindow(), message,
