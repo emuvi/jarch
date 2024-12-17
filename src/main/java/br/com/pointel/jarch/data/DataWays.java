@@ -3,9 +3,12 @@ package br.com.pointel.jarch.data;
 import com.google.gson.Gson;
 
 public class DataWays implements FixVals {
-    
+
     public DataJdbc jdbc;
     public DataLink link;
+    public Integer storeMinIdle;
+    public Integer storeMaxIdle;
+    public Integer storeMaxTotal;
 
     public DataWays() {}
 
@@ -20,6 +23,15 @@ public class DataWays implements FixVals {
     public DataWays(DataJdbc jdbc, DataLink link) {
         this.jdbc = jdbc;
         this.link = link;
+    }
+
+    public DataWays(DataJdbc jdbc, DataLink link,
+                    Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
+        this.jdbc = jdbc;
+        this.link = link;
+        this.storeMinIdle = storeMinIdle;
+        this.storeMaxIdle = storeMaxIdle;
+        this.storeMaxTotal = storeMaxTotal;
     }
 
     public String getName() {
