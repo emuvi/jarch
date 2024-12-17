@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class Strain implements Fixable {
+public class Strain implements FixVals {
     public String restrict;
     public String modify;
     public String include;

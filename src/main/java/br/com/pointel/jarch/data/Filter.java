@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class Filter implements Fixable {
+public class Filter implements FixVals {
     public Filter.Seems seems;
     public Filter.Likes likes;
     public Valued valued;

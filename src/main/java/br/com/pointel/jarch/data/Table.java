@@ -3,7 +3,7 @@ package br.com.pointel.jarch.data;
 import java.util.List;
 import com.google.gson.Gson;
 
-public class Table implements Fixable {
+public class Table implements FixVals {
     public Registry registry;
     public List<Field> fields;
     public List<String> keys;

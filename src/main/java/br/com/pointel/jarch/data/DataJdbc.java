@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class DataJdbc implements Fixable {
+public class DataJdbc implements FixVals {
     public String name;
     public String url;
     public String user;

@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class Linked implements Fixable {
+public class Linked implements FixVals {
     public String name;
     public String with;
 

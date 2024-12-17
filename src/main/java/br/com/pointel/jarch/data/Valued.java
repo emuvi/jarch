@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class Valued implements Fixable {
+public class Valued implements FixVals {
     public String name;
     public Nature type;
     public Object data;

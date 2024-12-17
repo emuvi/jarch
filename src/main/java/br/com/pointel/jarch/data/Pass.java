@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class Pass implements Fixable {
+public class Pass implements FixVals {
     private byte[] data;
 
     public Pass() {

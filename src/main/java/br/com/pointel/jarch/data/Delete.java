@@ -3,7 +3,7 @@ package br.com.pointel.jarch.data;
 import java.util.List;
 import com.google.gson.Gson;
 
-public class Delete implements Fixable {
+public class Delete implements FixVals {
     public Registier registier;
     public List<Filter> filters;
 

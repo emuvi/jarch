@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
-public class Registry implements Fixable {
+public class Registry implements FixVals {
     public String catalog;
     public String schema;
     public String name;

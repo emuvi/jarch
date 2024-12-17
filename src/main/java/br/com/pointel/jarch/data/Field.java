@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import br.com.pointel.jarch.mage.WizData;
 
-public class Field implements Fixable {
+public class Field implements FixVals {
     public String name;
     public Nature nature;
     public Integer size;

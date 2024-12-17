@@ -2,7 +2,7 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 
-public class DataWays implements Fixable {
+public class DataWays implements FixVals {
     public DataJdbc jdbc;
     public DataLink link;
 

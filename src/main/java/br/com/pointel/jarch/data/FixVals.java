@@ -3,7 +3,8 @@ package br.com.pointel.jarch.data;
 import java.lang.reflect.Modifier;
 import br.com.pointel.jarch.mage.WizChars;
 
-public interface Fixable {
+public interface FixVals {
+
     default public void fixNulls() throws Exception {
         for (var field : this.getClass().getDeclaredFields()) {
             var mods = field.getModifiers();
@@ -37,4 +38,5 @@ public interface Fixable {
             }
         }
     }
+
 }
