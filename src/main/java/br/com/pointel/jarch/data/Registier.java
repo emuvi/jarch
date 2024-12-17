@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 
 public class Registier {
     public String base;
-    public Registry registry;
+    public Head registry;
 
     public Registier() {}
 
@@ -13,11 +13,11 @@ public class Registier {
         this.base = base;
     }
 
-    public Registier(Registry registry) {
+    public Registier(Head registry) {
         this.registry = registry;
     }
 
-    public Registier(String base, Registry registry) {
+    public Registier(String base, Head registry) {
         this.base = base;
         this.registry = registry;
     }

@@ -4,7 +4,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Joined {
-    public Registry registry;
+    public Head registry;
     public String alias;
     public List<Filter> filters;
     public Joined.Ties ties;
@@ -15,44 +15,44 @@ public class Joined {
         this.ties = ties;
     }
 
-    public Joined(Registry registry) {
+    public Joined(Head registry) {
         this.registry = registry;
     }
 
-    public Joined(Registry registry, String alias) {
+    public Joined(Head registry, String alias) {
         this.registry = registry;
         this.alias = alias;
     }
 
-    public Joined(Registry registry, Ties ties) {
+    public Joined(Head registry, Ties ties) {
         this.registry = registry;
         this.ties = ties;
     }
 
-    public Joined(Registry registry, String alias, Ties ties) {
+    public Joined(Head registry, String alias, Ties ties) {
         this.registry = registry;
         this.alias = alias;
         this.ties = ties;
     }
 
-    public Joined(Registry registry, List<Filter> filters) {
+    public Joined(Head registry, List<Filter> filters) {
         this.registry = registry;
         this.filters = filters;
     }
 
-    public Joined(Registry registry, String alias, List<Filter> filters) {
+    public Joined(Head registry, String alias, List<Filter> filters) {
         this.registry = registry;
         this.alias = alias;
         this.filters = filters;
     }
 
-    public Joined(Registry registry, List<Filter> filters, Ties ties) {
+    public Joined(Head registry, List<Filter> filters, Ties ties) {
         this.registry = registry;
         this.filters = filters;
         this.ties = ties;
     }
 
-    public Joined(Registry registry, String alias, List<Filter> filters, Ties ties) {
+    public Joined(Head registry, String alias, List<Filter> filters, Ties ties) {
         this.registry = registry;
         this.alias = alias;
         this.filters = filters;

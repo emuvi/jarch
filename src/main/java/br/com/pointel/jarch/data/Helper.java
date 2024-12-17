@@ -15,12 +15,12 @@ public abstract class Helper {
 
     public static Helper instance = new Helper() {};
 
-    public List<Registry> getHeads(Connection link) throws Exception {
+    public List<Head> getHeads(Connection link) throws Exception {
         var meta = link.getMetaData();
         var set = meta.getTables(null, null, "%", new String[] {"TABLE"});
-        var result = new ArrayList<Registry>();
+        var result = new ArrayList<Head>();
         while (set.next()) {
-            result.add(new Registry(set.getString(1), set.getString(2), set.getString(
+            result.add(new Head(set.getString(1), set.getString(2), set.getString(
                             3)));
         }
         return result;

@@ -6,8 +6,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.DataLink;
+import br.com.pointel.jarch.data.Head;
 import br.com.pointel.jarch.data.Registier;
-import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.Select;
 
 public class CSVExport implements Runnable {
@@ -47,7 +47,7 @@ public class CSVExport implements Runnable {
                 pace.waitIfPausedAndThrowIfStopped();
                 pace.info("Getting tables...");
                 var heads = origin.base.helper.getHeads(originConn);
-                for (Registry head : heads) {
+                for (Head head : heads) {
                     pace.info("Processing: %s...", head);
                     var table = head.getTable(originConn);
                     try (var writer = new PrintWriter(new FileOutputStream(new File(

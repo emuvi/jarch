@@ -7,30 +7,35 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
-public class Registry implements FixVals {
-    public String catalog;
-    public String schema;
-    public String name;
-    public String alias;
+public class Head implements FixVals {
+    
+    public final String catalog;
+    public final String schema;
+    public final String name;
+    public final String alias;
 
-    public Registry() {}
-
-    public Registry(String name) {
+    public Head(String name) {
+        this.catalog = null;
+        this.schema = null;
         this.name = name;
+        this.alias = null;
     }
 
-    public Registry(String schema, String name) {
+    public Head(String schema, String name) {
+        this.catalog = null;
         this.schema = schema;
         this.name = name;
+        this.alias = null;
     }
 
-    public Registry(String catalog, String schema, String name) {
+    public Head(String catalog, String schema, String name) {
         this.catalog = catalog;
         this.schema = schema;
         this.name = name;
+        this.alias = null;
     }
 
-    public Registry(String catalog, String schema, String name, String alias) {
+    public Head(String catalog, String schema, String name, String alias) {
         this.catalog = catalog;
         this.schema = schema;
         this.name = name;
@@ -82,10 +87,10 @@ public class Registry implements FixVals {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Registry)) {
+        if (!(o instanceof Head)) {
             return false;
         }
-        Registry registry = (Registry) o;
+        Head registry = (Head) o;
         return Objects.equals(catalog, registry.catalog)
                         && Objects.equals(schema, registry.schema) && Objects.equals(name,
                                         registry.name)
@@ -102,7 +107,7 @@ public class Registry implements FixVals {
         return new Gson().toJson(this);
     }
 
-    public static Registry fromString(String json) {
-        return new Gson().fromJson(json, Registry.class);
+    public static Head fromString(String json) {
+        return new Gson().fromJson(json, Head.class);
     }
 }

@@ -4,22 +4,22 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Table implements FixVals {
-    public Registry registry;
+    public Head registry;
     public List<Field> fields;
     public List<String> keys;
 
     public Table() {}
 
-    public Table(Registry head) {
+    public Table(Head head) {
         this.registry = head;
     }
 
-    public Table(Registry head, List<Field> fields) {
+    public Table(Head head, List<Field> fields) {
         this.registry = head;
         this.fields = fields;
     }
 
-    public Table(Registry head, List<Field> fields, List<String> keys) {
+    public Table(Head head, List<Field> fields, List<String> keys) {
         this.registry = head;
         this.fields = fields;
         this.keys = keys;
