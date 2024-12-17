@@ -94,7 +94,7 @@ public class HelperPostgre extends Helper {
     }
 
     @Override
-    public String formCondition(Filter.Likes condition, String with) {
+    public String formCondition(FilterLikes condition, String with) {
         switch (condition) {
             case EQUALS:
                 return " = " + with + " ";

@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import com.google.gson.Gson;
 
 public class Linked implements FixVals {
+
     public String name;
     public String with;
 
@@ -25,4 +26,5 @@ public class Linked implements FixVals {
     public static Valued fromString(String json) {
         return new Gson().fromJson(json, Valued.class);
     }
+
 }

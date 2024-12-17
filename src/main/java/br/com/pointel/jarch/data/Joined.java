@@ -4,56 +4,57 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Joined {
-    public Head registry;
+
+    public Head head;
     public String alias;
     public List<Filter> filters;
-    public Joined.Ties ties;
+    public JoinedTies ties;
 
     public Joined() {}
 
-    public Joined(Ties ties) {
+    public Joined(JoinedTies ties) {
         this.ties = ties;
     }
 
-    public Joined(Head registry) {
-        this.registry = registry;
+    public Joined(Head head) {
+        this.head = head;
     }
 
-    public Joined(Head registry, String alias) {
-        this.registry = registry;
+    public Joined(Head head, String alias) {
+        this.head = head;
         this.alias = alias;
     }
 
-    public Joined(Head registry, Ties ties) {
-        this.registry = registry;
+    public Joined(Head head, JoinedTies ties) {
+        this.head = head;
         this.ties = ties;
     }
 
-    public Joined(Head registry, String alias, Ties ties) {
-        this.registry = registry;
+    public Joined(Head head, String alias, JoinedTies ties) {
+        this.head = head;
         this.alias = alias;
         this.ties = ties;
     }
 
-    public Joined(Head registry, List<Filter> filters) {
-        this.registry = registry;
+    public Joined(Head head, List<Filter> filters) {
+        this.head = head;
         this.filters = filters;
     }
 
-    public Joined(Head registry, String alias, List<Filter> filters) {
-        this.registry = registry;
+    public Joined(Head head, String alias, List<Filter> filters) {
+        this.head = head;
         this.alias = alias;
         this.filters = filters;
     }
 
-    public Joined(Head registry, List<Filter> filters, Ties ties) {
-        this.registry = registry;
+    public Joined(Head head, List<Filter> filters, JoinedTies ties) {
+        this.head = head;
         this.filters = filters;
         this.ties = ties;
     }
 
-    public Joined(Head registry, String alias, List<Filter> filters, Ties ties) {
-        this.registry = registry;
+    public Joined(Head head, String alias, List<Filter> filters, JoinedTies ties) {
+        this.head = head;
         this.alias = alias;
         this.filters = filters;
         this.ties = ties;
@@ -72,7 +73,4 @@ public class Joined {
         return new Gson().fromJson(json, Joined.class);
     }
 
-    public static enum Ties {
-        INNER, LEFT, RIGHT, FULL, CROSS
-    }
 }

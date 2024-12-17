@@ -5,11 +5,12 @@ import br.com.pointel.jarch.mage.WizChars;
 
 public interface FixVals {
 
-    default public void fixNulls() throws Exception {
+    public default void fixNulls() throws Exception {
         for (var field : this.getClass().getDeclaredFields()) {
             var mods = field.getModifiers();
-            if (Modifier.isStatic(mods) || Modifier.isFinal(mods) || Modifier.isTransient(
-                            mods)) {
+            if (Modifier.isStatic(mods)
+                            || Modifier.isFinal(mods)
+                            || Modifier.isTransient(mods)) {
                 continue;
             }
             var value = field.get(this);
@@ -20,11 +21,12 @@ public interface FixVals {
         }
     }
 
-    default public void fixNullsAndEnvs() throws Exception {
+    public default void fixNullsAndEnvs() throws Exception {
         for (var field : this.getClass().getDeclaredFields()) {
             var mods = field.getModifiers();
-            if (Modifier.isStatic(mods) || Modifier.isFinal(mods) || Modifier.isTransient(
-                            mods)) {
+            if (Modifier.isStatic(mods)
+                            || Modifier.isFinal(mods)
+                            || Modifier.isTransient(mods)) {
                 continue;
             }
             var value = field.get(this);

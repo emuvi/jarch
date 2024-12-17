@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import br.com.pointel.jarch.data.Filter.Seems;
 import br.com.pointel.jarch.flow.Base36;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
@@ -52,10 +51,10 @@ public abstract class Helper {
     public ResultSet select(Connection link, Select select, Strain strain)
                     throws Exception {
         var builder = new StringBuilder("SELECT ");
-        var fromSource = select.registier.head.getCatalogSchemaName();
-        var dataSource = select.registier.head.alias != null
-                        && !select.registier.head.alias.isEmpty()
-                                        ? select.registier.head.alias
+        var fromSource = select.registry.head.getCatalogSchemaName();
+        var dataSource = select.registry.head.alias != null
+                        && !select.registry.head.alias.isEmpty()
+                                        ? select.registry.head.alias
                                         : fromSource;
         if (select.fields == null || select.fields.isEmpty()) {
             builder.append("*");
@@ -73,10 +72,10 @@ public abstract class Helper {
         }
         builder.append(" FROM ");
         builder.append(fromSource);
-        if (select.registier.head.alias != null && !select.registier.head.alias
+        if (select.registry.head.alias != null && !select.registry.head.alias
                         .isEmpty()) {
             builder.append(" AS ");
-            builder.append(select.registier.head.alias);
+            builder.append(select.registry.head.alias);
         }
         if (select.hasJoins()) {
             for (var join : select.joins) {
@@ -86,27 +85,27 @@ public abstract class Helper {
                     builder.append(" ");
                 }
                 builder.append(" JOIN ");
-                var withSource = join.registry.getCatalogSchemaName();
+                var withSource = join.head.getCatalogSchemaName();
                 var withAlias = withSource;
                 builder.append(withSource);
                 if (join.alias != null) {
                     builder.append(" AS ");
                     withAlias = join.alias;
                     builder.append(withAlias);
-                } else if (join.registry.alias != null) {
+                } else if (join.head.alias != null) {
                     builder.append(" AS ");
-                    withAlias = join.registry.alias;
+                    withAlias = join.head.alias;
                     builder.append(withAlias);
                 }
                 if (join.hasFilters()) {
                     builder.append(" ON ");
-                    builder.append(this.formClauses(join.filters, dataSource, withAlias));
+                    builder.append(this.makeClauses(join.filters, dataSource, withAlias));
                 }
             }
         }
         if (select.hasFilters()) {
             builder.append(" WHERE ");
-            builder.append(this.formClauses(select.filters, dataSource, null));
+            builder.append(this.makeClauses(select.filters, dataSource, null));
         }
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(!select.hasFilters() ? " WHERE " : " AND ");
@@ -175,7 +174,7 @@ public abstract class Helper {
             }
         }
         var builder = new StringBuilder("INSERT INTO ");
-        builder.append(insert.registier.head.getCatalogSchemaName());
+        builder.append(insert.registry.head.getCatalogSchemaName());
         builder.append(" (");
         for (var i = 0; i < insert.valueds.size(); i++) {
             if (i > 0) {
@@ -238,7 +237,7 @@ public abstract class Helper {
     public Integer update(Connection link, Update update, Strain strain)
                     throws Exception {
         var builder = new StringBuilder("UPDATE ");
-        var dataSource = update.registier.head.getCatalogSchemaName();
+        var dataSource = update.registry.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" SET ");
         for (var i = 0; i < update.valueds.size(); i++) {
@@ -258,7 +257,7 @@ public abstract class Helper {
             builder.append(strain.modify);
         }
         builder.append(" WHERE ");
-        builder.append(this.formClauses(update.filters, null, null));
+        builder.append(this.makeClauses(update.filters, null, null));
         if (update.limit != null) {
             builder.append(" LIMIT ");
             builder.append(update.limit);
@@ -292,10 +291,10 @@ public abstract class Helper {
     public Integer delete(Connection link, Delete delete, Strain strain)
                     throws Exception {
         var builder = new StringBuilder("DELETE FROM ");
-        var dataSource = delete.registier.head.getCatalogSchemaName();
+        var dataSource = delete.registry.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" WHERE ");
-        builder.append(this.formClauses(delete.filters, null, null));
+        builder.append(this.makeClauses(delete.filters, null, null));
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(" AND ");
             var restricted = replaceVariables(strain.restrict, dataSource);
@@ -341,7 +340,7 @@ public abstract class Helper {
         if (format == null || format.isEmpty()) {
             throw new Exception(
                             "Could not get the ID because: format not found for the table "
-                                            + insert.registier.head.name);
+                                            + insert.registry.head.name);
         }
         var formatParts = format.split(";");
         if (formatParts.length < 2) {
@@ -367,7 +366,7 @@ public abstract class Helper {
     public String getIDFormat(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT formato FROM codigos WHERE tabela = '"
-                                        + insert.registier.head.name + "'");
+                                        + insert.registry.head.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }
@@ -378,7 +377,7 @@ public abstract class Helper {
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.registier.head.name + " WHERE "
+                                        + insert.registry.head.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -397,7 +396,7 @@ public abstract class Helper {
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.registier.head.name + " WHERE "
+                                        + insert.registry.head.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -451,7 +450,7 @@ public abstract class Helper {
     public String getIDSequence(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT sequencia FROM codigos WHERE tabela = '"
-                                        + insert.registier.head.name + "'");
+                                        + insert.registry.head.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }
@@ -550,7 +549,7 @@ public abstract class Helper {
         return builder.toString();
     }
 
-    public String formClauses(List<Filter> filters, String from, String with) {
+    public String makeClauses(List<Filter> filters, String fromSource, String withAlias) {
         if ((filters == null) || filters.isEmpty()) {
             return "";
         }
@@ -564,13 +563,13 @@ public abstract class Helper {
             if (i > 0) {
                 builder.append(nextIsOr ? " OR " : " AND ");
             }
-            if (clause.seems == Seems.DIVERSE) {
+            if (clause.seems == FilterSeems.OTHER) {
                 builder.append(" NOT ");
             }
             if (clause.valued != null) {
-                if (from != null && !from.isEmpty() && !clause.valued.name.contains(
+                if (fromSource != null && !fromSource.isEmpty() && !clause.valued.name.contains(
                                 ".")) {
-                    builder.append(from);
+                    builder.append(fromSource);
                     builder.append(".");
                 }
                 builder.append(clause.valued.name);
@@ -580,8 +579,8 @@ public abstract class Helper {
                     builder.append(this.formCondition(clause.likes, "?"));
                 }
             } else if (clause.linked != null) {
-                if (from != null && !from.isEmpty()) {
-                    builder.append(from);
+                if (fromSource != null && !fromSource.isEmpty()) {
+                    builder.append(fromSource);
                     builder.append(".");
                 }
                 builder.append(clause.linked.name);
@@ -589,20 +588,20 @@ public abstract class Helper {
                     builder.append(" IS NULL ");
                 } else {
                     var formWith = new StringBuilder();
-                    if (with != null && !with.isEmpty()) {
-                        formWith.append(with);
+                    if (withAlias != null && !withAlias.isEmpty()) {
+                        formWith.append(withAlias);
                         formWith.append(".");
                     }
                     formWith.append(clause.linked.with);
                     builder.append(this.formCondition(clause.likes, formWith.toString()));
                 }
             }
-            nextIsOr = clause.ties == Filter.Ties.OR;
+            nextIsOr = clause.ties == FilterTies.OR;
         }
         return builder.toString();
     }
 
-    public String formCondition(Filter.Likes condition, String with) {
+    public String formCondition(FilterLikes condition, String with) {
         switch (condition) {
             case EQUALS:
                 return " = " + with + " ";

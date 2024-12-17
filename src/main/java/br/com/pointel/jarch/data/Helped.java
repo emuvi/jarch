@@ -10,6 +10,7 @@ import java.util.List;
 import br.com.pointel.jarch.mage.WizData;
 
 public class Helped implements Closeable {
+    
     public Connection link;
     public Helper helper;
 

@@ -4,31 +4,32 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Update implements FixVals {
-    public Registry registier;
+    
+    public Registry registry;
     public List<Valued> valueds;
     public List<Filter> filters;
     public Integer limit;
 
     public Update() {}
 
-    public Update(Registry registier) {
-        this.registier = registier;
+    public Update(Registry registry) {
+        this.registry = registry;
     }
 
-    public Update(Registry registier, List<Valued> valueds) {
-        this.registier = registier;
+    public Update(Registry registry, List<Valued> valueds) {
+        this.registry = registry;
         this.valueds = valueds;
     }
 
-    public Update(Registry registier, List<Valued> valueds, List<Filter> filters) {
-        this.registier = registier;
+    public Update(Registry registry, List<Valued> valueds, List<Filter> filters) {
+        this.registry = registry;
         this.valueds = valueds;
         this.filters = filters;
     }
 
-    public Update(Registry registier, List<Valued> valueds, List<Filter> filters,
+    public Update(Registry registry, List<Valued> valueds, List<Filter> filters,
                     Integer limit) {
-        this.registier = registier;
+        this.registry = registry;
         this.valueds = valueds;
         this.filters = filters;
         this.limit = limit;

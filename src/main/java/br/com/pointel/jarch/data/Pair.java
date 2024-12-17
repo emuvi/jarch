@@ -1,5 +1,6 @@
 package br.com.pointel.jarch.data;
 
+// [ EVAL ] This class very like be replaced by specific classes when refactor the Helper class
 public class Pair<T, S> {
 
     public T head;
@@ -15,5 +16,5 @@ public class Pair<T, S> {
         this.head = head;
         this.tail = tail;
     }
-    
+
 }

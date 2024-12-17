@@ -8,31 +8,27 @@ import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
 public class Head implements FixVals {
-    
-    public final String catalog;
-    public final String schema;
-    public final String name;
-    public final String alias;
+
+    public String catalog;
+    public String schema;
+    public String name;
+    public String alias;
+
+    public Head() {}
 
     public Head(String name) {
-        this.catalog = null;
-        this.schema = null;
         this.name = name;
-        this.alias = null;
     }
 
     public Head(String schema, String name) {
-        this.catalog = null;
         this.schema = schema;
         this.name = name;
-        this.alias = null;
     }
 
     public Head(String catalog, String schema, String name) {
         this.catalog = catalog;
         this.schema = schema;
         this.name = name;
-        this.alias = null;
     }
 
     public Head(String catalog, String schema, String name, String alias) {
@@ -44,7 +40,7 @@ public class Head implements FixVals {
 
     public String getSource() {
         return this.alias != null && !this.alias.isEmpty() ? this.alias
-                        : this.getCatalogSchemaName();
+            : this.getCatalogSchemaName();
     }
 
     public String getSchemaName() {
