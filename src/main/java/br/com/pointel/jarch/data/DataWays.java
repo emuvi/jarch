@@ -10,24 +10,34 @@ public class DataWays implements FixVals {
     public Integer storeMaxIdle;
     public Integer storeMaxTotal;
 
-    public DataWays() {}
-
     public DataWays(DataJdbc jdbc) {
         this.jdbc = jdbc;
+        this.link = null;
+        this.storeMinIdle = 1;
+        this.storeMaxIdle = 1;
+        this.storeMaxTotal = 1;
     }
 
     public DataWays(DataLink link) {
+        this.jdbc = null;
         this.link = link;
+        this.storeMinIdle = 1;
+        this.storeMaxIdle = 1;
+        this.storeMaxTotal = 1;
     }
 
-    public DataWays(DataJdbc jdbc, DataLink link) {
-        this.jdbc = jdbc;
-        this.link = link;
-    }
-
-    public DataWays(DataJdbc jdbc, DataLink link,
+    public DataWays(DataJdbc jdbc,
                     Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
         this.jdbc = jdbc;
+        this.link = null;
+        this.storeMinIdle = storeMinIdle;
+        this.storeMaxIdle = storeMaxIdle;
+        this.storeMaxTotal = storeMaxTotal;
+    }
+
+    public DataWays(DataLink link,
+                    Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
+        this.jdbc = null;
         this.link = link;
         this.storeMinIdle = storeMinIdle;
         this.storeMaxIdle = storeMaxIdle;
@@ -109,4 +119,5 @@ public class DataWays implements FixVals {
     public static DataWays fromString(String json) {
         return new Gson().fromJson(json, DataWays.class);
     }
+    
 }
