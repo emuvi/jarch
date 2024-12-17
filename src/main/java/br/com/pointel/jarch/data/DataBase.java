@@ -109,7 +109,7 @@ public enum DataBase {
                 return data.helper;
             }
         }
-        return Helper.instance;
+        throw new RuntimeException("Not found the helper for this jdbc url.");
     }
 
     public static DataBase fromString(String string) {

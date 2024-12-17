@@ -11,18 +11,8 @@ import br.com.pointel.jarch.mage.WizData;
 
 public class Helped implements Closeable {
     
-    public Connection link;
-    public Helper helper;
-
-    public Helped() {}
-
-    public Helped(Connection link) {
-        this.link = link;
-    }
-
-    public Helped(Helper helper) {
-        this.helper = helper;
-    }
+    public final Connection link;
+    public final Helper helper;
 
     public Helped(Connection link, Helper helper) {
         this.link = link;
@@ -126,4 +116,5 @@ public class Helped implements Closeable {
             throw new IOException(e);
         }
     }
+    
 }

@@ -1,17 +1,25 @@
 package br.com.pointel.jarch.data;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.dbcp2.BasicDataSource;
 import br.com.pointel.jarch.mage.WizChars;
 
 public class Storage {
 
-    private Map<String, Stored> stores = null;
+    private final Map<String, Stored> stores;
 
-    public void start(Bases bases) {
-        this.stores = new ConcurrentHashMap<>();
+    public Storage() {
+        this.stores = null;
+    }
+
+    public Storage(Bases bases) {
+        this.stores = new HashMap<>();
+        this.start(bases);
+    }
+
+    private void start(Bases bases) {
         for (var base : bases) {
             var helper = base.getHelper();
             var source = new BasicDataSource();

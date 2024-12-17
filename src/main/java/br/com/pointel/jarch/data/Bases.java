@@ -7,8 +7,8 @@ import br.com.pointel.jarch.mage.WizChars;
 public class Bases extends ArrayList<DataWays> {
 
     public void fixDefaults() throws Exception {
-        for (var way : this) {
-            way.fixNullsAndEnvs();
+        for (var dataWay : this) {
+            dataWay.fixNullsAndEnvs();
         }
         this.removeIf(entry -> WizChars.isEmpty(entry.getName()));
     }

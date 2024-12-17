@@ -12,15 +12,12 @@ import br.com.pointel.jarch.mage.WizData;
 
 public abstract class Helper {
 
-    public static Helper instance = new Helper() {};
-
     public List<Head> getHeads(Connection link) throws Exception {
         var meta = link.getMetaData();
         var set = meta.getTables(null, null, "%", new String[] {"TABLE"});
         var result = new ArrayList<Head>();
         while (set.next()) {
-            result.add(new Head(set.getString(1), set.getString(2), set.getString(
-                            3)));
+            result.add(new Head(set.getString(1), set.getString(2), set.getString(3)));
         }
         return result;
     }
@@ -54,8 +51,8 @@ public abstract class Helper {
         var fromSource = select.registry.head.getCatalogSchemaName();
         var dataSource = select.registry.head.alias != null
                         && !select.registry.head.alias.isEmpty()
-                                        ? select.registry.head.alias
-                                        : fromSource;
+                            ? select.registry.head.alias
+                            : fromSource;
         if (select.fields == null || select.fields.isEmpty()) {
             builder.append("*");
         } else {
