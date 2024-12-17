@@ -4,33 +4,33 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Table implements FixVals {
-    public Head registry;
+    public Head head;
     public List<Field> fields;
     public List<String> keys;
 
     public Table() {}
 
     public Table(Head head) {
-        this.registry = head;
+        this.head = head;
     }
 
     public Table(Head head, List<Field> fields) {
-        this.registry = head;
+        this.head = head;
         this.fields = fields;
     }
 
     public Table(Head head, List<Field> fields, List<String> keys) {
-        this.registry = head;
+        this.head = head;
         this.fields = fields;
         this.keys = keys;
     }
 
     public String getSchemaName() {
-        return this.registry.getSchemaName();
+        return this.head.getSchemaName();
     }
 
     public String getCatalogSchemaName() {
-        return this.registry.getCatalogSchemaName();
+        return this.head.getCatalogSchemaName();
     }
 
     @Override

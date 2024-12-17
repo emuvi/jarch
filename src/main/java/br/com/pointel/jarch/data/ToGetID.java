@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import com.google.gson.Gson;
 
 public class ToGetID {
+    
     public String name;
     public Valued filter;
 

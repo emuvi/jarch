@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import com.google.gson.Gson;
 
 public class Pass implements FixVals {
+    
     private byte[] data;
 
     public Pass() {
@@ -29,4 +30,5 @@ public class Pass implements FixVals {
     public static Pass fromString(String json) {
         return new Gson().fromJson(json, Pass.class);
     }
+    
 }

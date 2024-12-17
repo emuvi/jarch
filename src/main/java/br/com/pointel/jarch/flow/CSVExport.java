@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.DataLink;
 import br.com.pointel.jarch.data.Head;
-import br.com.pointel.jarch.data.Registier;
+import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.Select;
 
 public class CSVExport implements Runnable {
@@ -64,7 +64,7 @@ public class CSVExport implements Runnable {
                         }
                         csvFile.writeLine(row);
                         var rstOrigin = origin.base.helper.select(originConn, new Select(
-                                        new Registier(head)), null);
+                                        new Registry(head)), null);
                         var recordCount = 0L;
                         while (rstOrigin.next()) {
                             recordCount++;

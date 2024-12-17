@@ -10,7 +10,7 @@ import br.com.pointel.jarch.data.DataLink;
 import br.com.pointel.jarch.data.Field;
 import br.com.pointel.jarch.data.Head;
 import br.com.pointel.jarch.data.Insert;
-import br.com.pointel.jarch.data.Registier;
+import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.Table;
 import br.com.pointel.jarch.data.Valued;
 import br.com.pointel.jarch.mage.WizFile;
@@ -124,8 +124,8 @@ public class CSVImport implements Runnable {
                         valueds.add(valued);
                     }
                     pace.waitIfPausedAndThrowIfStopped();
-                    destiny.base.helper.insert(connection, new Insert(new Registier(
-                                    table.registry), valueds), null);
+                    destiny.base.helper.insert(connection, new Insert(new Registry(
+                                    table.head), valueds), null);
                 }
             }
         }

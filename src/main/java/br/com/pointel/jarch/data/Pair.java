@@ -1,6 +1,7 @@
 package br.com.pointel.jarch.data;
 
 public class Pair<T, S> {
+
     public T head;
     public S tail;
 
@@ -14,4 +15,5 @@ public class Pair<T, S> {
         this.head = head;
         this.tail = tail;
     }
+    
 }

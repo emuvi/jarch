@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import com.google.gson.Gson;
 
 public class Order {
+    
     public String name;
     public Boolean desc;
 

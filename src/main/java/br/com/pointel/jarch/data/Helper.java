@@ -52,10 +52,10 @@ public abstract class Helper {
     public ResultSet select(Connection link, Select select, Strain strain)
                     throws Exception {
         var builder = new StringBuilder("SELECT ");
-        var fromSource = select.registier.registry.getCatalogSchemaName();
-        var dataSource = select.registier.registry.alias != null
-                        && !select.registier.registry.alias.isEmpty()
-                                        ? select.registier.registry.alias
+        var fromSource = select.registier.head.getCatalogSchemaName();
+        var dataSource = select.registier.head.alias != null
+                        && !select.registier.head.alias.isEmpty()
+                                        ? select.registier.head.alias
                                         : fromSource;
         if (select.fields == null || select.fields.isEmpty()) {
             builder.append("*");
@@ -73,10 +73,10 @@ public abstract class Helper {
         }
         builder.append(" FROM ");
         builder.append(fromSource);
-        if (select.registier.registry.alias != null && !select.registier.registry.alias
+        if (select.registier.head.alias != null && !select.registier.head.alias
                         .isEmpty()) {
             builder.append(" AS ");
-            builder.append(select.registier.registry.alias);
+            builder.append(select.registier.head.alias);
         }
         if (select.hasJoins()) {
             for (var join : select.joins) {
@@ -175,7 +175,7 @@ public abstract class Helper {
             }
         }
         var builder = new StringBuilder("INSERT INTO ");
-        builder.append(insert.registier.registry.getCatalogSchemaName());
+        builder.append(insert.registier.head.getCatalogSchemaName());
         builder.append(" (");
         for (var i = 0; i < insert.valueds.size(); i++) {
             if (i > 0) {
@@ -238,7 +238,7 @@ public abstract class Helper {
     public Integer update(Connection link, Update update, Strain strain)
                     throws Exception {
         var builder = new StringBuilder("UPDATE ");
-        var dataSource = update.registier.registry.getCatalogSchemaName();
+        var dataSource = update.registier.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" SET ");
         for (var i = 0; i < update.valueds.size(); i++) {
@@ -292,7 +292,7 @@ public abstract class Helper {
     public Integer delete(Connection link, Delete delete, Strain strain)
                     throws Exception {
         var builder = new StringBuilder("DELETE FROM ");
-        var dataSource = delete.registier.registry.getCatalogSchemaName();
+        var dataSource = delete.registier.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" WHERE ");
         builder.append(this.formClauses(delete.filters, null, null));
@@ -341,7 +341,7 @@ public abstract class Helper {
         if (format == null || format.isEmpty()) {
             throw new Exception(
                             "Could not get the ID because: format not found for the table "
-                                            + insert.registier.registry.name);
+                                            + insert.registier.head.name);
         }
         var formatParts = format.split(";");
         if (formatParts.length < 2) {
@@ -367,7 +367,7 @@ public abstract class Helper {
     public String getIDFormat(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT formato FROM codigos WHERE tabela = '"
-                                        + insert.registier.registry.name + "'");
+                                        + insert.registier.head.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }
@@ -378,7 +378,7 @@ public abstract class Helper {
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.registier.registry.name + " WHERE "
+                                        + insert.registier.head.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -397,7 +397,7 @@ public abstract class Helper {
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.registier.registry.name + " WHERE "
+                                        + insert.registier.head.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -451,7 +451,7 @@ public abstract class Helper {
     public String getIDSequence(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT sequencia FROM codigos WHERE tabela = '"
-                                        + insert.registier.registry.name + "'");
+                                        + insert.registier.head.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }

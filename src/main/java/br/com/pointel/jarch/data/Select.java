@@ -4,7 +4,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Select implements FixVals {
-    public Registier registier;
+    public Registry registier;
     public List<Typed> fields;
     public List<Joined> joins;
     public List<Filter> filters;
@@ -14,22 +14,22 @@ public class Select implements FixVals {
 
     public Select() {}
 
-    public Select(Registier registier) {
+    public Select(Registry registier) {
         this.registier = registier;
     }
 
-    public Select(Registier registier, List<Typed> fields) {
+    public Select(Registry registier, List<Typed> fields) {
         this.registier = registier;
         this.fields = fields;
     }
 
-    public Select(Registier registier, List<Typed> fields, List<Joined> joins) {
+    public Select(Registry registier, List<Typed> fields, List<Joined> joins) {
         this.registier = registier;
         this.fields = fields;
         this.joins = joins;
     }
 
-    public Select(Registier registier, List<Typed> fields, List<Joined> joins,
+    public Select(Registry registier, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters) {
         this.registier = registier;
         this.fields = fields;
@@ -37,7 +37,7 @@ public class Select implements FixVals {
         this.filters = filters;
     }
 
-    public Select(Registier registier, List<Typed> fields, List<Joined> joins,
+    public Select(Registry registier, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters,
                     List<Order> orders) {
         this.registier = registier;
@@ -47,7 +47,7 @@ public class Select implements FixVals {
         this.orders = orders;
     }
 
-    public Select(Registier registier, List<Typed> fields, List<Joined> joins,
+    public Select(Registry registier, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters, List<Order> orders,
                     Integer offset) {
         this.registier = registier;
@@ -58,7 +58,7 @@ public class Select implements FixVals {
         this.offset = offset;
     }
 
-    public Select(Registier registier, List<Typed> fields, List<Joined> joins,
+    public Select(Registry registier, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters, List<Order> orders,
                     Integer offset, Integer limit) {
         this.registier = registier;

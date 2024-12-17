@@ -4,12 +4,12 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Delete implements FixVals {
-    public Registier registier;
+    public Registry registier;
     public List<Filter> filters;
 
     public Delete() {}
 
-    public Delete(Registier registier, List<Filter> filters) {
+    public Delete(Registry registier, List<Filter> filters) {
         this.registier = registier;
         this.filters = filters;
     }

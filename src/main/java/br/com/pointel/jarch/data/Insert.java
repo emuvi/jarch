@@ -4,22 +4,22 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Insert implements FixVals {
-    public Registier registier;
+    public Registry registier;
     public List<Valued> valueds;
     public ToGetID toGetID;
 
     public Insert() {}
 
-    public Insert(Registier registier) {
+    public Insert(Registry registier) {
         this.registier = registier;
     }
 
-    public Insert(Registier registier, List<Valued> valueds) {
+    public Insert(Registry registier, List<Valued> valueds) {
         this.registier = registier;
         this.valueds = valueds;
     }
 
-    public Insert(Registier registier, List<Valued> valueds, ToGetID toGetID) {
+    public Insert(Registry registier, List<Valued> valueds, ToGetID toGetID) {
         this.registier = registier;
         this.valueds = valueds;
         this.toGetID = toGetID;
