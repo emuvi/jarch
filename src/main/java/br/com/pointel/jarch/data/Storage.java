@@ -31,27 +31,28 @@ public class Storage {
         }
     }
 
-    public Connection getLink(String ofBase) throws Exception {
+    public Connection getLink(String ofBaseName) throws Exception {
         if (this.stores == null) {
             throw new Exception("No stores are served.");
         }
-        var stored = this.stores.get(ofBase);
+        var stored = this.stores.get(ofBaseName);
         if (stored == null) {
-            throw new Exception("Base " + ofBase + " not found");
+            throw new Exception("Base " + ofBaseName + " not found");
         }
         return stored.source.getConnection();
     }
 
-    public Helped getHelp(String onBase) throws Exception {
+    public Helped getHelp(String onBaseName) throws Exception {
         if (this.stores == null) {
             throw new Exception("No stores are served.");
         }
-        var stored = this.stores.get(onBase);
+        var stored = this.stores.get(onBaseName);
         if (stored == null) {
-            throw new Exception("Base " + onBase + " not found");
+            throw new Exception("Base " + onBaseName + " not found");
         }
         var connection = stored.source.getConnection();
         connection.setAutoCommit(true);
         return new Helped(connection, stored.helper);
     }
+
 }
