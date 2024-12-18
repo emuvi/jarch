@@ -10,9 +10,14 @@ import br.com.pointel.jarch.flow.Base36;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
-public abstract class Helper {
+public class EOrmAll extends EOrm {
 
-    public List<Head> getHeads(Connection link) throws Exception {
+    public EOrmAll(Connection link) {
+        super(link);
+    }
+
+    @Override
+    public List<Head> getHeads() throws Exception {
         var meta = link.getMetaData();
         var set = meta.getTables(null, null, "%", new String[] {"TABLE"});
         var result = new ArrayList<Head>();
@@ -22,12 +27,13 @@ public abstract class Helper {
         return result;
     }
 
-    public void create(Connection connection, Table table) throws Exception {
-        this.create(connection, table, false);
+    @Override
+    public void create(Table table) throws Exception {
+        this.create(table, false);
     }
 
-    public void create(Connection connection, Table table, boolean ifNotExists)
-                    throws Exception {
+    @Override
+    public void create(Table table, boolean ifNotExists) throws Exception {
         var builder = new StringBuilder();
         builder.append("CREATE TABLE ");
         if (ifNotExists) {
@@ -39,19 +45,24 @@ public abstract class Helper {
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append(this.formNature(table.fields.get(i)));
+            builder.append(this.makeNature(table.fields.get(i)));
         }
         builder.append(")");
-        connection.createStatement().execute(builder.toString());
+        this.link.createStatement().execute(builder.toString());
     }
 
-    public ResultSet select(Connection link, Select select, Strain strain)
-                    throws Exception {
+    @Override
+    public ResultSet select(Select select) throws Exception {
+        return this.select(select, null);
+    }
+
+    @Override
+    public ResultSet select(Select select, Strain strain) throws Exception {
         var builder = new StringBuilder("SELECT ");
-        var fromSource = select.registry.head.getCatalogSchemaName();
-        var dataSource = select.registry.head.alias != null
-                        && !select.registry.head.alias.isEmpty()
-                            ? select.registry.head.alias
+        var fromSource = select.head.getCatalogSchemaName();
+        var dataSource = select.head.alias != null
+                        && !select.head.alias.isEmpty()
+                            ? select.head.alias
                             : fromSource;
         if (select.fields == null || select.fields.isEmpty()) {
             builder.append("*");
@@ -69,10 +80,10 @@ public abstract class Helper {
         }
         builder.append(" FROM ");
         builder.append(fromSource);
-        if (select.registry.head.alias != null && !select.registry.head.alias
+        if (select.head.alias != null && !select.head.alias
                         .isEmpty()) {
             builder.append(" AS ");
-            builder.append(select.registry.head.alias);
+            builder.append(select.head.alias);
         }
         if (select.hasJoins()) {
             for (var join : select.joins) {
@@ -132,7 +143,7 @@ public abstract class Helper {
         }
         var build = builder.toString();
         System.out.println("SELECT: " + build);
-        var prepared = link.prepareStatement(build);
+        var prepared = this.link.prepareStatement(build);
         var param_index = 1;
         if (select.hasJoins()) {
             for (var join : select.joins) {
@@ -158,8 +169,14 @@ public abstract class Helper {
         return prepared.executeQuery();
     }
 
-    public String insert(Connection link, Insert insert, Strain strain) throws Exception {
-        var ID = getID(link, insert);
+    @Override
+    public String insert(Insert insert) throws Exception {
+        return this.insert(insert, null);
+    }
+
+    @Override
+    public String insert(Insert insert, Strain strain) throws Exception {
+        var ID = getID(this.link, insert);
         var strained = new ArrayList<Pair<String, String>>();
         if (strain != null && strain.include != null && !strain.include.isEmpty()) {
             var includes = strain.include.split("\\|");
@@ -171,7 +188,7 @@ public abstract class Helper {
             }
         }
         var builder = new StringBuilder("INSERT INTO ");
-        builder.append(insert.registry.head.getCatalogSchemaName());
+        builder.append(insert.head.getCatalogSchemaName());
         builder.append(" (");
         for (var i = 0; i < insert.valueds.size(); i++) {
             if (i > 0) {
@@ -210,7 +227,7 @@ public abstract class Helper {
         builder.append(")");
         var build = builder.toString();
         System.out.println("INSERT: " + build);
-        var prepared = link.prepareStatement(build);
+        var prepared = this.link.prepareStatement(build);
         var param_index = 1;
         for (var valued : insert.valueds) {
             if (valued.data != null) {
@@ -231,10 +248,15 @@ public abstract class Helper {
         return ID;
     }
 
-    public Integer update(Connection link, Update update, Strain strain)
-                    throws Exception {
+    @Override
+    public Integer update(Update update) throws Exception {
+        return this.update(update, null);
+    }
+
+    @Override
+    public Integer update(Update update, Strain strain) throws Exception {
         var builder = new StringBuilder("UPDATE ");
-        var dataSource = update.registry.head.getCatalogSchemaName();
+        var dataSource = update.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" SET ");
         for (var i = 0; i < update.valueds.size(); i++) {
@@ -266,7 +288,7 @@ public abstract class Helper {
         }
         var build = builder.toString();
         System.out.println("UPDATE: " + build);
-        var prepared = link.prepareStatement(build);
+        var prepared = this.link.prepareStatement(build);
         var param_index = 1;
         for (var valued : update.valueds) {
             if (valued != null) {
@@ -285,10 +307,15 @@ public abstract class Helper {
         return prepared.executeUpdate();
     }
 
-    public Integer delete(Connection link, Delete delete, Strain strain)
-                    throws Exception {
+    @Override
+    public Integer delete(Delete delete) throws Exception {
+        return this.delete(delete, null);
+    }
+
+    @Override
+    public Integer delete(Delete delete, Strain strain) throws Exception {
         var builder = new StringBuilder("DELETE FROM ");
-        var dataSource = delete.registry.head.getCatalogSchemaName();
+        var dataSource = delete.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" WHERE ");
         builder.append(this.makeClauses(delete.filters, null, null));
@@ -299,7 +326,7 @@ public abstract class Helper {
         }
         var build = builder.toString();
         System.out.println("DELETE: " + build);
-        var prepared = link.prepareStatement(build);
+        var prepared = this.link.prepareStatement(build);
         var param_index = 1;
         if (delete.filters != null && !delete.filters.isEmpty()) {
             for (var clause : delete.filters) {
@@ -312,14 +339,19 @@ public abstract class Helper {
         return prepared.executeUpdate();
     }
 
-    public String replaceVariables(String onSource, String dataSource) {
+    @Override
+    public boolean isPrimaryKeyError(Exception error) {
+        return error.getMessage().contains("unique constraint");
+    }
+
+    protected String replaceVariables(String onSource, String dataSource) {
         if (onSource == null) {
             return null;
         }
         return onSource.replace("${dataSource}", dataSource);
     }
 
-    public void putID(Insert insert, Object next) {
+    protected void putID(Insert insert, Object next) {
         for (var valued : insert.valueds) {
             if (Objects.equals(insert.toGetID.name, valued.name)) {
                 valued.data = next;
@@ -328,7 +360,7 @@ public abstract class Helper {
         }
     }
 
-    public String getID(Connection link, Insert insert) throws Exception {
+    protected String getID(Connection link, Insert insert) throws Exception {
         if (insert.toGetID == null || insert.toGetID.name == null || insert.toGetID.name
                         .isEmpty()) {
             return "";
@@ -337,7 +369,7 @@ public abstract class Helper {
         if (format == null || format.isEmpty()) {
             throw new Exception(
                             "Could not get the ID because: format not found for the table "
-                                            + insert.registry.head.name);
+                                            + insert.head.name);
         }
         var formatParts = format.split(";");
         if (formatParts.length < 2) {
@@ -360,21 +392,21 @@ public abstract class Helper {
         }
     }
 
-    public String getIDFormat(Connection link, Insert insert) throws Exception {
+    protected String getIDFormat(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT formato FROM codigos WHERE tabela = '"
-                                        + insert.registry.head.name + "'");
+                                        + insert.head.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }
         return null;
     }
 
-    public String getIDMX(Connection link, Insert insert, int formatSize)
+    protected String getIDMX(Connection link, Insert insert, int formatSize)
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.registry.head.name + " WHERE "
+                                        + insert.head.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -389,11 +421,11 @@ public abstract class Helper {
         return next;
     }
 
-    public String getIDCX(Connection link, Insert insert, int formatSize)
+    protected String getIDCX(Connection link, Insert insert, int formatSize)
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.registry.head.name + " WHERE "
+                                        + insert.head.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -408,7 +440,7 @@ public abstract class Helper {
         return next;
     }
 
-    public String getIDNS(Connection link, Insert insert, int formatSize)
+    protected String getIDNS(Connection link, Insert insert, int formatSize)
                     throws Exception {
         String sequence = getIDSequence(link, insert);
         var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence
@@ -426,7 +458,7 @@ public abstract class Helper {
         return next;
     }
 
-    public String getIDCS(Connection link, Insert insert, int formatSize)
+    protected String getIDCS(Connection link, Insert insert, int formatSize)
                     throws Exception {
         String sequence = getIDSequence(link, insert);
         var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence
@@ -444,17 +476,17 @@ public abstract class Helper {
         return next;
     }
 
-    public String getIDSequence(Connection link, Insert insert) throws Exception {
+    protected String getIDSequence(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT sequencia FROM codigos WHERE tabela = '"
-                                        + insert.registry.head.name + "'");
+                                        + insert.head.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }
         return null;
     }
 
-    public String formNature(Field field) {
+    protected String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
             case BOOL:
@@ -546,7 +578,7 @@ public abstract class Helper {
         return builder.toString();
     }
 
-    public String makeClauses(List<Filter> filters, String fromSource, String withAlias) {
+    protected String makeClauses(List<Filter> filters, String fromSource, String withAlias) {
         if ((filters == null) || filters.isEmpty()) {
             return "";
         }
@@ -573,7 +605,7 @@ public abstract class Helper {
                 if (clause.valued.data == null) {
                     builder.append(" IS NULL ");
                 } else {
-                    builder.append(this.formCondition(clause.likes, "?"));
+                    builder.append(this.makeCondition(clause.likes, "?"));
                 }
             } else if (clause.linked != null) {
                 if (fromSource != null && !fromSource.isEmpty()) {
@@ -590,7 +622,7 @@ public abstract class Helper {
                         formWith.append(".");
                     }
                     formWith.append(clause.linked.with);
-                    builder.append(this.formCondition(clause.likes, formWith.toString()));
+                    builder.append(this.makeCondition(clause.likes, formWith.toString()));
                 }
             }
             nextIsOr = clause.ties == FilterTies.OR;
@@ -598,7 +630,7 @@ public abstract class Helper {
         return builder.toString();
     }
 
-    public String formCondition(FilterLikes condition, String with) {
+    protected String makeCondition(FilterLikes condition, String with) {
         switch (condition) {
             case EQUALS:
                 return " = " + with + " ";
@@ -621,7 +653,7 @@ public abstract class Helper {
         }
     }
 
-    public void setParameter(PreparedStatement prepared, int index, Valued valued)
+    protected void setParameter(PreparedStatement prepared, int index, Valued valued)
                     throws Exception {
         if (valued.type == null) {
             prepared.setObject(index, valued.data);
@@ -682,10 +714,6 @@ public abstract class Helper {
                     throw new UnsupportedOperationException();
             }
         }
-    }
-
-    public boolean isPrimaryKey(Exception error) {
-        return error.getMessage().contains("unique constraint");
     }
 
 }

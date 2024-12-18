@@ -5,13 +5,13 @@ import com.google.gson.Gson;
 
 public class Delete implements FixVals {
 
-    public Registry registry;
+    public Head head;
     public List<Filter> filters;
 
     public Delete() {}
 
-    public Delete(Registry registry, List<Filter> filters) {
-        this.registry = registry;
+    public Delete(Head head, List<Filter> filters) {
+        this.head = head;
         this.filters = filters;
     }
 

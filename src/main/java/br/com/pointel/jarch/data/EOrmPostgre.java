@@ -1,8 +1,15 @@
 package br.com.pointel.jarch.data;
 
-public class HelperPostgre extends Helper {
+import java.sql.Connection;
+
+public class EOrmPostgre extends EOrmAll {
+
+    public EOrmPostgre(Connection link) {
+        super(link);
+    }
+
     @Override
-    public String formNature(Field field) {
+    public String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
             case BOOL:
@@ -94,7 +101,7 @@ public class HelperPostgre extends Helper {
     }
 
     @Override
-    public String formCondition(FilterLikes condition, String with) {
+    public String makeCondition(FilterLikes condition, String with) {
         switch (condition) {
             case EQUALS:
                 return " = " + with + " ";
@@ -116,4 +123,5 @@ public class HelperPostgre extends Helper {
                 throw new UnsupportedOperationException();
         }
     }
+
 }

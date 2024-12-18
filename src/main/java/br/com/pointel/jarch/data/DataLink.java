@@ -8,7 +8,7 @@ import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
 
 public class DataLink implements FixVals {
-    
+
     public String name;
     public DataBase base;
     public String path;
@@ -119,7 +119,7 @@ public class DataLink implements FixVals {
     }
 
     public Connection connect() throws Exception {
-        Class.forName(this.base.clazz);
+        Class.forName(this.base.driverClazz);
         if ((this.user != null && !this.user.isEmpty() && this.pass != null)) {
             return DriverManager.getConnection(this.formUrl(), this.user, this.pass);
         }
@@ -136,6 +136,10 @@ public class DataLink implements FixVals {
             this.linked = this.connect();
         }
         return this.linked;
+    }
+
+    public EOrm getEOrm(Connection link) throws Exception {
+        return this.base.eOrmClazz.getConstructor(Connection.class).newInstance(link);
     }
 
     @Override

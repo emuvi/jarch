@@ -9,14 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import br.com.pointel.jarch.mage.WizData;
 
-public class Helped implements Closeable {
-    
-    public final Connection link;
-    public final Helper helper;
+public class ESql implements Closeable {
 
-    public Helped(Connection link, Helper helper) {
+    public final Connection link;
+
+    public ESql(Connection link) {
         this.link = link;
-        this.helper = helper;
     }
 
     public void begin() throws Exception {
@@ -116,5 +114,5 @@ public class Helped implements Closeable {
             throw new IOException(e);
         }
     }
-    
+
 }

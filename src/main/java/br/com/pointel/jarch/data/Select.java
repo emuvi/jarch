@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 
 public class Select implements FixVals {
 
-    public Registry registry;
+    public Head head;
     public List<Typed> fields;
     public List<Joined> joins;
     public List<Filter> filters;
@@ -15,41 +15,41 @@ public class Select implements FixVals {
 
     public Select() {}
 
-    public Select(Registry registry) {
-        this.registry = registry;
+    public Select(Head head) {
+        this.head = head;
     }
 
-    public Select(Registry registry, List<Typed> fields) {
-        this.registry = registry;
+    public Select(Head head, List<Typed> fields) {
+        this.head = head;
         this.fields = fields;
     }
 
-    public Select(Registry registry, List<Typed> fields, List<Joined> joins) {
-        this.registry = registry;
+    public Select(Head head, List<Typed> fields, List<Joined> joins) {
+        this.head = head;
         this.fields = fields;
         this.joins = joins;
     }
 
-    public Select(Registry registry, List<Typed> fields, List<Joined> joins,
+    public Select(Head head, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters) {
-        this.registry = registry;
+        this.head = head;
         this.fields = fields;
         this.joins = joins;
         this.filters = filters;
     }
 
-    public Select(Registry registry, List<Typed> fields, List<Joined> joins,
+    public Select(Head head, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters, List<Order> orders) {
-        this.registry = registry;
+        this.head = head;
         this.fields = fields;
         this.joins = joins;
         this.filters = filters;
         this.orders = orders;
     }
 
-    public Select(Registry registry, List<Typed> fields, List<Joined> joins,
+    public Select(Head head, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters, List<Order> orders, Integer offset) {
-        this.registry = registry;
+        this.head = head;
         this.fields = fields;
         this.joins = joins;
         this.filters = filters;
@@ -57,10 +57,10 @@ public class Select implements FixVals {
         this.offset = offset;
     }
 
-    public Select(Registry registry, List<Typed> fields, List<Joined> joins,
+    public Select(Head head, List<Typed> fields, List<Joined> joins,
                     List<Filter> filters, List<Order> orders, Integer offset,
                     Integer limit) {
-        this.registry = registry;
+        this.head = head;
         this.fields = fields;
         this.joins = joins;
         this.filters = filters;
@@ -85,4 +85,5 @@ public class Select implements FixVals {
     public static Select fromString(String json) {
         return new Gson().fromJson(json, Select.class);
     }
+
 }

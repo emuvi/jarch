@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import com.google.gson.Gson;
 
 public class Strain implements FixVals {
+    
     public String restrict;
     public String modify;
     public String include;
@@ -32,4 +33,5 @@ public class Strain implements FixVals {
     public static Strain fromString(String json) {
         return new Gson().fromJson(json, Strain.class);
     }
+    
 }

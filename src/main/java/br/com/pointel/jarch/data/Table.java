@@ -4,6 +4,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Table implements FixVals {
+
     public Head head;
     public List<Field> fields;
     public List<String> keys;
@@ -41,4 +42,5 @@ public class Table implements FixVals {
     public static Table fromString(String json) {
         return new Gson().fromJson(json, Table.class);
     }
+
 }

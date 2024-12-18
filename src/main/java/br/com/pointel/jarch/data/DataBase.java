@@ -6,87 +6,88 @@ public enum DataBase {
                     "org.sqlite.JDBC",
                     "jdbc:sqlite::memory:",
                     null,
-                    new HelperSQLite()),
+                    EOrmSQLite.class),
 
     SQLiteLocal(
                     "org.sqlite.JDBC",
                     "jdbc:sqlite:$path",
                     null,
-                    new HelperSQLite()),
+                    EOrmSQLite.class),
 
     HSQLDBMemory(
                     "org.hsqldb.jdbcDriver",
                     "jdbc:hsqldb:mem:$data",
                     9000,
-                    new HelperHSQLDB()),
+                    EOrmHSQL.class),
 
     HSQLDBLocal(
                     "org.hsqldb.jdbcDriver",
                     "jdbc:hsqldb:file:$path;hsqldb.lock_file=true",
                     9000,
-                    new HelperHSQLDB()),
+                    EOrmHSQL.class),
 
     HSQLDBClient(
                     "org.hsqldb.jdbcDriver",
                     "jdbc:hsqldb:hsql://$path:$port/$data",
                     9000,
-                    new HelperHSQLDB()),
+                    EOrmHSQL.class),
 
     DerbyInner(
                     "org.apache.derby.jdbc.EmbeddedDriver",
                     "jdbc:derby:$path;create=true",
                     1527,
-                    new HelperDerby()),
+                    EOrmDerby.class),
 
     DerbyClient(
                     "org.apache.derby.jdbc.ClientDriver",
                     "jdbc:derby://$path:$port/$data;create=true",
                     1527,
-                    new HelperDerby()),
+                    EOrmDerby.class),
 
     FirebirdLocal(
                     "org.firebirdsql.jdbc.FBDriver",
                     "jdbc:firebirdsql:local:$path",
                     3050,
-                    new HelperFirebird()),
+                    EOrmFirebird.class),
 
     FirebirdInner(
                     "org.firebirdsql.jdbc.FBDriver",
                     "jdbc:firebirdsql:embedded:$path",
                     3050,
-                    new HelperFirebird()),
+                    EOrmFirebird.class),
 
     FirebirdClient(
                     "org.firebirdsql.jdbc.FBDriver",
                     "jdbc:firebirdsql:$path:$port/$data",
                     3050,
-                    new HelperFirebird()),
+                    EOrmFirebird.class),
 
     MySQLClient(
                     "com.mysql.jdbc.Driver",
                     "jdbc:mysql://$path:$port/$data",
                     3306,
-                    new HelperMySQL()),
+                    EOrmMySQL.class),
 
     PostgreClient(
                     "org.postgresql.Driver",
                     "jdbc:postgresql://$path:$port/$data",
                     5432,
-                    new HelperPostgre());
+                    EOrmPostgre.class);
 
-    public final String clazz;
+    public final String driverClazz;
     public final String formation;
     public final Integer defaultPort;
-    public final Helper helper;
+    public final Class<? extends EOrm> eOrmClazz;
 
-    private DataBase(String clazz, String formation, Integer defaultPort, Helper auxiliar) {
-        this.clazz = clazz;
+    private DataBase(String driverClazz, String formation, Integer defaultPort,
+                    Class<? extends EOrm> eOrmClazz) {
+        this.driverClazz = driverClazz;
         this.formation = formation;
         this.defaultPort = defaultPort;
-        this.helper = auxiliar;
+        this.eOrmClazz = eOrmClazz;
     }
 
-    public String getUrlIdenty() {
+    public String getUrlIdentity() {
         var dollarAt = this.formation.indexOf("$");
         if (dollarAt == -1) {
             return this.formation;
@@ -96,20 +97,20 @@ public enum DataBase {
 
     public static DataBase fromURL(String jdbc) {
         for (DataBase data : DataBase.values()) {
-            if (jdbc.startsWith(data.getUrlIdenty())) {
+            if (jdbc.startsWith(data.getUrlIdentity())) {
                 return data;
             }
         }
         return null;
     }
 
-    public static Helper getHelperFromURL(String jdbc) {
+    public static Class<? extends EOrm> getEOrmClassFromURL(String jdbc) {
         for (DataBase data : DataBase.values()) {
-            if (jdbc.startsWith(data.getUrlIdenty())) {
-                return data.helper;
+            if (jdbc.startsWith(data.getUrlIdentity())) {
+                return data.eOrmClazz;
             }
         }
-        throw new RuntimeException("Not found the helper for this jdbc url.");
+        throw new RuntimeException("Not found the EOrm class for this jdbc url.");
     }
 
     public static DataBase fromString(String string) {
@@ -123,4 +124,5 @@ public enum DataBase {
         }
         return null;
     }
+
 }

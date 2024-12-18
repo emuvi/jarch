@@ -5,31 +5,31 @@ import com.google.gson.Gson;
 
 public class Update implements FixVals {
     
-    public Registry registry;
+    public Head head;
     public List<Valued> valueds;
     public List<Filter> filters;
     public Integer limit;
 
     public Update() {}
 
-    public Update(Registry registry) {
-        this.registry = registry;
+    public Update(Head head) {
+        this.head = head;
     }
 
-    public Update(Registry registry, List<Valued> valueds) {
-        this.registry = registry;
+    public Update(Head head, List<Valued> valueds) {
+        this.head = head;
         this.valueds = valueds;
     }
 
-    public Update(Registry registry, List<Valued> valueds, List<Filter> filters) {
-        this.registry = registry;
+    public Update(Head head, List<Valued> valueds, List<Filter> filters) {
+        this.head = head;
         this.valueds = valueds;
         this.filters = filters;
     }
 
-    public Update(Registry registry, List<Valued> valueds, List<Filter> filters,
+    public Update(Head head, List<Valued> valueds, List<Filter> filters,
                     Integer limit) {
-        this.registry = registry;
+        this.head = head;
         this.valueds = valueds;
         this.filters = filters;
         this.limit = limit;

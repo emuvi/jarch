@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.DataLink;
 import br.com.pointel.jarch.data.Head;
-import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.Select;
 
 public class CSVExport implements Runnable {
@@ -24,7 +23,7 @@ public class CSVExport implements Runnable {
         this.origin = origin;
         this.destiny = destiny;
         this.pace = pace != null ? pace
-                        : new Pace(LoggerFactory.getLogger(CSVExport.class));
+            : new Pace(LoggerFactory.getLogger(CSVExport.class));
     }
 
     public void run() {
@@ -46,7 +45,8 @@ public class CSVExport implements Runnable {
                 pace.info("Connected.");
                 pace.waitIfPausedAndThrowIfStopped();
                 pace.info("Getting tables...");
-                var heads = origin.base.helper.getHeads(originConn);
+                var eOrmOrigin = origin.getEOrm(originConn);
+                var heads = eOrmOrigin.getHeads();
                 for (Head head : heads) {
                     pace.info("Processing: %s...", head);
                     var table = head.getTable(originConn);
@@ -63,16 +63,13 @@ public class CSVExport implements Runnable {
                             row[i] = table.fields.get(i).name;
                         }
                         csvFile.writeLine(row);
-                        var rstOrigin = origin.base.helper.select(originConn, new Select(
-                                        new Registry(head)), null);
+                        var rstOrigin = eOrmOrigin.select(new Select(head));
                         var recordCount = 0L;
                         while (rstOrigin.next()) {
                             recordCount++;
-                            pace.debug("Writing record " + recordCount + " of "
-                                            + head.name);
+                            pace.debug("Writing record " + recordCount + " of " + head.name);
                             for (var i = 0; i < table.fields.size(); i++) {
-                                row[i] = table.fields.get(i).formatValue(rstOrigin
-                                                .getObject(i + 1));
+                                row[i] = table.fields.get(i).formatValue(rstOrigin.getObject(i + 1));
                             }
                             csvFile.writeLine(row);
                         }

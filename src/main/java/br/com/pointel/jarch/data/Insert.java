@@ -4,24 +4,24 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Insert implements FixVals {
-    
-    public Registry registry;
+
+    public Head head;
     public List<Valued> valueds;
     public ToGetID toGetID;
 
     public Insert() {}
 
-    public Insert(Registry registry) {
-        this.registry = registry;
+    public Insert(Head head) {
+        this.head = head;
     }
 
-    public Insert(Registry registry, List<Valued> valueds) {
-        this.registry = registry;
+    public Insert(Head head, List<Valued> valueds) {
+        this.head = head;
         this.valueds = valueds;
     }
 
-    public Insert(Registry registry, List<Valued> valueds, ToGetID toGetID) {
-        this.registry = registry;
+    public Insert(Head head, List<Valued> valueds, ToGetID toGetID) {
+        this.head = head;
         this.valueds = valueds;
         this.toGetID = toGetID;
     }

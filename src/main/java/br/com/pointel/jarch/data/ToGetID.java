@@ -26,4 +26,5 @@ public class ToGetID {
     public static ToGetID fromString(String json) {
         return new Gson().fromJson(json, ToGetID.class);
     }
+    
 }

@@ -4,110 +4,111 @@ import com.google.gson.Gson;
 
 public class DataWays implements FixVals {
 
-    public DataJdbc jdbc;
-    public DataLink link;
+    public DataJdbc dataJdbc;
+    public DataLink dataLink;
+
     public Integer storeMinIdle;
     public Integer storeMaxIdle;
     public Integer storeMaxTotal;
 
-    public DataWays(DataJdbc jdbc) {
-        this.jdbc = jdbc;
-        this.link = null;
+    public DataWays(DataJdbc dataJdbc) {
+        this.dataJdbc = dataJdbc;
+        this.dataLink = null;
         this.storeMinIdle = 1;
         this.storeMaxIdle = 1;
         this.storeMaxTotal = 1;
     }
 
-    public DataWays(DataLink link) {
-        this.jdbc = null;
-        this.link = link;
+    public DataWays(DataLink dataLink) {
+        this.dataJdbc = null;
+        this.dataLink = dataLink;
         this.storeMinIdle = 1;
         this.storeMaxIdle = 1;
         this.storeMaxTotal = 1;
     }
 
-    public DataWays(DataJdbc jdbc,
+    public DataWays(DataJdbc dataJdbc,
                     Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
-        this.jdbc = jdbc;
-        this.link = null;
+        this.dataJdbc = dataJdbc;
+        this.dataLink = null;
         this.storeMinIdle = storeMinIdle;
         this.storeMaxIdle = storeMaxIdle;
         this.storeMaxTotal = storeMaxTotal;
     }
 
-    public DataWays(DataLink link,
+    public DataWays(DataLink dataLink,
                     Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
-        this.jdbc = null;
-        this.link = link;
+        this.dataJdbc = null;
+        this.dataLink = dataLink;
         this.storeMinIdle = storeMinIdle;
         this.storeMaxIdle = storeMaxIdle;
         this.storeMaxTotal = storeMaxTotal;
     }
 
     public String getName() {
-        if (this.jdbc != null) {
-            return this.jdbc.name;
+        if (this.dataJdbc != null) {
+            return this.dataJdbc.name;
         }
-        if (this.link != null) {
-            return this.link.name;
+        if (this.dataLink != null) {
+            return this.dataLink.name;
         }
         return null;
     }
 
     public String getUrl() {
-        if (this.jdbc != null) {
-            return this.jdbc.url;
+        if (this.dataJdbc != null) {
+            return this.dataJdbc.url;
         }
-        if (this.link != null) {
-            return this.link.formUrl();
+        if (this.dataLink != null) {
+            return this.dataLink.formUrl();
         }
         return null;
     }
 
     public String getUser() {
-        if (this.jdbc != null) {
-            return this.jdbc.user;
+        if (this.dataJdbc != null) {
+            return this.dataJdbc.user;
         }
-        if (this.link != null) {
-            return this.link.user;
+        if (this.dataLink != null) {
+            return this.dataLink.user;
         }
         return null;
     }
 
     public String getPass() {
-        if (this.jdbc != null) {
-            return this.jdbc.pass;
+        if (this.dataJdbc != null) {
+            return this.dataJdbc.pass;
         }
-        if (this.link != null) {
-            return this.link.pass;
+        if (this.dataLink != null) {
+            return this.dataLink.pass;
         }
         return null;
     }
 
-    public Helper getHelper() {
-        if (this.link != null && this.link.base != null) {
-            return this.link.base.helper;
+    public Class<? extends EOrm> getEOrmClass() {
+        if (this.dataLink != null && this.dataLink.base != null) {
+            return this.dataLink.base.eOrmClazz;
         }
-        return DataBase.getHelperFromURL(this.getUrl());
+        return DataBase.getEOrmClassFromURL(this.getUrl());
     }
 
     @Override
     public void fixNulls() throws Exception {
-        if (this.jdbc != null) {
-            this.jdbc.fixNulls();
+        if (this.dataJdbc != null) {
+            this.dataJdbc.fixNulls();
         }
-        if (this.link != null) {
-            this.link.fixNulls();
+        if (this.dataLink != null) {
+            this.dataLink.fixNulls();
         }
     }
 
     @Override
     public void fixNullsAndEnvs() throws Exception {
-        if (this.jdbc != null) {
-            this.jdbc.fixNullsAndEnvs();
+        if (this.dataJdbc != null) {
+            this.dataJdbc.fixNullsAndEnvs();
         }
-        if (this.link != null) {
-            this.link.fixNullsAndEnvs();
+        if (this.dataLink != null) {
+            this.dataLink.fixNullsAndEnvs();
         }
     }
 
@@ -119,5 +120,5 @@ public class DataWays implements FixVals {
     public static DataWays fromString(String json) {
         return new Gson().fromJson(json, DataWays.class);
     }
-    
+
 }
