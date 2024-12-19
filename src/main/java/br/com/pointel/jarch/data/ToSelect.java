@@ -24,6 +24,10 @@ public class ToSelect implements FixVals {
         this.select = select;
     }
 
+    public Registry getRegistry() {
+        return new Registry(base, select.tableHead);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

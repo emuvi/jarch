@@ -24,6 +24,10 @@ public class ToDelete implements FixVals {
         this.delete = delete;
     }
 
+    public Registry getRegistry() {
+        return new Registry(base, delete.tableHead);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

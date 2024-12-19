@@ -24,6 +24,10 @@ public class ToUpdate implements FixVals {
         this.update = update;
     }
 
+    public Registry getRegistry() {
+        return new Registry(base, update.tableHead);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

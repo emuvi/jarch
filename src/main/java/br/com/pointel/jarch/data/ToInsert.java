@@ -24,6 +24,10 @@ public class ToInsert implements FixVals {
         this.insert = insert;
     }
 
+    public Registry getRegistry() {
+        return new Registry(base, insert.tableHead);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
