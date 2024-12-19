@@ -1,6 +1,7 @@
 package br.com.pointel.jarch.flow;
 
 public class Base36 {
+    
     public static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public static final int BASE = ALPHABET.length();
@@ -72,4 +73,5 @@ public class Base36 {
     private static Long toBase10Lon(Integer n, Integer pow) {
         return n * ((Double) Math.pow(BASE, pow)).longValue();
     }
+    
 }

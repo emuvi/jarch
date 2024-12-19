@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.util.Map;
 import java.util.Objects;
 import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
 

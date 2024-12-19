@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 
 public class Update implements FixVals {
 

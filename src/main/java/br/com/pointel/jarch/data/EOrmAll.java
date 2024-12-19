@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.Base36;
+import br.com.pointel.jarch.flow.Pair;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
@@ -199,7 +200,7 @@ public class EOrmAll extends EOrm {
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 builder.append(", ");
-                builder.append(toStrain.tableHead);
+                builder.append(toStrain.head);
             }
         }
         builder.append(") VALUES (");
@@ -238,8 +239,7 @@ public class EOrmAll extends EOrm {
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 if (!toStrain.tail.isEmpty()) {
-                    this.setParameter(prepared, param_index, new Valued(toStrain.tableHead,
-                                    toStrain.tail));
+                    this.setParameter(prepared, param_index, new Valued(toStrain.head, toStrain.tail));
                     param_index++;
                 }
             }

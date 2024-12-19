@@ -2,6 +2,7 @@ package br.com.pointel.jarch.data;
 
 import java.util.Objects;
 import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizData;
 
 public class Field implements FixVals {

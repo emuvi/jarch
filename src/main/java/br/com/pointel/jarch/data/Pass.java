@@ -1,6 +1,7 @@
 package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
 public class Pass implements FixVals {

@@ -1,4 +1,4 @@
-package br.com.pointel.jarch.data;
+package br.com.pointel.jarch.flow;
 
 import java.lang.reflect.Modifier;
 import br.com.pointel.jarch.mage.WizChars;
