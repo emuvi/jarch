@@ -8,7 +8,7 @@ public class Select implements FixVals {
 
     public TableHead tableHead;
     public List<Typed> fieldList;
-    public List<Joined> joinList;
+    public List<Join> joinList;
     public List<Filter> filterList;
     public List<Order> orderList;
     public Integer offset;
@@ -25,13 +25,13 @@ public class Select implements FixVals {
         this.fieldList = fieldList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList) {
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
                     List<Filter> filterList) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
@@ -39,7 +39,7 @@ public class Select implements FixVals {
         this.filterList = filterList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
                     List<Filter> filterList,
                     List<Order> orderList) {
         this.tableHead = tableHead;
@@ -49,7 +49,7 @@ public class Select implements FixVals {
         this.orderList = orderList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
                     List<Filter> filterList,
                     List<Order> orderList, Integer offset) {
         this.tableHead = tableHead;
@@ -60,7 +60,7 @@ public class Select implements FixVals {
         this.offset = offset;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
                     List<Filter> filterList,
                     List<Order> orderList, Integer offset, Integer limit) {
         this.tableHead = tableHead;

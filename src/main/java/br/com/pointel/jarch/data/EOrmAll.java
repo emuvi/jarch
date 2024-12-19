@@ -87,9 +87,9 @@ public class EOrmAll extends EOrm {
         }
         if (select.hasJoins()) {
             for (var join : select.joinList) {
-                if (join.ties != null) {
+                if (join.joinTie != null) {
                     builder.append(" ");
-                    builder.append(join.ties.toString());
+                    builder.append(join.joinTie.toString());
                     builder.append(" ");
                 }
                 builder.append(" JOIN ");
@@ -625,7 +625,7 @@ public class EOrmAll extends EOrm {
                     builder.append(this.makeCondition(clause.likes, formWith.toString()));
                 }
             }
-            nextIsOr = clause.ties == FilterTies.OR;
+            nextIsOr = clause.joinTie == FilterTies.OR;
         }
         return builder.toString();
     }

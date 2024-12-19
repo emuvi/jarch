@@ -4,61 +4,61 @@ import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
 
-public class Joined implements FixVals {
+public class Join implements FixVals {
 
     public TableHead tableHead;
     public String alias;
     public List<Filter> filterList;
-    public JoinedTies ties;
+    public JoinTie joinTie;
 
-    public Joined() {}
+    public Join() {}
 
-    public Joined(JoinedTies ties) {
-        this.ties = ties;
+    public Join(JoinTie joinTie) {
+        this.joinTie = joinTie;
     }
 
-    public Joined(TableHead tableHead) {
+    public Join(TableHead tableHead) {
         this.tableHead = tableHead;
     }
 
-    public Joined(TableHead tableHead, String alias) {
-        this.tableHead = tableHead;
-        this.alias = alias;
-    }
-
-    public Joined(TableHead tableHead, JoinedTies ties) {
-        this.tableHead = tableHead;
-        this.ties = ties;
-    }
-
-    public Joined(TableHead tableHead, String alias, JoinedTies ties) {
+    public Join(TableHead tableHead, String alias) {
         this.tableHead = tableHead;
         this.alias = alias;
-        this.ties = ties;
     }
 
-    public Joined(TableHead tableHead, List<Filter> filterList) {
+    public Join(TableHead tableHead, JoinTie joinTie) {
+        this.tableHead = tableHead;
+        this.joinTie = joinTie;
+    }
+
+    public Join(TableHead tableHead, String alias, JoinTie joinTie) {
+        this.tableHead = tableHead;
+        this.alias = alias;
+        this.joinTie = joinTie;
+    }
+
+    public Join(TableHead tableHead, List<Filter> filterList) {
         this.tableHead = tableHead;
         this.filterList = filterList;
     }
 
-    public Joined(TableHead tableHead, String alias, List<Filter> filterList) {
+    public Join(TableHead tableHead, String alias, List<Filter> filterList) {
         this.tableHead = tableHead;
         this.alias = alias;
         this.filterList = filterList;
     }
 
-    public Joined(TableHead tableHead, List<Filter> filterList, JoinedTies ties) {
+    public Join(TableHead tableHead, List<Filter> filterList, JoinTie joinTie) {
         this.tableHead = tableHead;
         this.filterList = filterList;
-        this.ties = ties;
+        this.joinTie = joinTie;
     }
 
-    public Joined(TableHead tableHead, String alias, List<Filter> filterList, JoinedTies ties) {
+    public Join(TableHead tableHead, String alias, List<Filter> filterList, JoinTie joinTie) {
         this.tableHead = tableHead;
         this.alias = alias;
         this.filterList = filterList;
-        this.ties = ties;
+        this.joinTie = joinTie;
     }
 
     public boolean hasFilters() {
@@ -69,19 +69,19 @@ public class Joined implements FixVals {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Joined)) {
+        if (!(o instanceof Join)) {
             return false;
         }
-        Joined joined = (Joined) o;
+        Join joined = (Join) o;
         return Objects.equals(tableHead, joined.tableHead)
                         && Objects.equals(alias, joined.alias)
                         && Objects.equals(filterList, joined.filterList)
-                        && Objects.equals(ties, joined.ties);
+                        && Objects.equals(joinTie, joined.joinTie);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, alias, filterList, ties);
+        return Objects.hash(tableHead, alias, filterList, joinTie);
     }
 
     @Override
@@ -89,8 +89,8 @@ public class Joined implements FixVals {
         return new Gson().toJson(this);
     }
 
-    public static Joined fromString(String json) {
-        return new Gson().fromJson(json, Joined.class);
+    public static Join fromString(String json) {
+        return new Gson().fromJson(json, Join.class);
     }
 
 }
