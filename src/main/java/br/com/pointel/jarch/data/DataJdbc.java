@@ -1,9 +1,10 @@
 package br.com.pointel.jarch.data;
 
+import java.util.Objects;
 import com.google.gson.Gson;
 
 public class DataJdbc implements FixVals {
-    
+
     public String name;
     public String url;
     public String user;
@@ -31,6 +32,25 @@ public class DataJdbc implements FixVals {
         this.url = url;
         this.user = user;
         this.pass = pass;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof DataJdbc)) {
+            return false;
+        }
+        DataJdbc dataJdbc = (DataJdbc) o;
+        return Objects.equals(name, dataJdbc.name)
+                        && Objects.equals(url, dataJdbc.url)
+                        && Objects.equals(user, dataJdbc.user)
+                        && Objects.equals(pass, dataJdbc.pass);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url, user, pass);
     }
 
     @Override

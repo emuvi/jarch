@@ -3,24 +3,24 @@ package br.com.pointel.jarch.data;
 import java.util.Objects;
 import com.google.gson.Gson;
 
-public class Registry {
-    
-    public final String base;
-    public final Head head;
+public class Registry implements FixVals {
+
+    public String base;
+    public Head head;
+
+    public Registry() {}
 
     public Registry(String base) {
         this.base = base;
-        this.head = null;
     }
 
     public Registry(Head head) {
-        this.base = null;
         this.head = head;
     }
 
-    public Registry(String base, Head registry) {
+    public Registry(String base, Head head) {
         this.base = base;
-        this.head = registry;
+        this.head = head;
     }
 
     @Override
@@ -30,9 +30,9 @@ public class Registry {
         if (!(o instanceof Registry)) {
             return false;
         }
-        Registry registier = (Registry) o;
-        return Objects.equals(base, registier.base) && Objects.equals(head,
-                        registier.head);
+        Registry registry = (Registry) o;
+        return Objects.equals(base, registry.base)
+                        && Objects.equals(head, registry.head);
     }
 
     @Override

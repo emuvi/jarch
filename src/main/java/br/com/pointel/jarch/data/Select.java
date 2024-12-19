@@ -1,15 +1,16 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
+import java.util.Objects;
 import com.google.gson.Gson;
 
 public class Select implements FixVals {
 
     public Head head;
-    public List<Typed> fields;
-    public List<Joined> joins;
-    public List<Filter> filters;
-    public List<Order> orders;
+    public List<Typed> fieldList;
+    public List<Joined> joinList;
+    public List<Filter> filterList;
+    public List<Order> orderList;
     public Integer offset;
     public Integer limit;
 
@@ -19,62 +20,82 @@ public class Select implements FixVals {
         this.head = head;
     }
 
-    public Select(Head head, List<Typed> fields) {
+    public Select(Head head, List<Typed> fieldList) {
         this.head = head;
-        this.fields = fields;
+        this.fieldList = fieldList;
     }
 
-    public Select(Head head, List<Typed> fields, List<Joined> joins) {
+    public Select(Head head, List<Typed> fieldList, List<Joined> joinList) {
         this.head = head;
-        this.fields = fields;
-        this.joins = joins;
+        this.fieldList = fieldList;
+        this.joinList = joinList;
     }
 
-    public Select(Head head, List<Typed> fields, List<Joined> joins,
-                    List<Filter> filters) {
+    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList) {
         this.head = head;
-        this.fields = fields;
-        this.joins = joins;
-        this.filters = filters;
+        this.fieldList = fieldList;
+        this.joinList = joinList;
+        this.filterList = filterList;
     }
 
-    public Select(Head head, List<Typed> fields, List<Joined> joins,
-                    List<Filter> filters, List<Order> orders) {
+    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList,
+                    List<Order> orderList) {
         this.head = head;
-        this.fields = fields;
-        this.joins = joins;
-        this.filters = filters;
-        this.orders = orders;
+        this.fieldList = fieldList;
+        this.joinList = joinList;
+        this.filterList = filterList;
+        this.orderList = orderList;
     }
 
-    public Select(Head head, List<Typed> fields, List<Joined> joins,
-                    List<Filter> filters, List<Order> orders, Integer offset) {
+    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList,
+                    List<Order> orderList, Integer offset) {
         this.head = head;
-        this.fields = fields;
-        this.joins = joins;
-        this.filters = filters;
-        this.orders = orders;
+        this.fieldList = fieldList;
+        this.joinList = joinList;
+        this.filterList = filterList;
+        this.orderList = orderList;
         this.offset = offset;
     }
 
-    public Select(Head head, List<Typed> fields, List<Joined> joins,
-                    List<Filter> filters, List<Order> orders, Integer offset,
-                    Integer limit) {
+    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList,
+                    List<Order> orderList, Integer offset, Integer limit) {
         this.head = head;
-        this.fields = fields;
-        this.joins = joins;
-        this.filters = filters;
-        this.orders = orders;
+        this.fieldList = fieldList;
+        this.joinList = joinList;
+        this.filterList = filterList;
+        this.orderList = orderList;
         this.offset = offset;
         this.limit = limit;
     }
 
     public boolean hasJoins() {
-        return this.joins != null && !this.joins.isEmpty();
+        return this.joinList != null && !this.joinList.isEmpty();
     }
 
     public boolean hasFilters() {
-        return this.filters != null && !this.filters.isEmpty();
+        return this.filterList != null && !this.filterList.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Select)) {
+            return false;
+        }
+        Select select = (Select) o;
+        return Objects.equals(head, select.head)
+                        && Objects.equals(fieldList, select.fieldList)
+                        && Objects.equals(joinList, select.joinList)
+                        && Objects.equals(filterList, select.filterList)
+                        && Objects.equals(orderList, select.orderList)
+                        && Objects.equals(offset, select.offset)
+                        && Objects.equals(limit, select.limit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(head, fieldList, joinList, filterList, orderList, offset, limit);
     }
 
     @Override

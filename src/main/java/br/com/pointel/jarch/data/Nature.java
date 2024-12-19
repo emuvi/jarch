@@ -1,6 +1,7 @@
 package br.com.pointel.jarch.data;
 
 public enum Nature {
+
     BIT, BOOL, BYTE,
 
     TINY, SMALL, INT, LONG,
@@ -16,4 +17,5 @@ public enum Nature {
     DATE, TIME, DATE_TIME, TIMESTAMP,
 
     BYTES, BLOB, TEXT
+
 }

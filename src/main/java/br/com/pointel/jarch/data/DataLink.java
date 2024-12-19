@@ -3,6 +3,7 @@ package br.com.pointel.jarch.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
+import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
@@ -140,6 +141,28 @@ public class DataLink implements FixVals {
 
     public EOrm getEOrm(Connection link) throws Exception {
         return this.base.eOrmClazz.getConstructor(Connection.class).newInstance(link);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof DataLink)) {
+            return false;
+        }
+        DataLink dataLink = (DataLink) o;
+        return Objects.equals(name, dataLink.name)
+                        && Objects.equals(base, dataLink.base)
+                        && Objects.equals(path, dataLink.path)
+                        && Objects.equals(port, dataLink.port)
+                        && Objects.equals(data, dataLink.data)
+                        && Objects.equals(user, dataLink.user)
+                        && Objects.equals(pass, dataLink.pass);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, base, path, port, data, user, pass);
     }
 
     @Override

@@ -41,11 +41,11 @@ public class EOrmAll extends EOrm {
         }
         builder.append(table.getCatalogSchemaName());
         builder.append(" (");
-        for (var i = 0; i < table.fields.size(); i++) {
+        for (var i = 0; i < table.fieldList.size(); i++) {
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append(this.makeNature(table.fields.get(i)));
+            builder.append(this.makeNature(table.fieldList.get(i)));
         }
         builder.append(")");
         this.link.createStatement().execute(builder.toString());
@@ -64,18 +64,18 @@ public class EOrmAll extends EOrm {
                         && !select.head.alias.isEmpty()
                             ? select.head.alias
                             : fromSource;
-        if (select.fields == null || select.fields.isEmpty()) {
+        if (select.fieldList == null || select.fieldList.isEmpty()) {
             builder.append("*");
         } else {
-            for (var i = 0; i < select.fields.size(); i++) {
+            for (var i = 0; i < select.fieldList.size(); i++) {
                 if (i > 0) {
                     builder.append(", ");
                 }
-                if (!select.fields.get(i).name.contains(".")) {
+                if (!select.fieldList.get(i).name.contains(".")) {
                     builder.append(dataSource);
                     builder.append(".");
                 }
-                builder.append(select.fields.get(i).name);
+                builder.append(select.fieldList.get(i).name);
             }
         }
         builder.append(" FROM ");
@@ -86,7 +86,7 @@ public class EOrmAll extends EOrm {
             builder.append(select.head.alias);
         }
         if (select.hasJoins()) {
-            for (var join : select.joins) {
+            for (var join : select.joinList) {
                 if (join.ties != null) {
                     builder.append(" ");
                     builder.append(join.ties.toString());
@@ -107,26 +107,26 @@ public class EOrmAll extends EOrm {
                 }
                 if (join.hasFilters()) {
                     builder.append(" ON ");
-                    builder.append(this.makeClauses(join.filters, dataSource, withAlias));
+                    builder.append(this.makeClauses(join.filterList, dataSource, withAlias));
                 }
             }
         }
         if (select.hasFilters()) {
             builder.append(" WHERE ");
-            builder.append(this.makeClauses(select.filters, dataSource, null));
+            builder.append(this.makeClauses(select.filterList, dataSource, null));
         }
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(!select.hasFilters() ? " WHERE " : " AND ");
             var restricted = replaceVariables(strain.restrict, dataSource);
             builder.append(restricted);
         }
-        if (select.orders != null && !select.orders.isEmpty()) {
+        if (select.orderList != null && !select.orderList.isEmpty()) {
             builder.append(" ORDER BY ");
-            for (var i = 0; i < select.orders.size(); i++) {
+            for (var i = 0; i < select.orderList.size(); i++) {
                 if (i > 0) {
                     builder.append(" , ");
                 }
-                var order = select.orders.get(i);
+                var order = select.orderList.get(i);
                 builder.append(order.name);
                 if (order.desc != null && order.desc) {
                     builder.append(" DESC");
@@ -146,9 +146,9 @@ public class EOrmAll extends EOrm {
         var prepared = this.link.prepareStatement(build);
         var param_index = 1;
         if (select.hasJoins()) {
-            for (var join : select.joins) {
+            for (var join : select.joinList) {
                 if (join.hasFilters()) {
-                    for (var clause : join.filters) {
+                    for (var clause : join.filterList) {
                         if (clause.valued != null && clause.valued.data != null) {
                             this.setParameter(prepared, param_index, clause.valued);
                             param_index++;
@@ -158,7 +158,7 @@ public class EOrmAll extends EOrm {
             }
         }
         if (select.hasFilters()) {
-            for (var clause : select.filters) {
+            for (var clause : select.filterList) {
                 if (clause.valued != null && clause.valued.data != null) {
                     this.setParameter(prepared, param_index, clause.valued);
                     param_index++;
@@ -190,11 +190,11 @@ public class EOrmAll extends EOrm {
         var builder = new StringBuilder("INSERT INTO ");
         builder.append(insert.head.getCatalogSchemaName());
         builder.append(" (");
-        for (var i = 0; i < insert.valueds.size(); i++) {
+        for (var i = 0; i < insert.valuedList.size(); i++) {
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append(insert.valueds.get(i).name);
+            builder.append(insert.valuedList.get(i).name);
         }
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
@@ -203,11 +203,11 @@ public class EOrmAll extends EOrm {
             }
         }
         builder.append(") VALUES (");
-        for (var i = 0; i < insert.valueds.size(); i++) {
+        for (var i = 0; i < insert.valuedList.size(); i++) {
             if (i > 0) {
                 builder.append(", ");
             }
-            final var valued = insert.valueds.get(i);
+            final var valued = insert.valuedList.get(i);
             if (valued.data != null) {
                 builder.append("?");
             } else {
@@ -229,7 +229,7 @@ public class EOrmAll extends EOrm {
         System.out.println("INSERT: " + build);
         var prepared = this.link.prepareStatement(build);
         var param_index = 1;
-        for (var valued : insert.valueds) {
+        for (var valued : insert.valuedList) {
             if (valued.data != null) {
                 this.setParameter(prepared, param_index, valued);
                 param_index++;
@@ -259,13 +259,13 @@ public class EOrmAll extends EOrm {
         var dataSource = update.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" SET ");
-        for (var i = 0; i < update.valueds.size(); i++) {
+        for (var i = 0; i < update.valuedList.size(); i++) {
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append(update.valueds.get(i).name);
+            builder.append(update.valuedList.get(i).name);
             builder.append(" = ");
-            if (update.valueds.get(i).data == null) {
+            if (update.valuedList.get(i).data == null) {
                 builder.append("NULL");
             } else {
                 builder.append("?");
@@ -276,7 +276,7 @@ public class EOrmAll extends EOrm {
             builder.append(strain.modify);
         }
         builder.append(" WHERE ");
-        builder.append(this.makeClauses(update.filters, null, null));
+        builder.append(this.makeClauses(update.filterList, null, null));
         if (update.limit != null) {
             builder.append(" LIMIT ");
             builder.append(update.limit);
@@ -290,14 +290,14 @@ public class EOrmAll extends EOrm {
         System.out.println("UPDATE: " + build);
         var prepared = this.link.prepareStatement(build);
         var param_index = 1;
-        for (var valued : update.valueds) {
+        for (var valued : update.valuedList) {
             if (valued != null) {
                 this.setParameter(prepared, param_index, valued);
                 param_index++;
             }
         }
-        if (update.filters != null && !update.filters.isEmpty()) {
-            for (var clause : update.filters) {
+        if (update.filterList != null && !update.filterList.isEmpty()) {
+            for (var clause : update.filterList) {
                 if (clause.valued != null) {
                     this.setParameter(prepared, param_index, clause.valued);
                     param_index++;
@@ -318,7 +318,7 @@ public class EOrmAll extends EOrm {
         var dataSource = delete.head.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" WHERE ");
-        builder.append(this.makeClauses(delete.filters, null, null));
+        builder.append(this.makeClauses(delete.filterList, null, null));
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(" AND ");
             var restricted = replaceVariables(strain.restrict, dataSource);
@@ -328,8 +328,8 @@ public class EOrmAll extends EOrm {
         System.out.println("DELETE: " + build);
         var prepared = this.link.prepareStatement(build);
         var param_index = 1;
-        if (delete.filters != null && !delete.filters.isEmpty()) {
-            for (var clause : delete.filters) {
+        if (delete.filterList != null && !delete.filterList.isEmpty()) {
+            for (var clause : delete.filterList) {
                 if (clause.valued.data != null) {
                     this.setParameter(prepared, param_index, clause.valued);
                     param_index++;
@@ -352,7 +352,7 @@ public class EOrmAll extends EOrm {
     }
 
     protected void putID(Insert insert, Object next) {
-        for (var valued : insert.valueds) {
+        for (var valued : insert.valuedList) {
             if (Objects.equals(insert.toGetID.name, valued.name)) {
                 valued.data = next;
                 break;
@@ -578,14 +578,14 @@ public class EOrmAll extends EOrm {
         return builder.toString();
     }
 
-    protected String makeClauses(List<Filter> filters, String fromSource, String withAlias) {
-        if ((filters == null) || filters.isEmpty()) {
+    protected String makeClauses(List<Filter> filterList, String fromSource, String withAlias) {
+        if ((filterList == null) || filterList.isEmpty()) {
             return "";
         }
         var builder = new StringBuilder();
         var nextIsOr = false;
-        for (var i = 0; i < filters.size(); i++) {
-            var clause = filters.get(i);
+        for (var i = 0; i < filterList.size(); i++) {
+            var clause = filterList.get(i);
             if (clause.valued == null && clause.linked == null) {
                 continue;
             }

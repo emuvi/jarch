@@ -1,5 +1,6 @@
 package br.com.pointel.jarch.data;
 
+import java.util.Objects;
 import com.google.gson.Gson;
 
 public class DataWays implements FixVals {
@@ -110,6 +111,26 @@ public class DataWays implements FixVals {
         if (this.dataLink != null) {
             this.dataLink.fixNullsAndEnvs();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof DataWays)) {
+            return false;
+        }
+        DataWays dataWays = (DataWays) o;
+        return Objects.equals(dataJdbc, dataWays.dataJdbc)
+                        && Objects.equals(dataLink, dataWays.dataLink)
+                        && Objects.equals(storeMinIdle, dataWays.storeMinIdle)
+                        && Objects.equals(storeMaxIdle, dataWays.storeMaxIdle)
+                        && Objects.equals(storeMaxTotal, dataWays.storeMaxTotal);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dataJdbc, dataLink, storeMinIdle, storeMaxIdle, storeMaxTotal);
     }
 
     @Override

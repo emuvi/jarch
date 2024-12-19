@@ -94,32 +94,32 @@ public class CSVImport implements Runnable {
                     if (firstLine) {
                         values[i] = line[i];
                     } else {
-                        var field = table.fields.get(i);
+                        var field = table.fieldList.get(i);
                         values[i] = field.getValueFrom(line[i]);
                         fixValuesForSQLTypes(values, i, field);
                     }
                 }
-                var fields = new ArrayList<Field>();
+                var fieldList = new ArrayList<Field>();
                 if (firstLine) {
-                    pace.info("Making sure the table fields match on the first line.");
+                    pace.info("Making sure the table fieldList match on the first line.");
                     firstLine = false;
                     for (Object value : values) {
-                        for (Field field : table.fields) {
+                        for (Field field : table.fieldList) {
                             if (Objects.equals(value, field.name)) {
-                                fields.add(field);
+                                fieldList.add(field);
                                 break;
                             }
                         }
                     }
-                    if (fields.size() == values.length) {
-                        table.fields = fields;
+                    if (fieldList.size() == values.length) {
+                        table.fieldList = fieldList;
                     }
                 } else {
                     pace.info("Inserting line  " + lineCount + " of file: " + csvFile
                                     .getName());
                     var valuedList = new ArrayList<Valued>();
                     for (var i = 0; i < values.length; i++) {
-                        var field = table.fields.get(i);
+                        var field = table.fieldList.get(i);
                         var valued = new Valued(field.name, field.nature, values[i]);
                         valuedList.add(valued);
                     }

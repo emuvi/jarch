@@ -39,8 +39,7 @@ public class Head implements FixVals {
     }
 
     public String getSource() {
-        return this.alias != null && !this.alias.isEmpty() ? this.alias
-            : this.getCatalogSchemaName();
+        return this.alias != null && !this.alias.isEmpty() ? this.alias : this.getCatalogSchemaName();
     }
 
     public String getSchemaName() {
@@ -60,7 +59,7 @@ public class Head implements FixVals {
         var meta = connection.getMetaData();
         var set = meta.getPrimaryKeys(this.catalog, this.schema, this.name);
         while (set.next()) {
-            result.keys.add(set.getString(4));
+            result.keyList.add(set.getString(4));
         }
         var rst = meta.getColumns(this.catalog, this.schema, this.name, "%");
         while (rst.next()) {
@@ -71,10 +70,10 @@ public class Head implements FixVals {
             campo.precision = rst.getInt(9);
             campo.notNull = "NO".equals(rst.getString(18));
             campo.key = false;
-            if (result.keys.contains(campo.name)) {
+            if (result.keyList.contains(campo.name)) {
                 campo.key = true;
             }
-            result.fields.add(campo);
+            result.fieldList.add(campo);
         }
         return result;
     }
@@ -88,8 +87,8 @@ public class Head implements FixVals {
         }
         Head registry = (Head) o;
         return Objects.equals(catalog, registry.catalog)
-                        && Objects.equals(schema, registry.schema) && Objects.equals(name,
-                                        registry.name)
+                        && Objects.equals(schema, registry.schema) 
+                        && Objects.equals(name, registry.name)
                         && Objects.equals(alias, registry.alias);
     }
 
@@ -106,4 +105,5 @@ public class Head implements FixVals {
     public static Head fromString(String json) {
         return new Gson().fromJson(json, Head.class);
     }
+    
 }

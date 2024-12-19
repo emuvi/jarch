@@ -27,7 +27,7 @@ public class WizChars {
                 char randomChar = SIMPLE_CHARS.charAt(random.nextInt(SIMPLE_CHARS.length()));
                 randomNumberString.append(randomChar);
             }
-        }        
+        }
         return randomNumberString.toString();
     }
 
@@ -37,15 +37,15 @@ public class WizChars {
         for (int i = 0; i < length; i++) {
             int randomDigit = random.nextInt(10);
             randomNumberString.append(randomDigit);
-        }        
+        }
         return randomNumberString.toString();
     }
 
     public static String makeParameterName(String ofTitle) {
         return ofTitle
-                .replace(" ", "")
-                .replace("-", "_")
-                .toUpperCase();
+                        .replace(" ", "")
+                        .replace("-", "_")
+                        .toUpperCase();
     }
 
     public static String mountGrid(List<Pair<String, String>> grid) {
@@ -91,7 +91,7 @@ public class WizChars {
     public static Set<String> getKeyWords(String source) {
         return getWords(removeAccents(source));
     }
-    
+
     public static Set<String> getWords(String source) {
         var result = new HashSet<String>();
         var partsOnSpace = source.split("\\s+");
@@ -100,7 +100,7 @@ public class WizChars {
         }
         return result;
     }
-    
+
     public static String[] getLines(String source) {
         return source.split("\\r?\\n");
     }
@@ -109,14 +109,14 @@ public class WizChars {
         var result = new HashSet<String>();
 
         Consumer<String> addWord = (word) -> {
-            while (word.length() > 0 && !Character.isLetterOrDigit(word.charAt(word.length() -1))) {
-                word = word.substring(0, word.length() -1);
+            while (word.length() > 0 && !Character.isLetterOrDigit(word.charAt(word.length() - 1))) {
+                word = word.substring(0, word.length() - 1);
             }
             if (!word.isEmpty()) {
                 result.add(word.toLowerCase());
             }
         };
-        
+
         var parts = source.toCharArray();
         var maker = new StringBuilder();
         for (int i = 0; i < parts.length; i++) {
@@ -124,7 +124,7 @@ public class WizChars {
             var actual = parts[i];
             var next = i < parts.length - 1 ? parts[i + 1] : 0;
             if (Character.isLetterOrDigit(actual)
-                    || (Character.isDigit(prior) || Character.isDigit(next))) {
+                            || (Character.isDigit(prior) || Character.isDigit(next))) {
                 maker.append(actual);
             } else {
                 addWord.accept(maker.toString());
@@ -134,19 +134,19 @@ public class WizChars {
         addWord.accept(maker.toString());
         return result;
     }
-    
-    public static String switchCase(String ofChars) { 
+
+    public static String switchCase(String ofChars) {
         var result = new StringBuilder();
         for (char c : ofChars.toCharArray()) {
             if (Character.isUpperCase(c)) {
                 result.append(Character.toLowerCase(c));
-            } else  {
+            } else {
                 result.append(Character.toUpperCase(c));
             }
         }
         return result.toString();
     }
-    
+
     public static String removeAccents(String text) {
         String decomposed = Normalizer.normalize(text, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
@@ -409,8 +409,7 @@ public class WizChars {
             if (envValue == null) {
                 envValue = "";
             }
-            result = result.substring(0, envPos) + envValue + result.substring(envPosEnd
-                            + 1);
+            result = result.substring(0, envPos) + envValue + result.substring(envPosEnd + 1);
             envPos = result.indexOf("${env:", envPos + 1);
         }
         return result;

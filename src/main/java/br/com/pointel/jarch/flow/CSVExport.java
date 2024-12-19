@@ -58,9 +58,9 @@ public class CSVExport implements Runnable {
                     final var fileDestiny = new File(destiny, head.getNameForFile()
                                     + ".csv");
                     try (var csvFile = new CSVFile(fileDestiny, CSVFile.Mode.WRITE)) {
-                        final var row = new String[table.fields.size()];
-                        for (var i = 0; i < table.fields.size(); i++) {
-                            row[i] = table.fields.get(i).name;
+                        final var row = new String[table.fieldList.size()];
+                        for (var i = 0; i < table.fieldList.size(); i++) {
+                            row[i] = table.fieldList.get(i).name;
                         }
                         csvFile.writeLine(row);
                         var rstOrigin = eOrmOrigin.select(new Select(head));
@@ -68,8 +68,8 @@ public class CSVExport implements Runnable {
                         while (rstOrigin.next()) {
                             recordCount++;
                             pace.debug("Writing record " + recordCount + " of " + head.name);
-                            for (var i = 0; i < table.fields.size(); i++) {
-                                row[i] = table.fields.get(i).formatValue(rstOrigin.getObject(i + 1));
+                            for (var i = 0; i < table.fieldList.size(); i++) {
+                                row[i] = table.fieldList.get(i).formatValue(rstOrigin.getObject(i + 1));
                             }
                             csvFile.writeLine(row);
                         }

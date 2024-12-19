@@ -1,5 +1,6 @@
 package br.com.pointel.jarch.data;
 
+import java.util.Objects;
 import com.google.gson.Gson;
 
 public class Linked implements FixVals {
@@ -16,6 +17,23 @@ public class Linked implements FixVals {
     public Linked(String name, String with) {
         this.name = name;
         this.with = with;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Linked)) {
+            return false;
+        }
+        Linked linked = (Linked) o;
+        return Objects.equals(name, linked.name)
+                        && Objects.equals(with, linked.with);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, with);
     }
 
     @Override

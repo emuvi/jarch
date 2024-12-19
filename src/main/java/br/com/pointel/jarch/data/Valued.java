@@ -1,9 +1,10 @@
 package br.com.pointel.jarch.data;
 
+import java.util.Objects;
 import com.google.gson.Gson;
 
 public class Valued implements FixVals {
-    
+
     public String name;
     public Nature type;
     public Object data;
@@ -31,6 +32,24 @@ public class Valued implements FixVals {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Valued)) {
+            return false;
+        }
+        Valued valued = (Valued) o;
+        return Objects.equals(name, valued.name)
+                        && Objects.equals(type, valued.type)
+                        && Objects.equals(data, valued.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, data);
+    }
+
+    @Override
     public String toString() {
         return new Gson().toJson(this);
     }
@@ -38,4 +57,5 @@ public class Valued implements FixVals {
     public static Valued fromString(String json) {
         return new Gson().fromJson(json, Valued.class);
     }
+
 }
