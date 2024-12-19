@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 public class Joined implements FixVals {
 
-    public Head head;
+    public TableHead tableHead;
     public String alias;
     public List<Filter> filterList;
     public JoinedTies ties;
@@ -17,45 +17,45 @@ public class Joined implements FixVals {
         this.ties = ties;
     }
 
-    public Joined(Head head) {
-        this.head = head;
+    public Joined(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Joined(Head head, String alias) {
-        this.head = head;
+    public Joined(TableHead tableHead, String alias) {
+        this.tableHead = tableHead;
         this.alias = alias;
     }
 
-    public Joined(Head head, JoinedTies ties) {
-        this.head = head;
+    public Joined(TableHead tableHead, JoinedTies ties) {
+        this.tableHead = tableHead;
         this.ties = ties;
     }
 
-    public Joined(Head head, String alias, JoinedTies ties) {
-        this.head = head;
+    public Joined(TableHead tableHead, String alias, JoinedTies ties) {
+        this.tableHead = tableHead;
         this.alias = alias;
         this.ties = ties;
     }
 
-    public Joined(Head head, List<Filter> filterList) {
-        this.head = head;
+    public Joined(TableHead tableHead, List<Filter> filterList) {
+        this.tableHead = tableHead;
         this.filterList = filterList;
     }
 
-    public Joined(Head head, String alias, List<Filter> filterList) {
-        this.head = head;
+    public Joined(TableHead tableHead, String alias, List<Filter> filterList) {
+        this.tableHead = tableHead;
         this.alias = alias;
         this.filterList = filterList;
     }
 
-    public Joined(Head head, List<Filter> filterList, JoinedTies ties) {
-        this.head = head;
+    public Joined(TableHead tableHead, List<Filter> filterList, JoinedTies ties) {
+        this.tableHead = tableHead;
         this.filterList = filterList;
         this.ties = ties;
     }
 
-    public Joined(Head head, String alias, List<Filter> filterList, JoinedTies ties) {
-        this.head = head;
+    public Joined(TableHead tableHead, String alias, List<Filter> filterList, JoinedTies ties) {
+        this.tableHead = tableHead;
         this.alias = alias;
         this.filterList = filterList;
         this.ties = ties;
@@ -73,7 +73,7 @@ public class Joined implements FixVals {
             return false;
         }
         Joined joined = (Joined) o;
-        return Objects.equals(head, joined.head)
+        return Objects.equals(tableHead, joined.tableHead)
                         && Objects.equals(alias, joined.alias)
                         && Objects.equals(filterList, joined.filterList)
                         && Objects.equals(ties, joined.ties);
@@ -81,7 +81,7 @@ public class Joined implements FixVals {
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, alias, filterList, ties);
+        return Objects.hash(tableHead, alias, filterList, ties);
     }
 
     @Override

@@ -7,31 +7,31 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
-public class Head implements FixVals {
+public class TableHead implements FixVals {
 
     public String catalog;
     public String schema;
     public String name;
     public String alias;
 
-    public Head() {}
+    public TableHead() {}
 
-    public Head(String name) {
+    public TableHead(String name) {
         this.name = name;
     }
 
-    public Head(String schema, String name) {
+    public TableHead(String schema, String name) {
         this.schema = schema;
         this.name = name;
     }
 
-    public Head(String catalog, String schema, String name) {
+    public TableHead(String catalog, String schema, String name) {
         this.catalog = catalog;
         this.schema = schema;
         this.name = name;
     }
 
-    public Head(String catalog, String schema, String name, String alias) {
+    public TableHead(String catalog, String schema, String name, String alias) {
         this.catalog = catalog;
         this.schema = schema;
         this.name = name;
@@ -82,12 +82,12 @@ public class Head implements FixVals {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Head)) {
+        if (!(o instanceof TableHead)) {
             return false;
         }
-        Head registry = (Head) o;
+        TableHead registry = (TableHead) o;
         return Objects.equals(catalog, registry.catalog)
-                        && Objects.equals(schema, registry.schema) 
+                        && Objects.equals(schema, registry.schema)
                         && Objects.equals(name, registry.name)
                         && Objects.equals(alias, registry.alias);
     }
@@ -102,8 +102,8 @@ public class Head implements FixVals {
         return new Gson().toJson(this);
     }
 
-    public static Head fromString(String json) {
-        return new Gson().fromJson(json, Head.class);
+    public static TableHead fromString(String json) {
+        return new Gson().fromJson(json, TableHead.class);
     }
-    
+
 }

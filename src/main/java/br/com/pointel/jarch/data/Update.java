@@ -6,30 +6,30 @@ import com.google.gson.Gson;
 
 public class Update implements FixVals {
 
-    public Head head;
+    public TableHead tableHead;
     public List<Valued> valuedList;
     public List<Filter> filterList;
     public Integer limit;
 
     public Update() {}
 
-    public Update(Head head) {
-        this.head = head;
+    public Update(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Update(Head head, List<Valued> valuedList) {
-        this.head = head;
+    public Update(TableHead tableHead, List<Valued> valuedList) {
+        this.tableHead = tableHead;
         this.valuedList = valuedList;
     }
 
-    public Update(Head head, List<Valued> valuedList, List<Filter> filterList) {
-        this.head = head;
+    public Update(TableHead tableHead, List<Valued> valuedList, List<Filter> filterList) {
+        this.tableHead = tableHead;
         this.valuedList = valuedList;
         this.filterList = filterList;
     }
 
-    public Update(Head head, List<Valued> valuedList, List<Filter> filterList, Integer limit) {
-        this.head = head;
+    public Update(TableHead tableHead, List<Valued> valuedList, List<Filter> filterList, Integer limit) {
+        this.tableHead = tableHead;
         this.valuedList = valuedList;
         this.filterList = filterList;
         this.limit = limit;
@@ -43,7 +43,7 @@ public class Update implements FixVals {
             return false;
         }
         Update update = (Update) o;
-        return Objects.equals(head, update.head)
+        return Objects.equals(tableHead, update.tableHead)
                         && Objects.equals(valuedList, update.valuedList)
                         && Objects.equals(filterList, update.filterList)
                         && Objects.equals(limit, update.limit);
@@ -51,7 +51,7 @@ public class Update implements FixVals {
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, valuedList, filterList, limit);
+        return Objects.hash(tableHead, valuedList, filterList, limit);
     }
 
     @Override

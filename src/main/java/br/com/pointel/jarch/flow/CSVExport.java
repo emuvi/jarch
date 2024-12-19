@@ -6,8 +6,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.DataLink;
-import br.com.pointel.jarch.data.Head;
 import br.com.pointel.jarch.data.Select;
+import br.com.pointel.jarch.data.TableHead;
 
 public class CSVExport implements Runnable {
 
@@ -46,16 +46,16 @@ public class CSVExport implements Runnable {
                 pace.waitIfPausedAndThrowIfStopped();
                 pace.info("Getting tables...");
                 var eOrmOrigin = origin.getEOrm(originConn);
-                var heads = eOrmOrigin.getHeads();
-                for (Head head : heads) {
-                    pace.info("Processing: %s...", head);
-                    var table = head.getTable(originConn);
+                var tableHeads = eOrmOrigin.getHeads();
+                for (TableHead tableHead : tableHeads) {
+                    pace.info("Processing: %s...", tableHead);
+                    var table = tableHead.getTable(originConn);
                     try (var writer = new PrintWriter(new FileOutputStream(new File(
                                     destiny,
-                                    head.getNameForFile() + ".tab"), false), true)) {
+                                    tableHead.getNameForFile() + ".tab"), false), true)) {
                         writer.write(table.toString());
                     }
-                    final var fileDestiny = new File(destiny, head.getNameForFile()
+                    final var fileDestiny = new File(destiny, tableHead.getNameForFile()
                                     + ".csv");
                     try (var csvFile = new CSVFile(fileDestiny, CSVFile.Mode.WRITE)) {
                         final var row = new String[table.fieldList.size()];
@@ -63,11 +63,11 @@ public class CSVExport implements Runnable {
                             row[i] = table.fieldList.get(i).name;
                         }
                         csvFile.writeLine(row);
-                        var rstOrigin = eOrmOrigin.select(new Select(head));
+                        var rstOrigin = eOrmOrigin.select(new Select(tableHead));
                         var recordCount = 0L;
                         while (rstOrigin.next()) {
                             recordCount++;
-                            pace.debug("Writing record " + recordCount + " of " + head.name);
+                            pace.debug("Writing record " + recordCount + " of " + tableHead.name);
                             for (var i = 0; i < table.fieldList.size(); i++) {
                                 row[i] = table.fieldList.get(i).formatValue(rstOrigin.getObject(i + 1));
                             }

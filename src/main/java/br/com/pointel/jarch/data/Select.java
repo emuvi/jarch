@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 public class Select implements FixVals {
 
-    public Head head;
+    public TableHead tableHead;
     public List<Typed> fieldList;
     public List<Joined> joinList;
     public List<Filter> filterList;
@@ -16,40 +16,43 @@ public class Select implements FixVals {
 
     public Select() {}
 
-    public Select(Head head) {
-        this.head = head;
+    public Select(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Select(Head head, List<Typed> fieldList) {
-        this.head = head;
+    public Select(TableHead tableHead, List<Typed> fieldList) {
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
     }
 
-    public Select(Head head, List<Typed> fieldList, List<Joined> joinList) {
-        this.head = head;
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList) {
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
     }
 
-    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList) {
-        this.head = head;
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+                    List<Filter> filterList) {
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
         this.filterList = filterList;
     }
 
-    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+                    List<Filter> filterList,
                     List<Order> orderList) {
-        this.head = head;
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
         this.filterList = filterList;
         this.orderList = orderList;
     }
 
-    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+                    List<Filter> filterList,
                     List<Order> orderList, Integer offset) {
-        this.head = head;
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
         this.filterList = filterList;
@@ -57,9 +60,10 @@ public class Select implements FixVals {
         this.offset = offset;
     }
 
-    public Select(Head head, List<Typed> fieldList, List<Joined> joinList, List<Filter> filterList,
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Joined> joinList,
+                    List<Filter> filterList,
                     List<Order> orderList, Integer offset, Integer limit) {
-        this.head = head;
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
         this.filterList = filterList;
@@ -84,7 +88,7 @@ public class Select implements FixVals {
             return false;
         }
         Select select = (Select) o;
-        return Objects.equals(head, select.head)
+        return Objects.equals(tableHead, select.tableHead)
                         && Objects.equals(fieldList, select.fieldList)
                         && Objects.equals(joinList, select.joinList)
                         && Objects.equals(filterList, select.filterList)
@@ -95,7 +99,7 @@ public class Select implements FixVals {
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, fieldList, joinList, filterList, orderList, offset, limit);
+        return Objects.hash(tableHead, fieldList, joinList, filterList, orderList, offset, limit);
     }
 
     @Override

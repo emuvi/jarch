@@ -12,7 +12,7 @@ public abstract class EOrm {
         this.link = link;
     }
 
-    public abstract List<Head> getHeads() throws Exception;
+    public abstract List<TableHead> getHeads() throws Exception;
 
     public abstract void create(Table table) throws Exception;
 

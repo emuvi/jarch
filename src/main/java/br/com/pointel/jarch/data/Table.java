@@ -6,33 +6,33 @@ import com.google.gson.Gson;
 
 public class Table implements FixVals {
 
-    public Head head;
+    public TableHead tableHead;
     public List<Field> fieldList;
     public List<String> keyList;
 
     public Table() {}
 
-    public Table(Head head) {
-        this.head = head;
+    public Table(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Table(Head head, List<Field> fieldList) {
-        this.head = head;
+    public Table(TableHead tableHead, List<Field> fieldList) {
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
     }
 
-    public Table(Head head, List<Field> fieldList, List<String> keyList) {
-        this.head = head;
+    public Table(TableHead tableHead, List<Field> fieldList, List<String> keyList) {
+        this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.keyList = keyList;
     }
 
     public String getSchemaName() {
-        return this.head.getSchemaName();
+        return this.tableHead.getSchemaName();
     }
 
     public String getCatalogSchemaName() {
-        return this.head.getCatalogSchemaName();
+        return this.tableHead.getCatalogSchemaName();
     }
 
     @Override
@@ -43,14 +43,14 @@ public class Table implements FixVals {
             return false;
         }
         Table table = (Table) o;
-        return Objects.equals(head, table.head)
+        return Objects.equals(tableHead, table.tableHead)
                         && Objects.equals(fieldList, table.fieldList)
                         && Objects.equals(keyList, table.keyList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, fieldList, keyList);
+        return Objects.hash(tableHead, fieldList, keyList);
     }
 
     @Override

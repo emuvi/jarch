@@ -6,17 +6,17 @@ import com.google.gson.Gson;
 
 public class Delete implements FixVals {
 
-    public Head head;
+    public TableHead tableHead;
     public List<Filter> filterList;
 
     public Delete() {}
 
-    public Delete(Head head) {
-        this.head = head;
+    public Delete(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Delete(Head head, List<Filter> filterList) {
-        this.head = head;
+    public Delete(TableHead tableHead, List<Filter> filterList) {
+        this.tableHead = tableHead;
         this.filterList = filterList;
     }
 
@@ -28,13 +28,13 @@ public class Delete implements FixVals {
             return false;
         }
         Delete delete = (Delete) o;
-        return Objects.equals(head, delete.head)
+        return Objects.equals(tableHead, delete.tableHead)
                         && Objects.equals(filterList, delete.filterList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, filterList);
+        return Objects.hash(tableHead, filterList);
     }
 
     @Override

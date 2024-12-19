@@ -17,12 +17,12 @@ public class EOrmAll extends EOrm {
     }
 
     @Override
-    public List<Head> getHeads() throws Exception {
+    public List<TableHead> getHeads() throws Exception {
         var meta = link.getMetaData();
         var set = meta.getTables(null, null, "%", new String[] {"TABLE"});
-        var result = new ArrayList<Head>();
+        var result = new ArrayList<TableHead>();
         while (set.next()) {
-            result.add(new Head(set.getString(1), set.getString(2), set.getString(3)));
+            result.add(new TableHead(set.getString(1), set.getString(2), set.getString(3)));
         }
         return result;
     }
@@ -59,10 +59,10 @@ public class EOrmAll extends EOrm {
     @Override
     public ResultSet select(Select select, Strain strain) throws Exception {
         var builder = new StringBuilder("SELECT ");
-        var fromSource = select.head.getCatalogSchemaName();
-        var dataSource = select.head.alias != null
-                        && !select.head.alias.isEmpty()
-                            ? select.head.alias
+        var fromSource = select.tableHead.getCatalogSchemaName();
+        var dataSource = select.tableHead.alias != null
+                        && !select.tableHead.alias.isEmpty()
+                            ? select.tableHead.alias
                             : fromSource;
         if (select.fieldList == null || select.fieldList.isEmpty()) {
             builder.append("*");
@@ -80,10 +80,10 @@ public class EOrmAll extends EOrm {
         }
         builder.append(" FROM ");
         builder.append(fromSource);
-        if (select.head.alias != null && !select.head.alias
+        if (select.tableHead.alias != null && !select.tableHead.alias
                         .isEmpty()) {
             builder.append(" AS ");
-            builder.append(select.head.alias);
+            builder.append(select.tableHead.alias);
         }
         if (select.hasJoins()) {
             for (var join : select.joinList) {
@@ -93,16 +93,16 @@ public class EOrmAll extends EOrm {
                     builder.append(" ");
                 }
                 builder.append(" JOIN ");
-                var withSource = join.head.getCatalogSchemaName();
+                var withSource = join.tableHead.getCatalogSchemaName();
                 var withAlias = withSource;
                 builder.append(withSource);
                 if (join.alias != null) {
                     builder.append(" AS ");
                     withAlias = join.alias;
                     builder.append(withAlias);
-                } else if (join.head.alias != null) {
+                } else if (join.tableHead.alias != null) {
                     builder.append(" AS ");
-                    withAlias = join.head.alias;
+                    withAlias = join.tableHead.alias;
                     builder.append(withAlias);
                 }
                 if (join.hasFilters()) {
@@ -188,7 +188,7 @@ public class EOrmAll extends EOrm {
             }
         }
         var builder = new StringBuilder("INSERT INTO ");
-        builder.append(insert.head.getCatalogSchemaName());
+        builder.append(insert.tableHead.getCatalogSchemaName());
         builder.append(" (");
         for (var i = 0; i < insert.valuedList.size(); i++) {
             if (i > 0) {
@@ -199,7 +199,7 @@ public class EOrmAll extends EOrm {
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 builder.append(", ");
-                builder.append(toStrain.head);
+                builder.append(toStrain.tableHead);
             }
         }
         builder.append(") VALUES (");
@@ -238,7 +238,7 @@ public class EOrmAll extends EOrm {
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 if (!toStrain.tail.isEmpty()) {
-                    this.setParameter(prepared, param_index, new Valued(toStrain.head,
+                    this.setParameter(prepared, param_index, new Valued(toStrain.tableHead,
                                     toStrain.tail));
                     param_index++;
                 }
@@ -256,7 +256,7 @@ public class EOrmAll extends EOrm {
     @Override
     public Integer update(Update update, Strain strain) throws Exception {
         var builder = new StringBuilder("UPDATE ");
-        var dataSource = update.head.getCatalogSchemaName();
+        var dataSource = update.tableHead.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" SET ");
         for (var i = 0; i < update.valuedList.size(); i++) {
@@ -315,7 +315,7 @@ public class EOrmAll extends EOrm {
     @Override
     public Integer delete(Delete delete, Strain strain) throws Exception {
         var builder = new StringBuilder("DELETE FROM ");
-        var dataSource = delete.head.getCatalogSchemaName();
+        var dataSource = delete.tableHead.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" WHERE ");
         builder.append(this.makeClauses(delete.filterList, null, null));
@@ -369,7 +369,7 @@ public class EOrmAll extends EOrm {
         if (format == null || format.isEmpty()) {
             throw new Exception(
                             "Could not get the ID because: format not found for the table "
-                                            + insert.head.name);
+                                            + insert.tableHead.name);
         }
         var formatParts = format.split(";");
         if (formatParts.length < 2) {
@@ -395,7 +395,7 @@ public class EOrmAll extends EOrm {
     protected String getIDFormat(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT formato FROM codigos WHERE tabela = '"
-                                        + insert.head.name + "'");
+                                        + insert.tableHead.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }
@@ -406,7 +406,7 @@ public class EOrmAll extends EOrm {
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.head.name + " WHERE "
+                                        + insert.tableHead.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -425,7 +425,7 @@ public class EOrmAll extends EOrm {
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
-                                        + insert.head.name + " WHERE "
+                                        + insert.tableHead.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
                                         + insert.toGetID.filter.data.toString() + "'");
         String last = null;
@@ -479,7 +479,7 @@ public class EOrmAll extends EOrm {
     protected String getIDSequence(Connection link, Insert insert) throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT sequencia FROM codigos WHERE tabela = '"
-                                        + insert.head.name + "'");
+                                        + insert.tableHead.name + "'");
         if (rst.next()) {
             return rst.getString(1);
         }

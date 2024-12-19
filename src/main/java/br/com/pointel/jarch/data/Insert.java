@@ -6,23 +6,23 @@ import com.google.gson.Gson;
 
 public class Insert implements FixVals {
 
-    public Head head;
+    public TableHead tableHead;
     public List<Valued> valuedList;
     public ToGetID toGetID;
 
     public Insert() {}
 
-    public Insert(Head head) {
-        this.head = head;
+    public Insert(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Insert(Head head, List<Valued> valuedList) {
-        this.head = head;
+    public Insert(TableHead tableHead, List<Valued> valuedList) {
+        this.tableHead = tableHead;
         this.valuedList = valuedList;
     }
 
-    public Insert(Head head, List<Valued> valuedList, ToGetID toGetID) {
-        this.head = head;
+    public Insert(TableHead tableHead, List<Valued> valuedList, ToGetID toGetID) {
+        this.tableHead = tableHead;
         this.valuedList = valuedList;
         this.toGetID = toGetID;
     }
@@ -35,14 +35,14 @@ public class Insert implements FixVals {
             return false;
         }
         Insert insert = (Insert) o;
-        return Objects.equals(head, insert.head)
+        return Objects.equals(tableHead, insert.tableHead)
                         && Objects.equals(valuedList, insert.valuedList)
                         && Objects.equals(toGetID, insert.toGetID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(head, valuedList, toGetID);
+        return Objects.hash(tableHead, valuedList, toGetID);
     }
 
     @Override

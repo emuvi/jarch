@@ -8,9 +8,9 @@ import java.util.Objects;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.DataLink;
 import br.com.pointel.jarch.data.Field;
-import br.com.pointel.jarch.data.Head;
 import br.com.pointel.jarch.data.Insert;
 import br.com.pointel.jarch.data.Table;
+import br.com.pointel.jarch.data.TableHead;
 import br.com.pointel.jarch.data.Valued;
 import br.com.pointel.jarch.mage.WizFile;
 
@@ -77,7 +77,7 @@ public class CSVImport implements Runnable {
                 schema = WizFile.getBaseName(name);
                 name = WizFile.getExtension(name);
             }
-            table = new Head(null, schema, name).getTable(link);
+            table = new TableHead(null, schema, name).getTable(link);
         }
         try (var reader = new CSVFile(csvFile, CSVFile.Mode.READ)) {
             pace.info("CSV File: " + csvFile.getName() + " opened.");
@@ -124,7 +124,7 @@ public class CSVImport implements Runnable {
                         valuedList.add(valued);
                     }
                     pace.waitIfPausedAndThrowIfStopped();
-                    eOrmDestiny.insert(new Insert(table.head, valuedList));
+                    eOrmDestiny.insert(new Insert(table.tableHead, valuedList));
                 }
             }
         }

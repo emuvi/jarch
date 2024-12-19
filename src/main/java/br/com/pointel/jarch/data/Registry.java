@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 public class Registry implements FixVals {
 
     public String base;
-    public Head head;
+    public TableHead tableHead;
 
     public Registry() {}
 
@@ -14,13 +14,13 @@ public class Registry implements FixVals {
         this.base = base;
     }
 
-    public Registry(Head head) {
-        this.head = head;
+    public Registry(TableHead tableHead) {
+        this.tableHead = tableHead;
     }
 
-    public Registry(String base, Head head) {
+    public Registry(String base, TableHead tableHead) {
         this.base = base;
-        this.head = head;
+        this.tableHead = tableHead;
     }
 
     @Override
@@ -32,12 +32,12 @@ public class Registry implements FixVals {
         }
         Registry registry = (Registry) o;
         return Objects.equals(base, registry.base)
-                        && Objects.equals(head, registry.head);
+                        && Objects.equals(tableHead, registry.tableHead);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(base, head);
+        return Objects.hash(base, tableHead);
     }
 
     @Override
