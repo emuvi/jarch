@@ -16,7 +16,7 @@ public class Bases extends ArrayList<DataWays> {
         throw new RuntimeException("Did not found a DataWay with this name: '" + name + "'.");
     }
 
-    public void fixNullAndEnvs() throws Exception {
+    public void fixDefaults() throws Exception {
         for (var dataWay : this) {
             dataWay.fixNullsAndEnvs();
         }
