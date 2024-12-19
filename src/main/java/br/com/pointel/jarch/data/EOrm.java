@@ -1,10 +1,13 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-public abstract class EOrm {
+public abstract class EOrm implements Closeable {
 
     protected final Connection link;
 
@@ -35,5 +38,14 @@ public abstract class EOrm {
     public abstract Integer delete(Delete delete, Strain strain) throws Exception;
 
     public abstract boolean isPrimaryKeyError(Exception error);
+
+    @Override
+    public void close() throws IOException {
+        try {
+            this.link.close();
+        } catch (SQLException e) {
+            throw new IOException(e);
+        }
+    }
 
 }
