@@ -102,6 +102,15 @@ public class DataWays implements FixVals {
         if (this.dataLink != null) {
             this.dataLink.fixNulls();
         }
+        if (this.storeMinIdle == null) {
+            this.storeMinIdle = 1;
+        }
+        if (this.storeMaxIdle == null) {
+            this.storeMaxIdle = 1;
+        }
+        if (this.storeMaxTotal == null) {
+            this.storeMaxTotal = 1;
+        }
     }
 
     @Override
@@ -111,6 +120,15 @@ public class DataWays implements FixVals {
         }
         if (this.dataLink != null) {
             this.dataLink.fixNullsAndEnvs();
+        }
+        if (this.storeMinIdle == null) {
+            this.storeMinIdle = 1;
+        }
+        if (this.storeMaxIdle == null) {
+            this.storeMaxIdle = 1;
+        }
+        if (this.storeMaxTotal == null) {
+            this.storeMaxTotal = 1;
         }
     }
 
