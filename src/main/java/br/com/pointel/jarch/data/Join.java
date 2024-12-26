@@ -14,10 +14,6 @@ public class Join implements FixVals {
 
     public Join() {}
 
-    public Join(JoinTie joinTie) {
-        this.joinTie = joinTie;
-    }
-
     public Join(TableHead tableHead) {
         this.tableHead = tableHead;
     }
