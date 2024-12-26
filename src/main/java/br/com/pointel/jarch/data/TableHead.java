@@ -39,7 +39,7 @@ public class TableHead implements FixVals {
         this.alias = alias;
     }
 
-    public String getSource() {
+    public String getReferenceName() {
         return this.alias != null && !this.alias.isEmpty() ? this.alias : this.getCatalogSchemaName();
     }
 
@@ -64,17 +64,18 @@ public class TableHead implements FixVals {
         }
         var rst = meta.getColumns(this.catalog, this.schema, this.name, "%");
         while (rst.next()) {
-            var campo = new Field();
-            campo.name = rst.getString(4);
-            campo.nature = WizData.getNatureOfSQL(rst.getInt(5));
-            campo.size = rst.getInt(7);
-            campo.precision = rst.getInt(9);
-            campo.notNull = "NO".equals(rst.getString(18));
-            campo.key = false;
-            if (result.keyList.contains(campo.name)) {
-                campo.key = true;
+            var field = new Field();
+            field.name = rst.getString(4);
+            field.nature = WizData.getNatureOfSQL(rst.getInt(5));
+            field.size = rst.getInt(7);
+            field.precision = rst.getInt(9);
+            field.notNull = "NO".equals(rst.getString(18));
+            field.key = false;
+            if (result.keyList.contains(field.name)) {
+                field.key = true;
             }
-            result.fieldList.add(campo);
+            field.table = result;
+            result.fieldList.add(field);
         }
         return result;
     }

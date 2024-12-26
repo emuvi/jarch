@@ -14,6 +14,8 @@ public class Field implements FixVals {
     public Boolean notNull;
     public Boolean key;
 
+    public transient Table table;
+
     public Field() {}
 
     public Field(String name) {
@@ -67,6 +69,29 @@ public class Field implements FixVals {
         this.precision = precision;
         this.notNull = notNull;
         this.key = key;
+    }
+
+    public Field(String name, Nature nature, Integer size, Integer precision, Boolean notNull, Boolean key,
+                    Table table) {
+        this.name = name;
+        this.nature = nature;
+        this.size = size;
+        this.precision = precision;
+        this.notNull = notNull;
+        this.key = key;
+        this.table = table;
+    }
+
+    public String getReferenceName() {
+        return table != null ? table.getReferenceName() + "." + name : name;
+    }
+
+    public Typed toTyped() {
+        return new Typed(getReferenceName(), nature);
+    }
+
+    public Typed toTyped(String alias) {
+        return new Typed(getReferenceName(), nature, alias);
     }
 
     public Object getValueFrom(String formatted) throws Exception {

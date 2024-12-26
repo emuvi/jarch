@@ -28,6 +28,10 @@ public class Table implements FixVals {
         this.keyList = keyList;
     }
 
+    public String getReferenceName() {
+        return this.tableHead.getReferenceName();
+    }
+
     public String getSchemaName() {
         return this.tableHead.getSchemaName();
     }
