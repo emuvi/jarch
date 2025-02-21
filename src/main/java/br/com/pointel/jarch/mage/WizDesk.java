@@ -28,10 +28,36 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class WizDesk {
 
-    private static Logger logger = LoggerFactory.getLogger(WizDesk.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WizDesk.class);
+
+    private static final String KEY_LOOK_AND_FEEL = "WizDesk_LookAndFeel";
+
+    private static final String KEY_LOOK_AND_FEEL_SYSTEM = "System";
+    private static final String KEY_LOOK_AND_FEEL_LIGHT = "Light";
+    private static final String KEY_LOOK_AND_FEEL_DARK = "Dark";
+    private static final String KEY_LOOK_AND_FEEL_DARCULA = "Darcula";
+
+    private static final String[] KEY_LOOK_AND_FEEL_OPTIONS = new String[] {
+        KEY_LOOK_AND_FEEL_SYSTEM, KEY_LOOK_AND_FEEL_LIGHT, KEY_LOOK_AND_FEEL_DARK, KEY_LOOK_AND_FEEL_DARCULA
+    };
+
+    public static String[] getLookAndFeelOptions() {
+        return KEY_LOOK_AND_FEEL_OPTIONS;
+    }
+
+    public static String getLookAndFeelOption() {
+        return WizProps.get(KEY_LOOK_AND_FEEL, KEY_LOOK_AND_FEEL_SYSTEM);
+    }
+
+    public static void setLookAndFeelOption(String option) {
+        WizProps.set(KEY_LOOK_AND_FEEL, option);
+    }
 
     private static boolean started = false;
     private static String title = null;
@@ -39,11 +65,16 @@ public class WizDesk {
     public static void start(String title) throws Exception {
         java.awt.EventQueue.invokeAndWait(() -> {
             try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                WizDesk.started = true;
+                switch (getLookAndFeelOption()) {
+                    case KEY_LOOK_AND_FEEL_LIGHT -> UIManager.setLookAndFeel(new FlatLightLaf());
+                    case KEY_LOOK_AND_FEEL_DARK -> UIManager.setLookAndFeel(new FlatDarkLaf());
+                    case KEY_LOOK_AND_FEEL_DARCULA -> UIManager.setLookAndFeel(new FlatDarculaLaf());
+                    default -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                }
                 WizDesk.title = title;
+                WizDesk.started = true;
             } catch (Exception e) {
-                logger.error("Could not start look and feel.", e);
+                LOGGER.error("Could not start look and feel.", e);
             }
         });
     }
@@ -57,7 +88,7 @@ public class WizDesk {
     }
 
     public static void message(String message, boolean silent) {
-        logger.info(message);
+        LOGGER.info(message);
         if (!silent) {
             Runnable runner = () -> {
                 JOptionPane.showMessageDialog(WizDesk.getActiveWindow(), message,
