@@ -26,7 +26,7 @@ public class WizProps {
     }
 
     public static void load() throws Exception {
-        load(WizBase.APP_NAME);
+        load("props");
     }
 
     public static void load(String name) throws Exception {
@@ -83,7 +83,7 @@ public class WizProps {
     }
 
     public static void save() throws Exception {
-        save(WizBase.APP_NAME);
+        save("props");
     }
 
     public static void save(String name) throws Exception {

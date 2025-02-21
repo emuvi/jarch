@@ -6,9 +6,6 @@ package br.com.pointel.jarch.mage;
  */
 public class WizBase {
     
-    public static final String APP_NAME = "jeemuvi";
-    public static final String APP_TITLE = "Jeemuvi";
-    
     public static void sleep(long millis) {
         try {
             Thread.sleep(millis);
