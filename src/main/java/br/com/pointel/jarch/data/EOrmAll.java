@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.apache.commons.lang3.tuple.Pair;
 import br.com.pointel.jarch.flow.Base36;
-import br.com.pointel.jarch.flow.Pair;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
@@ -184,7 +184,7 @@ public class EOrmAll extends EOrm {
             for (var element : includes) {
                 if (!element.isEmpty() && element.contains("=")) {
                     var parts = element.split("\\=");
-                    strained.add(new Pair<>(parts[0].trim(), parts[1].trim()));
+                    strained.add(Pair.of(parts[0].trim(), parts[1].trim()));
                 }
             }
         }
@@ -200,7 +200,7 @@ public class EOrmAll extends EOrm {
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 builder.append(", ");
-                builder.append(toStrain.head);
+                builder.append(toStrain.getLeft());
             }
         }
         builder.append(") VALUES (");
@@ -218,7 +218,7 @@ public class EOrmAll extends EOrm {
         if (!strained.isEmpty()) {
             builder.append(", ");
             for (var toStrain : strained) {
-                if (!toStrain.tail.isEmpty()) {
+                if (!toStrain.getRight().isEmpty()) {
                     builder.append("?");
                 } else {
                     builder.append("NULL");
@@ -238,8 +238,8 @@ public class EOrmAll extends EOrm {
         }
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
-                if (!toStrain.tail.isEmpty()) {
-                    this.setParameter(prepared, param_index, new Valued(toStrain.head, toStrain.tail));
+                if (!toStrain.getRight().isEmpty()) {
+                    this.setParameter(prepared, param_index, new Valued(toStrain.getLeft(), toStrain.getRight()));
                     param_index++;
                 }
             }
