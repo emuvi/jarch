@@ -62,8 +62,8 @@ public class WizDesk {
     private static boolean started = false;
     private static String title = null;
 
-    public static void start(String title) throws Exception {
-        java.awt.EventQueue.invokeAndWait(() -> {
+    public static void start(String title) {
+        java.awt.EventQueue.invokeLater(() -> {
             try {
                 switch (getLookAndFeelOption()) {
                     case KEY_LOOK_AND_FEEL_LIGHT -> UIManager.setLookAndFeel(new FlatLightLaf());
