@@ -63,7 +63,8 @@ public class WizDesk {
     private static final String KEY_LOOK_AND_FEEL_DARCULA = "Darcula";
 
     private static final String[] KEY_LOOK_AND_FEEL_OPTIONS = new String[] {
-        KEY_LOOK_AND_FEEL_SYSTEM, KEY_LOOK_AND_FEEL_LIGHT, KEY_LOOK_AND_FEEL_DARK, KEY_LOOK_AND_FEEL_DARCULA
+                    KEY_LOOK_AND_FEEL_SYSTEM, KEY_LOOK_AND_FEEL_LIGHT, KEY_LOOK_AND_FEEL_DARK,
+                    KEY_LOOK_AND_FEEL_DARCULA
     };
 
     public static String[] getLookAndFeelOptions() {
@@ -503,7 +504,8 @@ public class WizDesk {
         if (SwingUtilities.isEventDispatchThread()) {
             JOptionPane.showMessageDialog(null, message, "Info", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "Info", JOptionPane.INFORMATION_MESSAGE));
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "Info",
+                            JOptionPane.INFORMATION_MESSAGE));
         }
     }
 
@@ -517,21 +519,21 @@ public class WizDesk {
         if (SwingUtilities.isEventDispatchThread()) {
             JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE));
+            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "Error",
+                            JOptionPane.ERROR_MESSAGE));
         }
     }
-    
+
     public static boolean showConfirm(String message) {
-        return JOptionPane.YES_OPTION
-                == JOptionPane.showConfirmDialog(
+        return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
                         null, message, "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 
     public static String showInput(String message) {
         return JOptionPane.showInputDialog(
-                null, message, "Input",
-                JOptionPane.QUESTION_MESSAGE);
+                        null, message, "Input",
+                        JOptionPane.QUESTION_MESSAGE);
     }
 
     public static String getStringOnClipboard() throws Exception {
@@ -609,14 +611,16 @@ public class WizDesk {
             }
         }
     }
-    
-    public static <T extends Class<? extends Component>> List<Component> getAllCompontentsOf(Component root, T... clazz) {
+
+    public static <T extends Class<? extends Component>> List<Component> getAllCompontentsOf(Component root,
+                    T... clazz) {
         var results = new ArrayList<Component>();
         getAllCompontentsOf(results, root, clazz);
         return results;
     }
-    
-    public static <T extends Class<? extends Component>> void getAllCompontentsOf(List<Component> results, Component root, T... clazz) {
+
+    public static <T extends Class<? extends Component>> void getAllCompontentsOf(List<Component> results,
+                    Component root, T... clazz) {
         for (var kind : clazz) {
             if (kind.isInstance(root)) {
                 results.add(root);
@@ -628,7 +632,7 @@ public class WizDesk {
             }
         }
     }
-    
+
     public static void initFrame(JFrame frame) {
         new SwingFramer(frame).init();
     }
@@ -642,8 +646,8 @@ public class WizDesk {
             }
         });
         frame.getRootPane().getInputMap().put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                ESCAPER_KEY);
+                        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                        ESCAPER_KEY);
     }
 
     public static void close(JFrame frame) {
@@ -651,40 +655,46 @@ public class WizDesk {
         frame.setVisible(false);
         frame.dispose();
     }
-    
+
     public static void closeAll() {
         closeAll(false);
         closeAll(true);
     }
-    
+
     public static void closeAll(boolean closeExitOnClose) {
-        for(var frame : JFrame.getFrames()) {
+        for (var frame : JFrame.getFrames()) {
             if (frame instanceof JFrame jFrame) {
                 if (jFrame.isVisible()) {
                     if ((closeExitOnClose && jFrame.getDefaultCloseOperation() == JFrame.EXIT_ON_CLOSE)
-                            || (!closeExitOnClose && jFrame.getDefaultCloseOperation() != JFrame.EXIT_ON_CLOSE)
-                    ) {
+                                    || (!closeExitOnClose && jFrame
+                                                    .getDefaultCloseOperation() != JFrame.EXIT_ON_CLOSE)) {
                         close(jFrame);
                     }
                 }
             }
         }
     }
-    
-    public static void addMenuItem(JComponent menu, AbstractButton item, ActionListener action) {
-        item.addActionListener(action);
+
+    public static void addMenu(JComponent menu, AbstractButton item) {
+        addMenu(menu, item, null);
+    }
+
+    public static void addMenu(JComponent menu, AbstractButton item, ActionListener action) {
+        if (action != null) {
+            item.addActionListener(action);
+        }
         menu.add(item);
     }
-    
+
     public static void debounceEnable(JComponent component) {
         debounceEnable(1000, component);
     }
-    
+
     public static void debounceEnable(int millis, JComponent component) {
         component.setEnabled(false);
         debounceAction(millis, () -> component.setEnabled(true));
     }
-    
+
     public static void debounceAction(int millis, Runnable action) {
         new Thread("Trigger Debounce") {
             @Override
@@ -694,21 +704,21 @@ public class WizDesk {
             }
         }.start();
     }
-    
+
     public static Point getMouseCurrentPoint() {
         return MouseInfo.getPointerInfo().getLocation();
     }
-    
+
     public static GraphicsDevice getScreenWithMouse() {
         var mousePoint = getMouseCurrentPoint();
-        for(var screen : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+        for (var screen : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
             if (screen.getDefaultConfiguration().getBounds().contains(mousePoint)) {
-                return screen; 
+                return screen;
             }
         }
         return null;
     }
-    
+
     public static Rectangle getBoundsInsideScreen(Rectangle bounds) {
         GraphicsDevice insideScreen = null;
         var screens = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
