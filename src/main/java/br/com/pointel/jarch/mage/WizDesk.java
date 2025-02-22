@@ -63,6 +63,10 @@ public class WizDesk {
     private static String title = null;
 
     public static void start(String title) {
+        start(title, null);
+    }
+
+    public static void start(String title, Runnable afterStart) {
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 switch (getLookAndFeelOption()) {
@@ -73,6 +77,9 @@ public class WizDesk {
                 }
                 WizDesk.title = title;
                 WizDesk.started = true;
+                if (afterStart != null) {
+                    afterStart.run();
+                }
             } catch (Exception e) {
                 LOGGER.error("Could not start look and feel.", e);
             }
