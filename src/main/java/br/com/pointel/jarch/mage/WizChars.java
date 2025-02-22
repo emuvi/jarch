@@ -43,7 +43,7 @@ public class WizChars {
 
     public static String makeParameterName(String ofTitle) {
         return ofTitle
-                        .replace(" ", "")
+                        .replace(" ", "_")
                         .replace("-", "_")
                         .toUpperCase();
     }
