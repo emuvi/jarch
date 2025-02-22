@@ -17,8 +17,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
 import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizDesk;
 import br.com.pointel.jarch.mage.WizProps;
-import br.com.pointel.jarch.mage.WizSwing;
 
 public class SwingFramer {
 
@@ -33,7 +33,7 @@ public class SwingFramer {
     }
 
     public void init() {
-        WizSwing.setAllCompontentsFont(frame, WizSwing.fontMonospaced());
+        WizDesk.setAllCompontentsFont(frame, WizDesk.fontMonospaced());
         initWindow();
         initPopMenu();
     }
@@ -59,7 +59,7 @@ public class SwingFramer {
         var top = WizProps.get(rootName + "_FRAME_TOP", frame.getBounds().y);
         var width = WizProps.get(rootName + "_FRAME_WIDTH", frame.getBounds().width);
         var height = WizProps.get(rootName + "_FRAME_HEIGHT", frame.getBounds().height);
-        var bounds = WizSwing.getBoundsInsideScreen(new Rectangle(left, top, width, height));
+        var bounds = WizDesk.getBoundsInsideScreen(new Rectangle(left, top, width, height));
         frame.setBounds(bounds);
         frame.setAlwaysOnTop(WizProps.get(rootName + "_FRAME_ONTOP", frame.isAlwaysOnTop()));
     }
@@ -136,16 +136,16 @@ public class SwingFramer {
 
     private void createPopMenu() {
         createMenuSizes();
-        WizSwing.addMenuItem(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
-        WizSwing.addMenuItem(popMenu, new JMenuItem("Close"), (e) -> menuClose());
+        WizDesk.addMenuItem(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
+        WizDesk.addMenuItem(popMenu, new JMenuItem("Close"), (e) -> menuClose());
     }
 
     private void createMenuSizes() {
         var sizes = new JMenu("Sizes");
-        WizSwing.addMenuItem(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
-        WizSwing.addMenuItem(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
-        WizSwing.addMenuItem(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
-        WizSwing.addMenuItem(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
+        WizDesk.addMenuItem(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
+        WizDesk.addMenuItem(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
+        WizDesk.addMenuItem(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
+        WizDesk.addMenuItem(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
         popMenu.add(sizes);
     }
 
@@ -176,7 +176,7 @@ public class SwingFramer {
     }
 
     private void menuClose() {
-        WizSwing.close(frame);
+        WizDesk.close(frame);
     }
 
 }

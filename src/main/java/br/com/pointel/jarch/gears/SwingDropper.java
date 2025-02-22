@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.text.JTextComponent;
-import br.com.pointel.jarch.mage.WizSwing;
+import br.com.pointel.jarch.mage.WizDesk;
 
 /**
  *
@@ -21,7 +21,7 @@ import br.com.pointel.jarch.mage.WizSwing;
 public class SwingDropper {
     
     public static void initAllOn(JFrame frame) {
-        new SwingDropper(WizSwing.getAllCompontentsOf(frame, JTextComponent.class)).init();
+        new SwingDropper(WizDesk.getAllCompontentsOf(frame, JTextComponent.class)).init();
     }
 
     private final List<Component> components;
@@ -94,7 +94,7 @@ public class SwingDropper {
                         e.dropComplete(true);
                     } catch (Exception ex) {
                         e.dropComplete(false);
-                        WizSwing.showError(ex);
+                        WizDesk.showError(ex);
                     }
                 }
             });

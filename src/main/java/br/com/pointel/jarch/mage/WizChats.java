@@ -17,7 +17,7 @@ public class WizChats {
     private static final String TAG_INSERT = "<<INSERT_HERE>>";
     
     public static void openFolder() throws Exception {
-        WizSwing.open(FOLDER_CHATS);
+        WizDesk.open(FOLDER_CHATS);
     }
  
     public static List<String> getNames() {
@@ -63,7 +63,7 @@ public class WizChats {
     public static String maybeInsertClipboard(String name) throws Exception {
         var chat = load(name);
         if (chat.contains(TAG_INSERT)) {
-            chat = chat.replace(TAG_INSERT, WizSwing.getStringOnClipboard());
+            chat = chat.replace(TAG_INSERT, WizDesk.getStringOnClipboard());
         }
         return chat;
     }
@@ -71,9 +71,9 @@ public class WizChats {
     public static String forceInsertClipboard(String name) throws Exception {
         var chat = load(name);
         if (chat.contains(TAG_INSERT)) {
-            chat = chat.replace(TAG_INSERT, WizSwing.getStringOnClipboard());
+            chat = chat.replace(TAG_INSERT, WizDesk.getStringOnClipboard());
         } else {
-            chat += "\n" + WizSwing.getStringOnClipboard();
+            chat += "\n" + WizDesk.getStringOnClipboard();
         }
         return chat;
     }

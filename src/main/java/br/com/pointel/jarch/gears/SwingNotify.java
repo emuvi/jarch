@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import br.com.pointel.jarch.mage.WizBase;
-import br.com.pointel.jarch.mage.WizSwing;
+import br.com.pointel.jarch.mage.WizDesk;
 
 /**
  *
@@ -53,10 +53,10 @@ public class SwingNotify {
         panelBody.add(viewProgress, BorderLayout.SOUTH);
         frame.pack();
         frame.setFocusable(false);
-        var bounds = WizSwing.getScreenWithMouse().getDefaultConfiguration().getBounds();
+        var bounds = WizDesk.getScreenWithMouse().getDefaultConfiguration().getBounds();
         frame.setBounds(bounds.x + bounds.width - 400, bounds.y + 30, 360, 80);
         frame.setVisible(true);
-        WizSwing.setAllCompontentsFont(frame, WizSwing.fontMonospaced());
+        WizDesk.setAllCompontentsFont(frame, WizDesk.fontMonospaced());
         new Thread("Notification Watcher") {
             @Override
             public void run() {
@@ -65,7 +65,7 @@ public class SwingNotify {
                     SwingUtilities.invokeLater(() -> {
                         viewProgress.setValue(viewProgress.getValue() + 1);
                         if (viewProgress.getValue() == viewProgress.getMaximum()) {
-                            WizSwing.close(frame);
+                            WizDesk.close(frame);
                         }
                     });
                 }

@@ -24,7 +24,7 @@ public class WizStore {
     private static final File FOLDER_STORE = new File("store");
     
     public static void openFolder() throws Exception {
-        WizSwing.open(FOLDER_STORE);
+        WizDesk.open(FOLDER_STORE);
     }
  
     public static List<String> getNames() {

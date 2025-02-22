@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import br.com.pointel.jarch.mage.WizSwing;
+import br.com.pointel.jarch.mage.WizDesk;
 
 /**
  *
@@ -32,7 +32,7 @@ public class SwingDisplayDesk extends javax.swing.JFrame {
         initComponents();
         scrollDisplay.setViewportView(editor);
         setTitle(display.toString());
-        WizSwing.initFrame(this);
+        WizDesk.initFrame(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -118,11 +118,11 @@ public class SwingDisplayDesk extends javax.swing.JFrame {
 
     private void buttonAcceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAcceptActionPerformed
         onAccept.accept(editor.getSelected());
-        WizSwing.close(this);
+        WizDesk.close(this);
     }//GEN-LAST:event_buttonAcceptActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
-        WizSwing.close(this);
+        WizDesk.close(this);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpActionPerformed

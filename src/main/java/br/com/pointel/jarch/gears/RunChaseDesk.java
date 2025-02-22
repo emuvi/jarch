@@ -1,7 +1,7 @@
 package br.com.pointel.jarch.gears;
 
 import javax.swing.SwingUtilities;
-import br.com.pointel.jarch.mage.WizSwing;
+import br.com.pointel.jarch.mage.WizDesk;
 
 public class RunChaseDesk extends javax.swing.JFrame {
 
@@ -14,8 +14,8 @@ public class RunChaseDesk extends javax.swing.JFrame {
     }
     
     private void initFrame() {
-        WizSwing.initFrame(this);
-        WizSwing.initEscaper(this);
+        WizDesk.initFrame(this);
+        WizDesk.initEscaper(this);
     }
     
     void setChase(RunChase chase) {
