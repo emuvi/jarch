@@ -1,5 +1,7 @@
 package br.com.pointel.jarch.mage;
 
+import java.io.Closeable;
+
 /**
  *
  * @author emuvi
@@ -20,5 +22,15 @@ public class WizBase {
         result.start();
         return result;
     }
+
+    public static void closeAside(Closeable closeable) {
+        new Thread(() -> {
+            try {
+                closeable.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }).start();
+    } 
     
 }
