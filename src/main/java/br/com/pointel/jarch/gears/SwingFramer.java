@@ -136,16 +136,16 @@ public class SwingFramer {
 
     private void createPopMenu() {
         createMenuSizes();
-        WizDesk.addMenuItem(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
-        WizDesk.addMenuItem(popMenu, new JMenuItem("Close"), (e) -> menuClose());
+        WizDesk.addMenu(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
+        WizDesk.addMenu(popMenu, new JMenuItem("Close"), (e) -> menuClose());
     }
 
     private void createMenuSizes() {
         var sizes = new JMenu("Sizes");
-        WizDesk.addMenuItem(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
-        WizDesk.addMenuItem(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
-        WizDesk.addMenuItem(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
-        WizDesk.addMenuItem(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
+        WizDesk.addMenu(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
+        WizDesk.addMenu(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
+        WizDesk.addMenu(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
+        WizDesk.addMenu(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
         popMenu.add(sizes);
     }
 
