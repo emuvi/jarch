@@ -20,7 +20,10 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -684,6 +687,29 @@ public class WizDesk {
             item.addActionListener(action);
         }
         menu.add(item);
+    }
+
+    public static void addActionToDefaultInput(JComponent component, ActionListener action) {
+        addActionToDefaultInput(component, action, null);
+    }
+
+    public static void addActionToDefaultInput(JComponent component, ActionListener action, String command) {
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+                    action.actionPerformed(new ActionEvent(component, (int) ActionEvent.MOUSE_EVENT_MASK, command));
+                }
+            }
+        });
+        component.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    action.actionPerformed(new ActionEvent(component, (int) ActionEvent.KEY_EVENT_MASK, command));
+                }
+            }
+        });
     }
 
     public static void debounceEnable(JComponent component) {
