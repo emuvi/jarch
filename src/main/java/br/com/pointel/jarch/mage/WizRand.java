@@ -1,44 +1,34 @@
 package br.com.pointel.jarch.mage;
 
+import java.util.List;
 import java.util.Random;
 
 public class WizRand {
-    private static Random rand = null;
 
-    private static void iniciaRand() {
-        if (WizRand.rand == null) {
-            WizRand.rand = new Random();
-        }
-    }
+    private static final Random RAND = new Random();
 
     public static Boolean getBool() {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextBoolean();
+        return RAND.nextBoolean();
     }
 
     public static Boolean getBool(Integer min, Integer max, Integer odds) {
-        WizRand.iniciaRand();
         return WizRand.getInt(min, max) < odds;
     }
 
     public static Integer getDigit() {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextInt(10);
+        return RAND.nextInt(10);
     }
 
     public static Integer getInt() {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextInt();
+        return RAND.nextInt();
     }
 
     public static Integer getInt(Integer max) {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextInt(max);
+        return RAND.nextInt(max);
     }
 
     public static Integer getInt(Integer min, Integer max) {
-        WizRand.iniciaRand();
-        return min + WizRand.rand.nextInt(max - min);
+        return min + RAND.nextInt(max - min);
     }
 
     public static char getChar() {
@@ -56,24 +46,34 @@ public class WizRand {
     }
 
     public static Float getFloat() {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextFloat();
+        return RAND.nextFloat();
     }
 
     public static Double getDouble() {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextDouble();
+        return RAND.nextDouble();
     }
 
     public static Double getGaussian() {
-        WizRand.iniciaRand();
-        return WizRand.rand.nextGaussian();
+        return RAND.nextGaussian();
     }
 
-    public static <T> T getItem(T[] fromList) {
+    public static void getBytes(byte[] bytes) {
+        RAND.nextBytes(bytes);
+    }
+
+    public static <T> T getItem(T[] fromArray) {
+        if (fromArray != null) {
+            if (fromArray.length > 0) {
+                return fromArray[WizRand.getInt(fromArray.length)];
+            }
+        }
+        return null;
+    }
+
+    public static <T> T getItem(List<T> fromList) {
         if (fromList != null) {
-            if (fromList.length > 0) {
-                return fromList[WizRand.getInt(fromList.length)];
+            if (fromList.size() > 0) {
+                return fromList.get(WizRand.getInt(fromList.size()));
             }
         }
         return null;
