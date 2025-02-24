@@ -15,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
 import javax.swing.text.JTextComponent;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizDesk;
@@ -43,13 +44,13 @@ public class SwingFramer {
             @Override
             public void windowOpened(WindowEvent e) {
                 loadFrameProps();
-                loadFrameComps(frame);
+                loadFramePropsComps(frame);
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
                 saveFrameProps();
-                saveFrameComps(frame);
+                saveFramePropsComps(frame);
             }
         });
     }
@@ -64,7 +65,7 @@ public class SwingFramer {
         frame.setAlwaysOnTop(WizProps.get("FRAME_" + rootName + "_ON_TOP", frame.isAlwaysOnTop()));
     }
 
-    public void loadFrameComps(Component component) {
+    public void loadFramePropsComps(Component component) {
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
             var paramName =  "FRAME_" + rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
             try {
@@ -77,6 +78,8 @@ public class SwingFramer {
                         spinnerField.setValue(WizProps.get(paramName, (Integer) spinnerField.getValue()));
                     case JCheckBox checkField ->
                         checkField.setSelected(WizProps.get(paramName, checkField.isSelected()));
+                    case JSplitPane splitPane ->
+                        splitPane.setDividerLocation(WizProps.get(paramName, splitPane.getDividerLocation()));    
                     default -> {
                     }
                 }
@@ -86,7 +89,7 @@ public class SwingFramer {
         }
         if (component instanceof Container container) {
             for (Component inside : container.getComponents()) {
-                loadFrameComps(inside);
+                loadFramePropsComps(inside);
             }
         }
     }
@@ -99,7 +102,7 @@ public class SwingFramer {
         WizProps.set("FRAME_" + rootName + "_ON_TOP", frame.isAlwaysOnTop());
     }
 
-    public void saveFrameComps(Component component) {
+    public void saveFramePropsComps(Component component) {
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
             var paramName = "FRAME_" + rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
             switch (component) {
@@ -111,13 +114,15 @@ public class SwingFramer {
                     WizProps.set(paramName, (Integer) spinnerField.getValue());
                 case JCheckBox checkField ->
                     WizProps.set(paramName, checkField.isSelected());
+                case JSplitPane splitPane ->
+                    WizProps.set(paramName, splitPane.getDividerLocation());
                 default -> {
                 }
             }
         }
         if (component instanceof Container container) {
             for (Component inside : container.getComponents()) {
-                saveFrameComps(inside);
+                saveFramePropsComps(inside);
             }
         }
     }
