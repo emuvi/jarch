@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizDesk;
@@ -41,10 +42,20 @@ public class SwingFramer {
 
     private void initWindow() {
         frame.addWindowListener(new WindowAdapter() {
+            Boolean firstActivated = true;
+            
             @Override
             public void windowOpened(WindowEvent e) {
                 loadFrameProps();
-                loadFramePropsComps(frame);
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                
+                if (firstActivated) {
+                    loadFramePropsComps(frame);
+                    firstActivated = false;
+                }
             }
 
             @Override
@@ -68,7 +79,7 @@ public class SwingFramer {
     public void loadFramePropsComps(Component component) {
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
             var paramName =  "FRAME_" + rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
-            try {
+            SwingUtilities.invokeLater(() -> {
                 switch (component) {
                     case JTextComponent textField ->
                         textField.setText(WizProps.get(paramName, textField.getText()));
@@ -79,13 +90,11 @@ public class SwingFramer {
                     case JCheckBox checkField ->
                         checkField.setSelected(WizProps.get(paramName, checkField.isSelected()));
                     case JSplitPane splitPane ->
-                        splitPane.setDividerLocation(WizProps.get(paramName, splitPane.getDividerLocation()));    
+                        splitPane.setDividerLocation(WizProps.get(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0));    
                     default -> {
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            });
         }
         if (component instanceof Container container) {
             for (Component inside : container.getComponents()) {
@@ -115,7 +124,7 @@ public class SwingFramer {
                 case JCheckBox checkField ->
                     WizProps.set(paramName, checkField.isSelected());
                 case JSplitPane splitPane ->
-                    WizProps.set(paramName, splitPane.getDividerLocation());
+                    WizProps.set(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0);
                 default -> {
                 }
             }
