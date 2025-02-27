@@ -601,6 +601,7 @@ public class WizDesk {
     public static File[] selectPaths(File[] selected, int kind) {
         var chooser = new JFileChooser();
         chooser.setFileSelectionMode(kind);
+        chooser.setMultiSelectionEnabled(true);
         if (selected != null) {
             chooser.setSelectedFiles(selected);
         }
