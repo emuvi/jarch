@@ -586,6 +586,30 @@ public class WizDesk {
         return null;
     }
 
+    public static File[] selectFolders(File[] selected) {
+        return selectPaths(selected, JFileChooser.DIRECTORIES_ONLY);
+    }
+
+    public static File[] selectFiles(File[] selected) {
+        return selectPaths(selected, JFileChooser.FILES_ONLY);
+    }
+
+    public static File[] selectPaths(File[] selected) {
+        return selectPaths(selected, JFileChooser.FILES_AND_DIRECTORIES);
+    }
+
+    public static File[] selectPaths(File[] selected, int kind) {
+        var chooser = new JFileChooser();
+        chooser.setFileSelectionMode(kind);
+        if (selected != null) {
+            chooser.setSelectedFiles(selected);
+        }
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFiles();
+        }
+        return null;
+    }
+
     public static void open(File file) throws Exception {
         Desktop.getDesktop().open(file);
     }

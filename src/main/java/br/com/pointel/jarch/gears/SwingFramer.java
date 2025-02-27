@@ -77,6 +77,11 @@ public class SwingFramer {
     }
 
     public void loadFramePropsComps(Component component) {
+        if (component instanceof Container container) {
+            for (Component inside : container.getComponents()) {
+                loadFramePropsComps(inside);
+            }
+        }
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
             var paramName =  "FRAME_" + rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
             SwingUtilities.invokeLater(() -> {
@@ -91,15 +96,9 @@ public class SwingFramer {
                         checkField.setSelected(WizProps.get(paramName, checkField.isSelected()));
                     case JSplitPane splitPane ->
                         splitPane.setDividerLocation(WizProps.get(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0));    
-                    default -> {
-                    }
+                    default -> {}
                 }
             });
-        }
-        if (component instanceof Container container) {
-            for (Component inside : container.getComponents()) {
-                loadFramePropsComps(inside);
-            }
         }
     }
 
