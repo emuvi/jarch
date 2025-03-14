@@ -1,10 +1,13 @@
 package br.com.pointel.jarch.mage;
 
 import java.text.Normalizer;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -91,6 +94,10 @@ public class WizChars {
             result.put(word, result.getOrDefault(word, 0) + 1);
         }
         return result;
+    }
+
+    public static Set<String> getWordsSet(String source) {
+        return new HashSet<>(Arrays.asList(getWords(source)));
     }
 
     public static String[] getWords(String source) {
