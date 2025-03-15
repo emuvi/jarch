@@ -96,6 +96,11 @@ public class WizChars {
         return result;
     }
 
+    public static Set<String> getWordsKeySet(String source) {
+        return new HashSet<>(Arrays.asList(getWords(source))
+                        .stream().map(String::toLowerCase).toList());
+    }
+
     public static Set<String> getWordsSet(String source) {
         return new HashSet<>(Arrays.asList(getWords(source)));
     }
