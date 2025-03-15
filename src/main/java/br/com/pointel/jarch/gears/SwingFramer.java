@@ -30,7 +30,7 @@ public class SwingFramer {
 
     public SwingFramer(JFrame frame) {
         this.frame = frame;
-        this.rootName = WizChars.makeParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
+        this.rootName = "FRAME_" + WizChars.makeParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
         this.popMenu = new JPopupMenu();
     }
 
@@ -81,13 +81,13 @@ public class SwingFramer {
     }
 
     private void loadFrameProps() throws HeadlessException, SecurityException {
-        var left = WizProps.get("FRAME_" + rootName + "_LEFT", frame.getBounds().x);
-        var top = WizProps.get("FRAME_" + rootName + "_TOP", frame.getBounds().y);
-        var width = WizProps.get("FRAME_" + rootName + "_WIDTH", frame.getBounds().width);
-        var height = WizProps.get("FRAME_" + rootName + "_HEIGHT", frame.getBounds().height);
+        var left = WizProps.get(rootName + "_LEFT", frame.getBounds().x);
+        var top = WizProps.get(rootName + "_TOP", frame.getBounds().y);
+        var width = WizProps.get(rootName + "_WIDTH", frame.getBounds().width);
+        var height = WizProps.get(rootName + "_HEIGHT", frame.getBounds().height);
         var bounds = WizDesk.getBoundsInsideScreen(new Rectangle(left, top, width, height));
         frame.setBounds(bounds);
-        frame.setAlwaysOnTop(WizProps.get("FRAME_" + rootName + "_ON_TOP", frame.isAlwaysOnTop()));
+        frame.setAlwaysOnTop(WizProps.get(rootName + "_ON_TOP", frame.isAlwaysOnTop()));
     }
 
     public void loadFramePropsComps(Component component) {
@@ -97,7 +97,7 @@ public class SwingFramer {
             }
         }
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
-            var paramName =  "FRAME_" + rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
+            var paramName =  rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
             SwingUtilities.invokeLater(() -> {
                 switch (component) {
                     case JTextComponent textField ->
@@ -117,16 +117,16 @@ public class SwingFramer {
     }
 
     private void saveFrameProps() {
-        WizProps.set("FRAME_" + rootName + "_LEFT", frame.getBounds().x);
-        WizProps.set("FRAME_" + rootName + "_TOP", frame.getBounds().y);
-        WizProps.set("FRAME_" + rootName + "_WIDTH", frame.getBounds().width);
-        WizProps.set("FRAME_" + rootName + "_HEIGHT", frame.getBounds().height);
-        WizProps.set("FRAME_" + rootName + "_ON_TOP", frame.isAlwaysOnTop());
+        WizProps.set(rootName + "_LEFT", frame.getBounds().x);
+        WizProps.set(rootName + "_TOP", frame.getBounds().y);
+        WizProps.set(rootName + "_WIDTH", frame.getBounds().width);
+        WizProps.set(rootName + "_HEIGHT", frame.getBounds().height);
+        WizProps.set(rootName + "_ON_TOP", frame.isAlwaysOnTop());
     }
 
     public void saveFramePropsComps(Component component) {
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
-            var paramName = "FRAME_" + rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
+            var paramName = rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
             switch (component) {
                 case JTextComponent textField ->
                     WizProps.set(paramName, textField.getText());
@@ -177,24 +177,24 @@ public class SwingFramer {
     }
 
     private void menuSizesTagAsSizeA() {
-        WizProps.set("FRAME_" + rootName + "_WIDTH_SIZE_A", frame.getBounds().width);
-        WizProps.set("FRAME_" + rootName + "_HEIGHT_SIZE_A", frame.getBounds().height);
+        WizProps.set(rootName + "_WIDTH_SIZE_A", frame.getBounds().width);
+        WizProps.set(rootName + "_HEIGHT_SIZE_A", frame.getBounds().height);
     }
 
     private void menuSizesPutOnSizeA() {
-        var width = WizProps.get("FRAME_" + rootName + "_WIDTH_SIZE_A", frame.getBounds().width);
-        var height = WizProps.get("FRAME_" + rootName + "_HEIGHT_SIZE_A", frame.getBounds().height);
+        var width = WizProps.get(rootName + "_WIDTH_SIZE_A", frame.getBounds().width);
+        var height = WizProps.get(rootName + "_HEIGHT_SIZE_A", frame.getBounds().height);
         frame.setSize(width, height);
     }
 
     private void menuSizesTagAsSizeB() {
-        WizProps.set("FRAME_" + rootName + "_WIDTH_SIZE_B", frame.getBounds().width);
-        WizProps.set("FRAME_" + rootName + "_HEIGHT_SIZE_B", frame.getBounds().height);
+        WizProps.set(rootName + "_WIDTH_SIZE_B", frame.getBounds().width);
+        WizProps.set(rootName + "_HEIGHT_SIZE_B", frame.getBounds().height);
     }
 
     private void menuSizesPutOnSizeB() {
-        var width = WizProps.get("FRAME_" + rootName + "_WIDTH_SIZE_B", frame.getBounds().width);
-        var height = WizProps.get("FRAME_" + rootName + "_HEIGHT_SIZE_B", frame.getBounds().height);
+        var width = WizProps.get(rootName + "_WIDTH_SIZE_B", frame.getBounds().width);
+        var height = WizProps.get(rootName + "_HEIGHT_SIZE_B", frame.getBounds().height);
         frame.setSize(width, height);
     }
 
