@@ -661,8 +661,8 @@ public class WizDesk {
         }
     }
 
-    public static void initFrame(JFrame frame) {
-        new SwingFramer(frame).init();
+    public static SwingFramer initFrame(JFrame frame) {
+        return new SwingFramer(frame).init();
     }
 
     public static void initEscaper(JFrame frame) {

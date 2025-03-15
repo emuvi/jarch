@@ -34,10 +34,11 @@ public class SwingFramer {
         this.popMenu = new JPopupMenu();
     }
 
-    public void init() {
+    public SwingFramer init() {
         WizDesk.setAllCompontentsFont(frame, WizDesk.fontMonospaced());
         initWindow();
         initPopMenu();
+        return this;
     }
 
     private void initWindow() {
