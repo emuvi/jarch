@@ -41,6 +41,19 @@ public class SwingFramer {
         return this;
     }
 
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
+    public String getRootName() {
+        return this.rootName;
+    }
+
+
+    public JPopupMenu getPopMenu() {
+        return this.popMenu;
+    }
+
     private void initWindow() {
         frame.addWindowListener(new WindowAdapter() {
             Boolean firstActivated = true;
