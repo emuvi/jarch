@@ -1,9 +1,10 @@
 package br.com.pointel.jarch.mage;
 
 import java.text.Normalizer;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -96,17 +97,45 @@ public class WizChars {
         return result;
     }
 
+    public static Set<String> getWordsKeySetOrdered(String source) {
+        return new LinkedHashSet<>(getWords(source).stream()
+                        .map(String::toLowerCase).toList());
+    }
+
     public static Set<String> getWordsKeySet(String source) {
-        return new HashSet<>(Arrays.asList(getWords(source))
-                        .stream().map(String::toLowerCase).toList());
+        return new HashSet<>(getWords(source).stream()
+                        .map(String::toLowerCase).toList());
     }
 
     public static Set<String> getWordsSet(String source) {
-        return new HashSet<>(Arrays.asList(getWords(source)));
+        return new HashSet<>(getWords(source));
     }
 
-    public static String[] getWords(String source) {
-        return source.split("\\s+");
+    public static List<String> getWords(String source) {
+        var result = new ArrayList<String>();
+        var spaced = source.split("\\s+");
+        for (String word : spaced) {
+            if (!word.isEmpty()) {
+                var lastIsLetter = Character.isLetter(word.charAt(0));
+                var actualWord = new StringBuilder();
+                for (int i = 0; i < word.length(); i++) {
+                    char ch = word.charAt(i);
+                    var actualIsLetter = Character.isLetter(ch);
+                    if (lastIsLetter != actualIsLetter) {
+                        if (actualWord.length() > 0) {
+                            result.add(actualWord.toString());
+                            actualWord = new StringBuilder();
+                        }
+                        lastIsLetter = actualIsLetter;
+                    }
+                    actualWord.append(ch);
+                }
+                if (actualWord.length() > 0) {
+                    result.add(actualWord.toString());
+                }
+            }
+        }
+        return result;
     }
 
     public static String[] getLines(String source) {
