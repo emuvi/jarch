@@ -659,6 +659,15 @@ public class WizDesk {
         }
     }
 
+    public static void cleanAllNames(Component root) {
+        root.setName(null);
+        if (root instanceof Container container) {
+            for (Component inside : container.getComponents()) {
+                cleanAllNames(inside);
+            }
+        }
+    }
+
     public static SwingFramer initFrame(JFrame frame) {
         return new SwingFramer(frame).init();
     }
