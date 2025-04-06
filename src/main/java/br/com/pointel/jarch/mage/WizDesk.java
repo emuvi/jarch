@@ -640,15 +640,13 @@ public class WizDesk {
         }
     }
 
-    public static <T extends Class<? extends Component>> List<Component> getAllCompontentsOf(Component root,
-                    T... clazz) {
+    public static <T extends Class<? extends Component>> List<Component> getAllComponentsOf(Component root, T... clazz) {
         var results = new ArrayList<Component>();
-        getAllCompontentsOf(results, root, clazz);
+        getAllComponentsOf(results, root, clazz);
         return results;
     }
 
-    public static <T extends Class<? extends Component>> void getAllCompontentsOf(List<Component> results,
-                    Component root, T... clazz) {
+    public static <T extends Class<? extends Component>> void getAllComponentsOf(List<Component> results, Component root, T... clazz) {
         for (var kind : clazz) {
             if (kind.isInstance(root)) {
                 results.add(root);
@@ -656,7 +654,7 @@ public class WizDesk {
         }
         if (root instanceof Container container) {
             for (Component inside : container.getComponents()) {
-                getAllCompontentsOf(results, inside, clazz);
+                getAllComponentsOf(results, inside, clazz);
             }
         }
     }
