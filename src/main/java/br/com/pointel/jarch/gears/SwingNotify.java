@@ -56,7 +56,7 @@ public class SwingNotify {
         var bounds = WizDesk.getScreenWithMouse().getDefaultConfiguration().getBounds();
         frame.setBounds(bounds.x + bounds.width - 400, bounds.y + 30, 360, 80);
         frame.setVisible(true);
-        WizDesk.setAllCompontentsFont(frame, WizDesk.fontMonospaced());
+        WizDesk.setAllComponentsFont(frame, WizDesk.fontMonospaced());
         new Thread("Notification Watcher") {
             @Override
             public void run() {

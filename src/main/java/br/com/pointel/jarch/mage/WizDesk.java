@@ -620,22 +620,37 @@ public class WizDesk {
     }
 
     public static Font fontMonospaced() {
-        return new Font(Font.MONOSPACED, Font.PLAIN, 12);
+        return fontMonospaced(12);
+    }
+
+    public static Font fontMonospaced(int size) {
+        return new Font(Font.MONOSPACED, Font.PLAIN, size);
     }
 
     public static Font fontSerif() {
-        return new Font(Font.SERIF, Font.PLAIN, 12);
+        return fontSerif(12);
+    }
+
+    public static Font fontSerif(int size) {
+        return new Font(Font.SERIF, Font.PLAIN, size);
     }
 
     public static Font fontSansSerif() {
-        return new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+        return fontSansSerif(12);
     }
 
-    public static void setAllCompontentsFont(Component component, Font fonte) {
-        component.setFont(fonte);
+    public static Font fontSansSerif(int size) {
+        return new Font(Font.SANS_SERIF, Font.PLAIN, size);
+    }
+
+    public static void setAllComponentsFont(Component component, Font font) {
+        if (font == null) {
+            return;
+        }
+        component.setFont(font);
         if (component instanceof Container container) {
             for (Component inside : container.getComponents()) {
-                setAllCompontentsFont(inside, fonte);
+                setAllComponentsFont(inside, font);
             }
         }
     }

@@ -40,8 +40,6 @@ public class SwingFramer {
     public SwingFramer init() {
         initWindow();
         initPopMenu();
-        WizDesk.setAllCompontentsFont(frame, font);
-        WizDesk.setAllCompontentsFont(frame.getContentPane(), font);
         return this;
     }
 
@@ -69,10 +67,13 @@ public class SwingFramer {
 
             @Override
             public void windowActivated(WindowEvent e) {
-                
                 if (firstActivated) {
-                    loadFramePropsComps(frame);
                     firstActivated = false;
+                    loadFramePropsComps(frame);
+                    WizDesk.setAllComponentsFont(frame, font);
+                    WizDesk.setAllComponentsFont(frame.getContentPane(), font);
+                    SwingUtilities.updateComponentTreeUI(frame);
+                    SwingUtilities.updateComponentTreeUI(frame.getContentPane());
                 }
             }
 
