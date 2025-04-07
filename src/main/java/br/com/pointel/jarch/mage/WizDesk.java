@@ -669,7 +669,11 @@ public class WizDesk {
     }
 
     public static SwingFramer initFrame(JFrame frame) {
-        return new SwingFramer(frame).init();
+        return initFrame(frame, null);
+    }
+
+    public static SwingFramer initFrame(JFrame frame, Font font) {
+        return new SwingFramer(frame, font).init();
     }
 
     public static void initEscaper(JFrame frame) {

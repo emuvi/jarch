@@ -2,6 +2,7 @@ package br.com.pointel.jarch.gears;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
@@ -25,19 +26,22 @@ import br.com.pointel.jarch.mage.WizProps;
 public class SwingFramer {
 
     private final JFrame frame;
+    private final Font font;
     private final String rootName;
     private final JPopupMenu popMenu;
 
-    public SwingFramer(JFrame frame) {
+    public SwingFramer(JFrame frame, Font font) {
         this.frame = frame;
+        this.font = font;
         this.rootName = "FRAME_" + WizChars.makeParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
         this.popMenu = new JPopupMenu();
     }
 
     public SwingFramer init() {
-        WizDesk.setAllCompontentsFont(frame, WizDesk.fontMonospaced());
         initWindow();
         initPopMenu();
+        WizDesk.setAllCompontentsFont(frame, font);
+        WizDesk.setAllCompontentsFont(frame.getContentPane(), font);
         return this;
     }
 
