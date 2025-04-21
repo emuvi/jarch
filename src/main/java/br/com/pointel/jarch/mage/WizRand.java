@@ -24,11 +24,19 @@ public class WizRand {
     }
 
     public static Integer getInt(Integer max) {
-        return RAND.nextInt(max);
+        if (max <= 0) {
+            return -1;
+        } else {
+            return RAND.nextInt(max);
+        }
     }
 
     public static Integer getInt(Integer min, Integer max) {
-        return min + RAND.nextInt(max - min);
+        if (max <= min) {
+            return -1;
+        } else {
+            return min + RAND.nextInt(max - min);
+        }
     }
 
     public static char getChar() {
