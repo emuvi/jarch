@@ -766,22 +766,41 @@ public class WizDesk {
         }
     }
 
-    public static void addMenu(JComponent menu, AbstractButton item) {
-        addMenu(menu, item, null);
+    public static void addPopup(JComponent component, JPopupMenu popup) {
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3 && e.getClickCount() == 1) {
+                    popup.show(component, e.getX(), e.getY());
+                }
+            }
+        });
+        component.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    popup.show(component, 0, 0);
+                }
+            }
+        });
     }
 
-    public static void addMenu(JComponent menu, AbstractButton item, ActionListener action) {
+    public static void addButton(JComponent component, AbstractButton button) {
+        addButton(component, button, null);
+    }
+
+    public static void addButton(JComponent component, AbstractButton button, ActionListener action) {
         if (action != null) {
-            item.addActionListener(action);
+            button.addActionListener(action);
         }
-        menu.add(item);
+        component.add(button);
     }
 
-    public static void addActionToDefaultInput(JComponent component, ActionListener action) {
-        addActionToDefaultInput(component, action, null);
+    public static void addDefaultAction(JComponent component, ActionListener action) {
+        addDefaultAction(component, null, action);
     }
 
-    public static void addActionToDefaultInput(JComponent component, ActionListener action, String command) {
+    public static void addDefaultAction(JComponent component, String command, ActionListener action) {
         component.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
