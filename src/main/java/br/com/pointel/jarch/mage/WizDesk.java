@@ -619,6 +619,43 @@ public class WizDesk {
         Desktop.getDesktop().browse(new URI(address));
     }
 
+    public static void exploreAndSelect(File filePath) throws Exception {
+        if (filePath == null) {
+            throw new Exception("File path cannot be null");
+        }
+        if (!filePath.exists()) {
+            throw new Exception("File does not exist: " + filePath);
+        }
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            Runtime.getRuntime().exec(new String[] {"explorer.exe", "/select,", filePath.getAbsolutePath()});
+        } else if (os.contains("mac")) {
+            Runtime.getRuntime().exec(new String[] {"open", "-R", filePath.getAbsolutePath()});
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            File parentDir = filePath.getParentFile();
+            if (parentDir != null && parentDir.isDirectory()) {
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                    Desktop.getDesktop().open(parentDir);
+                } else {
+                    Runtime.getRuntime().exec(new String[] {"xdg-open", parentDir.getAbsolutePath()});
+                }
+            } else {
+                throw new Exception("Could not determine parent directory for: " + filePath);
+            }
+        } else {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+                File parentDir = filePath.getParentFile();
+                if (parentDir != null && parentDir.isDirectory()) {
+                    Desktop.getDesktop().open(parentDir);
+                } else {
+                    throw new Exception("Could not determine parent directory for: " + filePath);
+                }
+            } else {
+                throw new Exception("No desktop support on the operating system: " + os);
+            }
+        }
+    }
+
     public static Font fontMonospaced() {
         return fontMonospaced(12);
     }
