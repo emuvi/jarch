@@ -77,7 +77,7 @@ public class WizDesk {
     private static Font FONT;
 
     static {
-        FONT = WizDesk.fontMonospaced(14);
+        FONT = WizDesk.fontMonospaced(12);
     }
 
     public static Font getFont() {
