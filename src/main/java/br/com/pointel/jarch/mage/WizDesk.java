@@ -747,7 +747,7 @@ public class WizDesk {
     }
 
     public static SwingFramer initFrame(JFrame frame) {
-        return initFrame(frame, FONT);
+        return initFrame(frame, getFont());
     }
 
     public static SwingFramer initFrame(JFrame frame, Font font) {
