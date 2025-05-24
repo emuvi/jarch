@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -31,6 +32,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
@@ -57,6 +59,20 @@ import br.com.pointel.jarch.gears.SwingFramer;
 public class WizDesk {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WizDesk.class);
+
+    private static Image LOGO;
+
+    static {
+        try {
+            LOGO = ImageIO.read(WizDesk.class.getResourceAsStream("/img/logo.png"));
+        } catch (Exception e) {
+            LOGO = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+        }
+    }
+    
+    public static Image getLogo() {
+        return LOGO;
+    }
 
     private static final String KEY_LOOK_AND_FEEL = "WizDesk_LookAndFeel";
 
