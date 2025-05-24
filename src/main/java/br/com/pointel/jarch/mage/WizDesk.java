@@ -74,6 +74,16 @@ public class WizDesk {
         return LOGO;
     }
 
+    private static Font FONT;
+
+    static {
+        FONT = WizDesk.fontMonospaced(14);
+    }
+
+    public static Font getFont() {
+        return FONT;
+    }
+
     private static final String KEY_LOOK_AND_FEEL = "WizDesk_LookAndFeel";
 
     private static final String KEY_LOOK_AND_FEEL_SYSTEM = "System";
@@ -737,7 +747,7 @@ public class WizDesk {
     }
 
     public static SwingFramer initFrame(JFrame frame) {
-        return initFrame(frame, null);
+        return initFrame(frame, FONT);
     }
 
     public static SwingFramer initFrame(JFrame frame, Font font) {
