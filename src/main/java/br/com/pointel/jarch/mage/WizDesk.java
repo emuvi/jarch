@@ -92,7 +92,9 @@ public class WizDesk {
     private static final String KEY_LOOK_AND_FEEL_DARCULA = "Darcula";
 
     private static final String[] KEY_LOOK_AND_FEEL_OPTIONS = new String[] {
-                    KEY_LOOK_AND_FEEL_SYSTEM, KEY_LOOK_AND_FEEL_LIGHT, KEY_LOOK_AND_FEEL_DARK,
+                    KEY_LOOK_AND_FEEL_SYSTEM, 
+                    KEY_LOOK_AND_FEEL_LIGHT, 
+                    KEY_LOOK_AND_FEEL_DARK,
                     KEY_LOOK_AND_FEEL_DARCULA
     };
 
