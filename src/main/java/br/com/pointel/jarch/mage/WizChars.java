@@ -89,6 +89,14 @@ public class WizChars {
         return name.substring(0, begin) + newNameNumber + name.substring(end);
     }
 
+    public static Map<String, Integer> countWordsLike(String source) {
+        var result = new HashMap<String, Integer>();
+        for (String word : getWordsLike(source)) {
+            result.put(word, result.getOrDefault(word, 0) + 1);
+        }
+        return result;
+    }
+
     public static Map<String, Integer> countWords(String source) {
         var result = new HashMap<String, Integer>();
         for (String word : getWords(source)) {
@@ -97,8 +105,18 @@ public class WizChars {
         return result;
     }
 
+    public static Set<String> getWordsLikeKeySetOrdered(String source) {
+        return new LinkedHashSet<>(getWordsLike(source).stream()
+                        .map(String::toLowerCase).toList());
+    }
+
     public static Set<String> getWordsKeySetOrdered(String source) {
         return new LinkedHashSet<>(getWords(source).stream()
+                        .map(String::toLowerCase).toList());
+    }
+
+    public static Set<String> getWordsLikeKeySet(String source) {
+        return new HashSet<>(getWordsLike(source).stream()
                         .map(String::toLowerCase).toList());
     }
 
@@ -107,8 +125,17 @@ public class WizChars {
                         .map(String::toLowerCase).toList());
     }
 
+    public static Set<String> getWordsLikeSet(String source) {
+        return new HashSet<>(getWordsLike(source));
+    }
+
     public static Set<String> getWordsSet(String source) {
         return new HashSet<>(getWords(source));
+    }
+
+    public static List<String> getWordsLike(String source) {
+        return getWords(source).stream()
+                        .map(WizChars::removeAccents).toList();
     }
 
     public static List<String> getWords(String source) {
