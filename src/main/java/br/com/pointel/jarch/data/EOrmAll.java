@@ -88,9 +88,9 @@ public class EOrmAll extends EOrm {
         }
         if (select.hasJoins()) {
             for (var join : select.joinList) {
-                if (join.joinTie != null) {
+                if (join.ties != null) {
                     builder.append(" ");
-                    builder.append(join.joinTie.toString());
+                    builder.append(join.ties.toString());
                     builder.append(" ");
                 }
                 builder.append(" JOIN ");

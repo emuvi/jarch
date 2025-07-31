@@ -1,6 +1,6 @@
 package br.com.pointel.jarch.data;
 
-public enum JoinTie {
+public enum JoinTies {
 
     INNER, LEFT, RIGHT, FULL, CROSS
 

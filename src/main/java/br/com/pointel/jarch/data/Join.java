@@ -6,11 +6,10 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
 public class Join implements FixVals {
-
     public TableHead tableHead;
     public String alias;
     public List<Filter> filterList;
-    public JoinTie joinTie;
+    public JoinTies ties;
 
     public Join() {}
 
@@ -23,15 +22,15 @@ public class Join implements FixVals {
         this.alias = alias;
     }
 
-    public Join(TableHead tableHead, JoinTie joinTie) {
+    public Join(TableHead tableHead, JoinTies ties) {
         this.tableHead = tableHead;
-        this.joinTie = joinTie;
+        this.ties = ties;
     }
 
-    public Join(TableHead tableHead, String alias, JoinTie joinTie) {
+    public Join(TableHead tableHead, String alias, JoinTies ties) {
         this.tableHead = tableHead;
         this.alias = alias;
-        this.joinTie = joinTie;
+        this.ties = ties;
     }
 
     public Join(TableHead tableHead, List<Filter> filterList) {
@@ -45,17 +44,17 @@ public class Join implements FixVals {
         this.filterList = filterList;
     }
 
-    public Join(TableHead tableHead, List<Filter> filterList, JoinTie joinTie) {
+    public Join(TableHead tableHead, List<Filter> filterList, JoinTies ties) {
         this.tableHead = tableHead;
         this.filterList = filterList;
-        this.joinTie = joinTie;
+        this.ties = ties;
     }
 
-    public Join(TableHead tableHead, String alias, List<Filter> filterList, JoinTie joinTie) {
+    public Join(TableHead tableHead, String alias, List<Filter> filterList, JoinTies ties) {
         this.tableHead = tableHead;
         this.alias = alias;
         this.filterList = filterList;
-        this.joinTie = joinTie;
+        this.ties = ties;
     }
 
     public boolean hasFilters() {
@@ -73,12 +72,12 @@ public class Join implements FixVals {
         return Objects.equals(tableHead, joined.tableHead)
                         && Objects.equals(alias, joined.alias)
                         && Objects.equals(filterList, joined.filterList)
-                        && Objects.equals(joinTie, joined.joinTie);
+                        && Objects.equals(ties, joined.ties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, alias, filterList, joinTie);
+        return Objects.hash(tableHead, alias, filterList, ties);
     }
 
     @Override
