@@ -13,15 +13,15 @@ public class Filter implements FixVals {
     public FilterTies joinTie;
 
     public Filter() {
-        this(FilterSeems.SAME, FilterLikes.EQUALS, null, null, FilterTies.AND);
+        this(FilterSeems.IS, FilterLikes.EQUALS, null, null, FilterTies.AND);
     }
 
     public Filter(Valued valued) {
-        this(FilterSeems.SAME, FilterLikes.EQUALS, valued, null, FilterTies.AND);
+        this(FilterSeems.IS, FilterLikes.EQUALS, valued, null, FilterTies.AND);
     }
 
     public Filter(Linked linked) {
-        this(FilterSeems.SAME, FilterLikes.EQUALS, null, linked, FilterTies.AND);
+        this(FilterSeems.IS, FilterLikes.EQUALS, null, linked, FilterTies.AND);
     }
 
     public Filter(FilterSeems seem, FilterLikes likes, Valued valued, Linked linked, FilterTies joinTie) {

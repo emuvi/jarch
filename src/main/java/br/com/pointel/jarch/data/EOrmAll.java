@@ -592,7 +592,7 @@ public class EOrmAll extends EOrm {
             if (i > 0) {
                 builder.append(nextIsOr ? " OR " : " AND ");
             }
-            if (clause.seems == FilterSeems.OTHER) {
+            if (clause.seems == FilterSeems.NOT) {
                 builder.append(" NOT ");
             }
             if (clause.valued != null) {
