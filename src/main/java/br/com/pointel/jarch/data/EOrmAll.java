@@ -596,8 +596,7 @@ public class EOrmAll extends EOrm {
                 builder.append(" NOT ");
             }
             if (clause.valued != null) {
-                if (fromSource != null && !fromSource.isEmpty() && !clause.valued.name.contains(
-                                ".")) {
+                if (fromSource != null && !fromSource.isEmpty() && !clause.valued.name.contains(".")) {
                     builder.append(fromSource);
                     builder.append(".");
                 }
@@ -613,7 +612,7 @@ public class EOrmAll extends EOrm {
                     builder.append(".");
                 }
                 builder.append(clause.linked.name);
-                if (clause.linked.with == null) {
+                if (clause.linked.upon == null) {
                     builder.append(" IS NULL ");
                 } else {
                     var formWith = new StringBuilder();
@@ -621,7 +620,7 @@ public class EOrmAll extends EOrm {
                         formWith.append(withAlias);
                         formWith.append(".");
                     }
-                    formWith.append(clause.linked.with);
+                    formWith.append(clause.linked.upon);
                     builder.append(this.makeCondition(clause.likes, formWith.toString()));
                 }
             }
@@ -630,24 +629,24 @@ public class EOrmAll extends EOrm {
         return builder.toString();
     }
 
-    protected String makeCondition(FilterLikes condition, String with) {
-        switch (condition) {
+    protected String makeCondition(FilterLikes likes, String upon) {
+        switch (likes) {
             case EQUALS:
-                return " = " + with + " ";
+                return " = " + upon + " ";
             case BIGGER:
-                return " > " + with + " ";
+                return " > " + upon + " ";
             case LESSER:
-                return " < " + with + " ";
+                return " < " + upon + " ";
             case BIGGER_EQUALS:
-                return " >= " + with + " ";
+                return " >= " + upon + " ";
             case LESSER_EQUALS:
-                return " <= " + with + " ";
+                return " <= " + upon + " ";
             case STARTS_WITH:
-                return " STARTS WITH " + with + " ";
+                return " STARTS WITH " + upon + " ";
             case ENDS_WITH:
-                return " ENDS WITH " + with + " ";
+                return " ENDS WITH " + upon + " ";
             case CONTAINS:
-                return " CONTAINS " + with + " ";
+                return " CONTAINS " + upon + " ";
             default:
                 throw new UnsupportedOperationException();
         }

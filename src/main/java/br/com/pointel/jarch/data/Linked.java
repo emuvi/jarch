@@ -5,9 +5,8 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
 public class Linked implements FixVals {
-
     public String name;
-    public String with;
+    public String upon;
 
     public Linked() {}
 
@@ -15,9 +14,9 @@ public class Linked implements FixVals {
         this.name = name;
     }
 
-    public Linked(String name, String with) {
+    public Linked(String name, String upon) {
         this.name = name;
-        this.with = with;
+        this.upon = upon;
     }
 
     @Override
@@ -29,12 +28,12 @@ public class Linked implements FixVals {
         }
         Linked linked = (Linked) o;
         return Objects.equals(name, linked.name)
-                        && Objects.equals(with, linked.with);
+                        && Objects.equals(upon, linked.upon);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, with);
+        return Objects.hash(name, upon);
     }
 
     @Override
@@ -42,8 +41,8 @@ public class Linked implements FixVals {
         return new Gson().toJson(this);
     }
 
-    public static Valued fromString(String json) {
-        return new Gson().fromJson(json, Valued.class);
+    public static Linked fromString(String json) {
+        return new Gson().fromJson(json, Linked.class);
     }
 
 }
