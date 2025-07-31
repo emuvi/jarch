@@ -624,7 +624,7 @@ public class EOrmAll extends EOrm {
                     builder.append(this.makeCondition(clause.likes, formWith.toString()));
                 }
             }
-            nextIsOr = clause.joinTie == FilterTies.OR;
+            nextIsOr = clause.ties == FilterTies.OR;
         }
         return builder.toString();
     }

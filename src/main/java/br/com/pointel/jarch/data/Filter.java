@@ -10,7 +10,7 @@ public class Filter implements FixVals {
     public FilterLikes likes;
     public Valued valued;
     public Linked linked;
-    public FilterTies joinTie;
+    public FilterTies ties;
 
     public Filter() {
         this(FilterSeems.IS, FilterLikes.EQUALS, null, null, FilterTies.AND);
@@ -24,12 +24,12 @@ public class Filter implements FixVals {
         this(FilterSeems.IS, FilterLikes.EQUALS, null, linked, FilterTies.AND);
     }
 
-    public Filter(FilterSeems seem, FilterLikes likes, Valued valued, Linked linked, FilterTies joinTie) {
+    public Filter(FilterSeems seem, FilterLikes likes, Valued valued, Linked linked, FilterTies ties) {
         this.seems = seem;
         this.likes = likes;
         this.valued = valued;
         this.linked = linked;
-        this.joinTie = joinTie;
+        this.ties = ties;
     }
 
     @Override
@@ -44,12 +44,12 @@ public class Filter implements FixVals {
                         && Objects.equals(likes, filter.likes)
                         && Objects.equals(valued, filter.valued)
                         && Objects.equals(linked, filter.linked)
-                        && Objects.equals(joinTie, filter.joinTie);
+                        && Objects.equals(ties, filter.ties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(seems, likes, valued, linked, joinTie);
+        return Objects.hash(seems, likes, valued, linked, ties);
     }
 
     @Override
