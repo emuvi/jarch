@@ -428,11 +428,15 @@ public class WizChars {
     }
 
     public static String replaceEnvVars(String inChars) {
+        return replaceEnvVars(inChars, "env");
+    }
+
+    public static String replaceEnvVars(String inChars, String withPrefix) {
         if (WizChars.isEmpty(inChars)) {
             return inChars;
         }
         var result = inChars;
-        var envPos = result.indexOf("${env:");
+        var envPos = result.indexOf("${" + withPrefix + ":");
         while (envPos > -1) {
             var envPosEnd = result.indexOf("}", envPos);
             if (envPosEnd == -1) {
@@ -444,7 +448,7 @@ public class WizChars {
                 envValue = "";
             }
             result = result.substring(0, envPos) + envValue + result.substring(envPosEnd + 1);
-            envPos = result.indexOf("${env:", envPos + 1);
+            envPos = result.indexOf("${" + withPrefix + ":", envPos + 1);
         }
         return result;
     }
