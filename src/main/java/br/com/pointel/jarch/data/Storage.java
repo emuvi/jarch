@@ -32,7 +32,7 @@ public class Storage {
             }
             var pass = base.getPass();
             if (!WizChars.isEmpty(pass)) {
-                source.setPassword(pass);
+                source.setPassword(WizChars.replaceEnvVars(pass));
             }
             source.setMinIdle(base.storeMinIdle);
             source.setMaxIdle(base.storeMaxIdle);
