@@ -10,7 +10,6 @@ import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
 
 public class DataLink implements FixVals {
-
     public String name;
     public DataBase base;
     public String path;

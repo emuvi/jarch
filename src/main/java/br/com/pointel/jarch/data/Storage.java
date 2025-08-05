@@ -101,9 +101,9 @@ public class Storage {
         if (!WizChars.isEmpty(pass)) {
             newSource.setPassword(pass);
         }
-        newSource.setMinIdle(base.storeMinIdle);
-        newSource.setMaxIdle(base.storeMaxIdle);
-        newSource.setMaxTotal(base.storeMaxTotal);
+        newSource.setMinIdle(base.poolMinIdle);
+        newSource.setMaxIdle(base.poolMaxIdle);
+        newSource.setMaxTotal(base.poolMaxTotal);
         this.stores.put(base.getName(), newSource);
     }
 

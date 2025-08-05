@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
 public class DataJdbc implements FixVals {
-
     public String name;
     public String url;
     public String user;

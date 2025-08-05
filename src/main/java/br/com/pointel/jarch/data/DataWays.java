@@ -5,46 +5,42 @@ import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
 public class DataWays implements FixVals {
-
     public DataJdbc dataJdbc;
     public DataLink dataLink;
-
-    public Integer storeMinIdle;
-    public Integer storeMaxIdle;
-    public Integer storeMaxTotal;
+    public Integer poolMinIdle;
+    public Integer poolMaxIdle;
+    public Integer poolMaxTotal;
 
     public DataWays(DataJdbc dataJdbc) {
         this.dataJdbc = dataJdbc;
         this.dataLink = null;
-        this.storeMinIdle = 1;
-        this.storeMaxIdle = 1;
-        this.storeMaxTotal = 1;
+        this.poolMinIdle = 1;
+        this.poolMaxIdle = 1;
+        this.poolMaxTotal = 1;
     }
 
     public DataWays(DataLink dataLink) {
         this.dataJdbc = null;
         this.dataLink = dataLink;
-        this.storeMinIdle = 1;
-        this.storeMaxIdle = 1;
-        this.storeMaxTotal = 1;
+        this.poolMinIdle = 1;
+        this.poolMaxIdle = 1;
+        this.poolMaxTotal = 1;
     }
 
-    public DataWays(DataJdbc dataJdbc,
-                    Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
+    public DataWays(DataJdbc dataJdbc, Integer poolMinIdle, Integer poolMaxIdle, Integer poolMaxTotal) {
         this.dataJdbc = dataJdbc;
         this.dataLink = null;
-        this.storeMinIdle = storeMinIdle;
-        this.storeMaxIdle = storeMaxIdle;
-        this.storeMaxTotal = storeMaxTotal;
+        this.poolMinIdle = poolMinIdle;
+        this.poolMaxIdle = poolMaxIdle;
+        this.poolMaxTotal = poolMaxTotal;
     }
 
-    public DataWays(DataLink dataLink,
-                    Integer storeMinIdle, Integer storeMaxIdle, Integer storeMaxTotal) {
+    public DataWays(DataLink dataLink, Integer poolMinIdle, Integer poolMaxIdle, Integer poolMaxTotal) {
         this.dataJdbc = null;
         this.dataLink = dataLink;
-        this.storeMinIdle = storeMinIdle;
-        this.storeMaxIdle = storeMaxIdle;
-        this.storeMaxTotal = storeMaxTotal;
+        this.poolMinIdle = poolMinIdle;
+        this.poolMaxIdle = poolMaxIdle;
+        this.poolMaxTotal = poolMaxTotal;
     }
 
     public String getName() {
@@ -102,14 +98,14 @@ public class DataWays implements FixVals {
         if (this.dataLink != null) {
             this.dataLink.fixNulls();
         }
-        if (this.storeMinIdle == null) {
-            this.storeMinIdle = 1;
+        if (this.poolMinIdle == null) {
+            this.poolMinIdle = 1;
         }
-        if (this.storeMaxIdle == null) {
-            this.storeMaxIdle = 1;
+        if (this.poolMaxIdle == null) {
+            this.poolMaxIdle = 1;
         }
-        if (this.storeMaxTotal == null) {
-            this.storeMaxTotal = 1;
+        if (this.poolMaxTotal == null) {
+            this.poolMaxTotal = 1;
         }
     }
 
@@ -121,14 +117,14 @@ public class DataWays implements FixVals {
         if (this.dataLink != null) {
             this.dataLink.fixNullsAndEnvs();
         }
-        if (this.storeMinIdle == null) {
-            this.storeMinIdle = 1;
+        if (this.poolMinIdle == null) {
+            this.poolMinIdle = 1;
         }
-        if (this.storeMaxIdle == null) {
-            this.storeMaxIdle = 1;
+        if (this.poolMaxIdle == null) {
+            this.poolMaxIdle = 1;
         }
-        if (this.storeMaxTotal == null) {
-            this.storeMaxTotal = 1;
+        if (this.poolMaxTotal == null) {
+            this.poolMaxTotal = 1;
         }
     }
 
@@ -142,14 +138,14 @@ public class DataWays implements FixVals {
         DataWays dataWays = (DataWays) o;
         return Objects.equals(dataJdbc, dataWays.dataJdbc)
                         && Objects.equals(dataLink, dataWays.dataLink)
-                        && Objects.equals(storeMinIdle, dataWays.storeMinIdle)
-                        && Objects.equals(storeMaxIdle, dataWays.storeMaxIdle)
-                        && Objects.equals(storeMaxTotal, dataWays.storeMaxTotal);
+                        && Objects.equals(poolMinIdle, dataWays.poolMinIdle)
+                        && Objects.equals(poolMaxIdle, dataWays.poolMaxIdle)
+                        && Objects.equals(poolMaxTotal, dataWays.poolMaxTotal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataJdbc, dataLink, storeMinIdle, storeMaxIdle, storeMaxTotal);
+        return Objects.hash(dataJdbc, dataLink, poolMinIdle, poolMaxIdle, poolMaxTotal);
     }
 
     @Override
