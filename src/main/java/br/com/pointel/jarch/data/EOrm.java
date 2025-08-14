@@ -9,13 +9,17 @@ import java.util.List;
 
 public abstract class EOrm implements Closeable {
 
-    protected final Connection link;
+    private final Connection link;
 
     protected EOrm(Connection link) {
         this.link = link;
     }
 
-    public abstract List<TableHead> getHeads() throws Exception;
+    public Connection getLink() {
+        return link;
+    }
+
+    public abstract Heads getHeads() throws Exception;
 
     public abstract void create(Table table) throws Exception;
 
@@ -38,6 +42,8 @@ public abstract class EOrm implements Closeable {
     public abstract Integer delete(Delete delete, Strain strain) throws Exception;
 
     public abstract boolean isPrimaryKeyError(Exception error);
+
+
 
     @Override
     public void close() throws IOException {

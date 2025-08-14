@@ -11,10 +11,14 @@ import br.com.pointel.jarch.mage.WizData;
 
 public class ESql implements Closeable {
 
-    public final Connection link;
+    private final Connection link;
 
     public ESql(Connection link) {
         this.link = link;
+    }
+
+    public Connection getLink() {
+        return link;
     }
 
     public void begin() throws Exception {

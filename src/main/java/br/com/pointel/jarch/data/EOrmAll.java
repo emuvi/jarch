@@ -18,10 +18,10 @@ public class EOrmAll extends EOrm {
     }
 
     @Override
-    public List<TableHead> getHeads() throws Exception {
-        var meta = link.getMetaData();
+    public Heads getHeads() throws Exception {
+        var meta = getLink().getMetaData();
         var set = meta.getTables(null, null, "%", new String[] {"TABLE"});
-        var result = new ArrayList<TableHead>();
+        var result = new Heads();
         while (set.next()) {
             result.add(new TableHead(set.getString(1), set.getString(2), set.getString(3)));
         }
@@ -30,7 +30,7 @@ public class EOrmAll extends EOrm {
 
     @Override
     public void create(Table table) throws Exception {
-        this.create(table, false);
+        create(table, false);
     }
 
     @Override
@@ -46,15 +46,15 @@ public class EOrmAll extends EOrm {
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append(this.makeNature(table.fieldList.get(i)));
+            builder.append(makeNature(table.fieldList.get(i)));
         }
         builder.append(")");
-        this.link.createStatement().execute(builder.toString());
+        getLink().createStatement().execute(builder.toString());
     }
 
     @Override
     public ResultSet select(Select select) throws Exception {
-        return this.select(select, null);
+        return select(select, null);
     }
 
     @Override
@@ -108,13 +108,13 @@ public class EOrmAll extends EOrm {
                 }
                 if (join.hasFilters()) {
                     builder.append(" ON ");
-                    builder.append(this.makeClauses(join.filterList, dataSource, withAlias));
+                    builder.append(makeClauses(join.filterList, dataSource, withAlias));
                 }
             }
         }
         if (select.hasFilters()) {
             builder.append(" WHERE ");
-            builder.append(this.makeClauses(select.filterList, dataSource, null));
+            builder.append(makeClauses(select.filterList, dataSource, null));
         }
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(!select.hasFilters() ? " WHERE " : " AND ");
@@ -144,14 +144,14 @@ public class EOrmAll extends EOrm {
         }
         var build = builder.toString();
         System.out.println("SELECT: " + build);
-        var prepared = this.link.prepareStatement(build);
+        var prepared = getLink().prepareStatement(build);
         var param_index = 1;
         if (select.hasJoins()) {
             for (var join : select.joinList) {
                 if (join.hasFilters()) {
                     for (var clause : join.filterList) {
                         if (clause.valued != null && clause.valued.data != null) {
-                            this.setParameter(prepared, param_index, clause.valued);
+                            setParameter(prepared, param_index, clause.valued);
                             param_index++;
                         }
                     }
@@ -161,23 +161,22 @@ public class EOrmAll extends EOrm {
         if (select.hasFilters()) {
             for (var clause : select.filterList) {
                 if (clause.valued != null && clause.valued.data != null) {
-                    this.setParameter(prepared, param_index, clause.valued);
+                    setParameter(prepared, param_index, clause.valued);
                     param_index++;
                 }
             }
         }
-
         return prepared.executeQuery();
     }
 
     @Override
     public String insert(Insert insert) throws Exception {
-        return this.insert(insert, null);
+        return insert(insert, null);
     }
 
     @Override
     public String insert(Insert insert, Strain strain) throws Exception {
-        var ID = getID(this.link, insert);
+        var ID = getID(getLink(), insert);
         var strained = new ArrayList<Pair<String, String>>();
         if (strain != null && strain.include != null && !strain.include.isEmpty()) {
             var includes = strain.include.split("\\|");
@@ -228,18 +227,18 @@ public class EOrmAll extends EOrm {
         builder.append(")");
         var build = builder.toString();
         System.out.println("INSERT: " + build);
-        var prepared = this.link.prepareStatement(build);
+        var prepared = getLink().prepareStatement(build);
         var param_index = 1;
         for (var valued : insert.valuedList) {
             if (valued.data != null) {
-                this.setParameter(prepared, param_index, valued);
+                setParameter(prepared, param_index, valued);
                 param_index++;
             }
         }
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 if (!toStrain.getRight().isEmpty()) {
-                    this.setParameter(prepared, param_index, new Valued(toStrain.getLeft(), toStrain.getRight()));
+                    setParameter(prepared, param_index, new Valued(toStrain.getLeft(), toStrain.getRight()));
                     param_index++;
                 }
             }
@@ -250,7 +249,7 @@ public class EOrmAll extends EOrm {
 
     @Override
     public Integer update(Update update) throws Exception {
-        return this.update(update, null);
+        return update(update, null);
     }
 
     @Override
@@ -276,7 +275,7 @@ public class EOrmAll extends EOrm {
             builder.append(strain.modify);
         }
         builder.append(" WHERE ");
-        builder.append(this.makeClauses(update.filterList, null, null));
+        builder.append(makeClauses(update.filterList, null, null));
         if (update.limit != null) {
             builder.append(" LIMIT ");
             builder.append(update.limit);
@@ -288,18 +287,18 @@ public class EOrmAll extends EOrm {
         }
         var build = builder.toString();
         System.out.println("UPDATE: " + build);
-        var prepared = this.link.prepareStatement(build);
+        var prepared = getLink().prepareStatement(build);
         var param_index = 1;
         for (var valued : update.valuedList) {
             if (valued != null) {
-                this.setParameter(prepared, param_index, valued);
+                setParameter(prepared, param_index, valued);
                 param_index++;
             }
         }
         if (update.filterList != null && !update.filterList.isEmpty()) {
             for (var clause : update.filterList) {
                 if (clause.valued != null) {
-                    this.setParameter(prepared, param_index, clause.valued);
+                    setParameter(prepared, param_index, clause.valued);
                     param_index++;
                 }
             }
@@ -309,7 +308,7 @@ public class EOrmAll extends EOrm {
 
     @Override
     public Integer delete(Delete delete) throws Exception {
-        return this.delete(delete, null);
+        return delete(delete, null);
     }
 
     @Override
@@ -318,7 +317,7 @@ public class EOrmAll extends EOrm {
         var dataSource = delete.tableHead.getCatalogSchemaName();
         builder.append(dataSource);
         builder.append(" WHERE ");
-        builder.append(this.makeClauses(delete.filterList, null, null));
+        builder.append(makeClauses(delete.filterList, null, null));
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(" AND ");
             var restricted = replaceVariables(strain.restrict, dataSource);
@@ -326,12 +325,12 @@ public class EOrmAll extends EOrm {
         }
         var build = builder.toString();
         System.out.println("DELETE: " + build);
-        var prepared = this.link.prepareStatement(build);
+        var prepared = getLink().prepareStatement(build);
         var param_index = 1;
         if (delete.filterList != null && !delete.filterList.isEmpty()) {
             for (var clause : delete.filterList) {
                 if (clause.valued.data != null) {
-                    this.setParameter(prepared, param_index, clause.valued);
+                    setParameter(prepared, param_index, clause.valued);
                     param_index++;
                 }
             }
@@ -604,7 +603,7 @@ public class EOrmAll extends EOrm {
                 if (clause.valued.data == null) {
                     builder.append(" IS NULL ");
                 } else {
-                    builder.append(this.makeCondition(clause.likes, "?"));
+                    builder.append(makeCondition(clause.likes, "?"));
                 }
             } else if (clause.linked != null) {
                 if (fromSource != null && !fromSource.isEmpty()) {
@@ -621,7 +620,7 @@ public class EOrmAll extends EOrm {
                         formWith.append(".");
                     }
                     formWith.append(clause.linked.upon);
-                    builder.append(this.makeCondition(clause.likes, formWith.toString()));
+                    builder.append(makeCondition(clause.likes, formWith.toString()));
                 }
             }
             nextIsOr = clause.ties == FilterTies.OR;
