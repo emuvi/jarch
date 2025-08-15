@@ -1,16 +1,51 @@
 package br.com.pointel.jarch.mage;
 
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import br.com.pointel.jarch.data.Nature;
 
 public class WizData {
-    public static String[] getColumnNames(ResultSet results) throws Exception {
+
+    private WizData(){}
+
+    public static void printColumnsNamesAndNatures(ResultSet results) throws SQLException {
+        printColumnsNamesAndNatures(results, System.out);
+    }
+
+    public static void printColumnsNamesAndNatures(ResultSet results, PrintStream out) throws SQLException {
+        var meta = results.getMetaData();
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            out.println(String.format("[%d] %s : %s",
+                    i, meta.getColumnName(i), String.valueOf(WizData.getNatureOfSQL(meta.getColumnType(i)))));
+        }
+    }
+
+    public static void printAllValues(ResultSet results) throws SQLException {
+        printAllValues(results, System.out);
+    }
+
+    public static void printAllValues(ResultSet results, PrintStream out) throws SQLException {
+        var count = results.getMetaData().getColumnCount();
+        while (results.next()) {
+            var line = new StringBuilder();
+            for (int i = 1; i <= count; i++) {
+                if (i > 1) {
+                    line.append(" | ");
+                }
+                line.append(String.valueOf(results.getObject(i)));
+            }    
+            out.println(line.toString());
+        }
+    }
+    
+    public static String[] getColumnNames(ResultSet results) throws SQLException {
         var meta = results.getMetaData();
         var names = new String[meta.getColumnCount()];
         for (int i = 1; i <= names.length; i++) {
@@ -19,12 +54,11 @@ public class WizData {
         return names;
     }
 
-    public static Nature[] getNaturesFrom(ResultSet results) throws Exception {
-        var metaData = results.getMetaData();
-        var columnCount = metaData.getColumnCount();
-        var natures = new Nature[columnCount];
-        for (int i = 1; i <= columnCount; i++) {
-            natures[(i - 1)] = WizData.getNatureOfSQL(metaData.getColumnType(i));
+    public static Nature[] getNaturesFrom(ResultSet results) throws SQLException {
+        var meta = results.getMetaData();
+        var natures = new Nature[meta.getColumnCount()];
+        for (int i = 1; i <= natures.length; i++) {
+            natures[(i - 1)] = WizData.getNatureOfSQL(meta.getColumnType(i));
         }
         return natures;
     }
