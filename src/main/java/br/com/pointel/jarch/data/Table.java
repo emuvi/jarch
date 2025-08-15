@@ -1,15 +1,15 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 import com.google.gson.Gson;
-import br.com.pointel.jarch.flow.FixVals;
+import java.util.Objects;
 
-public class Table implements FixVals {
+public class Table {
 
     public TableHead tableHead;
     public List<Field> fieldList;
-    public List<String> keyList;
+    public List<KeyPrimary> keyPrimaryList;
+    public List<KeyForeign> keyForeignList;
 
     public Table() {}
 
@@ -22,10 +22,17 @@ public class Table implements FixVals {
         this.fieldList = fieldList;
     }
 
-    public Table(TableHead tableHead, List<Field> fieldList, List<String> keyList) {
+    public Table(TableHead tableHead, List<Field> fieldList, List<KeyPrimary> keyPrimaryList) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
-        this.keyList = keyList;
+        this.keyPrimaryList = keyPrimaryList;
+    }
+
+    public Table(TableHead tableHead, List<Field> fieldList, List<KeyPrimary> keyPrimaryList, List<KeyForeign> keyForeignList) {
+        this.tableHead = tableHead;
+        this.fieldList = fieldList;
+        this.keyPrimaryList = keyPrimaryList;
+        this.keyForeignList = keyForeignList;
     }
 
     public String getReferenceName() {
@@ -48,14 +55,12 @@ public class Table implements FixVals {
             return false;
         }
         Table table = (Table) o;
-        return Objects.equals(tableHead, table.tableHead)
-                        && Objects.equals(fieldList, table.fieldList)
-                        && Objects.equals(keyList, table.keyList);
+        return Objects.equals(tableHead, table.tableHead) && Objects.equals(fieldList, table.fieldList) && Objects.equals(keyPrimaryList, table.keyPrimaryList) && Objects.equals(keyForeignList, table.keyForeignList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, fieldList, keyList);
+        return Objects.hash(tableHead, fieldList, keyPrimaryList, keyForeignList);
     }
 
     @Override

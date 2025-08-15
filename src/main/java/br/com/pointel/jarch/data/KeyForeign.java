@@ -1,0 +1,65 @@
+package br.com.pointel.jarch.data;
+
+import java.util.List;
+import java.util.Objects;
+import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
+
+public class KeyForeign implements FixVals {
+
+    public String inName;
+    public String outName;
+    public TableHead outTableHead;
+    public List<Match> matchList;
+
+    public KeyForeign() {
+    }
+
+    public KeyForeign(String inName) {
+        this.inName = inName;
+    }
+
+    public KeyForeign(String inName, String outName) {
+        this.inName = inName;
+        this.outName = outName;
+    }
+
+    public KeyForeign(String inName, String outName, TableHead outTableHead) {
+        this.inName = inName;
+        this.outName = outName;
+        this.outTableHead = outTableHead;
+    }
+
+    public KeyForeign(String inName, String outName, TableHead outTableHead, List<Match> matchList) {
+        this.inName = inName;
+        this.outName = outName;
+        this.outTableHead = outTableHead;
+        this.matchList = matchList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof KeyForeign)) {
+            return false;
+        }
+        KeyForeign keyForeign = (KeyForeign) o;
+        return Objects.equals(inName, keyForeign.inName) && Objects.equals(outName, keyForeign.outName) && Objects.equals(outTableHead, keyForeign.outTableHead) && Objects.equals(matchList, keyForeign.matchList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inName, outName, outTableHead, matchList);
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
+
+    public static KeyForeign fromString(String json) {
+        return new Gson().fromJson(json, KeyForeign.class);
+    }
+
+}
