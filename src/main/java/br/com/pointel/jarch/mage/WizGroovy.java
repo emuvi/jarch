@@ -11,10 +11,6 @@ import javax.swing.DefaultComboBoxModel;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
-/**
- *
- * @author emuvi
- */
 public class WizGroovy {
     
     private static final File FOLDER_GROOVY = new File("groovy");
