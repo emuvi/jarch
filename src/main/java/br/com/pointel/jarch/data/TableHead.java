@@ -77,14 +77,6 @@ public class TableHead implements FixVals {
             var keyColumn = new OrdName(sequence, columnName);
             keyPrimary.columnList.add(keyColumn);
         }
-        for (var keyPrimary : keyPrimaryList) {
-            for (int i = 0; i < keyPrimary.columnList.size(); i++) {
-                if (keyPrimary.columnList.get(i).ord == null) {
-                    keyPrimary.columnList.get(i).ord = i + 1;
-                }
-            }
-            Collections.sort(keyPrimary.columnList, (c1, c2) -> c1.ord.compareTo(c2.ord));
-        }
         var columnsRS = meta.getColumns(this.catalog, this.schema, this.name, "%");
         while (columnsRS.next()) {
             var field = new Field();
@@ -102,12 +94,6 @@ public class TableHead implements FixVals {
             field.table = table;
             fieldList.add(field);
         }
-        for (int i = 0; i < fieldList.size(); i++) {
-            if (fieldList.get(i).ord == null) {
-                fieldList.get(i).ord = i + 1;
-            }
-        }
-        Collections.sort(fieldList, (f1, f2) -> f1.ord.compareTo(f2.ord));
         var foreignRS = meta.getImportedKeys(this.catalog, this.schema, this.name);
         while (foreignRS.next()) {
             var inName = foreignRS.getString("FK_NAME");
@@ -128,14 +114,6 @@ public class TableHead implements FixVals {
             var outColumn = foreignRS.getString("PKCOLUMN_NAME");
             var match = new Match(sequence, inColumn, outColumn);
             keyForeign.matchList.add(match);
-        }
-        for (var keyForeign : keyForeignList) {
-            for (int i = 0; i < keyForeign.matchList.size(); i++) {
-                if (keyForeign.matchList.get(i).ord == null) {
-                    keyForeign.matchList.get(i).ord = i + 1;
-                }
-            }
-            Collections.sort(keyForeign.matchList, (m1, m2) -> m1.ord.compareTo(m2.ord));
         }
         return table;
     }
