@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class WizArray {
-
     @SuppressWarnings("all")
-    public static <T> Boolean has(T value, T... onArray) {
+    public static <T> boolean has(T value, T... onArray) {
         if (onArray != null) {
             for (Object daMatriz : onArray) {
                 if (Objects.equals(value, daMatriz)) {
@@ -20,7 +19,7 @@ public class WizArray {
         return false;
     }
 
-    public static Boolean has(char value, char... onArray) {
+    public static boolean has(char value, char... onArray) {
         if (onArray != null) {
             for (char daMatriz : onArray) {
                 if (daMatriz == value) {
@@ -31,7 +30,7 @@ public class WizArray {
         return false;
     }
 
-    public static Boolean has(int value, int... onArray) {
+    public static boolean has(int value, int... onArray) {
         if (onArray != null) {
             for (int daMatriz : onArray) {
                 if (daMatriz == value) {
@@ -79,5 +78,4 @@ public class WizArray {
         Arrays.fill(result, value);
         return result;
     }
-
 }

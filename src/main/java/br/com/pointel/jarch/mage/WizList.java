@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WizList {
-
     private WizList() {}
 
     public static <T> List<T> insert(int index, T value) {
@@ -25,5 +24,4 @@ public class WizList {
         onList.set(index, value);
         return onList;
     }
-
 }
