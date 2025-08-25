@@ -16,6 +16,6 @@ public enum Nature {
 
     DATE, TIME, DATE_TIME, TIMESTAMP,
 
-    BYTES, BLOB, TEXT
+    BYTES, BLOB, TEXT, OBJECT
 
 }
