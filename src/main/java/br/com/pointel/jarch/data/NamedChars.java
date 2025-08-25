@@ -4,41 +4,37 @@ import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Named implements FixVals {
+public class NamedChars implements FixVals {
 
     public String name;
-    public Nature type;
+    public String chars;
 
-    public Named() {}
+    public NamedChars() {}
 
-    public Named(String name) {
+    public NamedChars(String name) {
         this.name = name;
     }
 
-    public Named(Nature type) {
-        this.type = type;
-    }
-
-    public Named(String name, Nature type) {
+    public NamedChars(String name, String chars) {
         this.name = name;
-        this.type = type;
+        this.chars = chars;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Named)) {
+        if (!(o instanceof NamedChars)) {
             return false;
         }
-        Named named = (Named) o;
+        NamedChars named = (NamedChars) o;
         return Objects.equals(name, named.name)
-                        && Objects.equals(type, named.type);
+                        && Objects.equals(chars, named.chars);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type);
+        return Objects.hash(name, chars);
     }
 
     @Override
@@ -46,8 +42,8 @@ public class Named implements FixVals {
         return new Gson().toJson(this);
     }
 
-    public static Valued fromString(String json) {
-        return new Gson().fromJson(json, Valued.class);
+    public static NamedChars fromString(String json) {
+        return new Gson().fromJson(json, NamedChars.class);
     }
 
 }
