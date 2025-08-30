@@ -11,9 +11,9 @@ import br.com.pointel.jarch.flow.Base36;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
-public class EOrmAll extends EOrm {
+public class EOrmBase extends EOrm {
 
-    public EOrmAll(Connection link) {
+    public EOrmBase(Connection link) {
         super(link);
     }
 
@@ -494,19 +494,26 @@ public class EOrmAll extends EOrm {
             case BIT:
                 builder.append(" BIT");
                 break;
+            case BYTE:
+                builder.append(" BYTE");
+                break;
             case TINY:
-                builder.append(" TINYINT");
+                builder.append(" TINY");
                 break;
             case SMALL:
                 builder.append(" SMALLINT");
                 break;
             case INT:
-            case SERIAL:
                 builder.append(" INTEGER");
                 break;
+            case SERIAL:
+                builder.append(" SERIAL");
+                break;
             case LONG:
+                builder.append(" LONG");
+                break;
             case BIG_SERIAL:
-                builder.append(" BIGINT");
+                builder.append(" BIG_SERIAL");
                 break;
             case FLOAT:
                 builder.append(" FLOAT");
@@ -518,8 +525,19 @@ public class EOrmAll extends EOrm {
                 builder.append(" DOUBLE");
                 break;
             case NUMERIC:
-            case BIG_NUMERIC:
                 builder.append(" NUMERIC");
+                if (field.size != null) {
+                    builder.append("(");
+                    builder.append(field.size);
+                    if (field.precision != null) {
+                        builder.append(",");
+                        builder.append(field.precision);
+                    }
+                    builder.append(")");
+                }
+                break;
+            case BIG_NUMERIC:
+                builder.append(" BIG_NUMERIC");
                 if (field.size != null) {
                     builder.append("(");
                     builder.append(field.size);
@@ -548,11 +566,12 @@ public class EOrmAll extends EOrm {
                 builder.append(" TIME");
                 break;
             case DATE_TIME:
+                builder.append(" DATETIME");
+                break;
             case TIMESTAMP:
                 builder.append(" TIMESTAMP");
                 break;
-            case BYTES:
-            case BLOB:
+            case BYTES, BLOB:
                 builder.append(" BLOB");
                 if (field.size != null) {
                     builder.append("(");
@@ -568,10 +587,18 @@ public class EOrmAll extends EOrm {
                     builder.append(")");
                 }
                 break;
+            case OBJECT:
+                builder.append(" OBJECT");
+                if (field.size != null) {
+                    builder.append("(");
+                    builder.append(field.size);
+                    builder.append(")");
+                }
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
-        if (Objects.equals(field.notNull, true)) {
+        if (Boolean.TRUE.equals(field.notNull)) {
             builder.append(" NOT NULL");
         }
         return builder.toString();
@@ -630,24 +657,15 @@ public class EOrmAll extends EOrm {
 
     protected String makeCondition(FilterLikes likes, String upon) {
         switch (likes) {
-            case EQUALS:
-                return " = " + upon + " ";
-            case BIGGER:
-                return " > " + upon + " ";
-            case LESSER:
-                return " < " + upon + " ";
-            case BIGGER_EQUALS:
-                return " >= " + upon + " ";
-            case LESSER_EQUALS:
-                return " <= " + upon + " ";
-            case STARTS_WITH:
-                return " STARTS WITH " + upon + " ";
-            case ENDS_WITH:
-                return " ENDS WITH " + upon + " ";
-            case CONTAINS:
-                return " CONTAINS " + upon + " ";
-            default:
-                throw new UnsupportedOperationException();
+            case EQUALS: return " = " + upon + " ";
+            case BIGGER: return " > " + upon + " ";
+            case LESSER: return " < " + upon + " ";
+            case BIGGER_EQUALS: return " >= " + upon + " ";
+            case LESSER_EQUALS: return " <= " + upon + " ";
+            case STARTS_WITH: return " STARTS WITH " + upon + " ";
+            case ENDS_WITH: return " ENDS WITH " + upon + " ";
+            case CONTAINS: return " CONTAINS " + upon + " ";
+            default: throw new UnsupportedOperationException();
         }
     }
 
