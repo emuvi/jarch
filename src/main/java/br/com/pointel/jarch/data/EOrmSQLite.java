@@ -36,8 +36,8 @@ public class EOrmSQLite extends EOrmBase {
     }
     
     @Override
-    public String makeCondition(FilterLikes condition, String with) {
-        switch (condition) {
+    public String makeCondition(FilterLikes likes, String with) {
+        switch (likes) {
             case EQUALS: return " = " + with + " ";
             case BIGGER: return " > " + with + " ";
             case LESSER: return " < " + with + " ";
