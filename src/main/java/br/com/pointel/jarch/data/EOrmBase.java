@@ -7,11 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.flow.Base36;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
 public class EOrmBase extends EOrm {
+
+    private static final Logger LOG = LoggerFactory.getLogger(EOrmBase.class);
 
     public EOrmBase(Connection link) {
         super(link);
@@ -42,14 +46,93 @@ public class EOrmBase extends EOrm {
         }
         builder.append(table.getCatalogSchemaName());
         builder.append(" (");
+        var primaryKeyFromFields = new ArrayList<String>();
         for (var i = 0; i < table.fieldList.size(); i++) {
+            var field = table.fieldList.get(i);
             if (i > 0) {
                 builder.append(", ");
             }
-            builder.append(makeNature(table.fieldList.get(i)));
+            builder.append(makeNature(field));
+            if (Boolean.TRUE.equals(field.keyPrimary)) {
+                primaryKeyFromFields.add(field.name);
+            }
+        }
+        if (table.keyPrimaryList != null) {
+            for (var primaryKey : table.keyPrimaryList) {
+                builder.append(", PRIMARY KEY ");
+                if (primaryKey.name != null && !primaryKey.name.isEmpty()) {
+                    builder.append(primaryKey.name);
+                }
+                builder.append(" ( ");
+                var equalsToPrimaryKeyOnFields = true;
+                for (var i = 0; i < primaryKey.columnList.size(); i++) {
+                    var column = primaryKey.columnList.get(i);
+                    if (i > 0) {
+                        builder.append(", ");
+                    }
+                    builder.append(column.name);
+                    if (equalsToPrimaryKeyOnFields && i < primaryKeyFromFields.size()) {
+                        if (!Objects.equals(column.name, primaryKeyFromFields.get(i))) {
+                            equalsToPrimaryKeyOnFields = false;
+                        }
+                    } else {
+                        equalsToPrimaryKeyOnFields = false;
+                    }
+                }
+                if (equalsToPrimaryKeyOnFields && primaryKeyFromFields.size() == primaryKey.columnList.size()) {
+                    primaryKeyFromFields.clear();
+                }
+                builder.append(" ) ");
+            }
+        }
+        if (!primaryKeyFromFields.isEmpty()) {
+            builder.append(", PRIMARY KEY (");
+            for (int i = 0; i < primaryKeyFromFields.size(); i++) {
+                if (i > 0) {
+                    builder.append(", ");
+                }
+                builder.append(primaryKeyFromFields.get(i));
+            }
+            builder.append(")");
+        }
+        if (table.keyForeignList != null) {
+            for (var foreignKey : table.keyForeignList) {
+                builder.append(", FOREIGN KEY ");
+                if (foreignKey.inName != null && !foreignKey.inName.isEmpty()) {
+                    builder.append(foreignKey.inName);
+                }
+                builder.append(" ( ");
+                for (var i = 0; i < foreignKey.matchList.size(); i++) {
+                    var match = foreignKey.matchList.get(i);
+                    if (i > 0) {
+                        builder.append(", ");
+                    }
+                    builder.append(match.inColumn);
+                }
+                builder.append(" ) ");
+                builder.append(" REFERENCES ");
+                builder.append(foreignKey.outTableHead.getCatalogSchemaName());
+                builder.append(" ( ");
+                for (var i = 0; i < foreignKey.matchList.size(); i++) {
+                    var match = foreignKey.matchList.get(i);
+                    if (i > 0) {
+                        builder.append(", ");
+                    }
+                    builder.append(match.outColumn);
+                }
+                builder.append(" ) ");
+            }
         }
         builder.append(")");
-        getLink().createStatement().execute(builder.toString());
+        final String sql = builder.toString();
+        LOG.debug("Creating table with SQL: {}", sql);
+        try (var stmt = getLink().createStatement()) {
+            if (stmt.execute(sql)) {
+                LOG.info("Table created successfully: {}", table.tableHead.getCatalogSchemaName());
+            } else {
+                LOG.warn("Table creation failed: {}", table.tableHead.getCatalogSchemaName());
+            }
+        }
     }
 
     @Override
