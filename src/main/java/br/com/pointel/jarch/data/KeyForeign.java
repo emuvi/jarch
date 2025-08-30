@@ -30,6 +30,26 @@ public class KeyForeign implements FixVals {
         this.outTableHead = outTableHead;
     }
 
+    public KeyForeign(String inName, TableHead outTableHead) {
+        this.inName = inName;
+        this.outTableHead = outTableHead;
+    }
+
+    public KeyForeign(TableHead outTableHead) {
+        this.outTableHead = outTableHead;
+    }
+
+    public KeyForeign(String inName, TableHead outTableHead, List<Match> matchList) {
+        this.inName = inName;
+        this.outTableHead = outTableHead;
+        this.matchList = matchList;
+    }
+
+    public KeyForeign(TableHead outTableHead, List<Match> matchList) {
+        this.outTableHead = outTableHead;
+        this.matchList = matchList;
+    }
+
     public KeyForeign(String inName, String outName, TableHead outTableHead, List<Match> matchList) {
         this.inName = inName;
         this.outName = outName;

@@ -16,6 +16,10 @@ public class KeyPrimary implements FixVals {
         this.name = name;
     }
 
+    public KeyPrimary(List<OrdName> columnList) {
+        this.columnList = columnList;
+    }
+
     public KeyPrimary(String name, List<OrdName> columnList) {
         this.name = name;
         this.columnList = columnList;

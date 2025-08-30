@@ -54,6 +54,21 @@ public class Field implements FixVals {
         this.notNull = notNull;
     }
 
+    public Field(String name, Nature nature, Boolean notNull, Boolean keyPrimary) {
+        this.name = name;
+        this.nature = nature;
+        this.notNull = notNull;
+        this.keyPrimary = keyPrimary;
+    }
+
+    public Field(Integer ord, String name, Nature nature, Boolean notNull, Boolean keyPrimary) {
+        this.ord = ord;
+        this.name = name;
+        this.nature = nature;
+        this.notNull = notNull;
+        this.keyPrimary = keyPrimary;
+    }
+
     public Field(String name, Nature nature, Integer size) {
         this.name = name;
         this.nature = nature;
