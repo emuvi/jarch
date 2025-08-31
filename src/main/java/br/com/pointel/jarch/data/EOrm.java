@@ -20,37 +20,49 @@ public abstract class EOrm implements Closeable {
 
     public abstract Heads getHeads() throws Exception;
 
-    public abstract void create(Table table) throws Exception;
-
     public abstract void create(Table table, boolean ifNotExists) throws Exception;
+    
+    public void create(Table table) throws Exception {
+        create(table, false);
+    }
 
     public void createIfNotExists(Table table) throws Exception {
         create(table, true);
     }
 
-    public abstract void create(Index index) throws Exception;
-
     public abstract void create(Index index, boolean ifNotExists) throws Exception;
+
+    public void create(Index index) throws Exception {
+        create(index, false);
+    }
 
     public void createIfNotExists(Index index) throws Exception {
         create(index, true);
     }
 
-    public abstract ResultSet select(Select select) throws Exception;
-
     public abstract ResultSet select(Select select, Strain strain) throws Exception;
 
-    public abstract String insert(Insert insert) throws Exception;
+    public ResultSet select(Select select) throws Exception {
+        return select(select, null);
+    }
 
     public abstract String insert(Insert insert, Strain strain) throws Exception;
 
-    public abstract Integer update(Update update) throws Exception;
+    public String insert(Insert insert) throws Exception {
+        return insert(insert, null);
+    }
 
     public abstract Integer update(Update update, Strain strain) throws Exception;
 
-    public abstract Integer delete(Delete delete) throws Exception;
+    public Integer update(Update update) throws Exception {
+        return update(update, null);
+    }
 
     public abstract Integer delete(Delete delete, Strain strain) throws Exception;
+
+    public Integer delete(Delete delete) throws Exception {
+        return delete(delete, null);
+    }
 
     public abstract boolean isPrimaryKeyError(Exception error);
 

@@ -33,11 +33,6 @@ public class EOrmBase extends EOrm {
     }
 
     @Override
-    public void create(Table table) throws Exception {
-        create(table, false);
-    }
-
-    @Override
     public void create(Table table, boolean ifNotExists) throws Exception {
         var builder = new StringBuilder();
         builder.append("CREATE TABLE ");
@@ -133,11 +128,6 @@ public class EOrmBase extends EOrm {
     }
 
     @Override
-    public void create(Index index) throws Exception {
-        create(index, false);
-    }
-
-    @Override
     public void create(Index index, boolean ifNotExists) throws Exception {
         if (index.tableHead == null || index.tableHead.name == null || index.tableHead.name.isEmpty()) {
             throw new Exception("Could not create index because: tableHead not defined");
@@ -175,11 +165,6 @@ public class EOrmBase extends EOrm {
             stmt.execute(sql);
             LOG.info("Index created successfully: {}", index.name);
         }
-    }
-
-    @Override
-    public ResultSet select(Select select) throws Exception {
-        return select(select, null);
     }
 
     @Override
@@ -295,11 +280,6 @@ public class EOrmBase extends EOrm {
     }
 
     @Override
-    public String insert(Insert insert) throws Exception {
-        return insert(insert, null);
-    }
-
-    @Override
     public String insert(Insert insert, Strain strain) throws Exception {
         var ID = getID(getLink(), insert);
         var strained = new ArrayList<Pair<String, String>>();
@@ -373,11 +353,6 @@ public class EOrmBase extends EOrm {
     }
 
     @Override
-    public Integer update(Update update) throws Exception {
-        return update(update, null);
-    }
-
-    @Override
     public Integer update(Update update, Strain strain) throws Exception {
         var builder = new StringBuilder("UPDATE ");
         var dataSource = update.tableHead.getCatalogSchemaName();
@@ -429,11 +404,6 @@ public class EOrmBase extends EOrm {
             }
         }
         return prepared.executeUpdate();
-    }
-
-    @Override
-    public Integer delete(Delete delete) throws Exception {
-        return delete(delete, null);
     }
 
     @Override
