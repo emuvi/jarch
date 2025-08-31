@@ -2,7 +2,6 @@ package br.com.pointel.jarch.data;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
