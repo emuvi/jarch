@@ -1,10 +1,11 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Filter implements FixVals {
+public class Filter implements FixVals, Serializable {
 
     public FilterSeems seems;
     public FilterLikes likes;

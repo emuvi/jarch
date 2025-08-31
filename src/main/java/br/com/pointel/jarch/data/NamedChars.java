@@ -1,10 +1,11 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class NamedChars implements FixVals {
+public class NamedChars implements FixVals, Serializable {
 
     public String name;
     public String chars;

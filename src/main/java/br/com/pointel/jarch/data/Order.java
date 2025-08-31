@@ -1,10 +1,11 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Order implements FixVals {
+public class Order implements FixVals, Serializable {
 
     public String name;
     public Boolean desc;

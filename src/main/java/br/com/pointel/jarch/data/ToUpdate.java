@@ -1,10 +1,11 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToUpdate implements FixVals {
+public class ToUpdate implements FixVals, Serializable {
 
     public String base;
     public Update update;

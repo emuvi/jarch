@@ -1,11 +1,12 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Select implements FixVals {
+public class Select implements FixVals, Serializable {
 
     public TableHead tableHead;
     public List<Typed> fieldList;

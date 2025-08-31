@@ -2,9 +2,10 @@ package br.com.pointel.jarch.data;
 
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Match implements FixVals {
+public class Match implements FixVals, Serializable {
 
     public Integer ord;
     public String inColumn;

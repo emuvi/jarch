@@ -1,10 +1,12 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class DataWays implements FixVals {
+public class DataWays implements FixVals, Serializable {
+    
     public DataJdbc dataJdbc;
     public DataLink dataLink;
     public Integer poolMinIdle;

@@ -1,11 +1,12 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
-public class KeyPrimary implements FixVals {
+public class KeyPrimary implements FixVals, Serializable {
 
     public String name;
     public List<OrdName> columnList;

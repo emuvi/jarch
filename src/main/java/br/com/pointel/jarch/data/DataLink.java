@@ -1,5 +1,6 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
@@ -9,7 +10,8 @@ import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
 
-public class DataLink implements FixVals {
+public class DataLink implements FixVals, Serializable {
+    
     public String name;
     public DataBase base;
     public String path;
