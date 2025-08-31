@@ -1,36 +1,34 @@
 package br.com.pointel.jarch.mage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class WizLang {
 
-    private static Logger logger = LoggerFactory.getLogger(WizLang.class);
+    private WizLang() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
+    private static final String OS_NAME_PROPERTY = "os.name";
 
     public static Boolean isWin() {
-        var OS = System.getProperty("os.name").toLowerCase();
-        return (OS.contains("win"));
+        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
+        return (os.contains("win"));
     }
 
     public static Boolean isNix() {
-        var OS = System.getProperty("os.name").toLowerCase();
-        return (OS.contains("nix") || OS.contains("nux") || OS.indexOf("aix") > 0);
+        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
+        return (os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0);
     }
 
     public static Boolean isMac() {
-        var OS = System.getProperty("os.name").toLowerCase();
-        return (OS.contains("mac"));
+        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
+        return (os.contains("mac"));
     }
 
     public static Boolean isSol() {
-        var OS = System.getProperty("os.name").toLowerCase();
-        return (OS.contains("sunos"));
+        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
+        return (os.contains("sunos"));
     }
 
     public static Class<?> getPrimitive(Class<?> ofClazz) {
@@ -95,8 +93,7 @@ public class WizLang {
         }
         if (clazz.equals(boolean.class)) {
             return true;
-        }
-        if (clazz.equals(byte.class)) {
+        } else if (clazz.equals(byte.class)) {
             return true;
         } else if (clazz.equals(char.class)) {
             return true;
@@ -112,9 +109,8 @@ public class WizLang {
             return true;
         } else if (clazz.equals(void.class)) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static boolean isClassChildOf(Class<?> clazz, Class<?> parent) {
@@ -126,72 +122,14 @@ public class WizLang {
         return parent.isAssignableFrom(clazz);
     }
 
-    public static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (Exception e) {
-            logger.error("Could not sleep.", e);
+    public static void forceSetField(Field field, Object ofObject, Object toValue) throws Exception {
+        var accessible = field.canAccess(ofObject);
+        if (!accessible) {
+            field.setAccessible(true);
+        }
+        field.set(ofObject, toValue);
+        if (!accessible) {
+            field.setAccessible(false);
         }
     }
-
-    @SafeVarargs
-    public static <T> List<T> wait(Future<T>... futures) throws Exception {
-        List<T> result = new ArrayList<>();
-        for (Future<T> future : futures) {
-            result.add(future.get());
-        }
-        return result;
-    }
-
-    public static void delay(int millis, Runnable runnable) {
-        new Thread("WizLang Delay") {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(millis);
-                    runnable.run();
-                } catch (Exception e) {
-                    logger.error("Could not delay", e);
-                }
-            }
-        }.start();
-    }
-
-    @SafeVarargs
-    public static <T> T getFirstNonNull(Future<T>... futures) throws Exception {
-        while (true) {
-            var anyWorking = false;
-            for (Future<T> future : futures) {
-                if (future.isDone()) {
-                    if (future.get() != null) {
-                        return future.get();
-                    }
-                } else {
-                    anyWorking = true;
-                }
-            }
-            if (!anyWorking) {
-                break;
-            }
-        }
-        return null;
-    }
-
-    private static ExecutorService executor;
-
-    public static ExecutorService getExecutor() {
-        if (WizLang.executor == null) {
-            WizLang.executor = Executors.newCachedThreadPool();
-        }
-        return WizLang.executor;
-    }
-
-    public static Future<?> submit(Runnable runnable) {
-        return WizLang.getExecutor().submit(runnable);
-    }
-
-    public static <T> Future<T> submit(Callable<T> callable) {
-        return WizLang.getExecutor().submit(callable);
-    }
-
 }
