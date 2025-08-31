@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Registry implements Data, FixVals, Serializable {
+public class Registry implements Data {
 
     public String base;
     public TableHead tableHead;

@@ -1,11 +1,12 @@
 package br.com.pointel.jarch.flow;
 
+import java.io.Serializable;
 import java.lang.reflect.Modifier;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizLang;
 
-public interface FixVals {
+public interface FixVals extends Serializable {
 
     public default void fixNullsAndEnvs() throws Exception {
         fixNulls();

@@ -4,7 +4,7 @@ import br.com.pointel.jarch.flow.FixVals;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Pass implements Data, FixVals, Serializable {
+public class Pass implements Data {
     
     public byte[] data;
 

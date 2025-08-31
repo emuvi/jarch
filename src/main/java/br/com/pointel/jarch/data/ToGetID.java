@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToGetID implements Data, FixVals, Serializable {
+public class ToGetID implements Data {
 
     public String name;
     public Valued filter;

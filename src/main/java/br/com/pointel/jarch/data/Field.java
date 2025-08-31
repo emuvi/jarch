@@ -5,7 +5,7 @@ import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizData;
 
-public class Field implements Data, FixVals, Serializable {
+public class Field implements Data {
 
     public Integer ord;
     public String name;

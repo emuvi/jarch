@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
-public class Table implements Data, FixVals, Serializable {
+public class Table implements Data {
 
     public TableHead tableHead;
     public List<Field> fieldList;

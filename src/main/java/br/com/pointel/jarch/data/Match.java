@@ -4,7 +4,7 @@ import br.com.pointel.jarch.flow.FixVals;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Match implements Data, FixVals, Serializable {
+public class Match implements Data {
 
     public Integer ord;
     public String inColumn;

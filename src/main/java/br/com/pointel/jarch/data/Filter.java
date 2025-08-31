@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Filter implements Data, FixVals, Serializable {
+public class Filter implements Data {
 
     public FilterSeems seems;
     public FilterLikes likes;

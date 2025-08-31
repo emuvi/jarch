@@ -6,7 +6,7 @@ import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizChars;
 
-public class Bases extends ArrayList<DataWays> implements Data, FixVals, Serializable {
+public class Bases extends ArrayList<DataWays> implements Data {
 
     public Bases() {
     }

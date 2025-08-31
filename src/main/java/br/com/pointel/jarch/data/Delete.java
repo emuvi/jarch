@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Delete implements Data, FixVals, Serializable {
+public class Delete implements Data {
 
     public TableHead tableHead;
     public List<Filter> filterList;

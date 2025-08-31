@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
-public class KeyPrimary implements Data, FixVals, Serializable {
+public class KeyPrimary implements Data {
 
     public String name;
     public List<OrdName> columnList;

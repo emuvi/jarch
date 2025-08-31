@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Strain implements Data, FixVals, Serializable {
+public class Strain implements Data {
 
     public String restrict;
     public String modify;

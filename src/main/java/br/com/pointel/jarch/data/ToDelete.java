@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToDelete implements Data, FixVals, Serializable {
+public class ToDelete implements Data {
 
     public String base;
     public Delete delete;

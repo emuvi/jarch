@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToInsert implements Data, FixVals, Serializable {
+public class ToInsert implements Data {
 
     public String base;
     public Insert insert;

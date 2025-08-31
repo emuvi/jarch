@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Linked implements Data, FixVals, Serializable {
+public class Linked implements Data {
 
     public String name;
     public String upon;

@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class OrdName implements Data, FixVals, Serializable {
+public class OrdName implements Data {
 
     public Integer ord;
     public String name;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Typed implements Data, FixVals, Serializable {
+public class Typed implements Data {
 
     public String name;
     public Nature type;

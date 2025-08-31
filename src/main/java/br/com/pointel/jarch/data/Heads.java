@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Heads extends ArrayList<TableHead> implements Data, FixVals, Serializable {
+public class Heads extends ArrayList<TableHead> implements Data {
 
     public Heads() {
     }

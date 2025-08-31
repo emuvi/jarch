@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Order implements Data, FixVals, Serializable {
+public class Order implements Data {
 
     public String name;
     public Boolean desc;
