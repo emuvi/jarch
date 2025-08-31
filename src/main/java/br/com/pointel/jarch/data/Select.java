@@ -32,17 +32,14 @@ public class Select implements FixVals {
         this.joinList = joinList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
-                    List<Filter> filterList) {
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList, List<Filter> filterList) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
         this.filterList = filterList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
-                    List<Filter> filterList,
-                    List<Order> orderList) {
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList, List<Filter> filterList, List<Order> orderList) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
@@ -50,9 +47,7 @@ public class Select implements FixVals {
         this.orderList = orderList;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
-                    List<Filter> filterList,
-                    List<Order> orderList, Integer offset) {
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList, List<Filter> filterList, List<Order> orderList, Integer offset) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
@@ -61,9 +56,7 @@ public class Select implements FixVals {
         this.offset = offset;
     }
 
-    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList,
-                    List<Filter> filterList,
-                    List<Order> orderList, Integer offset, Integer limit) {
+    public Select(TableHead tableHead, List<Typed> fieldList, List<Join> joinList, List<Filter> filterList, List<Order> orderList, Integer offset, Integer limit) {
         this.tableHead = tableHead;
         this.fieldList = fieldList;
         this.joinList = joinList;
@@ -89,13 +82,7 @@ public class Select implements FixVals {
             return false;
         }
         Select select = (Select) o;
-        return Objects.equals(tableHead, select.tableHead)
-                        && Objects.equals(fieldList, select.fieldList)
-                        && Objects.equals(joinList, select.joinList)
-                        && Objects.equals(filterList, select.filterList)
-                        && Objects.equals(orderList, select.orderList)
-                        && Objects.equals(offset, select.offset)
-                        && Objects.equals(limit, select.limit);
+        return Objects.equals(tableHead, select.tableHead) && Objects.equals(fieldList, select.fieldList) && Objects.equals(joinList, select.joinList) && Objects.equals(filterList, select.filterList) && Objects.equals(orderList, select.orderList) && Objects.equals(offset, select.offset) && Objects.equals(limit, select.limit);
     }
 
     @Override
