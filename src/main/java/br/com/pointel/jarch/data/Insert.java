@@ -1,9 +1,7 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import br.com.pointel.jarch.flow.FixVals;
 
 public class Insert implements Data {
 

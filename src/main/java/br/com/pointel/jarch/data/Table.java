@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
 import java.util.List;
-import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
 public class Table implements Data {

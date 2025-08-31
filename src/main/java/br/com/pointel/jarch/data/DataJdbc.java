@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
 import java.util.Objects;
-import br.com.pointel.jarch.flow.FixVals;
 
 public class DataJdbc implements Data {
     

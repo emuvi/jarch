@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import br.com.pointel.jarch.flow.FixVals;
-import java.io.Serializable;
 import java.util.Objects;
 
 public class Match implements Data {

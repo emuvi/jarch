@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
 import java.util.Objects;
-import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizData;
 
 public class Field implements Data {
