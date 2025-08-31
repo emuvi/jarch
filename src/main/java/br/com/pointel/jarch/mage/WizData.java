@@ -66,37 +66,37 @@ public class WizData {
     public static Nature getNatureOfSQL(int jdbcType) {
         switch (jdbcType) {
             case 16:
-                return Nature.BOOL;
+                return Nature.Bool;
             case -7:
             case -6:
             case 5:
             case 4:
-                return Nature.INT;
+                return Nature.Int;
             case -5:
-                return Nature.LONG;
+                return Nature.Long;
             case 6:
             case 7:
-                return Nature.FLOAT;
+                return Nature.Float;
             case 8:
             case 2:
             case 3:
-                return Nature.DOUBLE;
+                return Nature.Double;
             case 1:
             case -15:
-                return Nature.CHAR;
+                return Nature.Char;
             case 12:
             case -1:
             case -9:
             case -16:
-                return Nature.CHARS;
+                return Nature.Chars;
             case 91:
-                return Nature.DATE;
+                return Nature.Date;
             case 92:
             case 2013:
-                return Nature.TIME;
+                return Nature.Time;
             case 93:
             case 2014:
-                return Nature.TIMESTAMP;
+                return Nature.Timestamp;
             case -2:
             case -3:
             case -4:
@@ -104,7 +104,7 @@ public class WizData {
             case 2005:
             case 2011:
             case 2009:
-                return Nature.BYTES;
+                return Nature.Bytes;
             default:
                 throw new UnsupportedOperationException(
                                 "Could not identify the data nature of jdbc type: "
@@ -117,36 +117,36 @@ public class WizData {
             return null;
         }
         switch (nature) {
-            case BOOL:
-            case BIT:
+            case Bool:
+            case Bit:
                 return Boolean.parseBoolean(formatted);
-            case BYTE:
+            case Byte:
                 return Byte.parseByte(formatted);
-            case INT:
-            case SERIAL:
+            case Int:
+            case Serial:
                 return Integer.parseInt(formatted);
-            case LONG:
-            case BIG_SERIAL:
+            case Long:
+            case BigSerial:
                 return Long.parseLong(formatted);
-            case FLOAT:
-            case REAL:
+            case Float:
+            case Real:
                 return Float.parseFloat(formatted);
-            case DOUBLE:
-            case NUMERIC:
+            case Double:
+            case Numeric:
                 return Double.parseDouble(formatted);
-            case CHAR:
+            case Char:
                 return formatted.charAt(0);
-            case CHARS:
-            case TEXT:
+            case Chars:
+            case Text:
                 return formatted;
-            case DATE:
+            case Date:
                 return WizDate.parseDate(formatted);
-            case TIME:
+            case Time:
                 return WizDate.parseTime(formatted);
-            case TIMESTAMP:
+            case Timestamp:
                 return WizDate.parseTimestamp(formatted);
-            case BYTES:
-            case BLOB:
+            case Bytes:
+            case Blob:
                 return WizBytes.decodeFromBase64(formatted);
             default:
                 throw new Exception("DataType Not Supported.");
@@ -158,29 +158,29 @@ public class WizData {
             return "";
         }
         switch (nature) {
-            case BOOL:
-            case BIT:
-            case BYTE:
-            case TINY:
-            case SMALL:
-            case INT:
-            case LONG:
-            case FLOAT:
-            case REAL:
-            case DOUBLE:
-            case NUMERIC:
-            case CHAR:
-            case CHARS:
-            case TEXT:
+            case Bool:
+            case Bit:
+            case Byte:
+            case Tiny:
+            case Small:
+            case Int:
+            case Long:
+            case Float:
+            case Real:
+            case Double:
+            case Numeric:
+            case Char:
+            case Chars:
+            case Text:
                 return String.valueOf(value);
-            case DATE:
+            case Date:
                 return WizDate.formatDate(WizDate.get(value));
-            case TIME:
+            case Time:
                 return WizDate.formatTime(WizDate.get(value));
-            case TIMESTAMP:
+            case Timestamp:
                 return WizDate.formatTimestamp(WizDate.get(value));
-            case BYTES:
-            case BLOB:
+            case Bytes:
+            case Blob:
                 return WizBytes.encodeToBase64(WizBytes.get(value));
             default:
                 throw new Exception("DataType Not Supported.");

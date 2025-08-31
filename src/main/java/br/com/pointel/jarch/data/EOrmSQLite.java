@@ -11,19 +11,19 @@ public class EOrmSQLite extends EOrmBase {
     protected String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
-            case BOOL, BIT, BYTE, TINY, SMALL, INT, SERIAL, LONG, BIG_SERIAL:
+            case Bool, Bit, Byte, Tiny, Small, Int, Serial, Long, BigSerial:
                 builder.append(" INTEGER");
                 break;
-            case FLOAT, REAL, DOUBLE:
+            case Float, Real, Double:
                 builder.append(" REAL");
                 break;    
-            case NUMERIC, BIG_NUMERIC:
+            case Numeric, BigNumeric:
                 builder.append(" NUMERIC");
                 break;
-            case CHAR, CHARS, DATE, TIME, DATE_TIME, TIMESTAMP, TEXT:
+            case Char, Chars, Date, Time, DateTime, Timestamp, Text:
                 builder.append(" TEXT");
                 break;
-            case BYTES, BLOB, OBJECT:
+            case Bytes, Blob, Object:
                 builder.append(" BLOB");
                 break;
             default:
@@ -38,14 +38,14 @@ public class EOrmSQLite extends EOrmBase {
     @Override
     public String makeCondition(FilterLikes likes, String with) {
         switch (likes) {
-            case EQUALS: return " = " + with + " ";
-            case BIGGER: return " > " + with + " ";
-            case LESSER: return " < " + with + " ";
-            case BIGGER_EQUALS: return " >= " + with + " ";
-            case LESSER_EQUALS: return " <= " + with + " ";
-            case STARTS_WITH: return " LIKE " + with + " || '%' ";
-            case ENDS_WITH: return " LIKE '%' || " + with + " ";
-            case CONTAINS: return " LIKE '%' || " + with + " || '%' ";
+            case Equals: return " = " + with + " ";
+            case Bigger: return " > " + with + " ";
+            case Lesser: return " < " + with + " ";
+            case BiggerOrEquals: return " >= " + with + " ";
+            case LesserOrEquals: return " <= " + with + " ";
+            case StartsWith: return " LIKE " + with + " || '%' ";
+            case EndsWith: return " LIKE '%' || " + with + " ";
+            case Contains: return " LIKE '%' || " + with + " || '%' ";
             default: throw new UnsupportedOperationException();
         }
     }

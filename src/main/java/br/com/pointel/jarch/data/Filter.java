@@ -2,10 +2,9 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Filter implements FixVals, Serializable {
+public class Filter implements Data, FixVals, Serializable {
 
     public FilterSeems seems;
     public FilterLikes likes;
@@ -14,15 +13,15 @@ public class Filter implements FixVals, Serializable {
     public FilterTies ties;
 
     public Filter() {
-        this(FilterSeems.IS, FilterLikes.EQUALS, null, null, FilterTies.AND);
+        this(FilterSeems.Is, FilterLikes.Equals, null, null, FilterTies.And);
     }
 
     public Filter(Valued valued) {
-        this(FilterSeems.IS, FilterLikes.EQUALS, valued, null, FilterTies.AND);
+        this(FilterSeems.Is, FilterLikes.Equals, valued, null, FilterTies.And);
     }
 
     public Filter(Linked linked) {
-        this(FilterSeems.IS, FilterLikes.EQUALS, null, linked, FilterTies.AND);
+        this(FilterSeems.Is, FilterLikes.Equals, null, linked, FilterTies.And);
     }
 
     public Filter(FilterSeems seem, FilterLikes likes, Valued valued, Linked linked, FilterTies ties) {
@@ -41,11 +40,7 @@ public class Filter implements FixVals, Serializable {
             return false;
         }
         Filter filter = (Filter) o;
-        return Objects.equals(seems, filter.seems)
-                        && Objects.equals(likes, filter.likes)
-                        && Objects.equals(valued, filter.valued)
-                        && Objects.equals(linked, filter.linked)
-                        && Objects.equals(ties, filter.ties);
+        return Objects.equals(seems, filter.seems) && Objects.equals(likes, filter.likes) && Objects.equals(valued, filter.valued) && Objects.equals(linked, filter.linked) && Objects.equals(ties, filter.ties);
     }
 
     @Override
@@ -55,11 +50,11 @@ public class Filter implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Filter fromString(String json) {
-        return new Gson().fromJson(json, Filter.class);
+    public static Filter fromChars(String chars) {
+        return Data.fromChars(chars, Filter.class);
     }
 
 }

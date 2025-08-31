@@ -2,14 +2,15 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Linked implements FixVals, Serializable {
+public class Linked implements Data, FixVals, Serializable {
+
     public String name;
     public String upon;
 
-    public Linked() {}
+    public Linked() {
+    }
 
     public Linked(String name) {
         this.name = name;
@@ -28,8 +29,7 @@ public class Linked implements FixVals, Serializable {
             return false;
         }
         Linked linked = (Linked) o;
-        return Objects.equals(name, linked.name)
-                        && Objects.equals(upon, linked.upon);
+        return Objects.equals(name, linked.name) && Objects.equals(upon, linked.upon);
     }
 
     @Override
@@ -39,11 +39,11 @@ public class Linked implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Linked fromString(String json) {
-        return new Gson().fromJson(json, Linked.class);
+    public static Linked fromChars(String chars) {
+        return Data.fromChars(chars, Linked.class);
     }
 
 }

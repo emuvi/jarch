@@ -1,6 +1,8 @@
 package br.com.pointel.jarch.data;
 
-public enum DataBase {
+import java.io.Serializable;
+
+public enum DataBase implements Data, Serializable {
 
     SQLiteMemory(
                     "org.sqlite.JDBC",
@@ -110,19 +112,16 @@ public enum DataBase {
                 return data.eOrmClazz;
             }
         }
-        throw new RuntimeException("Not found the EOrm class for this jdbc url.");
+        return null;
     }
 
-    public static DataBase fromString(String string) {
-        if (string == null || string.isBlank()) {
-            return null;
-        }
-        for (DataBase dataBase : DataBase.values()) {
-            if (dataBase.name().equalsIgnoreCase(string)) {
-                return dataBase;
-            }
-        }
-        return null;
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static DataBase fromChars(String chars) {
+        return Data.fromChars(chars, DataBase.class);
     }
 
 }

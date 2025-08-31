@@ -1,11 +1,10 @@
 package br.com.pointel.jarch.data;
 
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Match implements FixVals, Serializable {
+public class Match implements Data, FixVals, Serializable {
 
     public Integer ord;
     public String inColumn;
@@ -52,11 +51,11 @@ public class Match implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Match fromString(String json) {
-        return new Gson().fromJson(json, Match.class);
+    public static Match fromChars(String chars) {
+        return Data.fromChars(chars, Match.class);
     }
 
 }

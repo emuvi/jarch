@@ -1,15 +1,26 @@
 package br.com.pointel.jarch.data;
 
-public enum FilterLikes {
+import java.io.Serializable;
 
-    EQUALS,
+public enum FilterLikes implements Data, Serializable {
 
-    BIGGER, LESSER,
+    Equals,
 
-    BIGGER_EQUALS, LESSER_EQUALS,
+    Bigger, Lesser,
 
-    STARTS_WITH, ENDS_WITH,
+    BiggerOrEquals, LesserOrEquals,
 
-    CONTAINS,
+    StartsWith, EndsWith,
+
+    Contains;
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static FilterLikes fromChars(String chars) {
+        return Data.fromChars(chars, FilterLikes.class);
+    }
 
 }

@@ -1,17 +1,21 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 
-public class Heads extends ArrayList<TableHead> {
+public class Heads extends ArrayList<TableHead> implements Data, FixVals, Serializable {
+
+    public Heads() {
+    }
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Heads fromString(String json) {
-        return new Gson().fromJson(json, Heads.class);
+    public static Heads fromChars(String chars) {
+        return Data.fromChars(chars, Heads.class);
     }
 
 }

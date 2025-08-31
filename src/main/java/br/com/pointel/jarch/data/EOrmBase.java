@@ -583,43 +583,43 @@ public class EOrmBase extends EOrm {
     protected String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
-            case BOOL:
+            case Bool:
                 builder.append(" BOOLEAN");
                 break;
-            case BIT:
+            case Bit:
                 builder.append(" BIT");
                 break;
-            case BYTE:
+            case Byte:
                 builder.append(" BYTE");
                 break;
-            case TINY:
+            case Tiny:
                 builder.append(" TINY");
                 break;
-            case SMALL:
+            case Small:
                 builder.append(" SMALLINT");
                 break;
-            case INT:
+            case Int:
                 builder.append(" INTEGER");
                 break;
-            case SERIAL:
+            case Serial:
                 builder.append(" SERIAL");
                 break;
-            case LONG:
+            case Long:
                 builder.append(" LONG");
                 break;
-            case BIG_SERIAL:
+            case BigSerial:
                 builder.append(" BIG_SERIAL");
                 break;
-            case FLOAT:
+            case Float:
                 builder.append(" FLOAT");
                 break;
-            case REAL:
+            case Real:
                 builder.append(" REAL");
                 break;
-            case DOUBLE:
+            case Double:
                 builder.append(" DOUBLE");
                 break;
-            case NUMERIC:
+            case Numeric:
                 builder.append(" NUMERIC");
                 if (field.size != null) {
                     builder.append("(");
@@ -631,7 +631,7 @@ public class EOrmBase extends EOrm {
                     builder.append(")");
                 }
                 break;
-            case BIG_NUMERIC:
+            case BigNumeric:
                 builder.append(" BIG_NUMERIC");
                 if (field.size != null) {
                     builder.append("(");
@@ -643,10 +643,10 @@ public class EOrmBase extends EOrm {
                     builder.append(")");
                 }
                 break;
-            case CHAR:
+            case Char:
                 builder.append(" CHAR(1)");
                 break;
-            case CHARS:
+            case Chars:
                 builder.append(" VARCHAR");
                 if (field.size != null) {
                     builder.append("(");
@@ -654,19 +654,19 @@ public class EOrmBase extends EOrm {
                     builder.append(")");
                 }
                 break;
-            case DATE:
+            case Date:
                 builder.append(" DATE");
                 break;
-            case TIME:
+            case Time:
                 builder.append(" TIME");
                 break;
-            case DATE_TIME:
+            case DateTime:
                 builder.append(" DATETIME");
                 break;
-            case TIMESTAMP:
+            case Timestamp:
                 builder.append(" TIMESTAMP");
                 break;
-            case BYTES, BLOB:
+            case Bytes, Blob:
                 builder.append(" BLOB");
                 if (field.size != null) {
                     builder.append("(");
@@ -674,7 +674,7 @@ public class EOrmBase extends EOrm {
                     builder.append(")");
                 }
                 break;
-            case TEXT:
+            case Text:
                 builder.append(" TEXT");
                 if (field.size != null) {
                     builder.append("(");
@@ -682,7 +682,7 @@ public class EOrmBase extends EOrm {
                     builder.append(")");
                 }
                 break;
-            case OBJECT:
+            case Object:
                 builder.append(" OBJECT");
                 if (field.size != null) {
                     builder.append("(");
@@ -713,7 +713,7 @@ public class EOrmBase extends EOrm {
             if (i > 0) {
                 builder.append(nextIsOr ? " OR " : " AND ");
             }
-            if (clause.seems == FilterSeems.NOT) {
+            if (clause.seems == FilterSeems.IsNot) {
                 builder.append(" NOT ");
             }
             if (clause.valued != null) {
@@ -745,21 +745,21 @@ public class EOrmBase extends EOrm {
                     builder.append(makeCondition(clause.likes, formWith.toString()));
                 }
             }
-            nextIsOr = clause.ties == FilterTies.OR;
+            nextIsOr = clause.ties == FilterTies.Or;
         }
         return builder.toString();
     }
 
     protected String makeCondition(FilterLikes likes, String upon) {
         switch (likes) {
-            case EQUALS: return " = " + upon + " ";
-            case BIGGER: return " > " + upon + " ";
-            case LESSER: return " < " + upon + " ";
-            case BIGGER_EQUALS: return " >= " + upon + " ";
-            case LESSER_EQUALS: return " <= " + upon + " ";
-            case STARTS_WITH: return " STARTS WITH " + upon + " ";
-            case ENDS_WITH: return " ENDS WITH " + upon + " ";
-            case CONTAINS: return " CONTAINS " + upon + " ";
+            case Equals: return " = " + upon + " ";
+            case Bigger: return " > " + upon + " ";
+            case Lesser: return " < " + upon + " ";
+            case BiggerOrEquals: return " >= " + upon + " ";
+            case LesserOrEquals: return " <= " + upon + " ";
+            case StartsWith: return " STARTS WITH " + upon + " ";
+            case EndsWith: return " ENDS WITH " + upon + " ";
+            case Contains: return " CONTAINS " + upon + " ";
             default: throw new UnsupportedOperationException();
         }
     }
@@ -770,55 +770,55 @@ public class EOrmBase extends EOrm {
             prepared.setObject(index, valued.data);
         } else {
             switch (valued.type) {
-                case BOOL:
+                case Bool:
                     prepared.setBoolean(index, WizData.getBoolean(valued.data));
                     break;
-                case BIT:
-                case BYTE:
+                case Bit:
+                case Byte:
                     prepared.setByte(index, WizData.getByte(valued.data));
                     break;
-                case TINY:
-                case SMALL:
+                case Tiny:
+                case Small:
                     prepared.setShort(index, WizData.getShort(valued.data));
                     break;
-                case INT:
-                case SERIAL:
+                case Int:
+                case Serial:
                     prepared.setInt(index, WizData.getInteger(valued.data));
                     break;
-                case LONG:
-                case BIG_SERIAL:
+                case Long:
+                case BigSerial:
                     prepared.setLong(index, WizData.getLong(valued.data));
                     break;
-                case FLOAT:
-                case REAL:
+                case Float:
+                case Real:
                     prepared.setFloat(index, WizData.getFloat(valued.data));
                     break;
-                case DOUBLE:
-                case NUMERIC:
+                case Double:
+                case Numeric:
                     prepared.setDouble(index, WizData.getDouble(valued.data));
                     break;
-                case BIG_NUMERIC:
+                case BigNumeric:
                     prepared.setBigDecimal(index, WizData.getBigDecimal(valued.data));
                     break;
-                case CHAR:
-                case CHARS:
+                case Char:
+                case Chars:
                     prepared.setString(index, WizData.getString(valued.data));
                     break;
-                case DATE:
+                case Date:
                     prepared.setDate(index, WizData.getDate(valued.data));
                     break;
-                case TIME:
+                case Time:
                     prepared.setTime(index, WizData.getTime(valued.data));
                     break;
-                case DATE_TIME:
-                case TIMESTAMP:
+                case DateTime:
+                case Timestamp:
                     prepared.setTimestamp(index, WizData.getTimestamp(valued.data));
                     break;
-                case BYTES:
+                case Bytes:
                     prepared.setBytes(index, WizData.getBytes(valued.data));
                     break;
-                case BLOB:
-                case TEXT:
+                case Blob:
+                case Text:
                     prepared.setBlob(index, WizData.getBlob(valued.data));
                     break;
                 default:

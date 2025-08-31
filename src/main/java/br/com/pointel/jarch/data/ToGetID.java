@@ -1,9 +1,10 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 
-public class ToGetID {
+public class ToGetID implements Data, FixVals, Serializable {
 
     public String name;
     public Valued filter;
@@ -12,6 +13,10 @@ public class ToGetID {
 
     public ToGetID(String name) {
         this.name = name;
+    }
+
+    public ToGetID(Valued filter) {
+        this.filter = filter;
     }
 
     public ToGetID(String name, Valued filter) {
@@ -27,8 +32,7 @@ public class ToGetID {
             return false;
         }
         ToGetID toGetID = (ToGetID) o;
-        return Objects.equals(name, toGetID.name)
-                        && Objects.equals(filter, toGetID.filter);
+        return Objects.equals(name, toGetID.name) && Objects.equals(filter, toGetID.filter);
     }
 
     @Override
@@ -38,11 +42,11 @@ public class ToGetID {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static ToGetID fromString(String json) {
-        return new Gson().fromJson(json, ToGetID.class);
+    public static ToGetID fromChars(String chars) {
+        return Data.fromChars(chars, ToGetID.class);
     }
 
 }

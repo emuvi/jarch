@@ -67,7 +67,7 @@ public class CSVImport implements Runnable {
         Table table;
         if (tableFile.exists()) {
             pace.info("Loading table metadata from file.");
-            table = Table.fromString(Files.readString(tableFile.toPath()));
+            table = Table.fromChars(Files.readString(tableFile.toPath()));
             eOrmDestiny.create(table, true);
         } else {
             pace.info("Loading table metadata from connection.");
@@ -135,13 +135,13 @@ public class CSVImport implements Runnable {
             return;
         }
         switch (field.nature) {
-            case DATE:
+            case Date:
                 values[i] = new java.sql.Date(((java.util.Date) values[i]).getTime());
                 break;
-            case TIME:
+            case Time:
                 values[i] = new java.sql.Time(((java.util.Date) values[i]).getTime());
                 break;
-            case TIMESTAMP:
+            case Timestamp:
                 values[i] = new java.sql.Timestamp(((java.util.Date) values[i])
                                 .getTime());
                 break;

@@ -2,11 +2,10 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizData;
 
-public class Field implements FixVals, Serializable {
+public class Field implements Data, FixVals, Serializable {
 
     public Integer ord;
     public String name;
@@ -20,7 +19,8 @@ public class Field implements FixVals, Serializable {
 
     private transient Table table;
 
-    public Field() {}
+    public Field() {
+    }
 
     public Field(String name) {
         this.name = name;
@@ -197,14 +197,6 @@ public class Field implements FixVals, Serializable {
         this.table = table;
     }
 
-    public Table getTable() {
-        return table;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
-
     public String getReferenceName() {
         return table != null ? table.getReferenceName() + "." + name : name;
     }
@@ -225,6 +217,14 @@ public class Field implements FixVals, Serializable {
         return WizData.formatValue(this.nature, value);
     }
 
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -243,10 +243,11 @@ public class Field implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Field fromString(String json) {
-        return new Gson().fromJson(json, Field.class);
+    public static Field fromChars(String chars) {
+        return Data.fromChars(chars, Field.class);
     }
+    
 }

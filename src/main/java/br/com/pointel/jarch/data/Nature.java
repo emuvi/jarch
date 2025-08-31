@@ -1,21 +1,33 @@
 package br.com.pointel.jarch.data;
 
-public enum Nature {
+import java.io.Serializable;
 
-    BIT, BOOL, BYTE,
+public enum Nature implements Data, Serializable {
 
-    TINY, SMALL, INT, LONG,
+    Bit, Bool, Byte,
 
-    SERIAL, BIG_SERIAL,
+    Tiny, Small, Int, Long,
 
-    FLOAT, REAL, DOUBLE,
+    Serial, BigSerial,
 
-    NUMERIC, BIG_NUMERIC,
+    Float, Real, Double,
 
-    CHAR, CHARS,
+    Numeric, BigNumeric,
 
-    DATE, TIME, DATE_TIME, TIMESTAMP,
+    Char, Chars,
 
-    BYTES, BLOB, TEXT, OBJECT
+    Date, Time, DateTime, Timestamp,
+
+    Bytes, Blob, Text, Object;
+
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Nature fromChars(String chars) {
+        return Data.fromChars(chars, Nature.class);
+    }
 
 }

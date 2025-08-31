@@ -1,16 +1,18 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.List;
-import com.google.gson.Gson;
 import java.util.Objects;
+import br.com.pointel.jarch.flow.FixVals;
 
-public class Index {
+public class Index implements Data, FixVals, Serializable {
 
     public String name;
     public TableHead tableHead;
     public List<Field> fieldList;
 
-    public Index() {}
+    public Index() {
+    }
 
     public Index(String name) {
         this.name = name;
@@ -58,11 +60,11 @@ public class Index {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Index fromString(String json) {
-        return new Gson().fromJson(json, Index.class);
+    public static Index fromChars(String chars) {
+        return Data.fromChars(chars, Index.class);
     }
 
 }

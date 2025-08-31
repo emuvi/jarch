@@ -3,10 +3,9 @@ package br.com.pointel.jarch.data;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class KeyForeign implements FixVals, Serializable {
+public class KeyForeign implements Data, FixVals, Serializable {
 
     public String inName;
     public String outName;
@@ -76,11 +75,11 @@ public class KeyForeign implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static KeyForeign fromString(String json) {
-        return new Gson().fromJson(json, KeyForeign.class);
+    public static KeyForeign fromChars(String chars) {
+        return Data.fromChars(chars, KeyForeign.class);
     }
 
 }

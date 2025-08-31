@@ -3,10 +3,9 @@ package br.com.pointel.jarch.data;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Select implements FixVals, Serializable {
+public class Select implements Data, FixVals, Serializable {
 
     public TableHead tableHead;
     public List<Typed> fieldList;
@@ -16,7 +15,8 @@ public class Select implements FixVals, Serializable {
     public Integer offset;
     public Integer limit;
 
-    public Select() {}
+    public Select() {
+    }
 
     public Select(TableHead tableHead) {
         this.tableHead = tableHead;
@@ -93,11 +93,11 @@ public class Select implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Select fromString(String json) {
-        return new Gson().fromJson(json, Select.class);
+    public static Select fromChars(String chars) {
+        return Data.fromChars(chars, Select.class);
     }
 
 }

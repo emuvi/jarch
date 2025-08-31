@@ -2,15 +2,15 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToSelect implements FixVals, Serializable {
+public class ToSelect implements Data, FixVals, Serializable {
 
     public String base;
     public Select select;
 
-    public ToSelect() {}
+    public ToSelect() {
+    }
 
     public ToSelect(String base) {
         this.base = base;
@@ -36,9 +36,8 @@ public class ToSelect implements FixVals, Serializable {
         if (!(o instanceof ToSelect)) {
             return false;
         }
-        ToSelect regNew = (ToSelect) o;
-        return Objects.equals(base, regNew.base)
-                        && Objects.equals(select, regNew.select);
+        ToSelect toSelect = (ToSelect) o;
+        return Objects.equals(base, toSelect.base) && Objects.equals(select, toSelect.select);
     }
 
     @Override
@@ -48,11 +47,11 @@ public class ToSelect implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static ToSelect fromString(String json) {
-        return new Gson().fromJson(json, ToSelect.class);
+    public static ToSelect fromChars(String chars) {
+        return Data.fromChars(chars, ToSelect.class);
     }
 
 }

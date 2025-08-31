@@ -1,10 +1,9 @@
 package br.com.pointel.jarch.data;
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class OrdName implements FixVals, Serializable {
+public class OrdName implements Data, FixVals, Serializable {
 
     public Integer ord;
     public String name;
@@ -39,11 +38,11 @@ public class OrdName implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Match fromString(String json) {
-        return new Gson().fromJson(json, Match.class);
+    public static OrdName fromChars(String chars) {
+        return Data.fromChars(chars, OrdName.class);
     }
 
 }

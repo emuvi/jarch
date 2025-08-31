@@ -2,15 +2,15 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToInsert implements FixVals, Serializable {
+public class ToInsert implements Data, FixVals, Serializable {
 
     public String base;
     public Insert insert;
 
-    public ToInsert() {}
+    public ToInsert() {
+    }
 
     public ToInsert(String base) {
         this.base = base;
@@ -36,9 +36,8 @@ public class ToInsert implements FixVals, Serializable {
         if (!(o instanceof ToInsert)) {
             return false;
         }
-        ToInsert regNew = (ToInsert) o;
-        return Objects.equals(base, regNew.base)
-                        && Objects.equals(insert, regNew.insert);
+        ToInsert toInsert = (ToInsert) o;
+        return Objects.equals(base, toInsert.base) && Objects.equals(insert, toInsert.insert);
     }
 
     @Override
@@ -48,11 +47,11 @@ public class ToInsert implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static ToInsert fromString(String json) {
-        return new Gson().fromJson(json, ToInsert.class);
+    public static ToInsert fromChars(String chars) {
+        return Data.fromChars(chars, ToInsert.class);
     }
 
 }

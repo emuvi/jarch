@@ -1,11 +1,10 @@
 package br.com.pointel.jarch.data;
 
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Pass implements FixVals, Serializable {
+public class Pass implements Data, FixVals, Serializable {
     
     public byte[] data;
 
@@ -33,7 +32,7 @@ public class Pass implements FixVals, Serializable {
             return false;
         }
         Pass pass = (Pass) o;
-        return Objects.equals(data, pass.data);
+        return Objects.deepEquals(data, pass.data);
     }
 
     @Override
@@ -43,11 +42,11 @@ public class Pass implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Pass fromString(String json) {
-        return new Gson().fromJson(json, Pass.class);
+    public static Pass fromChars(String chars) {
+        return Data.fromChars(chars, Pass.class);
     }
     
 }

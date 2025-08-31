@@ -2,16 +2,16 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.List;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
-public class KeyPrimary implements FixVals, Serializable {
+public class KeyPrimary implements Data, FixVals, Serializable {
 
     public String name;
     public List<OrdName> columnList;
 
-    public KeyPrimary() {}
+    public KeyPrimary() {
+    }
 
     public KeyPrimary(String name) {
         this.name = name;
@@ -44,11 +44,11 @@ public class KeyPrimary implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static KeyPrimary fromString(String json) {
-        return new Gson().fromJson(json, KeyPrimary.class);
+    public static KeyPrimary fromChars(String chars) {
+        return Data.fromChars(chars, KeyPrimary.class);
     }
 
 }

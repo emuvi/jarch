@@ -2,15 +2,15 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Registry implements FixVals, Serializable {
+public class Registry implements Data, FixVals, Serializable {
 
     public String base;
     public TableHead tableHead;
 
-    public Registry() {}
+    public Registry() {
+    }
 
     public Registry(String base) {
         this.base = base;
@@ -33,8 +33,7 @@ public class Registry implements FixVals, Serializable {
             return false;
         }
         Registry registry = (Registry) o;
-        return Objects.equals(base, registry.base)
-                        && Objects.equals(tableHead, registry.tableHead);
+        return Objects.equals(base, registry.base) && Objects.equals(tableHead, registry.tableHead);
     }
 
     @Override
@@ -44,11 +43,11 @@ public class Registry implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Registry fromString(String json) {
-        return new Gson().fromJson(json, Registry.class);
+    public static Registry fromChars(String chars) {
+        return Data.fromChars(chars, Registry.class);
     }
 
 }

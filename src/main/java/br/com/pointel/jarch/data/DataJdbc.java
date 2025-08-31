@@ -2,10 +2,10 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class DataJdbc implements FixVals, Serializable {
+public class DataJdbc implements Data, FixVals, Serializable {
+    
     public String name;
     public String url;
     public String user;
@@ -43,10 +43,7 @@ public class DataJdbc implements FixVals, Serializable {
             return false;
         }
         DataJdbc dataJdbc = (DataJdbc) o;
-        return Objects.equals(name, dataJdbc.name)
-                        && Objects.equals(url, dataJdbc.url)
-                        && Objects.equals(user, dataJdbc.user)
-                        && Objects.equals(pass, dataJdbc.pass);
+        return Objects.equals(name, dataJdbc.name) && Objects.equals(url, dataJdbc.url) && Objects.equals(user, dataJdbc.user) && Objects.equals(pass, dataJdbc.pass);
     }
 
     @Override
@@ -56,10 +53,10 @@ public class DataJdbc implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static DataJdbc fromString(String json) {
-        return new Gson().fromJson(json, DataJdbc.class);
+    public static DataJdbc fromChars(String chars) {
+        return Data.fromChars(chars, DataJdbc.class);
     }
 }

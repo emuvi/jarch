@@ -2,16 +2,16 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Strain implements FixVals, Serializable {
+public class Strain implements Data, FixVals, Serializable {
 
     public String restrict;
     public String modify;
     public String include;
 
-    public Strain() {}
+    public Strain() {
+    }
 
     public Strain(String restrict) {
         this.restrict = restrict;
@@ -36,9 +36,7 @@ public class Strain implements FixVals, Serializable {
             return false;
         }
         Strain strain = (Strain) o;
-        return Objects.equals(restrict, strain.restrict)
-                        && Objects.equals(modify, strain.modify)
-                        && Objects.equals(include, strain.include);
+        return Objects.equals(restrict, strain.restrict) && Objects.equals(modify, strain.modify) && Objects.equals(include, strain.include);
     }
 
     @Override
@@ -48,11 +46,11 @@ public class Strain implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Strain fromString(String json) {
-        return new Gson().fromJson(json, Strain.class);
+    public static Strain fromChars(String chars) {
+        return Data.fromChars(chars, Strain.class);
     }
 
 }

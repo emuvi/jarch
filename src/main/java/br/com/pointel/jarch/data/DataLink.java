@@ -5,12 +5,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
 
-public class DataLink implements FixVals, Serializable {
+public class DataLink implements Data, FixVals, Serializable {
     
     public String name;
     public DataBase base;
@@ -19,6 +18,8 @@ public class DataLink implements FixVals, Serializable {
     public String data;
     public String user;
     public String pass;
+
+    private transient Connection linked = null;
 
     public DataLink() {}
 
@@ -52,8 +53,7 @@ public class DataLink implements FixVals, Serializable {
         this.data = data;
     }
 
-    public DataLink(String name, DataBase base, String path, String data, String user,
-                    String pass) {
+    public DataLink(String name, DataBase base, String path, String data, String user, String pass) {
         this.name = name;
         this.base = base;
         this.path = path;
@@ -92,8 +92,7 @@ public class DataLink implements FixVals, Serializable {
         this.pass = pass;
     }
 
-    public DataLink(String name, DataBase base, String path, Integer port, String data,
-                    String user, String pass) {
+    public DataLink(String name, DataBase base, String path, Integer port, String data, String user, String pass) {
         this.name = name;
         this.base = base;
         this.path = path;
@@ -129,8 +128,6 @@ public class DataLink implements FixVals, Serializable {
         return DriverManager.getConnection(this.formUrl());
     }
 
-    private transient Connection linked = null;
-
     public Connection link() throws Exception {
         if (this.linked == null) {
             this.linked = this.connect();
@@ -153,13 +150,7 @@ public class DataLink implements FixVals, Serializable {
             return false;
         }
         DataLink dataLink = (DataLink) o;
-        return Objects.equals(name, dataLink.name)
-                        && Objects.equals(base, dataLink.base)
-                        && Objects.equals(path, dataLink.path)
-                        && Objects.equals(port, dataLink.port)
-                        && Objects.equals(data, dataLink.data)
-                        && Objects.equals(user, dataLink.user)
-                        && Objects.equals(pass, dataLink.pass);
+        return Objects.equals(name, dataLink.name) && Objects.equals(base, dataLink.base) && Objects.equals(path, dataLink.path) && Objects.equals(port, dataLink.port) && Objects.equals(data, dataLink.data) && Objects.equals(user, dataLink.user) && Objects.equals(pass, dataLink.pass);
     }
 
     @Override
@@ -169,20 +160,20 @@ public class DataLink implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static DataLink fromString(String json) {
-        return new Gson().fromJson(json, DataLink.class);
+    public static DataLink fromChars(String chars) {
+        return Data.fromChars(chars, DataLink.class);
     }
 
     public static DataLink fromAssigned(String inChars) {
         DataLink result = new DataLink();
         Map<String, String> assigned = WizChars.getAssigned(inChars);
         result.name = assigned.get("name");
-        result.base = DataBase.fromString(assigned.get("base"));
+        result.base = DataBase.fromChars(assigned.get("base"));
         result.path = assigned.get("path");
-        result.port = WizInt.fromString(assigned.get("port"));
+        result.port = WizInt.fromChars(assigned.get("port"));
         result.data = assigned.get("data");
         result.user = assigned.get("user");
         result.pass = assigned.get("pass");

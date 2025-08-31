@@ -4,19 +4,19 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 
-public class TableHead implements FixVals, Serializable {
+public class TableHead implements Data, FixVals, Serializable {
 
     public String catalog;
     public String schema;
     public String name;
     public String alias;
 
-    public TableHead() {}
+    public TableHead() {
+    }
 
     public TableHead(String name) {
         this.name = name;
@@ -123,11 +123,8 @@ public class TableHead implements FixVals, Serializable {
         if (!(o instanceof TableHead)) {
             return false;
         }
-        TableHead registry = (TableHead) o;
-        return Objects.equals(catalog, registry.catalog)
-                        && Objects.equals(schema, registry.schema)
-                        && Objects.equals(name, registry.name)
-                        && Objects.equals(alias, registry.alias);
+        TableHead tableHead = (TableHead) o;
+        return Objects.equals(catalog, tableHead.catalog) && Objects.equals(schema, tableHead.schema) && Objects.equals(name, tableHead.name) && Objects.equals(alias, tableHead.alias);
     }
 
     @Override
@@ -137,11 +134,11 @@ public class TableHead implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static TableHead fromString(String json) {
-        return new Gson().fromJson(json, TableHead.class);
+    public static TableHead fromChars(String chars) {
+        return Data.fromChars(chars, TableHead.class);
     }
 
 }

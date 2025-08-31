@@ -1,11 +1,15 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
-import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizChars;
 
-public class Bases extends ArrayList<DataWays> {
+public class Bases extends ArrayList<DataWays> implements Data, FixVals, Serializable {
+
+    public Bases() {
+    }
 
     public DataWays getFromName(String name) {
         for (var dataWay : this) {
@@ -13,9 +17,10 @@ public class Bases extends ArrayList<DataWays> {
                 return dataWay;
             }
         }
-        throw new RuntimeException("Did not found a DataWay with this name: '" + name + "'.");
+        return null;
     }
 
+    @Override
     public void fixDefaults() throws Exception {
         for (var dataWay : this) {
             dataWay.fixNullsAndEnvs();
@@ -25,11 +30,11 @@ public class Bases extends ArrayList<DataWays> {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Bases fromString(String json) {
-        return new Gson().fromJson(json, Bases.class);
+    public static Bases fromChars(String chars) {
+        return Data.fromChars(chars, Bases.class);
     }
 
 }

@@ -3,16 +3,16 @@ package br.com.pointel.jarch.data;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Insert implements FixVals, Serializable {
+public class Insert implements Data, FixVals, Serializable {
 
     public TableHead tableHead;
     public List<Valued> valuedList;
     public ToGetID toGetID;
 
-    public Insert() {}
+    public Insert() {
+    }
 
     public Insert(TableHead tableHead) {
         this.tableHead = tableHead;
@@ -37,9 +37,7 @@ public class Insert implements FixVals, Serializable {
             return false;
         }
         Insert insert = (Insert) o;
-        return Objects.equals(tableHead, insert.tableHead)
-                        && Objects.equals(valuedList, insert.valuedList)
-                        && Objects.equals(toGetID, insert.toGetID);
+        return Objects.equals(tableHead, insert.tableHead) && Objects.equals(valuedList, insert.valuedList) && Objects.equals(toGetID, insert.toGetID);
     }
 
     @Override
@@ -49,11 +47,11 @@ public class Insert implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Insert fromString(String json) {
-        return new Gson().fromJson(json, Insert.class);
+    public static Insert fromChars(String chars) {
+        return Data.fromChars(chars, Insert.class);
     }
 
 }

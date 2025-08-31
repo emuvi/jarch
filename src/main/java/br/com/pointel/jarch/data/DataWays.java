@@ -2,10 +2,9 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class DataWays implements FixVals, Serializable {
+public class DataWays implements Data, FixVals, Serializable {
     
     public DataJdbc dataJdbc;
     public DataLink dataLink;
@@ -13,9 +12,11 @@ public class DataWays implements FixVals, Serializable {
     public Integer poolMaxIdle;
     public Integer poolMaxTotal;
 
+    public DataWays() {
+    }
+
     public DataWays(DataJdbc dataJdbc) {
         this.dataJdbc = dataJdbc;
-        this.dataLink = null;
         this.poolMinIdle = 1;
         this.poolMaxIdle = 1;
         this.poolMaxTotal = 1;
@@ -93,25 +94,6 @@ public class DataWays implements FixVals, Serializable {
     }
 
     @Override
-    public void fixNulls() throws Exception {
-        if (this.dataJdbc != null) {
-            this.dataJdbc.fixNulls();
-        }
-        if (this.dataLink != null) {
-            this.dataLink.fixNulls();
-        }
-        if (this.poolMinIdle == null) {
-            this.poolMinIdle = 1;
-        }
-        if (this.poolMaxIdle == null) {
-            this.poolMaxIdle = 1;
-        }
-        if (this.poolMaxTotal == null) {
-            this.poolMaxTotal = 1;
-        }
-    }
-
-    @Override
     public void fixNullsAndEnvs() throws Exception {
         if (this.dataJdbc != null) {
             this.dataJdbc.fixNullsAndEnvs();
@@ -123,10 +105,29 @@ public class DataWays implements FixVals, Serializable {
             this.poolMinIdle = 1;
         }
         if (this.poolMaxIdle == null) {
-            this.poolMaxIdle = 1;
+            this.poolMaxIdle = 5;
         }
         if (this.poolMaxTotal == null) {
-            this.poolMaxTotal = 1;
+            this.poolMaxTotal = 10;
+        }
+    }
+
+    @Override
+    public void fixNulls() throws Exception {
+        if (this.dataJdbc != null) {
+            this.dataJdbc.fixNulls();
+        }
+        if (this.dataLink != null) {
+            this.dataLink.fixNulls();
+        }
+        if (this.poolMinIdle == null) {
+            this.poolMinIdle = 1;
+        }
+        if (this.poolMaxIdle == null) {
+            this.poolMaxIdle = 5;
+        }
+        if (this.poolMaxTotal == null) {
+            this.poolMaxTotal = 10;
         }
     }
 
@@ -138,11 +139,7 @@ public class DataWays implements FixVals, Serializable {
             return false;
         }
         DataWays dataWays = (DataWays) o;
-        return Objects.equals(dataJdbc, dataWays.dataJdbc)
-                        && Objects.equals(dataLink, dataWays.dataLink)
-                        && Objects.equals(poolMinIdle, dataWays.poolMinIdle)
-                        && Objects.equals(poolMaxIdle, dataWays.poolMaxIdle)
-                        && Objects.equals(poolMaxTotal, dataWays.poolMaxTotal);
+        return Objects.equals(dataJdbc, dataWays.dataJdbc) && Objects.equals(dataLink, dataWays.dataLink) && Objects.equals(poolMinIdle, dataWays.poolMinIdle) && Objects.equals(poolMaxIdle, dataWays.poolMaxIdle) && Objects.equals(poolMaxTotal, dataWays.poolMaxTotal);
     }
 
     @Override
@@ -152,11 +149,11 @@ public class DataWays implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static DataWays fromString(String json) {
-        return new Gson().fromJson(json, DataWays.class);
+    public static DataWays fromChars(String chars) {
+        return Data.fromChars(chars, DataWays.class);
     }
 
 }

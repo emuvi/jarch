@@ -1,17 +1,19 @@
 package br.com.pointel.jarch.data;
 
+import java.io.Serializable;
 import java.util.List;
-import com.google.gson.Gson;
+import br.com.pointel.jarch.flow.FixVals;
 import java.util.Objects;
 
-public class Table {
+public class Table implements Data, FixVals, Serializable {
 
     public TableHead tableHead;
     public List<Field> fieldList;
     public List<KeyPrimary> keyPrimaryList;
     public List<KeyForeign> keyForeignList;
 
-    public Table() {}
+    public Table() {
+    }
 
     public Table(TableHead tableHead) {
         this.tableHead = tableHead;
@@ -65,11 +67,11 @@ public class Table {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Table fromString(String json) {
-        return new Gson().fromJson(json, Table.class);
+    public static Table fromChars(String chars) {
+        return Data.fromChars(chars, Table.class);
     }
 
 }

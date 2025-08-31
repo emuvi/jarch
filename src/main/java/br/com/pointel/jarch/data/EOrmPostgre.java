@@ -12,17 +12,17 @@ public class EOrmPostgre extends EOrmBase {
     public String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
-            case BOOL: builder.append(" BOOLEAN"); break;
-            case BIT: builder.append(" BIT"); break;
-            case BYTE, TINY: builder.append(" SMALLINT"); break;
-            case SMALL: builder.append(" SMALLINT"); break;
-            case INT: builder.append(" INTEGER"); break;
-            case SERIAL: builder.append(" SERIAL"); break;
-            case LONG: builder.append(" BIGINT"); break;
-            case BIG_SERIAL: builder.append(" BIGSERIAL"); break;
-            case FLOAT, REAL: builder.append(" REAL"); break;
-            case DOUBLE: builder.append(" DOUBLE PRECISION"); break;
-            case NUMERIC, BIG_NUMERIC: 
+            case Bool: builder.append(" BOOLEAN"); break;
+            case Bit: builder.append(" BIT"); break;
+            case Byte, Tiny: builder.append(" SMALLINT"); break;
+            case Small: builder.append(" SMALLINT"); break;
+            case Int: builder.append(" INTEGER"); break;
+            case Serial: builder.append(" SERIAL"); break;
+            case Long: builder.append(" BIGINT"); break;
+            case BigSerial: builder.append(" BIGSERIAL"); break;
+            case Float, Real: builder.append(" REAL"); break;
+            case Double: builder.append(" DOUBLE PRECISION"); break;
+            case Numeric, BigNumeric: 
                 builder.append(" NUMERIC");
                 if (field.size != null) {
                     builder.append("(").append(field.size);
@@ -32,19 +32,19 @@ public class EOrmPostgre extends EOrmBase {
                     builder.append(")");
                 }
                 break;
-            case CHAR: builder.append(" CHAR(1)"); break;
-            case CHARS: 
+            case Char: builder.append(" CHAR(1)"); break;
+            case Chars: 
                 builder.append(" VARCHAR");
                 if (field.size != null) {
                     builder.append("(").append(field.size).append(")");
                 }
                 break;
-            case DATE: builder.append(" DATE"); break;
-            case TIME: builder.append(" TIME"); break;
-            case DATE_TIME, TIMESTAMP: builder.append(" TIMESTAMP"); break;
-            case BYTES, BLOB: builder.append(" BYTEA"); break;
-            case TEXT: builder.append(" TEXT"); break;
-            case OBJECT: builder.append(" JSONB"); break;
+            case Date: builder.append(" DATE"); break;
+            case Time: builder.append(" TIME"); break;
+            case DateTime, Timestamp: builder.append(" TIMESTAMP"); break;
+            case Bytes, Blob: builder.append(" BYTEA"); break;
+            case Text: builder.append(" TEXT"); break;
+            case Object: builder.append(" JSONB"); break;
             default: throw new UnsupportedOperationException();
         }
         if (Boolean.TRUE.equals(field.notNull)) {
@@ -56,14 +56,14 @@ public class EOrmPostgre extends EOrmBase {
     @Override
     public String makeCondition(FilterLikes likes, String with) {
         switch (likes) {
-            case EQUALS: return " = " + with + " ";
-            case BIGGER: return " > " + with + " ";
-            case LESSER: return " < " + with + " ";
-            case BIGGER_EQUALS: return " >= " + with + " ";
-            case LESSER_EQUALS: return " <= " + with + " ";
-            case STARTS_WITH: return " LIKE " + with + " || '%' ";
-            case ENDS_WITH: return " LIKE '%' || " + with + " ";
-            case CONTAINS: return " LIKE '%' || " + with + " || '%' ";
+            case Equals: return " = " + with + " ";
+            case Bigger: return " > " + with + " ";
+            case Lesser: return " < " + with + " ";
+            case BiggerOrEquals: return " >= " + with + " ";
+            case LesserOrEquals: return " <= " + with + " ";
+            case StartsWith: return " LIKE " + with + " || '%' ";
+            case EndsWith: return " LIKE '%' || " + with + " ";
+            case Contains: return " LIKE '%' || " + with + " || '%' ";
             default: throw new UnsupportedOperationException();
         }
     }

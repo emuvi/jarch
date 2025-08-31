@@ -2,10 +2,9 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Valued implements FixVals, Serializable {
+public class Valued implements Data, FixVals, Serializable {
 
     public String name;
     public Nature type;
@@ -41,9 +40,7 @@ public class Valued implements FixVals, Serializable {
             return false;
         }
         Valued valued = (Valued) o;
-        return Objects.equals(name, valued.name)
-                        && Objects.equals(type, valued.type)
-                        && Objects.equals(data, valued.data);
+        return Objects.equals(name, valued.name) && Objects.equals(type, valued.type) && Objects.equals(data, valued.data);
     }
 
     @Override
@@ -53,11 +50,11 @@ public class Valued implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Valued fromString(String json) {
-        return new Gson().fromJson(json, Valued.class);
+    public static Valued fromChars(String chars) {
+        return Data.fromChars(chars, Valued.class);
     }
 
 }

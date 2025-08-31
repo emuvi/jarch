@@ -3,15 +3,15 @@ package br.com.pointel.jarch.data;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Delete implements FixVals, Serializable {
+public class Delete implements Data, FixVals, Serializable {
 
     public TableHead tableHead;
     public List<Filter> filterList;
 
-    public Delete() {}
+    public Delete() {
+    }
 
     public Delete(TableHead tableHead) {
         this.tableHead = tableHead;
@@ -30,8 +30,7 @@ public class Delete implements FixVals, Serializable {
             return false;
         }
         Delete delete = (Delete) o;
-        return Objects.equals(tableHead, delete.tableHead)
-                        && Objects.equals(filterList, delete.filterList);
+        return Objects.equals(tableHead, delete.tableHead) && Objects.equals(filterList, delete.filterList);
     }
 
     @Override
@@ -41,11 +40,11 @@ public class Delete implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Delete fromString(String json) {
-        return new Gson().fromJson(json, Delete.class);
+    public static Delete fromChars(String chars) {
+        return Data.fromChars(chars, Delete.class);
     }
 
 }

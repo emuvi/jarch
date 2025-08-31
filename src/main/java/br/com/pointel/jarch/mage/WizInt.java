@@ -1,10 +1,14 @@
 package br.com.pointel.jarch.mage;
 
 public class WizInt {
-    public static Integer fromString(String value) {
-        if (value == null || value.isBlank()) {
+    
+    private WizInt() {
+    }
+
+    public static Integer fromChars(String chars) {
+        if (chars == null || chars.isBlank()) {
             return null;
         }
-        return Integer.parseInt(value);
+        return Integer.parseInt(chars);
     }
 }

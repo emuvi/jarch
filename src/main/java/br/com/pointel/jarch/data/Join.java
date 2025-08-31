@@ -3,16 +3,17 @@ package br.com.pointel.jarch.data;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Join implements FixVals, Serializable {
+public class Join implements Data, FixVals, Serializable {
+
     public TableHead tableHead;
     public String alias;
     public List<Filter> filterList;
     public JoinTies ties;
 
-    public Join() {}
+    public Join() {
+    }
 
     public Join(TableHead tableHead) {
         this.tableHead = tableHead;
@@ -69,11 +70,8 @@ public class Join implements FixVals, Serializable {
         if (!(o instanceof Join)) {
             return false;
         }
-        Join joined = (Join) o;
-        return Objects.equals(tableHead, joined.tableHead)
-                        && Objects.equals(alias, joined.alias)
-                        && Objects.equals(filterList, joined.filterList)
-                        && Objects.equals(ties, joined.ties);
+        Join join = (Join) o;
+        return Objects.equals(tableHead, join.tableHead) && Objects.equals(alias, join.alias) && Objects.equals(filterList, join.filterList) && Objects.equals(ties, join.ties);
     }
 
     @Override
@@ -83,11 +81,11 @@ public class Join implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Join fromString(String json) {
-        return new Gson().fromJson(json, Join.class);
+    public static Join fromChars(String chars) {
+        return Data.fromChars(chars, Join.class);
     }
 
 }

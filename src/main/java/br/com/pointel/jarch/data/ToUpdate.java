@@ -2,10 +2,9 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class ToUpdate implements FixVals, Serializable {
+public class ToUpdate implements Data, FixVals, Serializable {
 
     public String base;
     public Update update;
@@ -36,9 +35,8 @@ public class ToUpdate implements FixVals, Serializable {
         if (!(o instanceof ToUpdate)) {
             return false;
         }
-        ToUpdate regNew = (ToUpdate) o;
-        return Objects.equals(base, regNew.base)
-                        && Objects.equals(update, regNew.update);
+        ToUpdate toUpdate = (ToUpdate) o;
+        return Objects.equals(base, toUpdate.base) && Objects.equals(update, toUpdate.update);
     }
 
     @Override
@@ -48,11 +46,11 @@ public class ToUpdate implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static ToUpdate fromString(String json) {
-        return new Gson().fromJson(json, ToUpdate.class);
+    public static ToUpdate fromChars(String chars) {
+        return Data.fromChars(chars, ToUpdate.class);
     }
 
 }

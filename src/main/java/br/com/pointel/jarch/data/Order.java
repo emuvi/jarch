@@ -2,15 +2,15 @@ package br.com.pointel.jarch.data;
 
 import java.io.Serializable;
 import java.util.Objects;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 
-public class Order implements FixVals, Serializable {
+public class Order implements Data, FixVals, Serializable {
 
     public String name;
     public Boolean desc;
 
-    public Order() {}
+    public Order() {
+    }
 
     public Order(String name) {
         this.name = name;
@@ -29,8 +29,7 @@ public class Order implements FixVals, Serializable {
             return false;
         }
         Order order = (Order) o;
-        return Objects.equals(name, order.name)
-                        && Objects.equals(desc, order.desc);
+        return Objects.equals(name, order.name) && Objects.equals(desc, order.desc);
     }
 
     @Override
@@ -40,11 +39,11 @@ public class Order implements FixVals, Serializable {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Order fromString(String json) {
-        return new Gson().fromJson(json, Order.class);
+    public static Order fromChars(String chars) {
+        return Data.fromChars(chars, Order.class);
     }
 
 }
