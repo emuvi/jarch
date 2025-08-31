@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author emuvi
  */
-public class CharsSectionsMap extends LinkedHashMap<String, ArrayList<String>> {
+public class CharsSectionsMap extends LinkedHashMap<String, List<String>> {
     
     public List<String> newSection(String name) {
         var result = new ArrayList<String>();
