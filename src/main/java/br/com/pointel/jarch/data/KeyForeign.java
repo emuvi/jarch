@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class KeyForeign implements Data {
 
@@ -56,19 +55,13 @@ public class KeyForeign implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof KeyForeign)) {
-            return false;
-        }
-        KeyForeign keyForeign = (KeyForeign) o;
-        return Objects.equals(inName, keyForeign.inName) && Objects.equals(outName, keyForeign.outName) && Objects.equals(outTableHead, keyForeign.outTableHead) && Objects.equals(matchList, keyForeign.matchList);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inName, outName, outTableHead, matchList);
+        return this.deepHash();
     }
 
     @Override

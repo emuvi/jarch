@@ -4,14 +4,81 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import br.com.pointel.jarch.data.Pair;
 
 public class WizArray {
+    
+    private WizArray() {
+    }
+
+    public static boolean is(Object object) {
+        return object != null && 
+            (object.getClass().isArray() || 
+            object instanceof List ||
+            object instanceof Map);
+    }
+
+    public static Object[] get(Object object) {
+        if (object != null) {
+            if (object.getClass().isArray()) {
+                return (Object[]) object;
+            } else if (object instanceof List) {
+                return ((List<?>) object).toArray();
+            } else if (object instanceof Map objectMap) {
+                final var result = new Object[objectMap.size()];
+                int i = 0;
+                for (var key : objectMap.keySet()) {
+                    result[i++] = new Pair<>(key, objectMap.get(key));
+                }
+                return result;
+            } else {
+                throw new IllegalArgumentException("Unsupported type");
+            }
+        }
+        return null;
+    }
+
     @SuppressWarnings("all")
     public static <T> boolean has(T value, T... onArray) {
         if (onArray != null) {
             for (Object daMatriz : onArray) {
                 if (Objects.equals(value, daMatriz)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public static boolean has(boolean value, boolean... onArray) {
+        if (onArray != null) {
+            for (boolean daMatriz : onArray) {
+                if (daMatriz == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean has(byte value, byte... onArray) {
+        if (onArray != null) {
+            for (byte daMatriz : onArray) {
+                if (daMatriz == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean has(short value, short... onArray) {
+        if (onArray != null) {
+            for (short daMatriz : onArray) {
+                if (daMatriz == value) {
                     return true;
                 }
             }
@@ -34,6 +101,39 @@ public class WizArray {
         if (onArray != null) {
             for (int daMatriz : onArray) {
                 if (daMatriz == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean has(long value, long... onArray) {
+        if (onArray != null) {
+            for (long daMatriz : onArray) {
+                if (daMatriz == value) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean has(float value, float... onArray) {
+        if (onArray != null) {
+            for (float daMatriz : onArray) {
+                if (Float.compare(daMatriz, value) == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean has(double value, double... onArray) {
+        if (onArray != null) {
+            for (double daMatriz : onArray) {
+                if (Double.compare(daMatriz, value) == 0) {
                     return true;
                 }
             }

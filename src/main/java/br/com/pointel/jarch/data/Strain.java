@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class Strain implements Data {
 
     public String restrict;
@@ -27,19 +25,13 @@ public class Strain implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Strain)) {
-            return false;
-        }
-        Strain strain = (Strain) o;
-        return Objects.equals(restrict, strain.restrict) && Objects.equals(modify, strain.modify) && Objects.equals(include, strain.include);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(restrict, modify, include);
+        return this.deepHash();
     }
 
     @Override

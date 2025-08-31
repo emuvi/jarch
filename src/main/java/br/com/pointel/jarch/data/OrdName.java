@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class OrdName implements Data {
 
     public Integer ord;
@@ -20,19 +18,13 @@ public class OrdName implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof OrdName)) {
-            return false;
-        }
-        OrdName ordName = (OrdName) o;
-        return Objects.equals(ord, ordName.ord) && Objects.equals(name, ordName.name);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ord, name);
+        return this.deepHash();
     }
 
     @Override

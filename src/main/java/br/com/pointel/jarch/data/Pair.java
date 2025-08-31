@@ -1,10 +1,16 @@
 package br.com.pointel.jarch.data;
 
-import java.util.ArrayList;
+public class Pair<K, V> implements Data {
+    
+    public K key;
+    public V val;
 
-public class Heads extends ArrayList<TableHead> implements Data {
+    public Pair() {
+    }
 
-    public Heads() {
+    public Pair(K key, V val) {
+        this.key = key;
+        this.val = val;
     }
 
     @Override
@@ -22,8 +28,8 @@ public class Heads extends ArrayList<TableHead> implements Data {
         return this.toChars();
     }
 
-    public static Heads fromChars(String chars) {
-        return Data.fromChars(chars, Heads.class);
+    public static Pair fromChars(String chars) {
+        return Data.fromChars(chars, Pair.class);
     }
 
 }

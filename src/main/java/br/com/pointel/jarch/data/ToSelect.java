@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class ToSelect implements Data {
 
     public String base;
@@ -28,19 +26,13 @@ public class ToSelect implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ToSelect)) {
-            return false;
-        }
-        ToSelect toSelect = (ToSelect) o;
-        return Objects.equals(base, toSelect.base) && Objects.equals(select, toSelect.select);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(base, select);
+        return this.deepHash();
     }
 
     @Override

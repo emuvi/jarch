@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Index implements Data {
 
@@ -41,19 +40,13 @@ public class Index implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Index)) {
-            return false;
-        }
-        Index index = (Index) o;
-        return Objects.equals(name, index.name) && Objects.equals(tableHead, index.tableHead) && Objects.equals(fieldList, index.fieldList);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, tableHead, fieldList);
+        return this.deepHash();
     }
 
     @Override

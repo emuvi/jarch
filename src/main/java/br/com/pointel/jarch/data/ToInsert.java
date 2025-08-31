@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class ToInsert implements Data {
 
     public String base;
@@ -28,19 +26,13 @@ public class ToInsert implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ToInsert)) {
-            return false;
-        }
-        ToInsert toInsert = (ToInsert) o;
-        return Objects.equals(base, toInsert.base) && Objects.equals(insert, toInsert.insert);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(base, insert);
+        return this.deepHash();
     }
 
     @Override

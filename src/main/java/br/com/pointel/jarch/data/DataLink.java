@@ -3,7 +3,6 @@ package br.com.pointel.jarch.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
-import java.util.Objects;
 import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizInt;
 
@@ -141,19 +140,13 @@ public class DataLink implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof DataLink)) {
-            return false;
-        }
-        DataLink dataLink = (DataLink) o;
-        return Objects.equals(name, dataLink.name) && Objects.equals(base, dataLink.base) && Objects.equals(path, dataLink.path) && Objects.equals(port, dataLink.port) && Objects.equals(data, dataLink.data) && Objects.equals(user, dataLink.user) && Objects.equals(pass, dataLink.pass);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, base, path, port, data, user, pass);
+        return this.deepHash();
     }
 
     @Override

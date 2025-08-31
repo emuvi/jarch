@@ -34,19 +34,13 @@ public class DataJdbc implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof DataJdbc)) {
-            return false;
-        }
-        DataJdbc dataJdbc = (DataJdbc) o;
-        return Objects.equals(name, dataJdbc.name) && Objects.equals(url, dataJdbc.url) && Objects.equals(user, dataJdbc.user) && Objects.equals(pass, dataJdbc.pass);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, url, user, pass);
+        return this.deepHash();
     }
 
     @Override

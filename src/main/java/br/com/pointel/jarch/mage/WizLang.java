@@ -1,12 +1,10 @@
 package br.com.pointel.jarch.mage;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 public class WizLang {
 
     private WizLang() {
-        throw new UnsupportedOperationException("Utility class");
     }
 
     private static final String OS_NAME_PROPERTY = "os.name";
@@ -91,35 +89,44 @@ public class WizLang {
         if (clazz == null) {
             return false;
         }
-        if (clazz.equals(boolean.class)) {
-            return true;
-        } else if (clazz.equals(byte.class)) {
-            return true;
-        } else if (clazz.equals(char.class)) {
-            return true;
-        } else if (clazz.equals(double.class)) {
-            return true;
-        } else if (clazz.equals(float.class)) {
-            return true;
-        } else if (clazz.equals(int.class)) {
-            return true;
-        } else if (clazz.equals(long.class)) {
-            return true;
-        } else if (clazz.equals(short.class)) {
-            return true;
-        } else if (clazz.equals(void.class)) {
-            return true;
-        }
-        return false;
+        return clazz.equals(boolean.class) ||
+            clazz.equals(byte.class) ||
+            clazz.equals(char.class) ||
+            clazz.equals(double.class) ||
+            clazz.equals(float.class) ||
+            clazz.equals(int.class) ||
+            clazz.equals(long.class) ||
+            clazz.equals(short.class) ||
+            clazz.equals(void.class);
     }
 
-    public static boolean isClassChildOf(Class<?> clazz, Class<?> parent) {
-        if (clazz == null || parent == null) {
+    public static boolean isClassChildOf(Class<?> clazz, Class<?> ofParent) {
+        if (clazz == null || ofParent == null) {
             return false;
         }
         clazz = getFromPrimitive(clazz);
-        parent = getFromPrimitive(parent);
-        return parent.isAssignableFrom(clazz);
+        ofParent = getFromPrimitive(ofParent);
+        return ofParent.isAssignableFrom(clazz);
+    }
+
+    public static Object[] getValuesFromMembers(Object ofObject) throws Exception {
+        if (ofObject == null) {
+            return null;
+        }
+        var fields = ofObject.getClass().getDeclaredFields();
+        var values = new Object[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            var accessible = field.canAccess(ofObject);
+            if (!accessible) {
+                field.setAccessible(true);
+            }
+            values[i] = field.get(ofObject);
+            if (!accessible) {
+                field.setAccessible(false);
+            }
+        }
+        return values;
     }
 
     public static void forceSetField(Field field, Object ofObject, Object toValue) throws Exception {

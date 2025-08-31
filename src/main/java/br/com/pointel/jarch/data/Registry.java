@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class Registry implements Data {
 
     public String base;
@@ -24,19 +22,13 @@ public class Registry implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Registry)) {
-            return false;
-        }
-        Registry registry = (Registry) o;
-        return Objects.equals(base, registry.base) && Objects.equals(tableHead, registry.tableHead);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(base, tableHead);
+        return this.deepHash();
     }
 
     @Override

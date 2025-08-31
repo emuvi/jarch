@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class DataWays implements Data {
     
     public DataJdbc dataJdbc;
@@ -130,19 +128,13 @@ public class DataWays implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof DataWays)) {
-            return false;
-        }
-        DataWays dataWays = (DataWays) o;
-        return Objects.equals(dataJdbc, dataWays.dataJdbc) && Objects.equals(dataLink, dataWays.dataLink) && Objects.equals(poolMinIdle, dataWays.poolMinIdle) && Objects.equals(poolMaxIdle, dataWays.poolMaxIdle) && Objects.equals(poolMaxTotal, dataWays.poolMaxTotal);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataJdbc, dataLink, poolMinIdle, poolMaxIdle, poolMaxTotal);
+        return this.deepHash();
     }
 
     @Override

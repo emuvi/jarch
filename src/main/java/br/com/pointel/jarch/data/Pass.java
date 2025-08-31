@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class Pass implements Data {
     
     public byte[] data;
@@ -23,19 +21,13 @@ public class Pass implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Pass)) {
-            return false;
-        }
-        Pass pass = (Pass) o;
-        return Objects.deepEquals(data, pass.data);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(data);
+        return this.deepHash();
     }
 
     @Override

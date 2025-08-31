@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Table implements Data {
 
@@ -48,19 +47,13 @@ public class Table implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Table)) {
-            return false;
-        }
-        Table table = (Table) o;
-        return Objects.equals(tableHead, table.tableHead) && Objects.equals(fieldList, table.fieldList) && Objects.equals(keyPrimaryList, table.keyPrimaryList) && Objects.equals(keyForeignList, table.keyForeignList);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, fieldList, keyPrimaryList, keyForeignList);
+        return this.deepHash();
     }
 
     @Override

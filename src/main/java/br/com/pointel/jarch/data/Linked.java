@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class Linked implements Data {
 
     public String name;
@@ -20,19 +18,13 @@ public class Linked implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Linked)) {
-            return false;
-        }
-        Linked linked = (Linked) o;
-        return Objects.equals(name, linked.name) && Objects.equals(upon, linked.upon);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, upon);
+        return this.deepHash();
     }
 
     @Override

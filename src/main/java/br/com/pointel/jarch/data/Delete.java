@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Delete implements Data {
 
@@ -21,19 +20,13 @@ public class Delete implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Delete)) {
-            return false;
-        }
-        Delete delete = (Delete) o;
-        return Objects.equals(tableHead, delete.tableHead) && Objects.equals(filterList, delete.filterList);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, filterList);
+        return this.deepHash();
     }
 
     @Override

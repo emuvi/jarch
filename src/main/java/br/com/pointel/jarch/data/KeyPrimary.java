@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class KeyPrimary implements Data {
 
@@ -25,19 +24,13 @@ public class KeyPrimary implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof KeyPrimary)) {
-            return false;
-        }
-        KeyPrimary keyPrimary = (KeyPrimary) o;
-        return Objects.equals(name, keyPrimary.name) && Objects.equals(columnList, keyPrimary.columnList);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, columnList);
+        return this.deepHash();
     }
 
     @Override

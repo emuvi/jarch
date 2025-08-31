@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class Filter implements Data {
 
     public FilterSeems seems;
@@ -31,19 +29,13 @@ public class Filter implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Filter)) {
-            return false;
-        }
-        Filter filter = (Filter) o;
-        return Objects.equals(seems, filter.seems) && Objects.equals(likes, filter.likes) && Objects.equals(valued, filter.valued) && Objects.equals(linked, filter.linked) && Objects.equals(ties, filter.ties);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(seems, likes, valued, linked, ties);
+        return this.deepHash();
     }
 
     @Override

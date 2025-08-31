@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Insert implements Data {
 
@@ -28,19 +27,13 @@ public class Insert implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Insert)) {
-            return false;
-        }
-        Insert insert = (Insert) o;
-        return Objects.equals(tableHead, insert.tableHead) && Objects.equals(valuedList, insert.valuedList) && Objects.equals(toGetID, insert.toGetID);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, valuedList, toGetID);
+        return this.deepHash();
     }
 
     @Override

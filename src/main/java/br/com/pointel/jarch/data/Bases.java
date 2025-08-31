@@ -27,6 +27,16 @@ public class Bases extends ArrayList<DataWays> implements Data {
     }
 
     @Override
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.deepHash();
+    }
+
+    @Override
     public String toString() {
         return this.toChars();
     }

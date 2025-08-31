@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Select implements Data {
 
@@ -74,19 +73,13 @@ public class Select implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Select)) {
-            return false;
-        }
-        Select select = (Select) o;
-        return Objects.equals(tableHead, select.tableHead) && Objects.equals(fieldList, select.fieldList) && Objects.equals(joinList, select.joinList) && Objects.equals(filterList, select.filterList) && Objects.equals(orderList, select.orderList) && Objects.equals(offset, select.offset) && Objects.equals(limit, select.limit);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, fieldList, joinList, filterList, orderList, offset, limit);
+        return this.deepHash();
     }
 
     @Override

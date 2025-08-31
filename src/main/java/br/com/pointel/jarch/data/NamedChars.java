@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class NamedChars implements Data {
 
     public String name;
@@ -19,19 +17,13 @@ public class NamedChars implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof NamedChars)) {
-            return false;
-        }
-        NamedChars namedChars = (NamedChars) o;
-        return Objects.equals(name, namedChars.name) && Objects.equals(chars, namedChars.chars);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, chars);
+        return this.deepHash();
     }
 
     @Override

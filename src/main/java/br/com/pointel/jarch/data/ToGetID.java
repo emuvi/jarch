@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.data;
 
-import java.util.Objects;
-
 public class ToGetID implements Data {
 
     public String name;
@@ -23,19 +21,13 @@ public class ToGetID implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ToGetID)) {
-            return false;
-        }
-        ToGetID toGetID = (ToGetID) o;
-        return Objects.equals(name, toGetID.name) && Objects.equals(filter, toGetID.filter);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, filter);
+        return this.deepHash();
     }
 
     @Override

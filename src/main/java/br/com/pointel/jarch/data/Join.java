@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Join implements Data {
 
@@ -62,19 +61,13 @@ public class Join implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Join)) {
-            return false;
-        }
-        Join join = (Join) o;
-        return Objects.equals(tableHead, join.tableHead) && Objects.equals(alias, join.alias) && Objects.equals(filterList, join.filterList) && Objects.equals(ties, join.ties);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableHead, alias, filterList, ties);
+        return this.deepHash();
     }
 
     @Override

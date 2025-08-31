@@ -115,19 +115,13 @@ public class TableHead implements Data {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof TableHead)) {
-            return false;
-        }
-        TableHead tableHead = (TableHead) o;
-        return Objects.equals(catalog, tableHead.catalog) && Objects.equals(schema, tableHead.schema) && Objects.equals(name, tableHead.name) && Objects.equals(alias, tableHead.alias);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(catalog, schema, name, alias);
+        return this.deepHash();
     }
 
     @Override
