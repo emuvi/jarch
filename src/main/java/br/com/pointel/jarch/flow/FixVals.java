@@ -5,6 +5,8 @@ import br.com.pointel.jarch.mage.WizChars;
 
 public interface FixVals {
 
+    // | EVAL | should we apply the fix on final members?
+
     public default void fixNulls() throws Exception {
         for (var field : this.getClass().getDeclaredFields()) {
             var mods = field.getModifiers();
