@@ -127,11 +127,53 @@ public class EOrmBase extends EOrm {
         final String sql = builder.toString();
         LOG.debug("Creating table with SQL: {}", sql);
         try (var stmt = getLink().createStatement()) {
-            if (stmt.execute(sql)) {
-                LOG.info("Table created successfully: {}", table.tableHead.getCatalogSchemaName());
-            } else {
-                LOG.warn("Table creation failed: {}", table.tableHead.getCatalogSchemaName());
+            stmt.execute(sql);
+            LOG.info("Table created successfully: {}", table.tableHead.getCatalogSchemaName());
+        }
+    }
+
+    @Override
+    public void create(Index index) throws Exception {
+        create(index, false);
+    }
+
+    @Override
+    public void create(Index index, boolean ifNotExists) throws Exception {
+        if (index.tableHead == null || index.tableHead.name == null || index.tableHead.name.isEmpty()) {
+            throw new Exception("Could not create index because: tableHead not defined");
+        }
+        if (index.fieldList == null || index.fieldList.isEmpty()) {
+            throw new Exception("Could not create index because: fieldList not defined");
+        }
+        var builder = new StringBuilder();
+        builder.append("CREATE INDEX ");
+        if (ifNotExists) {
+            builder.append("IF NOT EXISTS ");
+        }
+        if (index.name != null && !index.name.isEmpty()) {
+            builder.append(index.name);
+        } else {
+            builder.append("idx_").append(index.tableHead.name);
+            for (var field : index.fieldList) {
+                builder.append("_").append(field.name);
             }
+        }
+        builder.append(" ON ");
+        builder.append(index.tableHead.getCatalogSchemaName());
+        builder.append(" (");
+        for (var i = 0; i < index.fieldList.size(); i++) {
+            var field = index.fieldList.get(i);
+            if (i > 0) {
+                builder.append(", ");
+            }
+            builder.append(field.name);
+        }
+        builder.append(")");
+        final String sql = builder.toString();
+        LOG.debug("Creating index with SQL: {}", sql);
+        try (var stmt = getLink().createStatement()) {
+            stmt.execute(sql);
+            LOG.info("Index created successfully: {}", index.name);
         }
     }
 
