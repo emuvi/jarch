@@ -24,9 +24,17 @@ public abstract class EOrm implements Closeable {
 
     public abstract void create(Table table, boolean ifNotExists) throws Exception;
 
+    public void createIfNotExists(Table table) throws Exception {
+        create(table, true);
+    }
+
     public abstract void create(Index index) throws Exception;
 
     public abstract void create(Index index, boolean ifNotExists) throws Exception;
+
+    public void createIfNotExists(Index index) throws Exception {
+        create(index, true);
+    }
 
     public abstract ResultSet select(Select select) throws Exception;
 
