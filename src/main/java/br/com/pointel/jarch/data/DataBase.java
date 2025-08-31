@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
-
-public enum DataBase implements Data, Serializable {
+public enum DataBase implements Data {
 
     SQLiteMemory(
                     "org.sqlite.JDBC",

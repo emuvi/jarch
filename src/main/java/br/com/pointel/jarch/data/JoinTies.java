@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
-
-public enum JoinTies implements Data, Serializable {
+public enum JoinTies implements Data {
 
     Inner, Left, Right, Full, Cross;
 

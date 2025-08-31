@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
-
-public enum FilterSeems implements Data, Serializable {
+public enum FilterSeems implements Data {
 
     Is, IsNot;
 

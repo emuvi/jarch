@@ -1,8 +1,6 @@
 package br.com.pointel.jarch.data;
 
-import java.io.Serializable;
-
-public enum Nature implements Data, Serializable {
+public enum Nature implements Data {
 
     Bit, Bool, Byte,
 
