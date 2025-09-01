@@ -15,7 +15,7 @@ import br.com.pointel.jarch.mage.WizData;
 
 public class EOrmBase extends EOrm {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EOrmBase.class);
+    private static final Logger log = LoggerFactory.getLogger(EOrmBase.class);
 
     public EOrmBase(Connection link) {
         super(link);
@@ -120,10 +120,10 @@ public class EOrmBase extends EOrm {
         }
         builder.append(")");
         final String sql = builder.toString();
-        LOG.debug("Creating table with SQL: {}", sql);
+        log.debug("Creating table with SQL: {}", sql);
         try (var stmt = getLink().createStatement()) {
             stmt.execute(sql);
-            LOG.info("Table created successfully: {}", table.tableHead.getCatalogSchemaName());
+            log.info("Table created successfully: {}", table.tableHead.getCatalogSchemaName());
         }
     }
 
@@ -160,10 +160,10 @@ public class EOrmBase extends EOrm {
         }
         builder.append(")");
         final String sql = builder.toString();
-        LOG.debug("Creating index with SQL: {}", sql);
+        log.debug("Creating index with SQL: {}", sql);
         try (var stmt = getLink().createStatement()) {
             stmt.execute(sql);
-            LOG.info("Index created successfully: {}", index.name);
+            log.info("Index created successfully: {}", index.name);
         }
     }
 
@@ -252,9 +252,9 @@ public class EOrmBase extends EOrm {
             builder.append(" OFFSET ");
             builder.append(select.offset);
         }
-        var build = builder.toString();
-        System.out.println("SELECT: " + build);
-        var prepared = getLink().prepareStatement(build);
+        var selectSQL = builder.toString();
+        log.debug("Selecting with SQL: {}", selectSQL);
+        var prepared = getLink().prepareStatement(selectSQL);
         var param_index = 1;
         if (select.hasJoins()) {
             for (var join : select.joinList) {
@@ -330,9 +330,9 @@ public class EOrmBase extends EOrm {
             }
         }
         builder.append(")");
-        var build = builder.toString();
-        System.out.println("INSERT: " + build);
-        var prepared = getLink().prepareStatement(build);
+        var insertSQL = builder.toString();
+        log.debug("Inserting with SQL: {}", insertSQL);
+        var prepared = getLink().prepareStatement(insertSQL);
         var param_index = 1;
         for (var valued : insert.valuedList) {
             if (valued.data != null) {
@@ -385,9 +385,9 @@ public class EOrmBase extends EOrm {
             var restricted = replaceVariables(strain.restrict, dataSource);
             builder.append(restricted);
         }
-        var build = builder.toString();
-        System.out.println("UPDATE: " + build);
-        var prepared = getLink().prepareStatement(build);
+        var updateSQL = builder.toString();
+        log.debug("Updating with SQL: {}", updateSQL);
+        var prepared = getLink().prepareStatement(updateSQL);
         var param_index = 1;
         for (var valued : update.valuedList) {
             if (valued != null) {
@@ -418,9 +418,9 @@ public class EOrmBase extends EOrm {
             var restricted = replaceVariables(strain.restrict, dataSource);
             builder.append(restricted);
         }
-        var build = builder.toString();
-        System.out.println("DELETE: " + build);
-        var prepared = getLink().prepareStatement(build);
+        var deleteSQL = builder.toString();
+        log.debug("Deleting with SQL: {}", deleteSQL);
+        var prepared = getLink().prepareStatement(deleteSQL);
         var param_index = 1;
         if (delete.filterList != null && !delete.filterList.isEmpty()) {
             for (var clause : delete.filterList) {
