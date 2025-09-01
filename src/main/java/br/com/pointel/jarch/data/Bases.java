@@ -20,9 +20,6 @@ public class Bases extends ArrayList<DataWays> implements Data {
 
     @Override
     public void fixDefaults() throws Exception {
-        for (var dataWay : this) {
-            dataWay.fixNullsAndEnvs();
-        }
         this.removeIf(entry -> WizChars.isEmpty(entry.getName()));
     }
 

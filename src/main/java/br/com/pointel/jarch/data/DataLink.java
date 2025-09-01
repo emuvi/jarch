@@ -158,9 +158,9 @@ public class DataLink implements Data {
         return Data.fromChars(chars, DataLink.class);
     }
 
-    public static DataLink fromAssigned(String inChars) {
+    public static DataLink fromAssigned(String chars) {
         DataLink result = new DataLink();
-        Map<String, String> assigned = WizChars.getAssigned(inChars);
+        Map<String, String> assigned = WizChars.getAssigned(chars);
         result.name = assigned.get("name");
         result.base = DataBase.fromChars(assigned.get("base"));
         result.path = assigned.get("path");

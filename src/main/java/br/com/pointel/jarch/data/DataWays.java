@@ -1,11 +1,16 @@
 package br.com.pointel.jarch.data;
 
+import br.com.pointel.jarch.flow.FixInt;
+
 public class DataWays implements Data {
     
     public DataJdbc dataJdbc;
     public DataLink dataLink;
+    @FixInt(1) 
     public Integer poolMinIdle;
+    @FixInt(5)
     public Integer poolMaxIdle;
+    @FixInt(10)
     public Integer poolMaxTotal;
 
     public DataWays() {
@@ -87,44 +92,6 @@ public class DataWays implements Data {
             return this.dataLink.base.eOrmClazz;
         }
         return DataBase.getEOrmClassFromURL(this.getUrl());
-    }
-
-    @Override
-    public void fixNullsAndEnvs() throws Exception {
-        if (this.dataJdbc != null) {
-            this.dataJdbc.fixNullsAndEnvs();
-        }
-        if (this.dataLink != null) {
-            this.dataLink.fixNullsAndEnvs();
-        }
-        if (this.poolMinIdle == null) {
-            this.poolMinIdle = 1;
-        }
-        if (this.poolMaxIdle == null) {
-            this.poolMaxIdle = 5;
-        }
-        if (this.poolMaxTotal == null) {
-            this.poolMaxTotal = 10;
-        }
-    }
-
-    @Override
-    public void fixNulls() throws Exception {
-        if (this.dataJdbc != null) {
-            this.dataJdbc.fixNulls();
-        }
-        if (this.dataLink != null) {
-            this.dataLink.fixNulls();
-        }
-        if (this.poolMinIdle == null) {
-            this.poolMinIdle = 1;
-        }
-        if (this.poolMaxIdle == null) {
-            this.poolMaxIdle = 5;
-        }
-        if (this.poolMaxTotal == null) {
-            this.poolMaxTotal = 10;
-        }
     }
 
     @Override
