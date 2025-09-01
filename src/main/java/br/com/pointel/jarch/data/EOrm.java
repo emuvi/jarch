@@ -66,8 +66,6 @@ public abstract class EOrm implements Closeable {
 
     public abstract boolean isPrimaryKeyError(Exception error);
 
-
-
     @Override
     public void close() throws IOException {
         try {
