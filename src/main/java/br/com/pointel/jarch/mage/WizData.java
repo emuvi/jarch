@@ -9,11 +9,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import com.google.gson.Gson;
 import br.com.pointel.jarch.data.Nature;
 
 public class WizData {
 
-    private WizData(){}
+    public static final Gson gson = new Gson();
+
+    private WizData() {
+    }
+
+    public static String toChars(Object data) {
+        return gson.toJson(data);
+    }
+
+    public static <T> T fromChars(String chars, Class<T> clazz) {
+        return gson.fromJson(chars, clazz);
+    }
 
     public static void printColumnsNamesAndNatures(ResultSet results) throws SQLException {
         printColumnsNamesAndNatures(results, System.out);
@@ -65,50 +77,26 @@ public class WizData {
 
     public static Nature getNatureOfSQL(int jdbcType) {
         switch (jdbcType) {
-            case 16:
-                return Nature.Bool;
-            case -7:
-            case -6:
-            case 5:
-            case 4:
-                return Nature.Int;
-            case -5:
-                return Nature.Long;
-            case 6:
-            case 7:
-                return Nature.Float;
-            case 8:
-            case 2:
-            case 3:
-                return Nature.Double;
-            case 1:
-            case -15:
-                return Nature.Char;
-            case 12:
-            case -1:
-            case -9:
-            case -16:
-                return Nature.Chars;
-            case 91:
-                return Nature.Date;
-            case 92:
-            case 2013:
-                return Nature.Time;
-            case 93:
-            case 2014:
-                return Nature.Timestamp;
-            case -2:
-            case -3:
-            case -4:
-            case 2004:
-            case 2005:
-            case 2011:
-            case 2009:
-                return Nature.Bytes;
-            default:
-                throw new UnsupportedOperationException(
-                                "Could not identify the data nature of jdbc type: "
-                                                + jdbcType);
+            case 16: return Nature.Bool;
+            case -7: return Nature.Bit;
+            case -6: return Nature.Byte;
+            case 5: return Nature.Small;
+            case 4: return Nature.Int;
+            case -5: return Nature.Long;
+            case 6: return Nature.Float;
+            case 7: return Nature.Real;
+            case 8: return Nature.Double;
+            case 2, 3: return Nature.Numeric;
+            case 1, -15: return Nature.Char;
+            case 12, -1, -9, -16: return Nature.Chars;
+            case 91: return Nature.Date;
+            case 92, 2013: return Nature.Time;
+            case 93, 2014: return Nature.Timestamp;
+            case -2, -3, -4: return Nature.Bytes;
+            case 2004: return Nature.Blob;
+            case 2005: return Nature.Text;
+            case 2000: return Nature.Object;
+            default: throw new UnsupportedOperationException("Could not identify the data nature of jdbc type: " + jdbcType);
         }
     }
 

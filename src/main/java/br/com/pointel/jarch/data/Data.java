@@ -4,11 +4,10 @@ import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixVals;
 import br.com.pointel.jarch.mage.WizArray;
+import br.com.pointel.jarch.mage.WizData;
 import br.com.pointel.jarch.mage.WizLang;
 
 public interface Data extends FixVals {
-
-    public static final Gson gson = new Gson();
 
     public default boolean deepEquals(Object that) {
         try {
@@ -44,11 +43,11 @@ public interface Data extends FixVals {
     }
 
     public default String toChars() {
-        return gson.toJson(this);
+        return WizData.toChars(this);
     }
 
     public static <T> T fromChars(String chars, Class<T> clazz) {
-        return gson.fromJson(chars, clazz);
+        return WizData.fromChars(chars, clazz);
     }
 
 }
