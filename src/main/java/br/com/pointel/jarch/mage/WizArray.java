@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import br.com.pointel.jarch.data.Pair;
 
 public class WizArray {
@@ -17,6 +18,7 @@ public class WizArray {
         return value != null && 
             (value.getClass().isArray() || 
             value instanceof List ||
+            value instanceof Set ||
             value instanceof Map);
     }
 
@@ -26,6 +28,8 @@ public class WizArray {
                 return (Object[]) value;
             } else if (value instanceof List) {
                 return ((List<?>) value).toArray();
+            } else if (value instanceof Set) {
+                return ((Set<?>) value).toArray();
             } else if (value instanceof Map objectMap) {
                 final var result = new Object[objectMap.size()];
                 int i = 0;
