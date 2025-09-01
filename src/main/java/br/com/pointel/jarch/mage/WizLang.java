@@ -12,7 +12,9 @@ import br.com.pointel.jarch.flow.FixDouble;
 import br.com.pointel.jarch.flow.FixFloat;
 import br.com.pointel.jarch.flow.FixInt;
 import br.com.pointel.jarch.flow.FixLong;
-import br.com.pointel.jarch.flow.FixNot;
+import br.com.pointel.jarch.flow.NotFix;
+import br.com.pointel.jarch.flow.NotFixEnvs;
+import br.com.pointel.jarch.flow.NotFixNulls;
 import br.com.pointel.jarch.flow.FixObject;
 import br.com.pointel.jarch.flow.FixShort;
 import br.com.pointel.jarch.flow.FixVals;
@@ -155,7 +157,8 @@ public class WizLang {
             }
             var value = field.get(ofValue);
             if (value == null || value.toString().isEmpty()) {
-                if (field.isAnnotationPresent(FixNot.class)) {
+                if (field.isAnnotationPresent(NotFix.class) 
+                        || field.isAnnotationPresent(NotFixNulls.class)) {
                     continue;
                 } else if (field.isAnnotationPresent(FixBool.class)) {
                     value = field.getAnnotation(FixBool.class).value();
@@ -205,7 +208,8 @@ public class WizLang {
                 continue;
             }
             var value = field.get(ofValue);
-            if (field.isAnnotationPresent(FixNot.class)) {
+            if (field.isAnnotationPresent(NotFix.class)
+                    || field.isAnnotationPresent(NotFixEnvs.class)) {
                 continue;
             } 
             if (value instanceof FixVals fixable) {

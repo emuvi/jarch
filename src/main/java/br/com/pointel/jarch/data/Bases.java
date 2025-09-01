@@ -1,10 +1,9 @@
 package br.com.pointel.jarch.data;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import br.com.pointel.jarch.mage.WizChars;
 
-public class Bases extends ArrayList<DataWays> implements Data {
+public class Bases extends DataListArray<DataWays> implements Data {
 
     public Bases() {
     }
