@@ -57,26 +57,33 @@ public class Storage {
     }
 
     private void start() {
-        for (var base : bases) {
-            newSourceOnStore(base);
+        for (var dataWays : bases) {
+            newSourceOnStore(dataWays);
         }
     }
 
-    private void newSourceOnStore(DataWays base) {
+    private void newSourceOnStore(DataWays dataWays) {
+        if (dataWays == null 
+                || WizChars.isEmpty(dataWays.getName()) 
+                || WizChars.isEmpty(dataWays.getUrl())
+                || (dataWays.dataJdbc == null && dataWays.dataLink == null)
+                || (dataWays.dataJdbc != null && dataWays.dataLink != null)) {
+            throw new RuntimeException("Invalid DataWays configuration.");
+        }
         var newSource = new BasicDataSource();
-        newSource.setUrl(base.getUrl());
-        var user = base.getUser();
+        newSource.setUrl(dataWays.getUrl());
+        var user = dataWays.getUser();
         if (!WizChars.isEmpty(user)) {
             newSource.setUsername(user);
         }
-        var pass = base.getPass();
+        var pass = dataWays.getPass();
         if (!WizChars.isEmpty(pass)) {
             newSource.setPassword(pass);
         }
-        newSource.setMinIdle(base.poolMinIdle);
-        newSource.setMaxIdle(base.poolMaxIdle);
-        newSource.setMaxTotal(base.poolMaxTotal);
-        this.stores.put(base.getName(), newSource);
+        newSource.setMinIdle(dataWays.poolMinIdle);
+        newSource.setMaxIdle(dataWays.poolMaxIdle);
+        newSource.setMaxTotal(dataWays.poolMaxTotal);
+        this.stores.put(dataWays.getName(), newSource);
     }
 
 }

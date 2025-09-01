@@ -1,7 +1,6 @@
 package br.com.pointel.jarch.data;
 
 import java.util.Objects;
-import br.com.pointel.jarch.mage.WizChars;
 
 public class Bases extends DataListArray<DataWays> implements Data {
 
@@ -15,11 +14,6 @@ public class Bases extends DataListArray<DataWays> implements Data {
             }
         }
         return null;
-    }
-
-    @Override
-    public void fixDefaults() throws Exception {
-        this.removeIf(entry -> WizChars.isEmpty(entry.getName()));
     }
 
     @Override

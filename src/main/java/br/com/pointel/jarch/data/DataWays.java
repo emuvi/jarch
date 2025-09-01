@@ -2,7 +2,6 @@ package br.com.pointel.jarch.data;
 
 import br.com.pointel.jarch.flow.FixInt;
 import br.com.pointel.jarch.flow.NotFixNulls;
-import br.com.pointel.jarch.mage.WizChars;
 
 public class DataWays implements Data {
     
@@ -97,16 +96,6 @@ public class DataWays implements Data {
             return this.dataLink.base.eOrmClazz;
         }
         return DataBase.getEOrmClassFromURL(this.getUrl());
-    }
-
-    @Override
-    public void fixDefaults() throws Exception {
-        if (this.dataJdbc != null && WizChars.isEmpty(this.dataJdbc.name)) {
-            this.dataJdbc = null;
-        }
-        if (this.dataLink != null && WizChars.isEmpty(this.dataLink.name)) {
-            this.dataLink = null;
-        }
     }
 
     @Override
