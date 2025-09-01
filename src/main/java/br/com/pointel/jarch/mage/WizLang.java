@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.google.gson.Gson;
 import br.com.pointel.jarch.flow.FixBool;
 import br.com.pointel.jarch.flow.FixByte;
 import br.com.pointel.jarch.flow.FixChar;
@@ -13,6 +12,7 @@ import br.com.pointel.jarch.flow.FixDouble;
 import br.com.pointel.jarch.flow.FixFloat;
 import br.com.pointel.jarch.flow.FixInt;
 import br.com.pointel.jarch.flow.FixLong;
+import br.com.pointel.jarch.flow.FixNot;
 import br.com.pointel.jarch.flow.FixObject;
 import br.com.pointel.jarch.flow.FixShort;
 import br.com.pointel.jarch.flow.FixVals;
@@ -147,24 +147,6 @@ public class WizLang {
         return values;
     }
 
-    public static void fixEnvsOnMembers(Object ofValue) throws IllegalAccessException, Exception {
-        for (var field : ofValue.getClass().getDeclaredFields()) {
-            var mods = field.getModifiers();
-            if (Modifier.isStatic(mods) || Modifier.isFinal(mods) || Modifier.isTransient(mods)) {
-                continue;
-            }
-            var value = field.get(ofValue);
-            if (value instanceof String strValue) {
-                value = WizChars.replaceEnvVars(strValue);
-                try {
-                    WizLang.forceSetField(field, ofValue, value);
-                } catch (Exception e) {
-                    log.error("Error setting field value: " + field.getName(), e);
-                }
-            }
-        }
-    }
-
     public static void fixNullsOnMembers(Object ofValue) throws Exception {
         for (var field : ofValue.getClass().getDeclaredFields()) {
             var mods = field.getModifiers();
@@ -173,7 +155,9 @@ public class WizLang {
             }
             var value = field.get(ofValue);
             if (value == null || value.toString().isEmpty()) {
-                if (field.isAnnotationPresent(FixBool.class)) {
+                if (field.isAnnotationPresent(FixNot.class)) {
+                    continue;
+                } else if (field.isAnnotationPresent(FixBool.class)) {
                     value = field.getAnnotation(FixBool.class).value();
                 } else if (field.isAnnotationPresent(FixByte.class)) {
                     value = field.getAnnotation(FixByte.class).value();
@@ -205,6 +189,30 @@ public class WizLang {
                 if (value instanceof FixVals fixable) {
                     fixable.fixNulls();
                 }
+                try {
+                    WizLang.forceSetField(field, ofValue, value);
+                } catch (Exception e) {
+                    log.error("Error setting field value: " + field.getName(), e);
+                }
+            }
+        }
+    }
+
+    public static void fixEnvsOnMembers(Object ofValue) throws IllegalAccessException, Exception {
+        for (var field : ofValue.getClass().getDeclaredFields()) {
+            var mods = field.getModifiers();
+            if (Modifier.isStatic(mods) || Modifier.isFinal(mods) || Modifier.isTransient(mods)) {
+                continue;
+            }
+            var value = field.get(ofValue);
+            if (field.isAnnotationPresent(FixNot.class)) {
+                continue;
+            } 
+            if (value instanceof FixVals fixable) {
+                fixable.fixEnvs();
+            }
+            if (value instanceof String strValue) {
+                value = WizChars.replaceEnvVars(strValue);
                 try {
                     WizLang.forceSetField(field, ofValue, value);
                 } catch (Exception e) {
