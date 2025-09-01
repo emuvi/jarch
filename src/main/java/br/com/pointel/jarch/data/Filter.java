@@ -28,6 +28,30 @@ public class Filter implements Data {
         this.ties = ties;
     }
 
+    public Filter withField(Field field) {
+        if (field == null) {
+            throw new IllegalArgumentException("Field cannot be null");
+        }
+        this.valued = field.toValued();
+        return this;
+    }
+
+    public Filter withField(Field field, Object withValue) {
+        if (field == null) {
+            throw new IllegalArgumentException("Field cannot be null");
+        }
+        this.valued = field.toValued(withValue);
+        return this;
+    }
+
+    public Filter withValue(Object withValue) {
+        if (this.valued == null) {
+            throw new IllegalArgumentException("Valued cannot be null");
+        }
+        this.valued.data = withValue;
+        return this;
+    }
+
     @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
