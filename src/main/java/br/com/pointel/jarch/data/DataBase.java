@@ -1,6 +1,6 @@
 package br.com.pointel.jarch.data;
 
-public enum DataBase implements Data {
+public enum DataBase {
 
     SQLiteMemory(
                     "org.sqlite.JDBC",
@@ -111,15 +111,6 @@ public enum DataBase implements Data {
             }
         }
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return this.toChars();
-    }
-
-    public static DataBase fromChars(String chars) {
-        return Data.fromChars(chars, DataBase.class);
     }
 
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
 import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizData;
 import br.com.pointel.jarch.mage.WizInt;
 
 public class DataLink implements Data {
@@ -162,7 +163,7 @@ public class DataLink implements Data {
         DataLink result = new DataLink();
         Map<String, String> assigned = WizChars.getAssigned(chars);
         result.name = assigned.get("name");
-        result.base = DataBase.fromChars(assigned.get("base"));
+        result.base = WizData.fromChars(assigned.get("base"), DataBase.class);
         result.path = assigned.get("path");
         result.port = WizInt.fromChars(assigned.get("port"));
         result.data = assigned.get("data");

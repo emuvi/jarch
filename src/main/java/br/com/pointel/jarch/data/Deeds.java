@@ -1,6 +1,6 @@
 package br.com.pointel.jarch.data;
 
-public enum Deeds implements Data {
+public enum Deeds {
 
     Select(false), 
     Insert(true), 
@@ -11,15 +11,6 @@ public enum Deeds implements Data {
 
     private Deeds(boolean mutates) {
         this.mutates = mutates;
-    }
-
-    @Override
-    public String toString() {
-        return this.toChars();
-    }
-
-    public static Deeds fromChars(String chars) {
-        return Data.fromChars(chars, Deeds.class);
     }
     
 }
