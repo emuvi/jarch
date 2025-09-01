@@ -63,15 +63,25 @@ public class Storage {
     }
 
     private void newSourceOnStore(DataWays dataWays) {
-        if (dataWays == null 
-                || WizChars.isEmpty(dataWays.getName()) 
-                || WizChars.isEmpty(dataWays.getUrl())
-                || (dataWays.dataJdbc == null && dataWays.dataLink == null)
-                || (dataWays.dataJdbc != null && dataWays.dataLink != null)) {
-            throw new RuntimeException("Invalid DataWays configuration.");
+        if (dataWays == null) {
+            throw new RuntimeException("DataWays cannot be null.");
+        }
+        var name = dataWays.getName();
+        if (WizChars.isEmpty(name)) {
+            throw new RuntimeException("DataWays name cannot be empty.");
+        }
+        var url = dataWays.getUrl();
+        if (WizChars.isEmpty(url)) {
+            throw new RuntimeException("DataWays URL cannot be empty.");
+        }
+        if (dataWays.dataJdbc == null && dataWays.dataLink == null) {
+            throw new RuntimeException("Either dataJdbc or dataLink must be provided in DataWays.");
+        }
+        if (dataWays.dataJdbc != null && dataWays.dataLink != null) {
+            throw new RuntimeException("Only one of dataJdbc or dataLink should be provided in DataWays.");
         }
         var newSource = new BasicDataSource();
-        newSource.setUrl(dataWays.getUrl());
+        newSource.setUrl(url);
         var user = dataWays.getUser();
         if (!WizChars.isEmpty(user)) {
             newSource.setUsername(user);
@@ -83,7 +93,7 @@ public class Storage {
         newSource.setMinIdle(dataWays.poolMinIdle);
         newSource.setMaxIdle(dataWays.poolMaxIdle);
         newSource.setMaxTotal(dataWays.poolMaxTotal);
-        this.stores.put(dataWays.getName(), newSource);
+        this.stores.put(name, newSource);
     }
 
 }
