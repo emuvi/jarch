@@ -41,7 +41,9 @@ public class ESql implements Closeable {
             WizData.setParams(statement, params);
             return statement.execute();
         } else {
-            return this.link.createStatement().execute(sql);
+            try (var statement = this.link.createStatement()) {
+                return statement.execute(sql);
+            }
         }
     }
 
@@ -51,7 +53,9 @@ public class ESql implements Closeable {
             WizData.setParams(statement, params);
             return statement.executeUpdate();
         } else {
-            return this.link.createStatement().executeUpdate(sql);
+            try (var statement = this.link.createStatement()) {
+                return statement.executeUpdate(sql);
+            }
         }
     }
 
@@ -62,7 +66,9 @@ public class ESql implements Closeable {
             WizData.setParams(statement, params);
             rst = statement.executeQuery();
         } else {
-            rst = this.link.createStatement().executeQuery(sql);
+            try (var statement = this.link.createStatement()) {
+                rst = statement.executeQuery(sql);
+            }
         }
         List<List<Object>> result = new ArrayList<>();
         var count = rst.getMetaData().getColumnCount();
@@ -83,7 +89,9 @@ public class ESql implements Closeable {
             WizData.setParams(statement, params);
             rst = statement.executeQuery();
         } else {
-            rst = this.link.createStatement().executeQuery(sql);
+            try (var statement = this.link.createStatement()) {
+                rst = statement.executeQuery(sql);
+            }
         }
         List<Object> result = new ArrayList<>();
         var count = rst.getMetaData().getColumnCount();
@@ -102,7 +110,9 @@ public class ESql implements Closeable {
             WizData.setParams(statement, params);
             rst = statement.executeQuery();
         } else {
-            rst = this.link.createStatement().executeQuery(sql);
+            try (var statement = this.link.createStatement()) {
+                rst = statement.executeQuery(sql);
+            }
         }
         if (rst.next()) {
             return rst.getObject(1);
