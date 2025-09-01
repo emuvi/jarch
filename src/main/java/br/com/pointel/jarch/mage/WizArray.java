@@ -13,20 +13,20 @@ public class WizArray {
     private WizArray() {
     }
 
-    public static boolean is(Object object) {
-        return object != null && 
-            (object.getClass().isArray() || 
-            object instanceof List ||
-            object instanceof Map);
+    public static boolean is(Object value) {
+        return value != null && 
+            (value.getClass().isArray() || 
+            value instanceof List ||
+            value instanceof Map);
     }
 
-    public static Object[] get(Object object) {
-        if (object != null) {
-            if (object.getClass().isArray()) {
-                return (Object[]) object;
-            } else if (object instanceof List) {
-                return ((List<?>) object).toArray();
-            } else if (object instanceof Map objectMap) {
+    public static Object[] get(Object value) {
+        if (value != null) {
+            if (value.getClass().isArray()) {
+                return (Object[]) value;
+            } else if (value instanceof List) {
+                return ((List<?>) value).toArray();
+            } else if (value instanceof Map objectMap) {
                 final var result = new Object[objectMap.size()];
                 int i = 0;
                 for (var key : objectMap.keySet()) {
@@ -34,7 +34,7 @@ public class WizArray {
                 }
                 return result;
             } else {
-                throw new IllegalArgumentException("Unsupported type");
+                throw new IllegalArgumentException("Value is not an array, list, or map.");
             }
         }
         return null;

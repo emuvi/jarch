@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import br.com.pointel.jarch.data.Pair;
 
 public class WizChars {
 
@@ -42,23 +42,24 @@ public class WizChars {
         return randomNumberString.toString();
     }
 
-    public static String makeParameterName(String ofTitle) {
-        return ofTitle
-                        .replace(" ", "_")
-                        .replace("-", "_")
-                        .toUpperCase();
+    public static String makeParameterName(String chars) {
+        return chars
+                .replace(" ", "_")
+                .replace("-", "_")
+                .replace("__", "_")
+                .toUpperCase();
     }
 
     public static String mountGrid(List<Pair<String, String>> grid) {
         var result = new StringBuilder();
         var max = 0;
         for (var line : grid) {
-            max = Math.max(max, line.getLeft().length());
+            max = Math.max(max, line.key.length());
         }
         for (var line : grid) {
-            result.append(StringUtils.rightPad(line.getLeft(), max, '.'));
+            result.append(StringUtils.rightPad(line.key, max, '.'));
             result.append("...: ");
-            result.append(line.getRight());
+            result.append(line.val);
             result.append("\n");
         }
         return result.toString();
@@ -89,40 +90,40 @@ public class WizChars {
         return name.substring(0, begin) + newNameNumber + name.substring(end);
     }
 
-    public static Map<String, Integer> countWordsLike(String source) {
+    public static Map<String, Integer> countWordsLike(String chars) {
         var result = new HashMap<String, Integer>();
-        for (String word : getWordsLike(source)) {
+        for (String word : getWordsLike(chars)) {
             result.put(word, result.getOrDefault(word, 0) + 1);
         }
         return result;
     }
 
-    public static Map<String, Integer> countWords(String source) {
+    public static Map<String, Integer> countWords(String chars) {
         var result = new HashMap<String, Integer>();
-        for (String word : getWords(source)) {
+        for (String word : getWords(chars)) {
             result.put(word, result.getOrDefault(word, 0) + 1);
         }
         return result;
     }
 
-    public static Set<String> getWordsLikeKeySetOrdered(String source) {
-        return new LinkedHashSet<>(getWordsLike(source).stream()
-                        .map(String::toLowerCase).toList());
+    public static Set<String> getWordsLikeKeySetOrdered(String chars) {
+        return new LinkedHashSet<>(getWordsLike(chars).stream()
+                .map(String::toLowerCase).toList());
     }
 
-    public static Set<String> getWordsKeySetOrdered(String source) {
-        return new LinkedHashSet<>(getWords(source).stream()
-                        .map(String::toLowerCase).toList());
+    public static Set<String> getWordsKeySetOrdered(String chars) {
+        return new LinkedHashSet<>(getWords(chars).stream()
+                .map(String::toLowerCase).toList());
     }
 
-    public static Set<String> getWordsLikeKeySet(String source) {
-        return new HashSet<>(getWordsLike(source).stream()
-                        .map(String::toLowerCase).toList());
+    public static Set<String> getWordsLikeKeySet(String chars) {
+        return new HashSet<>(getWordsLike(chars).stream()
+                .map(String::toLowerCase).toList());
     }
 
-    public static Set<String> getWordsKeySet(String source) {
-        return new HashSet<>(getWords(source).stream()
-                        .map(String::toLowerCase).toList());
+    public static Set<String> getWordsKeySet(String chars) {
+        return new HashSet<>(getWords(chars).stream()
+                .map(String::toLowerCase).toList());
     }
 
     public static Set<String> getWordsLikeSet(String source) {
@@ -135,12 +136,12 @@ public class WizChars {
 
     public static List<String> getWordsLike(String source) {
         return getWords(source).stream()
-                        .map(WizChars::removeAccents).toList();
+                .map(WizChars::removeAccents).toList();
     }
 
-    public static List<String> getWords(String source) {
+    public static List<String> getWords(String chars) {
         var result = new ArrayList<String>();
-        var spaced = source.split("\\s+");
+        var spaced = chars.split("\\s+");
         for (String word : spaced) {
             if (!word.isEmpty()) {
                 var lastIsLetter = Character.isLetter(word.charAt(0));
@@ -149,7 +150,7 @@ public class WizChars {
                     char ch = word.charAt(i);
                     var actualIsLetter = Character.isLetter(ch);
                     if (lastIsLetter != actualIsLetter) {
-                        if (actualWord.length() > 0) {
+                        if (!actualWord.isEmpty()) {
                             result.add(actualWord.toString());
                             actualWord = new StringBuilder();
                         }
@@ -157,7 +158,7 @@ public class WizChars {
                     }
                     actualWord.append(ch);
                 }
-                if (actualWord.length() > 0) {
+                if (!actualWord.isEmpty()) {
                     result.add(actualWord.toString());
                 }
             }
@@ -165,13 +166,13 @@ public class WizChars {
         return result;
     }
 
-    public static String[] getLines(String source) {
-        return source.split("\\r?\\n");
+    public static String[] getLines(String chars) {
+        return chars.split("\\r?\\n");
     }
 
-    public static String switchCase(String ofChars) {
+    public static String switchCase(String chars) {
         var result = new StringBuilder();
-        for (char c : ofChars.toCharArray()) {
+        for (char c : chars.toCharArray()) {
             if (Character.isUpperCase(c)) {
                 result.append(Character.toLowerCase(c));
             } else {
@@ -181,25 +182,25 @@ public class WizChars {
         return result.toString();
     }
 
-    public static String removeAccents(String text) {
-        String decomposed = Normalizer.normalize(text, Normalizer.Form.NFD);
+    public static String removeAccents(String chars) {
+        String decomposed = Normalizer.normalize(chars, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(decomposed).replaceAll("");
     }
 
-    public static boolean isEmpty(String theString) {
-        return theString == null || theString.isEmpty();
+    public static boolean isEmpty(String chars) {
+        return chars == null || chars.isEmpty();
     }
 
-    public static boolean isNotEmpty(String theString) {
-        return theString != null && !theString.isEmpty();
+    public static boolean isNotEmpty(String chars) {
+        return chars != null && !chars.isEmpty();
     }
 
-    public static String firstNonEmpty(String... ofStrings) {
-        if (ofStrings == null) {
+    public static String firstNonEmpty(String... charsList) {
+        if (charsList == null) {
             return "";
         }
-        for (String chars : ofStrings) {
+        for (String chars : charsList) {
             if (WizChars.isNotEmpty(chars)) {
                 return chars;
             }
@@ -207,24 +208,23 @@ public class WizChars {
         return "";
     }
 
-    public static String sum(String withUnion, String... allStrings) {
-        return WizChars.sum(withUnion, null, allStrings);
+    public static String sum(String union, String... charsList) {
+        return WizChars.sum(union, null, charsList);
     }
 
-    public static String sum(String withUnion, StringBuilder andBuilder,
-                    String... allStrings) {
-        if (allStrings == null) {
+    public static String sum(String union, StringBuilder andBuilder, String... charsList) {
+        if (charsList == null) {
             return null;
         }
-        if (withUnion == null) {
-            withUnion = "";
+        if (union == null) {
+            union = "";
         }
         var atLeastOne = false;
         var result = andBuilder != null ? andBuilder : new StringBuilder();
-        for (String chars : allStrings) {
+        for (String chars : charsList) {
             if (WizChars.isNotEmpty(chars)) {
                 if (atLeastOne) {
-                    result.append(withUnion);
+                    result.append(union);
                 } else {
                     atLeastOne = true;
                 }
@@ -234,77 +234,97 @@ public class WizChars {
         return result.toString();
     }
 
-    public static String insertSpaceInUppers(String fromString) {
-        if (fromString == null) {
+    public static String insertSpaceInUppers(String chars) {
+        if (chars == null) {
             return null;
         }
-        var result = fromString;
-        for (int i = 'A'; i <= 'Z'; i++) {
-            result = result.replace(((char) i) + "", " " + ((char) i));
+        var result = new StringBuilder();
+        int len = chars.length();
+        for (int i = 0; i < len; i++) {
+            char c = chars.charAt(i);
+            if (i > 0 && Character.isUpperCase(c) && Character.isLetter(c) && 
+                    (!Character.isUpperCase(chars.charAt(i - 1)) || !Character.isLetter(chars.charAt(i - 1)))) {
+                result.append(' ');
+            }
+            result.append(c);
         }
-        return result.trim();
+        return result.toString();
     }
 
-    public static boolean isFirstUpper(String inChars) {
-        if (inChars == null) {
+    public static boolean isFirstUpper(String chars) {
+        if (chars == null) {
             return false;
         }
-        if (inChars.length() > 0) {
-            var first = inChars.substring(0, 1);
+        if (!chars.isEmpty()) {
+            var first = chars.substring(0, 1);
             return first.toUpperCase().equals(first);
         }
         return false;
     }
 
-    public static String toUpperOnlyFirstChar(String inChars) {
+    public static String toUpperOnlyFirstChar(String chars) {
         var result = new StringBuilder();
-        if (inChars.length() > 0) {
-            result.append(inChars.substring(0, 1).toUpperCase());
+        if (!chars.isEmpty()) {
+            result.append(chars.substring(0, 1).toUpperCase());
         }
-        if (inChars.length() > 1) {
-            result.append(inChars.substring(1).toLowerCase());
+        if (chars.length() > 1) {
+            result.append(chars.substring(1).toLowerCase());
         }
         return result.toString();
     }
 
-    public static String toUpperFirstChar(String inChars) {
+    public static String toUpperFirstChar(String chars) {
         var result = new StringBuilder();
-        if (inChars.length() > 0) {
-            result.append(inChars.substring(0, 1).toUpperCase());
+        if (!chars.isEmpty()) {
+            result.append(chars.substring(0, 1).toUpperCase());
         }
-        if (inChars.length() > 1) {
-            result.append(inChars.substring(1));
+        if (chars.length() > 1) {
+            result.append(chars.substring(1));
         }
         return result.toString();
     }
 
-    public static String getFromDoubleQuotes(String inChars) {
-        if ((inChars == null) || (inChars.length() < 2)) {
-            return inChars;
+    public static String getFromDoubleQuotes(String chars) {
+        if ((chars == null) || (chars.length() < 2)) {
+            return chars;
         }
-        if (inChars.charAt(0) == '"' && inChars.charAt(inChars.length() - 1) == '"') {
-            return inChars.substring(1, inChars.length() - 1);
+        if (chars.charAt(0) == '"' && chars.charAt(chars.length() - 1) == '"') {
+            return chars.substring(1, chars.length() - 1);
         } else {
-            return inChars;
+            return chars;
         }
     }
 
-    public static Number getNumber(String ofString) {
-        if (ofString == null) {
+    public static Number getNumber(String chars) {
+        if (chars == null) {
             return null;
         }
-        if (ofString.contains(".")) {
-            return Double.parseDouble(ofString);
+        chars = getDigits(chars);
+        if (chars.contains(".")) {
+            return Double.parseDouble(chars);
         }
-        return Integer.parseInt(ofString);
+        return Integer.parseInt(chars);
     }
 
-    public static String getLetters(String ofString) {
-        if (ofString == null) {
+    public static String getDigits(String chars) {
+        if (chars == null) {
             return null;
         }
         var builder = new StringBuilder();
-        for (char ch : ofString.toCharArray()) {
+        for (char ch : chars.toCharArray()) {
+            if (Character.isDigit(ch) || ch == '.') {
+                builder.append(ch);
+            }
+        }
+        return builder.toString();
+    }
+
+    public static String getLetters(String chars) {
+        if (chars == null) {
+            return null;
+        }
+        var builder = new StringBuilder();
+        for (char ch : chars.toCharArray()) {
             if (Character.isLetter(ch)) {
                 builder.append(ch);
             }
@@ -312,12 +332,12 @@ public class WizChars {
         return builder.toString();
     }
 
-    public static String getNonLetters(String ofString) {
-        if (ofString == null) {
+    public static String getNonLetters(String chars) {
+        if (chars == null) {
             return null;
         }
         var builder = new StringBuilder();
-        for (char ch : ofString.toCharArray()) {
+        for (char ch : chars.toCharArray()) {
             if (!Character.isLetter(ch)) {
                 builder.append(ch);
             }
@@ -325,12 +345,12 @@ public class WizChars {
         return builder.toString();
     }
 
-    public static String getNonLettersAndNonDigits(String ofString) {
-        if (ofString == null) {
+    public static String getNonLettersAndNonDigits(String chars) {
+        if (chars == null) {
             return null;
         }
         var builder = new StringBuilder();
-        for (char ch : ofString.toCharArray()) {
+        for (char ch : chars.toCharArray()) {
             if (!Character.isLetter(ch) && !Character.isDigit(ch)) {
                 builder.append(ch);
             }
@@ -338,12 +358,12 @@ public class WizChars {
         return builder.toString();
     }
 
-    public static String replaceLettersOrDigits(String ofString, char withChar) {
-        if (ofString == null) {
+    public static String replaceLettersOrDigits(String chars, char withChar) {
+        if (chars == null) {
             return null;
         }
         var builder = new StringBuilder();
-        for (char ch : ofString.toCharArray()) {
+        for (char ch : chars.toCharArray()) {
             if (Character.isLetter(ch) || Character.isDigit(ch)) {
                 builder.append(withChar);
             } else {
@@ -361,30 +381,29 @@ public class WizChars {
         return WizChars.fill(theString, withChar, untilLength, false);
     }
 
-    public static String fillAtStart(String theString, char withChar, int untilLength) {
-        return WizChars.fill(theString, withChar, untilLength, true);
+    public static String fillAtStart(String chars, char withChar, int untilLength) {
+        return WizChars.fill(chars, withChar, untilLength, true);
     }
 
-    public static String fill(String theString, char withChar, int untilLength,
-                    boolean atStart) {
+    public static String fill(String chars, char withChar, int untilLength, boolean atStart) {
         var result = new StringBuilder();
-        var diference = untilLength - (theString != null ? theString.length() : 0);
-        if (!atStart && theString != null) {
-            result.append(theString);
+        var diference = untilLength - (chars != null ? chars.length() : 0);
+        if (!atStart && chars != null) {
+            result.append(chars);
         }
         for (var i = 0; i < diference; i++) {
             result.append(withChar);
         }
-        if (atStart && theString != null) {
-            result.append(theString);
+        if (atStart && chars != null) {
+            result.append(chars);
         }
         return result.toString();
     }
 
-    public static boolean contains(String inChars, Character... anyChar) {
-        if (WizChars.isNotEmpty(inChars) && anyChar != null && anyChar.length > 0) {
-            for (var i = 0; i < inChars.length(); i++) {
-                if (WizArray.has(inChars.charAt(i), anyChar)) {
+    public static boolean contains(String chars, Character... anyChar) {
+        if (WizChars.isNotEmpty(chars) && anyChar != null && anyChar.length > 0) {
+            for (var i = 0; i < chars.length(); i++) {
+                if (WizArray.has(chars.charAt(i), anyChar)) {
                     return true;
                 }
             }
@@ -392,50 +411,50 @@ public class WizChars {
         return false;
     }
 
-    public static String replaceAll(String source, String[] from, String[] to) {
-        if (from == null || source == null || source.isEmpty()) {
-            return source;
+    public static String replaceAll(String chars, String[] from, String[] to) {
+        if (from == null || chars == null || chars.isEmpty()) {
+            return chars;
         }
         for (var i = 0; i < from.length; i++) {
             var newValue = to == null || i >= to.length ? "" : to[i];
-            source = source.replace(from[i], newValue);
+            chars = chars.replace(from[i], newValue);
         }
-        return source;
+        return chars;
     }
 
-    public static String replaceControlFlow(String inChars) {
-        if (WizChars.isEmpty(inChars)) {
-            return inChars;
+    public static String replaceBreaks(String chars) {
+        if (WizChars.isEmpty(chars)) {
+            return chars;
         }
-        inChars = inChars.replace("\\", "\\\\");
-        inChars = inChars.replace("\r", "\\r");
-        inChars = inChars.replace("\n", "\\n");
-        inChars = inChars.replace("\t", "\\t");
-        inChars = inChars.replace("\f", "\\f");
-        return inChars.replace("\b", "\\b");
+        chars = chars.replace("\\", "\\\\");
+        chars = chars.replace("\r", "\\r");
+        chars = chars.replace("\n", "\\n");
+        chars = chars.replace("\t", "\\t");
+        chars = chars.replace("\f", "\\f");
+        return chars.replace("\b", "\\b");
     }
 
-    public static String remakeControlFlow(String inChars) {
-        if (WizChars.isEmpty(inChars)) {
-            return inChars;
+    public static String remakeBreaks(String chars) {
+        if (WizChars.isEmpty(chars)) {
+            return chars;
         }
-        inChars = inChars.replace("\\b", "\b");
-        inChars = inChars.replace("\\f", "\f");
-        inChars = inChars.replace("\\t", "\t");
-        inChars = inChars.replace("\\n", "\n");
-        inChars = inChars.replace("\\r", "\r");
-        return inChars.replace("\\\\", "\\");
+        chars = chars.replace("\\b", "\b");
+        chars = chars.replace("\\f", "\f");
+        chars = chars.replace("\\t", "\t");
+        chars = chars.replace("\\n", "\n");
+        chars = chars.replace("\\r", "\r");
+        return chars.replace("\\\\", "\\");
     }
 
-    public static String replaceEnvVars(String inChars) {
-        return replaceEnvVars(inChars, "env");
+    public static String replaceEnvVars(String chars) {
+        return replaceEnvVars(chars, "env");
     }
 
-    public static String replaceEnvVars(String inChars, String withPrefix) {
-        if (WizChars.isEmpty(inChars)) {
-            return inChars;
+    public static String replaceEnvVars(String chars, String withPrefix) {
+        if (WizChars.isEmpty(chars)) {
+            return chars;
         }
-        var result = inChars;
+        var result = chars;
         var envPos = result.indexOf("${" + withPrefix + ":");
         while (envPos > -1) {
             var envPosEnd = result.indexOf("}", envPos);
@@ -453,18 +472,18 @@ public class WizChars {
         return result;
     }
 
-    public static Map<String, String> getAssigned(String inChars) {
+    public static Map<String, String> getAssigned(String chars) {
         var result = new HashMap<String, String>();
-        if (WizChars.isEmpty(inChars)) {
+        if (WizChars.isEmpty(chars)) {
             return result;
         }
         var openQuotes = false;
         var foundEquals = false;
         var key = new StringBuilder();
         var val = new StringBuilder();
-        for (var i = 0; i < inChars.length(); i++) {
-            var actual = inChars.charAt(i);
-            var next = i < inChars.length() - 1 ? inChars.charAt(i + 1) : ' ';
+        for (var i = 0; i < chars.length(); i++) {
+            var actual = chars.charAt(i);
+            var next = i < chars.length() - 1 ? chars.charAt(i + 1) : ' ';
             if (openQuotes) {
                 if (actual == '"') {
                     openQuotes = false;
@@ -523,103 +542,103 @@ public class WizChars {
         return result;
     }
 
-    public static String getNext(String last, Boolean onlyNumbers) {
-        String result = "";
+    public static String getNext(String lastChars, Boolean onlyNumbers) {
+        StringBuilder result = new StringBuilder();
         boolean done = false;
-        for (int i = last.length() - 1; i > -1; i--) {
-            char doing = last.charAt(i);
+        for (int i = lastChars.length() - 1; i > -1; i--) {
+            char doing = lastChars.charAt(i);
             if (!done) {
-                result = getNext(doing, onlyNumbers) + result;
+                result.insert(0, getNext(doing, onlyNumbers));
                 if (!isLastInOrd(doing, onlyNumbers)) {
                     done = true;
                 }
             } else {
-                result = doing + result;
+                result.insert(0, doing);
             }
         }
-        return result;
+        return result.toString();
     }
 
-    public static char getNext(char last, boolean onlyNumbers) {
+    public static char getNext(char lastChar, boolean onlyNumbers) {
         char result = ' ';
-        if (last == ' ') {
+        if (lastChar == ' ') {
             result = '0';
-        } else if (last == '0') {
+        } else if (lastChar == '0') {
             result = '1';
-        } else if (last == '1') {
+        } else if (lastChar == '1') {
             result = '2';
-        } else if (last == '2') {
+        } else if (lastChar == '2') {
             result = '3';
-        } else if (last == '3') {
+        } else if (lastChar == '3') {
             result = '4';
-        } else if (last == '4') {
+        } else if (lastChar == '4') {
             result = '5';
-        } else if (last == '5') {
+        } else if (lastChar == '5') {
             result = '6';
-        } else if (last == '6') {
+        } else if (lastChar == '6') {
             result = '7';
-        } else if (last == '7') {
+        } else if (lastChar == '7') {
             result = '8';
-        } else if (last == '8') {
+        } else if (lastChar == '8') {
             result = '9';
-        } else if (last == '9') {
+        } else if (lastChar == '9') {
             if (onlyNumbers) {
                 result = '0';
             } else {
                 result = 'A';
             }
         } else if (!onlyNumbers) {
-            if (last == 'A') {
+            if (lastChar == 'A') {
                 result = 'B';
-            } else if (last == 'B') {
+            } else if (lastChar == 'B') {
                 result = 'C';
-            } else if (last == 'C') {
+            } else if (lastChar == 'C') {
                 result = 'D';
-            } else if (last == 'D') {
+            } else if (lastChar == 'D') {
                 result = 'E';
-            } else if (last == 'E') {
+            } else if (lastChar == 'E') {
                 result = 'F';
-            } else if (last == 'F') {
+            } else if (lastChar == 'F') {
                 result = 'G';
-            } else if (last == 'G') {
+            } else if (lastChar == 'G') {
                 result = 'H';
-            } else if (last == 'H') {
+            } else if (lastChar == 'H') {
                 result = 'I';
-            } else if (last == 'I') {
+            } else if (lastChar == 'I') {
                 result = 'J';
-            } else if (last == 'J') {
+            } else if (lastChar == 'J') {
                 result = 'K';
-            } else if (last == 'K') {
+            } else if (lastChar == 'K') {
                 result = 'L';
-            } else if (last == 'L') {
+            } else if (lastChar == 'L') {
                 result = 'M';
-            } else if (last == 'M') {
+            } else if (lastChar == 'M') {
                 result = 'N';
-            } else if (last == 'N') {
+            } else if (lastChar == 'N') {
                 result = 'O';
-            } else if (last == 'O') {
+            } else if (lastChar == 'O') {
                 result = 'P';
-            } else if (last == 'P') {
+            } else if (lastChar == 'P') {
                 result = 'Q';
-            } else if (last == 'Q') {
+            } else if (lastChar == 'Q') {
                 result = 'R';
-            } else if (last == 'R') {
+            } else if (lastChar == 'R') {
                 result = 'S';
-            } else if (last == 'S') {
+            } else if (lastChar == 'S') {
                 result = 'T';
-            } else if (last == 'T') {
+            } else if (lastChar == 'T') {
                 result = 'U';
-            } else if (last == 'U') {
+            } else if (lastChar == 'U') {
                 result = 'V';
-            } else if (last == 'V') {
+            } else if (lastChar == 'V') {
                 result = 'W';
-            } else if (last == 'W') {
+            } else if (lastChar == 'W') {
                 result = 'X';
-            } else if (last == 'X') {
+            } else if (lastChar == 'X') {
                 result = 'Y';
-            } else if (last == 'Y') {
+            } else if (lastChar == 'Y') {
                 result = 'Z';
-            } else if (last == 'Z') {
+            } else if (lastChar == 'Z') {
                 result = '0';
             }
         }
@@ -627,12 +646,7 @@ public class WizChars {
     }
 
     public static boolean isLastInOrd(char ch, boolean onlyNumbers) {
-        if (ch == '9' && onlyNumbers) {
-            return true;
-        }
-        if (ch == 'Z' && !onlyNumbers) {
-            return true;
-        }
-        return false;
+        return (ch == '9' && onlyNumbers) || (ch == 'Z' && !onlyNumbers);
     }
+    
 }

@@ -40,13 +40,13 @@ public class CSVRead implements Closeable {
             } else if (actual == '"') {
                 openQuotes = true;
             } else if (actual == ',' || actual == ';') {
-                result.add(WizChars.remakeControlFlow(builder.toString()));
+                result.add(WizChars.remakeBreaks(builder.toString()));
                 builder = new StringBuilder();
             } else {
                 builder.append(actual);
             }
         }
-        result.add(WizChars.remakeControlFlow(builder.toString()));
+        result.add(WizChars.remakeBreaks(builder.toString()));
         return result.toArray(new String[result.size()]);
     }
 

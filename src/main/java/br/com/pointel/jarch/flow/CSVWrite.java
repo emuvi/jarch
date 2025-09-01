@@ -17,7 +17,7 @@ public class CSVWrite implements Closeable {
     public void writeLine(String... columns) {
         if (columns != null) {
             for (var i = 0; i < columns.length; i++) {
-                var column = WizChars.replaceControlFlow(columns[i]);
+                var column = WizChars.replaceBreaks(columns[i]);
                 if (WizChars.contains(column, '"', ' ', ',', ';')) {
                     column = '"' + column.replace("\"", "\"\"") + '"';
                 }
