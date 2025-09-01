@@ -240,6 +240,8 @@ public class WizData {
             case Bytes:
             case Blob:
                 return WizBytes.encodeToBase64(WizBytes.get(value));
+            case Object:
+                return WizData.toChars(value);
             default:
                 throw new Exception("DataType Not Supported.");
         }
@@ -260,6 +262,9 @@ public class WizData {
         if (data == null) {
             return null;
         }
+        if (data instanceof Number number) {
+            return number.byteValue();
+        }
         if (data instanceof Byte) {
             return (Byte) data;
         }
@@ -270,6 +275,9 @@ public class WizData {
     public static Short getShort(Object data) {
         if (data == null) {
             return null;
+        }
+        if (data instanceof Number number) {
+            return number.shortValue();
         }
         if (data instanceof Short) {
             return (Short) data;
@@ -282,6 +290,9 @@ public class WizData {
         if (data == null) {
             return null;
         }
+        if (data instanceof Number number) {
+            return number.intValue();
+        }
         if (data instanceof Integer) {
             return (Integer) data;
         }
@@ -292,6 +303,9 @@ public class WizData {
     public static Long getLong(Object data) {
         if (data == null) {
             return null;
+        }
+        if (data instanceof Number number) {
+            return number.longValue();
         }
         if (data instanceof Long) {
             return (Long) data;
@@ -304,6 +318,9 @@ public class WizData {
         if (data == null) {
             return null;
         }
+        if (data instanceof Number number) {
+            return number.floatValue();
+        }
         if (data instanceof Float) {
             return (Float) data;
         }
@@ -314,6 +331,9 @@ public class WizData {
     public static Double getDouble(Object data) {
         if (data == null) {
             return null;
+        }
+        if (data instanceof Number number) {
+            return number.doubleValue();
         }
         if (data instanceof Double) {
             return (Double) data;
