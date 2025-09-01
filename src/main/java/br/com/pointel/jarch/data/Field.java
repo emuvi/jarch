@@ -206,6 +206,14 @@ public class Field implements Data {
         return new Typed(getReferenceName(), nature, alias);
     }
 
+    public Valued toValued() {
+        return new Valued(getReferenceName(), nature);
+    }
+
+    public Valued toValued(Object value) {
+        return new Valued(getReferenceName(), nature, value);
+    }
+
     public Object getValueFrom(String formatted) throws Exception {
         return WizData.getValueFrom(this.nature, formatted);
     }
