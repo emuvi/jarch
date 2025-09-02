@@ -1,5 +1,6 @@
 package br.com.pointel.jarch.mage;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import org.slf4j.Logger;
@@ -22,31 +23,8 @@ import br.com.pointel.jarch.flow.FixVals;
 public class WizLang {
 
     private static final Logger log = LoggerFactory.getLogger(WizLang.class);
-    
-    private static final String OS_NAME_PROPERTY = "os.name";
 
     private WizLang() {
-    }
-
-
-    public static Boolean isWin() {
-        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
-        return (os.contains("win"));
-    }
-
-    public static Boolean isNix() {
-        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
-        return (os.contains("nix") || os.contains("nux") || os.indexOf("aix") > 0);
-    }
-
-    public static Boolean isMac() {
-        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
-        return (os.contains("mac"));
-    }
-
-    public static Boolean isSol() {
-        var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
-        return (os.contains("sunos"));
     }
 
     public static Class<?> getPrimitive(Class<?> ofClazz) {
