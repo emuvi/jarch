@@ -2,20 +2,62 @@ package br.com.pointel.jarch.data;
 
 public enum Nature {
 
-    Bit, Bool, Byte,
+    Bool(Boolean.class, Number.class),
+    
+    Bit(Byte.class, Number.class, Boolean.class),
 
-    Tiny, Small, Int, Long,
+    Byte(Byte.class, Number.class),
 
-    Serial, BigSerial,
+    Tiny(Byte.class, Short.class, Number.class),
 
-    Float, Real, Double,
+    Small(Short.class, Integer.class, Number.class),
 
-    Numeric, BigNumeric,
+    Int(Integer.class, Number.class),
 
-    Char, Chars,
+    Long(Long.class, Number.class),
 
-    Date, Time, DateTime, Timestamp,
+    Serial(Integer.class, Long.class, Number.class),
 
-    Bytes, Blob, Text, Object;
+    BigSerial(Long.class, java.math.BigInteger.class, Number.class),
+
+    Float(Float.class, Number.class),
+
+    Real(Float.class, Double.class, Number.class),
+
+    Double(Double.class, Number.class),
+
+    Numeric(java.math.BigDecimal.class, Double.class, Number.class),
+
+    BigNumeric(java.math.BigDecimal.class, java.math.BigInteger.class, Number.class),
+
+    Char(Character.class, String.class, Number.class),
+
+    Chars(String.class, java.sql.Blob.class, Byte[].class),
+
+    Date(java.time.LocalDate.class, java.sql.Date.class, java.util.Date.class),
+
+    Time(java.time.LocalTime.class, java.util.Date.class, java.sql.Time.class),
+
+    DateTime(java.time.Instant.class, java.sql.Timestamp.class, java.util.Date.class),
+
+    Timestamp(java.time.Instant.class, java.sql.Timestamp.class, java.util.Date.class),
+
+    Bytes(Byte[].class, String.class, java.sql.Blob.class),
+
+    Blob(java.sql.Blob.class, Byte[].class, String.class),
+
+    Text(String.class, java.sql.Blob.class, Byte[].class),
+
+    Object(String.class, java.sql.Blob.class, Byte[].class, Object.class);
+
+    private final Class<?>[] types;
+
+    Nature(Class<?>... types) {
+        this.types = types;
+    }
+
+    public Class<?>[] getTypes() {
+        return types;
+    }
 
 }
