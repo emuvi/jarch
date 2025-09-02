@@ -62,7 +62,7 @@ public class Storage {
         }
     }
 
-    private void newSourceOnStore(DataWays dataWays) {
+    private void newSourceOnStore(BasedWays dataWays) {
         if (dataWays == null) {
             throw new RuntimeException("DataWays cannot be null.");
         }

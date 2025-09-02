@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Objects;
 import org.slf4j.LoggerFactory;
-import br.com.pointel.jarch.data.DataLink;
+import br.com.pointel.jarch.data.BasedLink;
 import br.com.pointel.jarch.data.Field;
 import br.com.pointel.jarch.data.Insert;
 import br.com.pointel.jarch.data.Table;
@@ -17,14 +17,14 @@ import br.com.pointel.jarch.mage.WizFile;
 public class CSVImport implements Runnable {
 
     private final File origin;
-    private final DataLink destiny;
+    private final BasedLink destiny;
     private final Pace pace;
 
-    public CSVImport(File origin, DataLink destiny) {
+    public CSVImport(File origin, BasedLink destiny) {
         this(origin, destiny, null);
     }
 
-    public CSVImport(File origin, DataLink destiny, Pace pace) {
+    public CSVImport(File origin, BasedLink destiny, Pace pace) {
         this.origin = origin;
         this.destiny = destiny;
         this.pace = pace != null ? pace

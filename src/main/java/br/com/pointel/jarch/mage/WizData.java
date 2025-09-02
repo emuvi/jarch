@@ -7,10 +7,10 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
 import br.com.pointel.jarch.data.Field;
@@ -21,6 +21,7 @@ import br.com.pointel.jarch.data.Nature;
 import br.com.pointel.jarch.data.OrdName;
 import br.com.pointel.jarch.data.Table;
 import br.com.pointel.jarch.data.TableHead;
+import br.com.pointel.jarch.data.Typed;
 
 public class WizData {
 
@@ -35,6 +36,10 @@ public class WizData {
 
     public static <T> T fromChars(String chars, Class<T> clazz) {
         return gson.fromJson(chars, clazz);
+    }
+
+    public static <T> T mapResult(List<Typed> fieldList, ResultSet result, Class<T> onClazz) throws Exception {
+
     }
 
     public static Table getTable(TableHead tableHead, Connection connection) throws Exception {
@@ -97,11 +102,30 @@ public class WizData {
         return table;
     }
 
-    public static void printColumnsNamesAndNatures(ResultSet results) throws SQLException {
+    public static String[] getColumnsNames(ResultSet results) throws Exception {
+        var meta = results.getMetaData();
+        var names = new String[meta.getColumnCount()];
+        for (int i = 1; i <= names.length; i++) {
+            names[(i - 1)] = meta.getColumnName(i);
+        }
+        return names;
+    }
+
+    public static Class<?>[] getColumnsClasses(ResultSet results) throws Exception {
+        var meta = results.getMetaData();
+        var classes = new Class<?>[meta.getColumnCount()];
+        for (int i = 1; i <= classes.length; i++) {
+            var className = meta.getColumnClassName(i);
+            classes[(i - 1)] = Class.forName(className);
+        }
+        return classes;
+    }
+
+    public static void printColumnsNamesAndNatures(ResultSet results) throws Exception {
         printColumnsNamesAndNatures(results, System.out);
     }
 
-    public static void printColumnsNamesAndNatures(ResultSet results, PrintStream out) throws SQLException {
+    public static void printColumnsNamesAndNatures(ResultSet results, PrintStream out) throws Exception {
         var meta = results.getMetaData();
         for (int i = 1; i <= meta.getColumnCount(); i++) {
             out.println(String.format("[%d] %s : %s",
@@ -109,11 +133,11 @@ public class WizData {
         }
     }
 
-    public static void printAllValues(ResultSet results) throws SQLException {
+    public static void printAllValues(ResultSet results) throws Exception {
         printAllValues(results, System.out);
     }
 
-    public static void printAllValues(ResultSet results, PrintStream out) throws SQLException {
+    public static void printAllValues(ResultSet results, PrintStream out) throws Exception {
         var count = results.getMetaData().getColumnCount();
         while (results.next()) {
             var line = new StringBuilder();
@@ -127,7 +151,7 @@ public class WizData {
         }
     }
     
-    public static String[] getColumnNames(ResultSet results) throws SQLException {
+    public static String[] getColumnNames(ResultSet results) throws Exception {
         var meta = results.getMetaData();
         var names = new String[meta.getColumnCount()];
         for (int i = 1; i <= names.length; i++) {
@@ -136,7 +160,7 @@ public class WizData {
         return names;
     }
 
-    public static Nature[] getNaturesFrom(ResultSet results) throws SQLException {
+    public static Nature[] getNaturesFrom(ResultSet results) throws Exception {
         var meta = results.getMetaData();
         var natures = new Nature[meta.getColumnCount()];
         for (int i = 1; i <= natures.length; i++) {
@@ -170,14 +194,18 @@ public class WizData {
         }
     }
 
+    public static <T> T getValueFrom(Nature nature, String formatted, Class<T> clazz) throws Exception {
+        return clazz.cast(getValueFrom(nature, formatted));
+    }
+
     public static Object getValueFrom(Nature nature, String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
         switch (nature) {
             case Bool:
-            case Bit:
                 return Boolean.parseBoolean(formatted);
+            case Bit:
             case Byte:
                 return Byte.parseByte(formatted);
             case Int:
@@ -254,22 +282,42 @@ public class WizData {
         if (data instanceof Boolean) {
             return (Boolean) data;
         }
-        throw new RuntimeException("Could not convert to Boolean from class: " + data
-                        .getClass().getCanonicalName());
+        if (data instanceof Number number) {
+            return number.intValue() != 0;
+        }
+        if (data instanceof String formatted) {
+            return getValueFrom(Nature.Bool, formatted, Boolean.class);
+        }
+        throw new RuntimeException("Could not convert to Boolean from class: " + data.getClass().getCanonicalName());
     }
 
-    public static Byte getByte(Object data) {
+    public static Byte getBit(Object data) {
         if (data == null) {
             return null;
         }
         if (data instanceof Number number) {
             return number.byteValue();
         }
+        if (data instanceof Boolean bool) {
+            return bool ? (byte) 1 : (byte) 0;
+        }
+        throw new RuntimeException("Could not convert to Byte from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Byte getByte(Object data) {
+        if (data == null) {
+            return null;
+        }
         if (data instanceof Byte) {
             return (Byte) data;
         }
-        throw new RuntimeException("Could not convert to Byte from class: " + data
-                        .getClass().getCanonicalName());
+        if (data instanceof Number number) {
+            return number.byteValue();
+        }
+        if (data instanceof Boolean bool) {
+            return bool ? (byte) 1 : (byte) 0;
+        }
+        throw new RuntimeException("Could not convert to Byte from class: " + data.getClass().getCanonicalName());
     }
 
     public static Short getShort(Object data) {
@@ -282,8 +330,7 @@ public class WizData {
         if (data instanceof Short) {
             return (Short) data;
         }
-        throw new RuntimeException("Could not convert to Short from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Short from class: " + data.getClass().getCanonicalName());
     }
 
     public static Integer getInteger(Object data) {
@@ -296,8 +343,7 @@ public class WizData {
         if (data instanceof Integer) {
             return (Integer) data;
         }
-        throw new RuntimeException("Could not convert to Integer from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Integer from class: " + data.getClass().getCanonicalName());
     }
 
     public static Long getLong(Object data) {
@@ -310,8 +356,7 @@ public class WizData {
         if (data instanceof Long) {
             return (Long) data;
         }
-        throw new RuntimeException("Could not convert to Long from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Long from class: " + data.getClass().getCanonicalName());
     }
 
     public static Float getFloat(Object data) {
@@ -324,8 +369,7 @@ public class WizData {
         if (data instanceof Float) {
             return (Float) data;
         }
-        throw new RuntimeException("Could not convert to Float from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Float from class: " + data.getClass().getCanonicalName());
     }
 
     public static Double getDouble(Object data) {
@@ -338,19 +382,17 @@ public class WizData {
         if (data instanceof Double) {
             return (Double) data;
         }
-        throw new RuntimeException("Could not convert to Double from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Double from class: " + data.getClass().getCanonicalName());
     }
 
-    public static BigDecimal getBigDecimal(Object data) {
+    public static BigDecimal getBigNumeric(Object data) {
         if (data == null) {
             return null;
         }
         if (data instanceof BigDecimal) {
             return (BigDecimal) data;
         }
-        throw new RuntimeException("Could not convert to BigDecimal from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to BigDecimal from class: " + data.getClass().getCanonicalName());
     }
 
     public static String getString(Object data) {
@@ -374,8 +416,7 @@ public class WizData {
         if (data instanceof Time) {
             return (Time) data;
         }
-        throw new RuntimeException("Could not convert to Time from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Time from class: " + data.getClass().getCanonicalName());
     }
 
     public static Timestamp getTimestamp(Object data) {
@@ -386,8 +427,7 @@ public class WizData {
         if (data instanceof Timestamp) {
             return (Timestamp) data;
         }
-        throw new RuntimeException("Could not convert to Timestamp from class: " + data
-                        .getClass().getCanonicalName());
+        throw new RuntimeException("Could not convert to Timestamp from class: " + data.getClass().getCanonicalName());
     }
 
     public static byte[] getBytes(Object data) {
@@ -412,10 +452,10 @@ public class WizData {
                         .getClass().getCanonicalName());
     }
 
-    public static void setParams(PreparedStatement statement, Object[] params)
-                    throws Exception {
+    public static void setParams(PreparedStatement statement, Object[] params) throws Exception {
         for (int i = 0; i < params.length; i++) {
             statement.setObject(i + 1, params[i]);
         }
     }
+
 }

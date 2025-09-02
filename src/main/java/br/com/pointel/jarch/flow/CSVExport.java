@@ -5,21 +5,21 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import org.slf4j.LoggerFactory;
-import br.com.pointel.jarch.data.DataLink;
+import br.com.pointel.jarch.data.BasedLink;
 import br.com.pointel.jarch.data.Select;
 import br.com.pointel.jarch.data.TableHead;
 
 public class CSVExport implements Runnable {
 
-    private final DataLink origin;
+    private final BasedLink origin;
     private final File destiny;
     private final Pace pace;
 
-    public CSVExport(DataLink origin, File destiny) {
+    public CSVExport(BasedLink origin, File destiny) {
         this(origin, destiny, null);
     }
 
-    public CSVExport(DataLink origin, File destiny, Pace pace) {
+    public CSVExport(BasedLink origin, File destiny, Pace pace) {
         this.origin = origin;
         this.destiny = destiny;
         this.pace = pace != null ? pace

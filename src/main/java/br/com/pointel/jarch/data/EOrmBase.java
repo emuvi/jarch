@@ -798,7 +798,7 @@ public class EOrmBase extends EOrm {
                     prepared.setDouble(index, WizData.getDouble(valued.data));
                     break;
                 case BigNumeric:
-                    prepared.setBigDecimal(index, WizData.getBigDecimal(valued.data));
+                    prepared.setBigDecimal(index, WizData.getBigNumeric(valued.data));
                     break;
                 case Char:
                 case Chars:
