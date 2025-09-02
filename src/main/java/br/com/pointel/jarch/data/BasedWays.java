@@ -3,12 +3,12 @@ package br.com.pointel.jarch.data;
 import br.com.pointel.jarch.flow.FixInt;
 import br.com.pointel.jarch.flow.NotFixNulls;
 
-public class DataWays implements Data {
+public class BasedWays implements Data {
     
     @NotFixNulls
-    public DataJdbc dataJdbc;
+    public BasedJdbc dataJdbc;
     @NotFixNulls
-    public DataLink dataLink;
+    public BasedLink dataLink;
 
     @FixInt(1) 
     public Integer poolMinIdle;
@@ -17,17 +17,17 @@ public class DataWays implements Data {
     @FixInt(10)
     public Integer poolMaxTotal;
 
-    public DataWays() {
+    public BasedWays() {
     }
 
-    public DataWays(DataJdbc dataJdbc) {
+    public BasedWays(BasedJdbc dataJdbc) {
         this.dataJdbc = dataJdbc;
         this.poolMinIdle = 1;
         this.poolMaxIdle = 1;
         this.poolMaxTotal = 1;
     }
 
-    public DataWays(DataLink dataLink) {
+    public BasedWays(BasedLink dataLink) {
         this.dataJdbc = null;
         this.dataLink = dataLink;
         this.poolMinIdle = 1;
@@ -35,7 +35,7 @@ public class DataWays implements Data {
         this.poolMaxTotal = 1;
     }
 
-    public DataWays(DataJdbc dataJdbc, Integer poolMinIdle, Integer poolMaxIdle, Integer poolMaxTotal) {
+    public BasedWays(BasedJdbc dataJdbc, Integer poolMinIdle, Integer poolMaxIdle, Integer poolMaxTotal) {
         this.dataJdbc = dataJdbc;
         this.dataLink = null;
         this.poolMinIdle = poolMinIdle;
@@ -43,7 +43,7 @@ public class DataWays implements Data {
         this.poolMaxTotal = poolMaxTotal;
     }
 
-    public DataWays(DataLink dataLink, Integer poolMinIdle, Integer poolMaxIdle, Integer poolMaxTotal) {
+    public BasedWays(BasedLink dataLink, Integer poolMinIdle, Integer poolMaxIdle, Integer poolMaxTotal) {
         this.dataJdbc = null;
         this.dataLink = dataLink;
         this.poolMinIdle = poolMinIdle;
@@ -95,7 +95,7 @@ public class DataWays implements Data {
         if (this.dataLink != null && this.dataLink.base != null) {
             return this.dataLink.base.eOrmClazz;
         }
-        return DataBase.getEOrmClassFromURL(this.getUrl());
+        return Based.getEOrmClassFromURL(this.getUrl());
     }
 
     @Override
@@ -113,8 +113,8 @@ public class DataWays implements Data {
         return this.toChars();
     }
 
-    public static DataWays fromChars(String chars) {
-        return Data.fromChars(chars, DataWays.class);
+    public static BasedWays fromChars(String chars) {
+        return Data.fromChars(chars, BasedWays.class);
     }
 
 }

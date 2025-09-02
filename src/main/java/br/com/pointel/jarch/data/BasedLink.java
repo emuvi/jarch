@@ -7,10 +7,10 @@ import br.com.pointel.jarch.mage.WizChars;
 import br.com.pointel.jarch.mage.WizData;
 import br.com.pointel.jarch.mage.WizInt;
 
-public class DataLink implements Data {
+public class BasedLink implements Data {
     
     public String name;
-    public DataBase base;
+    public Based base;
     public String path;
     public Integer port;
     public String data;
@@ -19,31 +19,31 @@ public class DataLink implements Data {
 
     private transient Connection linked = null;
 
-    public DataLink() {}
+    public BasedLink() {}
 
-    public DataLink(String name) {
+    public BasedLink(String name) {
         this.name = name;
     }
 
-    public DataLink(String name, DataBase base) {
+    public BasedLink(String name, Based base) {
         this.name = name;
         this.base = base;
     }
 
-    public DataLink(String name, DataBase base, String path) {
+    public BasedLink(String name, Based base, String path) {
         this.name = name;
         this.base = base;
         this.path = path;
     }
 
-    public DataLink(String name, DataBase base, String path, String data) {
+    public BasedLink(String name, Based base, String path, String data) {
         this.name = name;
         this.base = base;
         this.path = path;
         this.data = data;
     }
 
-    public DataLink(String name, DataBase base, String path, Integer port, String data) {
+    public BasedLink(String name, Based base, String path, Integer port, String data) {
         this.name = name;
         this.base = base;
         this.path = path;
@@ -51,7 +51,7 @@ public class DataLink implements Data {
         this.data = data;
     }
 
-    public DataLink(String name, DataBase base, String path, String data, String user, String pass) {
+    public BasedLink(String name, Based base, String path, String data, String user, String pass) {
         this.name = name;
         this.base = base;
         this.path = path;
@@ -60,29 +60,29 @@ public class DataLink implements Data {
         this.pass = pass;
     }
 
-    public DataLink(DataBase base) {
+    public BasedLink(Based base) {
         this.base = base;
     }
 
-    public DataLink(DataBase base, String path) {
+    public BasedLink(Based base, String path) {
         this.base = base;
         this.path = path;
     }
 
-    public DataLink(DataBase base, String path, String data) {
+    public BasedLink(Based base, String path, String data) {
         this.base = base;
         this.path = path;
         this.data = data;
     }
 
-    public DataLink(DataBase base, String path, Integer port, String data) {
+    public BasedLink(Based base, String path, Integer port, String data) {
         this.base = base;
         this.path = path;
         this.port = port;
         this.data = data;
     }
 
-    public DataLink(DataBase base, String path, String data, String user, String pass) {
+    public BasedLink(Based base, String path, String data, String user, String pass) {
         this.base = base;
         this.path = path;
         this.data = data;
@@ -90,7 +90,7 @@ public class DataLink implements Data {
         this.pass = pass;
     }
 
-    public DataLink(String name, DataBase base, String path, Integer port, String data, String user, String pass) {
+    public BasedLink(String name, Based base, String path, Integer port, String data, String user, String pass) {
         this.name = name;
         this.base = base;
         this.path = path;
@@ -155,15 +155,15 @@ public class DataLink implements Data {
         return this.toChars();
     }
 
-    public static DataLink fromChars(String chars) {
-        return Data.fromChars(chars, DataLink.class);
+    public static BasedLink fromChars(String chars) {
+        return Data.fromChars(chars, BasedLink.class);
     }
 
-    public static DataLink fromAssigned(String chars) {
-        DataLink result = new DataLink();
+    public static BasedLink fromAssigned(String chars) {
+        BasedLink result = new BasedLink();
         Map<String, String> assigned = WizChars.getAssigned(chars);
         result.name = assigned.get("name");
-        result.base = WizData.fromChars(assigned.get("base"), DataBase.class);
+        result.base = WizData.fromChars(assigned.get("base"), Based.class);
         result.path = assigned.get("path");
         result.port = WizInt.fromChars(assigned.get("port"));
         result.data = assigned.get("data");

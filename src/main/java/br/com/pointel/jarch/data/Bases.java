@@ -2,12 +2,12 @@ package br.com.pointel.jarch.data;
 
 import java.util.Objects;
 
-public class Bases extends DataListArray<DataWays> implements Data {
+public class Bases extends DataListArray<BasedWays> implements Data {
 
     public Bases() {
     }
 
-    public DataWays getFromName(String name) {
+    public BasedWays getFromName(String name) {
         for (var dataWay : this) {
             if (Objects.equals(dataWay.getName(), name)) {
                 return dataWay;

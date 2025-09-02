@@ -1,30 +1,30 @@
 package br.com.pointel.jarch.data;
 
-public class DataJdbc implements Data {
+public class BasedJdbc implements Data {
     
     public String name;
     public String url;
     public String user;
     public String pass;
 
-    public DataJdbc() {}
+    public BasedJdbc() {}
 
-    public DataJdbc(String url) {
+    public BasedJdbc(String url) {
         this.url = url;
     }
 
-    public DataJdbc(String url, String user) {
+    public BasedJdbc(String url, String user) {
         this.url = url;
         this.user = user;
     }
 
-    public DataJdbc(String url, String user, String pass) {
+    public BasedJdbc(String url, String user, String pass) {
         this.url = url;
         this.user = user;
         this.pass = pass;
     }
 
-    public DataJdbc(String name, String url, String user, String pass) {
+    public BasedJdbc(String name, String url, String user, String pass) {
         this.name = name;
         this.url = url;
         this.user = user;
@@ -46,7 +46,7 @@ public class DataJdbc implements Data {
         return this.toChars();
     }
 
-    public static DataJdbc fromChars(String chars) {
-        return Data.fromChars(chars, DataJdbc.class);
+    public static BasedJdbc fromChars(String chars) {
+        return Data.fromChars(chars, BasedJdbc.class);
     }
 }

@@ -1,6 +1,6 @@
 package br.com.pointel.jarch.data;
 
-public enum DataBase {
+public enum Based {
 
     SQLiteMemory(
                     "org.sqlite.JDBC",
@@ -79,7 +79,7 @@ public enum DataBase {
     public final Integer defaultPort;
     public final Class<? extends EOrm> eOrmClazz;
 
-    private DataBase(String driverClazz, String formation, Integer defaultPort,
+    private Based(String driverClazz, String formation, Integer defaultPort,
                     Class<? extends EOrm> eOrmClazz) {
         this.driverClazz = driverClazz;
         this.formation = formation;
@@ -95,8 +95,8 @@ public enum DataBase {
         return this.formation.substring(0, dollarAt);
     }
 
-    public static DataBase fromURL(String jdbc) {
-        for (DataBase data : DataBase.values()) {
+    public static Based fromURL(String jdbc) {
+        for (Based data : Based.values()) {
             if (jdbc.startsWith(data.getUrlIdentity())) {
                 return data;
             }
@@ -105,7 +105,7 @@ public enum DataBase {
     }
 
     public static Class<? extends EOrm> getEOrmClassFromURL(String jdbc) {
-        for (DataBase data : DataBase.values()) {
+        for (Based data : Based.values()) {
             if (jdbc.startsWith(data.getUrlIdentity())) {
                 return data.eOrmClazz;
             }
