@@ -6,193 +6,326 @@ import java.util.Objects;
 
 public class WizDate {
 
-    public static Date get(Object fromValue) throws Exception {
-        if (fromValue == null) {
+    public static Date get(Object value) throws Exception {
+        if (value == null) {
             return null;
         }
-        var clazz = fromValue.getClass();
-        if (Date.class.isAssignableFrom(clazz)) {
-            return (Date) fromValue;
+        if (Date.class.isAssignableFrom(value.getClass())) {
+            return (Date) value;
         }
-        if (fromValue instanceof java.sql.Date) {
-            return new Date(((java.sql.Date) fromValue).getTime());
-        } else if (fromValue instanceof java.sql.Time) {
-            return new Date(((java.sql.Time) fromValue).getTime());
-        } else if (fromValue instanceof java.sql.Timestamp) {
-            return new Date(((java.sql.Timestamp) fromValue).getTime());
-        } else if (fromValue instanceof String string) {
-            for (SimpleDateFormat format : WizDate.FORMATS) {
+        if (value instanceof java.sql.Date date) {
+            return new Date(date.getTime());
+        } else if (value instanceof java.sql.Time time) {
+            return new Date(time.getTime());
+        } else if (value instanceof java.sql.Timestamp timestamp) {
+            return new Date(timestamp.getTime());
+        } else if (value instanceof String string) {
+            for (var format : WizDate.getFormats()) {
                 if (WizDate.is(string, format)) {
                     return format.parse(string);
                 }
             }
         }
-        throw new Exception("Could not convert the value of class " + fromValue.getClass()
-                        .getName() + " to a date value.");
+        throw new Exception("Could not convert the value of class " + value.getClass().getName() + " to a Date value.");
     }
 
-    public static boolean is(String str, SimpleDateFormat inFormat) {
-        return Objects.equals(WizChars.replaceLettersOrDigits(str, 'x'), WizChars
-                        .replaceLettersOrDigits(inFormat.toPattern(), 'x'));
+    public static boolean is(String formatted, SimpleDateFormat inFormat) {
+        return Objects.equals(WizChars.replaceLettersOrDigits(formatted, 'x'), WizChars.replaceLettersOrDigits(inFormat.toPattern(), 'x'));
     }
 
-    public static String formatDate(Date date) {
+    public static String formatDateUser(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.DATE_FORMAT.format(date);
+        return WizDate.formatDateUser.format(date);
     }
 
-    public static String formatTime(Date date) {
+    public static String formatTimeUser(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.TIME_FORMAT.format(date);
+        return WizDate.formatTimeUser.format(date);
     }
 
-    public static String formatTimeMillis(Date date) {
+    public static String formatMillisUser(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.TIME_MILLIS_FORMAT.format(date);
+        return WizDate.formatMillisUser.format(date);
     }
 
-    public static String formatTimestamp(Date date) {
+    public static String formatDateTimeUser(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.TIMESTAMP_FORMAT.format(date);
+        return WizDate.formatDateTimeUser.format(date);
     }
 
-    public static String formatMoment(Date date) {
+    public static String formatTimestampUser(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.MOMENT_FORMAT.format(date);
+        return WizDate.formatTimestampUser.format(date);
+    }
+
+    public static String formatMomentUser(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatMomentUser.format(date);
+    }
+
+    public static String formatDateMach(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatDateMach.format(date);
+    }
+
+    public static String formatTimeMach(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatTimeMach.format(date);
+    }
+
+    public static String formatMillisMach(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatMillisMach.format(date);
+    }
+
+    public static String formatDateTimeMach(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatDateTimeMach.format(date);
+    }
+
+    public static String formatTimestampMach(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatTimestampMach.format(date);
+    }
+
+    public static String formatMomentMach(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatMomentMach.format(date);
+    }
+
+    public static String formatDateFile(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatDateFile.format(date);
     }
 
     public static String formatTimeFile(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.TIME_FILE_FORMAT.format(date);
+        return WizDate.formatTimeFile.format(date);
     }
 
-    public static String formatTimeMillisFile(Date date) {
+    public static String formatMillisFile(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.TIME_MILLIS_FILE_FORMAT.format(date);
+        return WizDate.formatMillisFile.format(date);
+    }
+
+    public static String formatDateTimeFile(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return WizDate.formatDateTimeFile.format(date);
     }
 
     public static String formatTimestampFile(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.TIMESTAMP_FILE_FORMAT.format(date);
+        return WizDate.formatTimestampFile.format(date);
     }
 
     public static String formatMomentFile(Date date) {
         if (date == null) {
             return "";
         }
-        return WizDate.MOMENT_FILE_FORMAT.format(date);
+        return WizDate.formatMomentFile.format(date);
     }
 
-    public static Date parseDate(String formatted) throws Exception {
+    public static Date parseDateUser(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.DATE_FORMAT.parse(formatted);
+        return WizDate.formatDateUser.parse(formatted);
     }
 
-    public static Date parseTime(String formatted) throws Exception {
+    public static Date parseTimeUser(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.TIME_FORMAT.parse(formatted);
+        return WizDate.formatTimeUser.parse(formatted);
     }
 
-    public static Date parseTimeMillis(String formatted) throws Exception {
+    public static Date parseMillisUser(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.TIME_MILLIS_FORMAT.parse(formatted);
+        return WizDate.formatMillisUser.parse(formatted);
     }
 
-    public static Date parseTimestamp(String formatted) throws Exception {
+    public static Date parseDateTimeUser(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.TIMESTAMP_FORMAT.parse(formatted);
+        return WizDate.formatDateTimeUser.parse(formatted);
     }
 
-    public static Date parseMoment(String formatted) throws Exception {
+    public static Date parseTimestampUser(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.MOMENT_FORMAT.parse(formatted);
+        return WizDate.formatTimestampUser.parse(formatted);
+    }
+
+    public static Date parseMomentUser(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatMomentUser.parse(formatted);
+    }
+
+    public static Date parseDateMach(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatDateMach.parse(formatted);
+    }
+
+    public static Date parseTimeMach(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatTimeMach.parse(formatted);
+    }
+
+    public static Date parseMillisMach(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatMillisMach.parse(formatted);
+    }
+
+    public static Date parseDateTimeMach(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatDateTimeMach.parse(formatted);
+    }
+
+    public static Date parseTimestampMach(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatTimestampMach.parse(formatted);
+    }
+
+    public static Date parseMomentMach(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatMomentMach.parse(formatted);
+    }
+
+    public static Date parseDateFile(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatDateFile.parse(formatted);
     }
 
     public static Date parseTimeFile(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.TIME_FILE_FORMAT.parse(formatted);
+        return WizDate.formatTimeFile.parse(formatted);
     }
 
     public static Date parseTimeMillisFile(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.TIME_MILLIS_FILE_FORMAT.parse(formatted);
+        return WizDate.formatMillisFile.parse(formatted);
+    }
+
+    public static Date parseDateTimeFile(String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        return WizDate.formatDateTimeFile.parse(formatted);
     }
 
     public static Date parseTimestampFile(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.TIMESTAMP_FILE_FORMAT.parse(formatted);
+        return WizDate.formatTimestampFile.parse(formatted);
     }
 
     public static Date parseMomentFile(String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
-        return WizDate.MOMENT_FILE_FORMAT.parse(formatted);
+        return WizDate.formatMomentFile.parse(formatted);
     }
 
-    public static final SimpleDateFormat DATE_USER_FORMAT = new SimpleDateFormat(
-                    "dd/MM/yyyy");
-    public static final SimpleDateFormat TIME_USER_FORMAT = new SimpleDateFormat(
-                    "HH:mm:ss");
-    public static final SimpleDateFormat TIMESTAMP_USER_FORMAT = new SimpleDateFormat(
-                    "dd/MM/yyyy HH:mm:ss");
+    public static SimpleDateFormat formatDateUser = new SimpleDateFormat("dd/MM/yyyy");
+    public static SimpleDateFormat formatTimeUser = new SimpleDateFormat("HH:mm:ss");
+    public static SimpleDateFormat formatMillisUser = new SimpleDateFormat("HH:mm:ss ZZZ");
+    public static SimpleDateFormat formatDateTimeUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    public static SimpleDateFormat formatTimestampUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss Z");
+    public static SimpleDateFormat formatMomentUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ZZZ Z");
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
-    public static final SimpleDateFormat TIME_MILLIS_FORMAT = new SimpleDateFormat(
-                    "HH:mm:ss.ZZZ");
-    public static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss");
-    public static final SimpleDateFormat MOMENT_FORMAT = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss.ZZZ");
+    public static SimpleDateFormat formatDateMach = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat formatTimeMach = new SimpleDateFormat("HH:mm:ss");
+    public static SimpleDateFormat formatMillisMach = new SimpleDateFormat("HH:mm:ss.ZZZ");
+    public static SimpleDateFormat formatDateTimeMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat formatTimestampMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+    public static SimpleDateFormat formatMomentMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ZZZ Z");
 
-    public static final SimpleDateFormat TIME_FILE_FORMAT = new SimpleDateFormat(
-                    "HH-mm-ss");
-    public static final SimpleDateFormat TIME_MILLIS_FILE_FORMAT = new SimpleDateFormat(
-                    "HH-mm-ss.ZZZ");
-    public static final SimpleDateFormat TIMESTAMP_FILE_FORMAT = new SimpleDateFormat(
-                    "yyyy-MM-dd-HH-mm-ss");
-    public static final SimpleDateFormat MOMENT_FILE_FORMAT = new SimpleDateFormat(
-                    "yyyy-MM-dd-HH-mm-ss.ZZZ");
+    public static SimpleDateFormat formatDateFile = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat formatTimeFile = new SimpleDateFormat("HH-mm-ss");
+    public static SimpleDateFormat formatMillisFile = new SimpleDateFormat("HH-mm-ss-ZZZ");
+    public static SimpleDateFormat formatDateTimeFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    public static SimpleDateFormat formatTimestampFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-Z");
+    public static SimpleDateFormat formatMomentFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-ZZZ-Z");
 
-    public static final SimpleDateFormat[] FORMATS = {
-                    WizDate.DATE_USER_FORMAT, WizDate.TIME_USER_FORMAT,
-                    WizDate.TIMESTAMP_USER_FORMAT,
-                    WizDate.DATE_FORMAT, WizDate.TIME_FORMAT, WizDate.TIME_MILLIS_FORMAT,
-                    WizDate.TIMESTAMP_FORMAT,
-                    WizDate.MOMENT_FORMAT, WizDate.TIME_FILE_FORMAT,
-                    WizDate.TIME_MILLIS_FILE_FORMAT, WizDate.MOMENT_FILE_FORMAT
+    public static SimpleDateFormat[] getFormats() {
+        return new SimpleDateFormat[] {
+                WizDate.formatDateMach,
+                WizDate.formatTimeMach,
+                WizDate.formatMillisMach,
+                WizDate.formatDateTimeMach,
+                WizDate.formatTimestampMach,
+                WizDate.formatMomentMach,
+                WizDate.formatDateUser,
+                WizDate.formatTimeUser,
+                WizDate.formatMillisUser,
+                WizDate.formatDateTimeUser,
+                WizDate.formatTimestampUser,
+                WizDate.formatMomentUser,
+                WizDate.formatDateFile,
+                WizDate.formatTimeFile,
+                WizDate.formatMillisFile,
+                WizDate.formatDateTimeFile,
+                WizDate.formatTimestampFile,
+                WizDate.formatMomentFile
+        };
     };
 }
