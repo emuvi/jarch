@@ -39,7 +39,7 @@ public class WizFile {
     }
 
     public static String fixSeparators(String path) {
-        if (WizChars.isEmpty(path)) {
+        if (WizString.isEmpty(path)) {
             return path;
         }
         if (path.contains("\\") && "/".equals(File.separator)) {
@@ -51,8 +51,8 @@ public class WizFile {
     }
 
     public static String sum(String path, String child) {
-        if (!WizChars.isNotEmpty(path) || !WizChars.isNotEmpty(child)) {
-            return WizChars.firstNonEmpty(path, child);
+        if (!WizString.isNotEmpty(path) || !WizString.isNotEmpty(child)) {
+            return WizString.firstNonEmpty(path, child);
         }
         if (path.endsWith(File.separator) && child.startsWith(File.separator)) {
             return path + child.substring(File.separator.length());
@@ -154,7 +154,7 @@ public class WizFile {
         if (path == null) {
             return chars;
         }
-        if (WizChars.isEmpty(chars)) {
+        if (WizString.isEmpty(chars)) {
             return path;
         }
         var dotIndex = path.lastIndexOf(".");

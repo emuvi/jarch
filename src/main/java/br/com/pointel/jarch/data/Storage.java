@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.dbcp2.BasicDataSource;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 
 public class Storage {
 
@@ -67,11 +67,11 @@ public class Storage {
             throw new RuntimeException("DataWays cannot be null.");
         }
         var name = dataWays.getName();
-        if (WizChars.isEmpty(name)) {
+        if (WizString.isEmpty(name)) {
             throw new RuntimeException("DataWays name cannot be empty.");
         }
         var url = dataWays.getUrl();
-        if (WizChars.isEmpty(url)) {
+        if (WizString.isEmpty(url)) {
             throw new RuntimeException("DataWays URL cannot be empty.");
         }
         if (dataWays.dataJdbc == null && dataWays.dataLink == null) {
@@ -83,11 +83,11 @@ public class Storage {
         var newSource = new BasicDataSource();
         newSource.setUrl(url);
         var user = dataWays.getUser();
-        if (!WizChars.isEmpty(user)) {
+        if (!WizString.isEmpty(user)) {
             newSource.setUsername(user);
         }
         var pass = dataWays.getPass();
-        if (!WizChars.isEmpty(pass)) {
+        if (!WizString.isEmpty(pass)) {
             newSource.setPassword(pass);
         }
         newSource.setMinIdle(dataWays.poolMinIdle);

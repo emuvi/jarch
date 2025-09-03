@@ -19,7 +19,7 @@ import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.jarch.mage.WizDesk;
 import br.com.pointel.jarch.mage.WizProps;
 
@@ -33,7 +33,7 @@ public class SwingFramer {
     public SwingFramer(JFrame frame, Font font) {
         this.frame = frame;
         this.font = font;
-        this.rootName = "FRAME_" + WizChars.makeParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
+        this.rootName = "FRAME_" + WizString.makeParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
         this.popMenu = new JPopupMenu();
     }
 
@@ -102,7 +102,7 @@ public class SwingFramer {
             }
         }
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
-            var paramName =  rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
+            var paramName =  rootName + "_COMP_" + WizString.makeParameterName(component.getName());
             SwingUtilities.invokeLater(() -> {
                 switch (component) {
                     case JTextComponent textField ->
@@ -131,7 +131,7 @@ public class SwingFramer {
 
     public void saveFramePropsComps(Component component) {
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
-            var paramName = rootName + "_COMP_" + WizChars.makeParameterName(component.getName());
+            var paramName = rootName + "_COMP_" + WizString.makeParameterName(component.getName());
             switch (component) {
                 case JTextComponent textField ->
                     WizProps.set(paramName, textField.getText());

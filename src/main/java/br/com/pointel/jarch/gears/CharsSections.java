@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 
 /**
  *
@@ -28,7 +28,7 @@ public class CharsSections {
         if (history != null) {
             history.push(file, source);
         }
-        var lines = WizChars.getLines(source);
+        var lines = WizString.getLines(source);
         var result = new CharsSectionsMap();
         var actualName = "";
         var actualList = result.newSection(actualName);

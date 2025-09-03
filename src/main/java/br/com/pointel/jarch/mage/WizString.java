@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import br.com.pointel.jarch.data.Pair;
 
-public class WizChars {
+public class WizString {
 
-    private WizChars() {
+    private WizString() {
     }
 
     public static boolean is(Object value) {
@@ -153,7 +153,7 @@ public class WizChars {
 
     public static List<String> getWordsLike(String source) {
         return getWords(source).stream()
-                .map(WizChars::removeAccents).toList();
+                .map(WizString::removeAccents).toList();
     }
 
     public static List<String> getWords(String chars) {
@@ -218,7 +218,7 @@ public class WizChars {
             return "";
         }
         for (String chars : charsList) {
-            if (WizChars.isNotEmpty(chars)) {
+            if (WizString.isNotEmpty(chars)) {
                 return chars;
             }
         }
@@ -226,7 +226,7 @@ public class WizChars {
     }
 
     public static String sum(String union, String... charsList) {
-        return WizChars.sum(union, null, charsList);
+        return WizString.sum(union, null, charsList);
     }
 
     public static String sum(String union, StringBuilder andBuilder, String... charsList) {
@@ -239,7 +239,7 @@ public class WizChars {
         var atLeastOne = false;
         var result = andBuilder != null ? andBuilder : new StringBuilder();
         for (String chars : charsList) {
-            if (WizChars.isNotEmpty(chars)) {
+            if (WizString.isNotEmpty(chars)) {
                 if (atLeastOne) {
                     result.append(union);
                 } else {
@@ -391,15 +391,15 @@ public class WizChars {
     }
 
     public static String fill(char withChar, int untilLength) {
-        return WizChars.fill(null, withChar, untilLength, true);
+        return WizString.fill(null, withChar, untilLength, true);
     }
 
     public static String fill(String theString, char withChar, int untilLength) {
-        return WizChars.fill(theString, withChar, untilLength, false);
+        return WizString.fill(theString, withChar, untilLength, false);
     }
 
     public static String fillAtStart(String chars, char withChar, int untilLength) {
-        return WizChars.fill(chars, withChar, untilLength, true);
+        return WizString.fill(chars, withChar, untilLength, true);
     }
 
     public static String fill(String chars, char withChar, int untilLength, boolean atStart) {
@@ -418,7 +418,7 @@ public class WizChars {
     }
 
     public static boolean contains(String chars, Character... anyChar) {
-        if (WizChars.isNotEmpty(chars) && anyChar != null && anyChar.length > 0) {
+        if (WizString.isNotEmpty(chars) && anyChar != null && anyChar.length > 0) {
             for (var i = 0; i < chars.length(); i++) {
                 if (WizArray.has(chars.charAt(i), anyChar)) {
                     return true;
@@ -440,7 +440,7 @@ public class WizChars {
     }
 
     public static String replaceBreaks(String chars) {
-        if (WizChars.isEmpty(chars)) {
+        if (WizString.isEmpty(chars)) {
             return chars;
         }
         chars = chars.replace("\\", "\\\\");
@@ -452,7 +452,7 @@ public class WizChars {
     }
 
     public static String remakeBreaks(String chars) {
-        if (WizChars.isEmpty(chars)) {
+        if (WizString.isEmpty(chars)) {
             return chars;
         }
         chars = chars.replace("\\b", "\b");
@@ -468,7 +468,7 @@ public class WizChars {
     }
 
     public static String replaceEnvVars(String chars, String withPrefix) {
-        if (WizChars.isEmpty(chars)) {
+        if (WizString.isEmpty(chars)) {
             return chars;
         }
         var result = chars;
@@ -491,7 +491,7 @@ public class WizChars {
 
     public static Map<String, String> getAssigned(String chars) {
         var result = new HashMap<String, String>();
-        if (WizChars.isEmpty(chars)) {
+        if (WizString.isEmpty(chars)) {
             return result;
         }
         var openQuotes = false;

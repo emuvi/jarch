@@ -79,8 +79,8 @@ public class WizInstant {
 
     public static boolean is(String formatted, DateTimeFormatter onFormat) {
         return Objects.equals(
-                WizChars.replaceLettersOrDigits(formatted, 'x'),
-                WizChars.replaceLettersOrDigits(onFormat.toString(), 'x'));
+                WizString.replaceLettersOrDigits(formatted, 'x'),
+                WizString.replaceLettersOrDigits(onFormat.toString(), 'x'));
     }
 
     public static String format(Instant instant) {

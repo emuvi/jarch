@@ -20,7 +20,7 @@ public class WizCharsTest {
             new GetWordsTest("abc test123.45 abc.def", List.of("abc", "test", "123.45", "abc", ".", "def"))
         );
         for (var test : tests) {
-            var result = WizChars.getWords(test.input);
+            var result = WizString.getWords(test.input);
             Assertions.assertLinesMatch(test.expected, result);
         }
     }

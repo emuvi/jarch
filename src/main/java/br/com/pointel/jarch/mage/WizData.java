@@ -8,6 +8,13 @@ import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -274,174 +281,153 @@ public class WizData {
         if (WizLang.isChildOf(onClass, Boolean.class)) {
             return onClass.cast(getOnBoolean(value));
         }
-        throw new UnsupportedOperationException("Could not convert to " + onClass.getCanonicalName() + " from class: " + value.getClass().getCanonicalName());
+        if (WizLang.isChildOf(onClass, Byte.class)) {
+            return onClass.cast(getOnByte(value));
+        }
+        if (WizLang.isChildOf(onClass, Short.class)) {
+            return onClass.cast(getOnShort(value));
+        }
+        if (WizLang.isChildOf(onClass, Integer.class)) {
+            return onClass.cast(getOnInteger(value));
+        }
+        if (WizLang.isChildOf(onClass, Long.class)) {
+            return onClass.cast(getOnLong(value));
+        }
+        if (WizLang.isChildOf(onClass, Float.class)) {
+            return onClass.cast(getOnFloat(value));
+        }
+        if (WizLang.isChildOf(onClass, Double.class)) {
+            return onClass.cast(getOnDouble(value));
+        }
+        if (WizLang.isChildOf(onClass, BigInteger.class)) {
+            return onClass.cast(getOnBigInteger(value));
+        }
+        if (WizLang.isChildOf(onClass, BigDecimal.class)) {
+            return onClass.cast(getOnBigDecimal(value));
+        }
+        if (WizLang.isChildOf(onClass, Character.class)) {
+            return onClass.cast(getOnCharacter(value));
+        }
+        if (WizLang.isChildOf(onClass, String.class)) {
+            return onClass.cast(getOnString(value));
+        }
+        if (WizLang.isChildOf(onClass, Instant.class)) {
+            return onClass.cast(getOnInstant(value));
+        }
+        if (WizLang.isChildOf(onClass, Long.class)) {
+            return onClass.cast(getOnLong(value));
+        }
+        if (WizLang.isChildOf(onClass, ZonedDateTime.class)) {
+            return onClass.cast(getOnZonedDateTime(value));
+        }
+        if (WizLang.isChildOf(onClass, OffsetDateTime.class)) {
+            return onClass.cast(getOnOffsetDateTime(value));
+        }
+        if (WizLang.isChildOf(onClass, OffsetTime.class)) {
+            return onClass.cast(getOnOffsetTime(value));
+        }
+        if (WizLang.isChildOf(onClass, LocalDateTime.class)) {
+            return onClass.cast(getOnLocalDateTime(value));
+        }
+        if (WizLang.isChildOf(onClass, LocalDate.class)) {
+            return onClass.cast(getOnLocalDate(value));
+        }
+        if (WizLang.isChildOf(onClass, LocalTime.class)) {
+            return onClass.cast(getOnLocalTime(value));
+        }
+        if (WizLang.isChildOf(onClass, java.util.Date.class)) {
+            return onClass.cast(getOnUtilDate(value));
+        }
+        if (WizLang.isChildOf(onClass, java.sql.Date.class)) {
+            return onClass.cast(getOnSqlDate(value));
+        }
+        if (WizLang.isChildOf(onClass, java.sql.Time.class)) {
+            return onClass.cast(getOnSqlTime(value));
+        }
+        if (WizLang.isChildOf(onClass, java.sql.Timestamp.class)) {
+            return onClass.cast(getOnSqlTimestamp(value));
+        }
+        if (WizLang.isChildOf(onClass, byte[].class)) {
+            return onClass.cast(getOnBytes(value));
+        }
+        if (WizLang.isChildOf(onClass, Blob.class)) {
+            return onClass.cast(getOnBlob(value));
+        }
+        if (WizLang.isChildOf(onClass, Clob.class)) {
+            return onClass.cast(getOnClob(value));
+        }
+        throw new UnsupportedOperationException("Could not convert to " + onClass.getCanonicalName() + " from class: " + value.getClass().getName());
     }
 
     public static Boolean getOnBoolean(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Boolean) {
-            return (Boolean) value;
-        }
-        if (value instanceof Byte) {
-            return (Byte) value != 0;
-        }
-        if (value instanceof Number number) {
-            return number.intValue() != 0;
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Bool, formatted, Boolean.class);
-        }
-        throw new Exception("Could not convert to Byte from class: " + value.getClass().getCanonicalName());
+        return WizBoolean.get(value);
     }
 
     public static Byte getOnByte(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Byte) {
-            return (Byte) value;
-        }
-        if (value instanceof Number number) {
-            return number.byteValue();
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Byte, formatted, Byte.class);
-        }
-        throw new Exception("Could not convert to Byte from class: " + value.getClass().getCanonicalName());
+        return WizByte.get(value);
     }
 
     public static Short getOnShort(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Short) {
-            return (Short) value;
-        }
-        if (value instanceof Number number) {
-            return number.shortValue();
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Small, formatted, Short.class);
-        }
-        throw new Exception("Could not convert to Short from class: " + value.getClass().getCanonicalName());
+        return WizShort.get(value);
     }
 
     public static Integer getOnInteger(Object value) throws Exception {
-        return WizInt.get(value);
+        return WizInteger.get(value);
     }
 
     public static Long getOnLong(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Long) {
-            return (Long) value;
-        }
-        if (value instanceof Number number) {
-            return number.longValue();
-        }
-        throw new Exception("Could not convert to Long from class: " + value.getClass().getCanonicalName());
+        return WizLong.get(value);
     }
 
     public static Float getOnFloat(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Float) {
-            return (Float) value;
-        }
-        if (value instanceof Number number) {
-            return number.floatValue();
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Float, formatted, Float.class);
-        }
-        throw new Exception("Could not convert to Float from class: " + value.getClass().getCanonicalName());
+        return WizFloat.get(value);
     }
 
     public static Double getOnDouble(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Double) {
-            return (Double) value;
-        }
-        if (value instanceof Number number) {
-            return number.doubleValue();
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Double, formatted, Double.class);
-        }
-        throw new Exception("Could not convert to Double from class: " + value.getClass().getCanonicalName());
+        return WizDouble.get(value);
     }
 
     public static BigInteger getOnBigInteger(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof BigInteger) {
-            return (BigInteger) value;
-        }
-        if (value instanceof Number number) {
-            return new BigInteger(number.toString());
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.BigInt, formatted, BigInteger.class);
-        }
-        throw new Exception("Could not convert to BigInteger from class: " + value.getClass().getCanonicalName());
+        return WizBigInteger.get(value);
     }
 
     public static BigDecimal getOnBigDecimal(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof BigDecimal) {
-            return (BigDecimal) value;
-        }
-        if (value instanceof Number number) {
-            return new BigDecimal(number.toString());
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.BigNumeric, formatted, BigDecimal.class);
-        }
-        throw new Exception("Could not convert to BigDecimal from class: " + value.getClass().getCanonicalName());
+        return WizBigDecimal.get(value);
     }
 
-    public static Character getOnChar(Object value) throws Exception {
-        return WizChar.get(value);
+    public static Character getOnCharacter(Object value) throws Exception {
+        return WizCharacter.get(value);
     }
 
     public static String getOnString(Object value) throws Exception {
-        return WizChars.get(value);
+        return WizString.get(value);
     }
 
-    public static java.time.Instant getOnInstant(Object value) throws Exception {
+    public static Instant getOnInstant(Object value) throws Exception {
         return WizInstant.get(value);
     }
 
-    public static java.time.ZonedDateTime getOnZonedDateTime(Object value) throws Exception {
+    public static ZonedDateTime getOnZonedDateTime(Object value) throws Exception {
         return WizZonedDateTime.get(value);
     }
 
-    public static java.time.OffsetDateTime getOnOffsetDateTime(Object value) throws Exception {
+    public static OffsetDateTime getOnOffsetDateTime(Object value) throws Exception {
         return WizOffsetDateTime.get(value);
     }
 
-    public static java.time.OffsetTime getOnOffsetTime(Object value) throws Exception {
+    public static OffsetTime getOnOffsetTime(Object value) throws Exception {
         return WizOffsetTime.get(value);
     }
 
-    public static java.time.LocalDateTime getOnLocalDateTime(Object value) throws Exception {
+    public static LocalDateTime getOnLocalDateTime(Object value) throws Exception {
         return WizLocalDateTime.get(value);
     }
 
-    public static java.time.LocalDate getOnLocalDate(Object value) throws Exception {
+    public static LocalDate getOnLocalDate(Object value) throws Exception {
         return WizLocalDate.get(value);
     }
 
-    public static java.time.LocalTime getOnLocalTime(Object value) throws Exception {
+    public static LocalTime getOnLocalTime(Object value) throws Exception {
         return WizLocalTime.get(value);
     }
 
@@ -465,11 +451,11 @@ public class WizData {
         return WizBytes.get(value);
     }
 
-    public static Blob getBlob(Object value) throws Exception {
+    public static Blob getOnBlob(Object value) throws Exception {
         return WizBlob.get(value);
     }
 
-    public static Clob getClob(Object value) throws Exception {
+    public static Clob getOnClob(Object value) throws Exception {
         return WizClob.get(value);
     }
 

@@ -1,7 +1,7 @@
 package br.com.pointel.jarch.data;
 
 import java.sql.Connection;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.jarch.mage.WizData;
 
 public class TableHead implements Data {
@@ -43,15 +43,15 @@ public class TableHead implements Data {
     }
 
     public String getSchemaName() {
-        return WizChars.sum(".", this.schema, this.name);
+        return WizString.sum(".", this.schema, this.name);
     }
 
     public String getCatalogSchemaName() {
-        return WizChars.sum(".", this.catalog, this.schema, this.name);
+        return WizString.sum(".", this.catalog, this.schema, this.name);
     }
 
     public String getNameForFile() {
-        return WizChars.sum(".", this.catalog, this.schema, this.name);
+        return WizString.sum(".", this.catalog, this.schema, this.name);
     }
 
     public Table getTable(Connection connection) throws Exception {

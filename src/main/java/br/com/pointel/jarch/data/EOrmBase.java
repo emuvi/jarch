@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.flow.Base36;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.jarch.mage.WizData;
 
 public class EOrmBase extends EOrm {
@@ -508,9 +508,9 @@ public class EOrmBase extends EOrm {
             last = rst.getString(1);
         }
         if (last == null || last.isEmpty()) {
-            last = WizChars.fillAtStart("", '0', formatSize);
+            last = WizString.fillAtStart("", '0', formatSize);
         }
-        String next = WizChars.getNext(last, true);
+        String next = WizString.getNext(last, true);
         putID(insert, next);
         return next;
     }
@@ -527,9 +527,9 @@ public class EOrmBase extends EOrm {
             last = rst.getString(1);
         }
         if (last == null || last.isEmpty()) {
-            last = WizChars.fillAtStart("", '0', formatSize);
+            last = WizString.fillAtStart("", '0', formatSize);
         }
-        String next = WizChars.getNext(last, false);
+        String next = WizString.getNext(last, false);
         putID(insert, next);
         return next;
     }
@@ -547,7 +547,7 @@ public class EOrmBase extends EOrm {
             nextVal = 1l;
         }
         var next = nextVal.toString();
-        next = WizChars.fillAtStart(next, '0', formatSize);
+        next = WizString.fillAtStart(next, '0', formatSize);
         putID(insert, next);
         return next;
     }
@@ -565,7 +565,7 @@ public class EOrmBase extends EOrm {
             nextVal = 1l;
         }
         var next = Base36.fromBase10(nextVal);
-        next = WizChars.fillAtStart(next, '0', formatSize);
+        next = WizString.fillAtStart(next, '0', formatSize);
         putID(insert, next);
         return next;
     }
@@ -774,52 +774,79 @@ public class EOrmBase extends EOrm {
                     prepared.setBoolean(index, WizData.getOnBoolean(valued.value));
                     break;
                 case Bit:
+                    prepared.setByte(index, WizData.getOnByte(valued.value));
+                    break;
                 case Byte:
                     prepared.setByte(index, WizData.getOnByte(valued.value));
                     break;
                 case Tiny:
+                    prepared.setShort(index, WizData.getOnShort(valued.value));
+                    break;
                 case Small:
                     prepared.setShort(index, WizData.getOnShort(valued.value));
                     break;
                 case Int:
-                case Serial:
                     prepared.setInt(index, WizData.getOnInteger(valued.value));
                     break;
                 case Long:
-                case BigSerial:
                     prepared.setLong(index, WizData.getOnLong(valued.value));
                     break;
+                case BigInt:
+                    prepared.setObject(index, WizData.getOnBigInteger(valued.value));
+                    break;
+                case Serial:
+                    prepared.setInt(index, WizData.getOnInteger(valued.value));
+                    break;
+                case BigSerial:
+                    prepared.setObject(index, WizData.getOnBigInteger(valued.value));
+                    break;
                 case Float:
-                case Real:
                     prepared.setFloat(index, WizData.getOnFloat(valued.value));
                     break;
-                case Double:
-                case Numeric:
+                case Real:
                     prepared.setDouble(index, WizData.getOnDouble(valued.value));
                     break;
+                case Double:
+                    prepared.setDouble(index, WizData.getOnDouble(valued.value));
+                    break;
+                case Numeric:
+                    prepared.setBigDecimal(index, WizData.getOnBigDecimal(valued.value));
+                    break;
                 case BigNumeric:
-                    prepared.setBigDecimal(index, WizData.getOnBigNumeric(valued.value));
+                    prepared.setBigDecimal(index, WizData.getOnBigDecimal(valued.value));
                     break;
                 case Char:
+                    prepared.setString(index, String.valueOf(WizData.getOnCharacter(valued.value)));
+                    break;
                 case Chars:
                     prepared.setString(index, WizData.getOnString(valued.value));
                     break;
                 case Date:
-                    prepared.setDate(index, WizData.getOnDate(valued.value));
+                    prepared.setDate(index, WizData.getOnSqlDate(valued.value));
                     break;
                 case Time:
-                    prepared.setTime(index, WizData.getOnTime(valued.value));
+                    prepared.setTime(index, WizData.getOnSqlTime(valued.value));
                     break;
                 case DateTime:
+                    prepared.setTimestamp(index, WizData.getOnSqlTimestamp(valued.value));
+                    break;
+                case ZoneTime:
+                    prepared.setTimestamp(index, WizData.getOnSqlTimestamp(valued.value));
+                    break;
                 case Timestamp:
-                    prepared.setTimestamp(index, WizData.getOnTimestamp(valued.value));
+                    prepared.setTimestamp(index, WizData.getOnSqlTimestamp(valued.value));
                     break;
                 case Bytes:
                     prepared.setBytes(index, WizData.getOnBytes(valued.value));
                     break;
                 case Blob:
-                case Text:
                     prepared.setBlob(index, WizData.getOnBlob(valued.value));
+                    break;
+                case Text:
+                    prepared.setString(index, WizData.getOnString(valued.value));
+                    break;
+                case Object:
+                    prepared.setObject(index, valued.value);
                     break;
                 default:
                     throw new UnsupportedOperationException();

@@ -3,9 +3,9 @@ package br.com.pointel.jarch.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Map;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.jarch.mage.WizData;
-import br.com.pointel.jarch.mage.WizInt;
+import br.com.pointel.jarch.mage.WizInteger;
 
 public class BasedLink implements Data {
     
@@ -159,13 +159,13 @@ public class BasedLink implements Data {
         return Data.fromChars(chars, BasedLink.class);
     }
 
-    public static BasedLink fromAssigned(String chars) {
+    public static BasedLink fromAssigned(String chars) throws Exception {
         BasedLink result = new BasedLink();
-        Map<String, String> assigned = WizChars.getAssigned(chars);
+        Map<String, String> assigned = WizString.getAssigned(chars);
         result.name = assigned.get("name");
         result.base = WizData.fromChars(assigned.get("base"), Based.class);
         result.path = assigned.get("path");
-        result.port = WizInt.get(assigned.get("port"));
+        result.port = WizInteger.get(assigned.get("port"));
         result.data = assigned.get("data");
         result.user = assigned.get("user");
         result.pass = assigned.get("pass");

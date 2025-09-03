@@ -1,31 +1,31 @@
 package br.com.pointel.jarch.mage;
 
-public class WizChar {
+public class WizBoolean {
 
-    private WizChar() {
+    private WizBoolean() {
     }
 
     public static boolean is(Object value) {
         if (value == null) return false;
-        return WizLang.isChildOf(value.getClass(), Character.class)
+        return WizLang.isChildOf(value.getClass(), Boolean.class)
             || WizLang.isChildOf(value.getClass(), Number.class)
             || WizLang.isChildOf(value.getClass(), String.class);
     }
 
-    public static Character get(Object value) throws Exception {
+    public static Boolean get(Object value) throws Exception {
         if (value == null) return null;
-        if (WizLang.isChildOf(value.getClass(), Character.class)) {
-            return Character.class.cast(value);
+        if (WizLang.isChildOf(value.getClass(), Boolean.class)) {
+            return Boolean.class.cast(value);
         }
         if (WizLang.isChildOf(value.getClass(), Number.class)) {
-            return Character.class.cast(Number.class.cast(value).intValue());
+            return Number.class.cast(value).intValue() > 0;
         }
         if (WizLang.isChildOf(value.getClass(), String.class)) {
             var string = String.class.cast(value);
             if (string.isBlank()) return null;
-            return string.charAt(0);
+            return Boolean.parseBoolean(string);
         }
-        throw new Exception("Could not convert to a Character value the value of class: " + value.getClass().getName());
+        throw new Exception("Could not convert to an Boolean value the value of class: " + value.getClass().getName());
     }
 
 }

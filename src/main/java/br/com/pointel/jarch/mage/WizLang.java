@@ -238,7 +238,7 @@ public class WizLang {
                 fixable.fixEnvs();
             }
             if (value instanceof String strValue) {
-                value = WizChars.replaceEnvVars(strValue);
+                value = WizString.replaceEnvVars(strValue);
                 try {
                     WizLang.forceSetField(field, ofValue, value);
                 } catch (Exception e) {

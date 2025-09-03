@@ -5,7 +5,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 
 public class CSVRead implements Closeable {
 
@@ -40,13 +40,13 @@ public class CSVRead implements Closeable {
             } else if (actual == '"') {
                 openQuotes = true;
             } else if (actual == ',' || actual == ';') {
-                result.add(WizChars.remakeBreaks(builder.toString()));
+                result.add(WizString.remakeBreaks(builder.toString()));
                 builder = new StringBuilder();
             } else {
                 builder.append(actual);
             }
         }
-        result.add(WizChars.remakeBreaks(builder.toString()));
+        result.add(WizString.remakeBreaks(builder.toString()));
         return result.toArray(new String[result.size()]);
     }
 

@@ -79,8 +79,8 @@ public class WizUtilDate {
 
     public static boolean is(String formatted, SimpleDateFormat onFormat) {
         return Objects.equals(
-                WizChars.replaceLettersOrDigits(formatted, 'x'), 
-                WizChars.replaceLettersOrDigits(onFormat.toPattern(), 'x'));
+                WizString.replaceLettersOrDigits(formatted, 'x'), 
+                WizString.replaceLettersOrDigits(onFormat.toPattern(), 'x'));
     }
 
     public static String format(Date date) {

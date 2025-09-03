@@ -4,7 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 
 public class CSVWrite implements Closeable {
 
@@ -17,14 +17,14 @@ public class CSVWrite implements Closeable {
     public void writeLine(String... columns) {
         if (columns != null) {
             for (var i = 0; i < columns.length; i++) {
-                var column = WizChars.replaceBreaks(columns[i]);
-                if (WizChars.contains(column, '"', ' ', ',', ';')) {
+                var column = WizString.replaceBreaks(columns[i]);
+                if (WizString.contains(column, '"', ' ', ',', ';')) {
                     column = '"' + column.replace("\"", "\"\"") + '"';
                 }
                 if (i > 0) {
                     this.writer.write(",");
                 }
-                if (WizChars.isNotEmpty(column)) {
+                if (WizString.isNotEmpty(column)) {
                     this.writer.write(column);
                 }
             }

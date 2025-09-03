@@ -40,7 +40,7 @@ public class WizRand {
     }
 
     public static char getChar() {
-        return WizChars.simpleUpperChars.charAt(WizRand.getInt(0, WizChars.simpleUpperChars.length()));
+        return WizString.simpleUpperChars.charAt(WizRand.getInt(0, WizString.simpleUpperChars.length()));
     }
 
     public static String getChars(int size) {
