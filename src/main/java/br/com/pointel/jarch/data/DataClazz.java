@@ -21,7 +21,7 @@ public class DataClazz implements Data {
     }
 
     public Object getValue() throws Exception {
-        return WizData.fromChars(this.data, Class.forName( this.clazz));
+        return this.data != null ? WizData.fromChars(this.data, Class.forName( this.clazz)) : null;
     }
 
     public <T> T getValue(Class<T> clazz) throws Exception {
