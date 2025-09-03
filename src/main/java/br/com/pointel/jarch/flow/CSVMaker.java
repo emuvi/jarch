@@ -37,7 +37,7 @@ public class CSVMaker {
         }
         var result = new String[this.natures.length];
         for (int i = 1; i <= this.natures.length; i++) {
-            result[(i - 1)] = WizData.formatValue(this.natures[(i - 1)], this.results
+            result[(i - 1)] = WizData.formatData(this.natures[(i - 1)], this.results
                             .getObject(i));
         }
         return result;
