@@ -15,7 +15,24 @@ import br.com.pointel.jarch.data.Pair;
 
 public class WizChars {
 
-    private static final String SIMPLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXZY";
+    private WizChars() {
+    }
+
+    public static boolean is(Object value) {
+        if (value == null) return false;
+        return WizLang.isChildOf(value.getClass(), String.class)
+            || WizLang.isChildOf(value.getClass(), Object.class);
+    }
+
+    public static String get(Object value) throws Exception {
+        if (value == null) return null;
+        if (value instanceof String string) {
+            return string;
+        }
+        return String.valueOf(value);
+    }
+
+    public static final String simpleUpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXZY";
 
     public static String newRandomString(int length) {
         var random = new Random();
@@ -25,7 +42,7 @@ public class WizChars {
                 int randomDigit = random.nextInt(10);
                 randomNumberString.append(randomDigit);
             } else {
-                char randomChar = SIMPLE_CHARS.charAt(random.nextInt(SIMPLE_CHARS.length()));
+                char randomChar = simpleUpperChars.charAt(random.nextInt(simpleUpperChars.length()));
                 randomNumberString.append(randomChar);
             }
         }

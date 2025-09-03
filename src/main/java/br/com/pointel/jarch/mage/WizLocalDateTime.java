@@ -10,61 +10,69 @@ public class WizLocalDateTime {
     public static boolean is(Object value) {
         if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), LocalDateTime.class)
-                || value instanceof java.time.LocalDate
-                || value instanceof java.time.LocalTime
-                || value instanceof java.time.LocalDateTime
-                || value instanceof java.time.ZonedDateTime
-                || value instanceof java.time.OffsetDateTime
-                || value instanceof java.time.OffsetTime
-                || value instanceof java.time.Instant
-                || value instanceof java.util.Date
-                || value instanceof java.sql.Date
-                || value instanceof java.sql.Time
-                || value instanceof java.sql.Timestamp
-                || value instanceof String
-                || value instanceof Number;
+            || WizLang.isChildOf(value.getClass(), java.time.LocalDate.class)
+            || WizLang.isChildOf(value.getClass(), java.time.LocalTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.LocalDateTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.ZonedDateTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.OffsetDateTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.OffsetTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.Instant.class)
+            || WizLang.isChildOf(value.getClass(), java.util.Date.class)
+            || WizLang.isChildOf(value.getClass(), java.sql.Date.class)
+            || WizLang.isChildOf(value.getClass(), java.sql.Time.class)
+            || WizLang.isChildOf(value.getClass(), java.sql.Timestamp.class)
+            || WizLang.isChildOf(value.getClass(), String.class)
+            || WizLang.isChildOf(value.getClass(), Number.class);
     }
 
     public static LocalDateTime get(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
+        if (value == null) return null;
         if (WizLang.isChildOf(value.getClass(), LocalDateTime.class)) {
             return LocalDateTime.class.cast(value);
         }
-        if (value instanceof java.time.LocalDate localDate) {
-            return localDate.atStartOfDay();
-        } else if (value instanceof java.time.LocalTime localTime) {
-            return localTime.atDate(java.time.LocalDate.now());
-        } else if (value instanceof java.time.LocalDateTime localDateTime) {
-            return localDateTime;
-        } else if (value instanceof java.time.ZonedDateTime zonedDateTime) {
-            return zonedDateTime.toLocalDateTime();
-        } else if (value instanceof java.time.OffsetDateTime offsetDateTime) {
-            return offsetDateTime.toLocalDateTime();
-        } else if (value instanceof java.time.OffsetTime offsetTime) {
-            java.time.LocalDate today = java.time.LocalDate.now();
-            return offsetTime.atDate(today).toLocalDateTime();
-        } else if (value instanceof java.time.Instant instant) {
-            return instant.atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
-        } else if (value instanceof java.util.Date date) {
-            return date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
-        } else if (value instanceof java.sql.Date date) {
-            return date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
-        } else if (value instanceof java.sql.Time time) {
-            return time.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
-        } else if (value instanceof java.sql.Timestamp timestamp) {
-            return timestamp.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
-        } else if (value instanceof String formatted) {
+        if (WizLang.isChildOf(value.getClass(), java.time.LocalDate.class)) {
+            return java.time.LocalDate.class.cast(value).atStartOfDay();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.LocalTime.class)) {
+            return java.time.LocalTime.class.cast(value).atDate(java.time.LocalDate.now());
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.ZonedDateTime.class)) {
+            return java.time.ZonedDateTime.class.cast(value).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.OffsetDateTime.class)) {
+            return java.time.OffsetDateTime.class.cast(value).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.OffsetTime.class)) {
+            var offsetTime = java.time.OffsetTime.class.cast(value);
+            return offsetTime.atDate(java.time.LocalDate.now()).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.Instant.class)) {
+            return java.time.Instant.class.cast(value).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.util.Date.class)) {
+            return java.util.Date.class.cast(value).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.sql.Date.class)) {
+            return java.sql.Date.class.cast(value).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.sql.Time.class)) {
+            return java.sql.Time.class.cast(value).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), java.sql.Timestamp.class)) {
+            return java.sql.Timestamp.class.cast(value).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+        }
+        if (WizLang.isChildOf(value.getClass(), String.class)) {
+            var string = String.class.cast(value);
+            if (string.isBlank()) return null;
             for (var format : WizInstant.getFormats()) {
-                if (WizInstant.is(formatted, format)) {
-                    return format.parse(formatted, LocalDateTime::from);
+                if (WizInstant.is(string, format)) {
+                    return format.parse(string, LocalDateTime::from);
                 }
             }
-        } else if (value instanceof Number number) {
-            return java.time.Instant.ofEpochMilli(number.longValue()).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
         }
-        throw new Exception("Could not convert to an Instant value the value of class: " + value.getClass().getName());
+        if (WizLang.isChildOf(value.getClass(), Number.class)) {
+            return java.time.Instant.ofEpochMilli(Number.class.cast(value).longValue()).atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+        }
+        throw new Exception("Could not convert to a LocalDateTime value the value of class: " + value.getClass().getName());
     }
-
 }

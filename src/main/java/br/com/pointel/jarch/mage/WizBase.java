@@ -2,10 +2,6 @@ package br.com.pointel.jarch.mage;
 
 import java.io.Closeable;
 
-/**
- *
- * @author emuvi
- */
 public class WizBase {
     
     public static void sleep(long millis) {

@@ -10,59 +10,71 @@ public class WizSqlTimestamp {
     public static boolean is(Object value) {
         if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), Timestamp.class)
-                || value instanceof java.time.LocalDate
-                || value instanceof java.time.LocalTime
-                || value instanceof java.time.LocalDateTime
-                || value instanceof java.time.ZonedDateTime
-                || value instanceof java.time.OffsetDateTime
-                || value instanceof java.time.OffsetTime
-                || value instanceof java.time.Instant
-                || value instanceof java.util.Date
-                || value instanceof java.sql.Date
-                || value instanceof java.sql.Time
-                || value instanceof java.sql.Timestamp
-                || value instanceof String
-                || value instanceof Number;
+            || WizLang.isChildOf(value.getClass(), java.time.LocalDate.class)
+            || WizLang.isChildOf(value.getClass(), java.time.LocalTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.LocalDateTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.ZonedDateTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.OffsetDateTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.OffsetTime.class)
+            || WizLang.isChildOf(value.getClass(), java.time.Instant.class)
+            || WizLang.isChildOf(value.getClass(), java.util.Date.class)
+            || WizLang.isChildOf(value.getClass(), java.sql.Date.class)
+            || WizLang.isChildOf(value.getClass(), java.sql.Time.class)
+            || WizLang.isChildOf(value.getClass(), java.sql.Timestamp.class)
+            || WizLang.isChildOf(value.getClass(), String.class)
+            || WizLang.isChildOf(value.getClass(), Number.class);
     }
 
     public static Timestamp get(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
+        if (value == null) return null;
         if (WizLang.isChildOf(value.getClass(), Timestamp.class)) {
             return Timestamp.class.cast(value);
         }
-        if (value instanceof java.time.LocalDate localDate) {
-            return Timestamp.valueOf(localDate.atStartOfDay());
-        } else if (value instanceof java.time.LocalTime localTime) {
-            return Timestamp.valueOf(java.time.LocalDateTime.of(java.time.LocalDate.now(), localTime));
-        } else if (value instanceof java.time.LocalDateTime localDateTime) {
-            return Timestamp.valueOf(localDateTime);
-        } else if (value instanceof java.time.ZonedDateTime zonedDateTime) {
-            return Timestamp.from(zonedDateTime.toInstant());
-        } else if (value instanceof java.time.OffsetDateTime offsetDateTime) {
-            return Timestamp.from(offsetDateTime.toInstant());
-        } else if (value instanceof java.time.OffsetTime offsetTime) {
-            return Timestamp.valueOf(java.time.LocalDateTime.of(java.time.LocalDate.now(), offsetTime.toLocalTime()));
-        } else if (value instanceof java.time.Instant instant) {
-            return Timestamp.from(instant);
-        } else if (value instanceof java.util.Date date) {
-            return new Timestamp(date.getTime());
-        } else if (value instanceof java.sql.Date date) {
-            return new Timestamp(date.getTime());
-        } else if (value instanceof java.sql.Time time) {
-            return Timestamp.valueOf(java.time.LocalDateTime.of(java.time.LocalDate.now(), time.toLocalTime()));
-        } else if (value instanceof java.sql.Timestamp timestamp) {
-            return timestamp;
-        } else if (value instanceof String formatted) {
+        if (WizLang.isChildOf(value.getClass(), java.time.LocalDate.class)) {
+            return Timestamp.valueOf(java.time.LocalDate.class.cast(value).atStartOfDay());
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.LocalTime.class)) {
+            return Timestamp.valueOf(java.time.LocalDateTime.of(java.time.LocalDate.now(), java.time.LocalTime.class.cast(value)));
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.LocalDateTime.class)) {
+            return Timestamp.valueOf(java.time.LocalDateTime.class.cast(value));
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.ZonedDateTime.class)) {
+            return Timestamp.from(java.time.ZonedDateTime.class.cast(value).toInstant());
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.OffsetDateTime.class)) {
+            return Timestamp.from(java.time.OffsetDateTime.class.cast(value).toInstant());
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.OffsetTime.class)) {
+            return Timestamp.valueOf(java.time.LocalDateTime.of(java.time.LocalDate.now(), java.time.OffsetTime.class.cast(value).toLocalTime()));
+        }
+        if (WizLang.isChildOf(value.getClass(), java.time.Instant.class)) {
+            return Timestamp.from(java.time.Instant.class.cast(value));
+        }
+        if (WizLang.isChildOf(value.getClass(), java.util.Date.class)) {
+            return new Timestamp(java.util.Date.class.cast(value).getTime());
+        }
+        if (WizLang.isChildOf(value.getClass(), java.sql.Date.class)) {
+            return new Timestamp(java.sql.Date.class.cast(value).getTime());
+        }
+        if (WizLang.isChildOf(value.getClass(), java.sql.Time.class)) {
+            return Timestamp.valueOf(java.time.LocalDateTime.of(java.time.LocalDate.now(), java.sql.Time.class.cast(value).toLocalTime()));
+        }
+        if (WizLang.isChildOf(value.getClass(), java.sql.Timestamp.class)) {
+            return java.sql.Timestamp.class.cast(value);
+        }
+        if (WizLang.isChildOf(value.getClass(), String.class)) {
+            var string = String.class.cast(value);
+            if (string.isBlank()) return null;
             for (var format : WizUtilDate.getFormats()) {
-                if (WizUtilDate.is(formatted, format)) {
-                    java.util.Date parsed = format.parse(formatted);
+                if (WizUtilDate.is(string, format)) {
+                    var parsed = format.parse(string);
                     return new Timestamp(parsed.getTime());
                 }
             }
-        } else if (value instanceof Number number) {
-            return new Timestamp(number.longValue());
+        }
+        if (WizLang.isChildOf(value.getClass(), Number.class)) {
+            return new Timestamp(Number.class.cast(value).longValue());
         }
         throw new Exception("Could not convert to a Date value the value of class: " + value.getClass().getName());
     }

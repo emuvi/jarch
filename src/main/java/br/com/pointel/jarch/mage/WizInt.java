@@ -8,14 +8,24 @@ public class WizInt {
     public static boolean is(Object value) {
         if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), Integer.class)
-                || WizLang.isChildOf(value.getClass(), Number.class)
-                || value instanceof String;
+            || WizLang.isChildOf(value.getClass(), Number.class)
+            || WizLang.isChildOf(value.getClass(), String.class);
     }
 
-    public static Integer get(String chars) {
-        if (chars == null || chars.isBlank()) {
-            return null;
+    public static Integer get(Object value) throws Exception {
+        if (value == null) return null;
+        if (WizLang.isChildOf(value.getClass(), Integer.class)) {
+            return Integer.class.cast(value);
         }
-        return Integer.parseInt(chars);
+        if (WizLang.isChildOf(value.getClass(), Number.class)) {
+            return Number.class.cast(value).intValue();
+        }
+        if (WizLang.isChildOf(value.getClass(), String.class)) {
+            var string = String.class.cast(value);
+            if (string.isBlank()) return null;
+            return Integer.parseInt(string);
+        }
+        throw new Exception("Could not convert to an Integer value the value of class: " + value.getClass().getName());
     }
+
 }

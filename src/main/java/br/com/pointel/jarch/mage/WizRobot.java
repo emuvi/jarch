@@ -5,10 +5,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
-/**
- *
- * @author emuvi
- */
 public class WizRobot {
     
     public static Robot start() throws Exception {

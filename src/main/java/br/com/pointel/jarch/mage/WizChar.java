@@ -2,13 +2,30 @@ package br.com.pointel.jarch.mage;
 
 public class WizChar {
 
-    public static final char[] SIMPLE = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
-                    'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-                    'w', 'x', 'y',
-                    'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                    'N', 'O', 'P',
-                    'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3',
-                    '4', '5', '6',
-                    '7', '8', '9'};
+    private WizChar() {
+    }
+
+    public static boolean is(Object value) {
+        if (value == null) return false;
+        return WizLang.isChildOf(value.getClass(), Character.class)
+            || WizLang.isChildOf(value.getClass(), Number.class)
+            || WizLang.isChildOf(value.getClass(), String.class);
+    }
+
+    public static Character get(Object value) throws Exception {
+        if (value == null) return null;
+        if (WizLang.isChildOf(value.getClass(), Character.class)) {
+            return Character.class.cast(value);
+        }
+        if (WizLang.isChildOf(value.getClass(), Number.class)) {
+            return Character.class.cast(Number.class.cast(value).intValue());
+        }
+        if (WizLang.isChildOf(value.getClass(), String.class)) {
+            var string = String.class.cast(value);
+            if (string.isBlank()) return null;
+            return string.charAt(0);
+        }
+        throw new Exception("Could not convert to a Character value the value of class: " + value.getClass().getName());
+    }
 
 }

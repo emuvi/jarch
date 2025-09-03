@@ -329,19 +329,7 @@ public class WizData {
     }
 
     public static Integer getOnInteger(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Integer) {
-            return (Integer) value;
-        }
-        if (value instanceof Number number) {
-            return number.intValue();
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Int, formatted, Integer.class);
-        }
-        throw new Exception("Could not convert to Integer from class: " + value.getClass().getCanonicalName());
+        return WizInt.get(value);
     }
 
     public static Long getOnLong(Object value) throws Exception {
@@ -422,32 +410,11 @@ public class WizData {
     }
 
     public static Character getOnChar(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof Character) {
-            return (Character) value;
-        }
-        if (value instanceof Number number) {
-            return (char) number.intValue();
-        }
-        if (value instanceof String formatted) {
-            return getDataFormatted(Nature.Char, formatted, Character.class);
-        }
-        throw new Exception("Could not convert to Char from class: " + value.getClass().getCanonicalName());
+        return WizChar.get(value);
     }
 
     public static String getOnString(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
-        if (value instanceof String) {
-            return (String) value;
-        }
-        if (WizLang.isChildOf(value.getClass(), java.util.Date.class)) {
-            return WizUtilDate.format(java.util.Date.class.cast(value));
-        }
-        return String.valueOf(value);
+        return WizChars.get(value);
     }
 
     public static java.time.Instant getOnInstant(Object value) throws Exception {

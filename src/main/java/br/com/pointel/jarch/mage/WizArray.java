@@ -17,31 +17,32 @@ public class WizArray {
     public static boolean is(Object value) {
         if (value == null) return false;
         return value.getClass().isArray()
-                || value instanceof List
-                || value instanceof Set
-                || value instanceof Map;
+            || WizLang.isChildOf(value.getClass(), List.class)
+            || WizLang.isChildOf(value.getClass(), Set.class)
+            || WizLang.isChildOf(value.getClass(), Map.class);
     }
 
     public static Object[] get(Object value) {
-        if (value != null) {
-            if (value.getClass().isArray()) {
-                return (Object[]) value;
-            } else if (value instanceof List) {
-                return ((List<?>) value).toArray();
-            } else if (value instanceof Set) {
-                return ((Set<?>) value).toArray();
-            } else if (value instanceof Map objectMap) {
-                final var result = new Object[objectMap.size()];
-                int i = 0;
-                for (var key : objectMap.keySet()) {
-                    result[i++] = new Pair<>(key, objectMap.get(key));
-                }
-                return result;
-            } else {
-                throw new IllegalArgumentException("Value is not an array, list, or map.");
-            }
+        if (value == null) return null;
+        if (value.getClass().isArray()) {
+            return (Object[]) value;
         }
-        return null;
+        if (WizLang.isChildOf(value.getClass(), List.class)) {
+            return List.class.cast(value).toArray();
+        }
+        if (WizLang.isChildOf(value.getClass(), Set.class)) {
+            return Set.class.cast(value).toArray();
+        }
+        if (WizLang.isChildOf(value.getClass(), Map.class)) {
+            Map<?, ?> map = Map.class.cast(value);
+            Object[] result = new Object[map.size()];
+            int i = 0;
+            for (var entry : map.entrySet()) {
+                result[i++] = new Pair<>(entry.getKey(), entry.getValue());
+            }
+            return result;
+        }
+        throw new IllegalArgumentException("Could not convert to Object[] the value of class: " + value.getClass().getName());
     }
 
     @SuppressWarnings("all")

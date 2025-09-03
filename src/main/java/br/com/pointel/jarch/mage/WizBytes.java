@@ -19,35 +19,39 @@ public class WizBytes {
     public static boolean is(Object value) {
         if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), byte[].class)
-                || value instanceof Serializable
-                || value instanceof Blob
-                || value instanceof Clob
-                || value instanceof String
-                || value instanceof Number;
+            || WizLang.isChildOf(value.getClass(), Blob.class)
+            || WizLang.isChildOf(value.getClass(), Clob.class)
+            || WizLang.isChildOf(value.getClass(), String.class)
+            || WizLang.isChildOf(value.getClass(), Number.class)
+            || WizLang.isChildOf(value.getClass(), Serializable.class);
     }
 
     public static byte[] get(Object value) throws Exception {
-        if (value == null) {
-            return null;
-        }
+        if (value == null) return null;
         if (WizLang.isChildOf(value.getClass(), byte[].class)) {
             return byte[].class.cast(value);
         }
-        if (value instanceof Serializable) {
-            try (var bos = new ByteArrayOutputStream(); 
+        if (WizLang.isChildOf(value.getClass(), Blob.class)) {
+            var blob = Blob.class.cast(value);
+            return blob.getBytes(1, (int) blob.length());
+        }
+        if (WizLang.isChildOf(value.getClass(), Clob.class)) {
+            var clob = Clob.class.cast(value);
+            return clob.getSubString(1, (int) clob.length()).getBytes(StandardCharsets.UTF_8);
+        }
+        if (WizLang.isChildOf(value.getClass(), String.class)) {
+            return String.class.cast(value).getBytes(StandardCharsets.UTF_8);
+        }
+        if (WizLang.isChildOf(value.getClass(), Number.class)) {
+            return String.valueOf(Number.class.cast(value)).getBytes(StandardCharsets.UTF_8);
+        }
+        if (WizLang.isChildOf(value.getClass(), Serializable.class)) {
+            try (var bos = new ByteArrayOutputStream();
                 var oos = new ObjectOutputStream(bos)) {
-                oos.writeObject(value);
+                oos.writeObject(Serializable.class.cast(value));
                 oos.flush();
                 return bos.toByteArray();
             }
-        } else if (value instanceof Blob blob) {
-            return blob.getBytes(1, (int) blob.length());
-        } else if (value instanceof Clob clob) {
-            return clob.getSubString(1, (int) clob.length()).getBytes();
-        } else if (value instanceof String str) {
-            return str.getBytes(StandardCharsets.UTF_8);
-        } else if (value instanceof Number number) {
-            return String.valueOf(number).getBytes(StandardCharsets.UTF_8);
         }
         throw new Exception("Could not convert to a byte[] value the value of class: " + value.getClass().getName());
     }

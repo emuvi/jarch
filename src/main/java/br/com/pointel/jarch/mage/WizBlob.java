@@ -15,41 +15,43 @@ public class WizBlob {
 
     public static boolean is(Object value) {
         if (value == null) return false;
-        return WizLang.isChildOf(value.getClass(), byte[].class)
-                || value instanceof Serializable
-                || value instanceof Blob
-                || value instanceof Clob
-                || value instanceof String
-                || value instanceof Number;
+        return WizLang.isChildOf(value.getClass(), Blob.class)
+            || WizLang.isChildOf(value.getClass(), byte[].class)
+            || WizLang.isChildOf(value.getClass(), Clob.class)
+            || WizLang.isChildOf(value.getClass(), String.class)
+            || WizLang.isChildOf(value.getClass(), Number.class)
+            || WizLang.isChildOf(value.getClass(), Serializable.class);
     }
 
     public static Blob get(Object value) throws Exception {
-        if (value == null) {
-            return null;
+        if (value == null) return null;
+        if (WizLang.isChildOf(value.getClass(), Blob.class)) {
+            return Blob.class.cast(value);
         }
-        if (value instanceof Blob blob) {
-            return blob;
-        }
-        byte[] bytes;
         if (WizLang.isChildOf(value.getClass(), byte[].class)) {
-            bytes = byte[].class.cast(value);
-        } else if (value instanceof Serializable) {
+            return new SerialBlob(byte[].class.cast(value));
+        }
+        if (WizLang.isChildOf(value.getClass(), Clob.class)) {
+            var clob = Clob.class.cast(value);
+            return new SerialBlob(clob.getSubString(1, (int) clob.length()).getBytes(StandardCharsets.UTF_8));
+        }
+        if (WizLang.isChildOf(value.getClass(), String.class)) {
+            var string = String.class.cast(value);
+            return new SerialBlob(string.getBytes(StandardCharsets.UTF_8));
+        }
+        if (WizLang.isChildOf(value.getClass(), Number.class)) {
+            var number = Number.class.cast(value);
+            return new SerialBlob(String.valueOf(number).getBytes(StandardCharsets.UTF_8));
+        }
+        if (WizLang.isChildOf(value.getClass(), Serializable.class)) {
             try (var bos = new ByteArrayOutputStream();
-                 var oos = new ObjectOutputStream(bos)) {
+                var oos = new ObjectOutputStream(bos)) {
                 oos.writeObject(value);
                 oos.flush();
-                bytes = bos.toByteArray();
+                return new SerialBlob(bos.toByteArray());
             }
-        } else if (value instanceof Clob clob) {
-            bytes = clob.getSubString(1, (int) clob.length()).getBytes(StandardCharsets.UTF_8);
-        } else if (value instanceof String string) {
-            bytes = string.getBytes(StandardCharsets.UTF_8);
-        } else if (value instanceof Number number) {
-            bytes = String.valueOf(number).getBytes(StandardCharsets.UTF_8);
-        } else {
-            throw new Exception("Could not convert to a Blob value the value of class: " + value.getClass().getName());
         }
-        return new SerialBlob(bytes);
+        throw new Exception("Could not convert to a Blob value the value of class: " + value.getClass().getName());
     }
 
 }

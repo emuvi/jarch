@@ -1,6 +1,6 @@
-package br.com.pointel.jarch.value;
+package br.com.pointel.jarch.data;
 
-public class Valued implements value {
+public class Valued implements Data {
 
     public String name;
     public Nature type;
@@ -44,7 +44,7 @@ public class Valued implements value {
     }
 
     public static Valued fromChars(String chars) {
-        return value.fromChars(chars, Valued.class);
+        return Data.fromChars(chars, Valued.class);
     }
 
 }
