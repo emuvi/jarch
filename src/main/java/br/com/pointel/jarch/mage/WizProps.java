@@ -4,14 +4,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author emuvi
- */
 public class WizProps {
 
-    private static final Properties PROPERTIES = new Properties();
+    private WizProps() {
+    }
+
+    private static Logger log = LoggerFactory.getLogger(WizProps.class);
+    private static final Properties props = new Properties();
 
     static {
         tryLoad();
@@ -21,7 +23,7 @@ public class WizProps {
         try {
             load();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Error loading properties", ex);
         }
     }
 
@@ -33,7 +35,7 @@ public class WizProps {
         File file = new File(name + ".ini");
         if (file.exists()) {
             try (FileReader input = new FileReader(file)) {
-                PROPERTIES.load(input);
+                props.load(input);
             }
         }
     }
@@ -66,11 +68,11 @@ public class WizProps {
     }
 
     public static String get(String key, String defaultValue) {
-        return PROPERTIES.getProperty(key, defaultValue);
+        return props.getProperty(key, defaultValue);
     }
 
     public static void set(String key, String value) {
-        PROPERTIES.setProperty(key, value);
+        props.setProperty(key, value);
         trySave();
     }
 
@@ -78,7 +80,7 @@ public class WizProps {
         try {
             save();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("Error saving properties", ex);
         }
     }
 
@@ -89,7 +91,7 @@ public class WizProps {
     public static void save(String name) throws Exception {
         File file = new File(name + ".ini");
         try (FileWriter output = new FileWriter(file)) {
-            PROPERTIES.store(output, name + " properties");
+            props.store(output, name + " properties");
         }
     }
 
