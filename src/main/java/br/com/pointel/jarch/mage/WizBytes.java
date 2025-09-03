@@ -4,26 +4,54 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.util.Base64;
 
 public class WizBytes {
 
-    public static byte[] get(Object fromValue) throws Exception {
-        if (fromValue instanceof byte[]) {
-            return (byte[]) fromValue;
+    private WizBytes() {
+    }
+
+    public static boolean is(Object value) {
+        if (value == null) {
+            return false;
         }
-        if (fromValue instanceof Byte[]) {
-            return (byte[]) fromValue;
-        } else if (fromValue instanceof Serializable) {
-            var bos = new ByteArrayOutputStream();
-            var oos = new ObjectOutputStream(bos);
-            oos.writeObject((fromValue));
-            oos.flush();
-            return bos.toByteArray();
+        return WizLang.isChildOf(value.getClass(), byte[].class)
+                || value instanceof Serializable
+                || value instanceof Blob
+                || value instanceof Clob
+                || value instanceof String
+                || value instanceof Number;
+    }
+
+    public static byte[] get(Object data) throws Exception {
+        if (data == null) {
+            return null;
         }
-        throw new Exception("Could not convert this value to a bytes value.");
+        if (WizLang.isChildOf(data.getClass(), byte[].class)) {
+            return byte[].class.cast(data);
+        }
+        if (data instanceof Serializable) {
+            try (var bos = new ByteArrayOutputStream(); 
+                var oos = new ObjectOutputStream(bos)) {
+                oos.writeObject(data);
+                oos.flush();
+                return bos.toByteArray();
+            }
+        } else if (data instanceof Blob blob) {
+            return blob.getBytes(1, (int) blob.length());
+        } else if (data instanceof Clob clob) {
+            return clob.getSubString(1, (int) clob.length()).getBytes();
+        } else if (data instanceof String str) {
+            return str.getBytes(StandardCharsets.UTF_8);
+        } else if (data instanceof Number number) {
+            return String.valueOf(number).getBytes(StandardCharsets.UTF_8);
+        }
+        throw new Exception("Could not convert to a byte[] value the value of class: " + data.getClass().getName());
     }
 
     public static String encodeToBase64(byte[] bytes) {
@@ -46,11 +74,19 @@ public class WizBytes {
         return hexString.toString();
     }
 
-    public static String checkSHA256(File file) throws Exception {
-        return WizBytes.checkSHA256(Files.readAllBytes(file.toPath()));
+    public static String getSHA1(File file) throws Exception {
+        return WizBytes.getSHA1(Files.readAllBytes(file.toPath()));
     }
 
-    public static String checkSHA256(byte[] bytes) throws Exception {
+    public static String getSHA1(byte[] bytes) throws Exception {
+        return WizBytes.encodeToHex(MessageDigest.getInstance("SHA-1").digest(bytes));
+    }
+
+    public static String getSHA256(File file) throws Exception {
+        return WizBytes.getSHA256(Files.readAllBytes(file.toPath()));
+    }
+
+    public static String getSHA256(byte[] bytes) throws Exception {
         return WizBytes.encodeToHex(MessageDigest.getInstance("SHA-256").digest(bytes));
     }
 
