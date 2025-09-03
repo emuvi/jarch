@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import br.com.pointel.jarch.data.Nature;
 import br.com.pointel.jarch.flow.FixBool;
 import br.com.pointel.jarch.flow.FixByte;
 import br.com.pointel.jarch.flow.FixChar;
@@ -55,14 +56,13 @@ public class WizLang {
         }
     }
 
-    public static Class<?> getFromPrimitive(Class<?> clazz) {
+    public static Class<?> stripPrimitive(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
         if (clazz.equals(boolean.class)) {
             return Boolean.class;
-        }
-        if (clazz.equals(byte.class)) {
+        } else if (clazz.equals(byte.class)) {
             return Byte.class;
         } else if (clazz.equals(char.class)) {
             return Character.class;
@@ -98,13 +98,52 @@ public class WizLang {
             clazz.equals(void.class);
     }
 
-    public static boolean isClassChildOf(Class<?> clazz, Class<?> ofParent) {
-        if (clazz == null || ofParent == null) {
+    public static boolean isChildOf(Class<?> child, Class<?> parent) {
+        if (child == null || parent == null) {
             return false;
         }
-        clazz = getFromPrimitive(clazz);
-        ofParent = getFromPrimitive(ofParent);
-        return ofParent.isAssignableFrom(clazz);
+        child = stripPrimitive(child);
+        parent = stripPrimitive(parent);
+        return parent.isAssignableFrom(child);
+    }
+
+    public static Constructor<?> getBestConstructor(Class<?> fromClazz, Nature[] toNatures) {
+        if (fromClazz == null || toNatures == null || toNatures.length == 0) {
+            return null;
+        }
+        Constructor<?> bestOne = null;
+        int bestScore = 0;
+        for (Constructor<?> constructor : fromClazz.getConstructors()) {
+            Class<?>[] paramTypes = constructor.getParameterTypes();
+            if (paramTypes.length > toNatures.length) {
+                continue;
+            }
+            int score = 0;
+            boolean match = true;
+            for (int iP = 0; iP < paramTypes.length; iP++) {
+                Class<?> paramType = paramTypes[iP];
+                Nature nature = toNatures[iP];
+                boolean found = true;
+                for (int iN = 0; iN < nature.getMapTypes().length; iN++) {
+                    Class<?> natureType = nature.getMapTypes()[iN];
+                    if (isChildOf(natureType, paramType)) {
+                        score = score + (100 - (iN * 10));
+                    } else {
+                        found = false;
+                        break;
+                    }
+                }
+                if (!found) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match && score > bestScore) {
+                bestScore = score;
+                bestOne = constructor;
+            }
+        }
+        return bestOne;
     }
 
     public static Object[] getValuesFromMembers(Object ofObject) throws Exception {

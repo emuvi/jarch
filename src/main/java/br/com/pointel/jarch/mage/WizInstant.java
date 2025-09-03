@@ -6,12 +6,35 @@ import java.util.Objects;
 
 public class WizInstant {
 
+    private WizInstant() {
+    }
+
+    public static boolean is(Object value) {
+        if (value == null) {
+            return false;
+        }
+        return WizLang.isChildOf(value.getClass(), Instant.class)
+                || value instanceof java.time.LocalDate
+                || value instanceof java.time.LocalTime
+                || value instanceof java.time.LocalDateTime
+                || value instanceof java.time.ZonedDateTime
+                || value instanceof java.time.OffsetDateTime
+                || value instanceof java.time.OffsetTime
+                || value instanceof java.time.Instant
+                || value instanceof java.util.Date
+                || value instanceof java.sql.Date
+                || value instanceof java.sql.Time
+                || value instanceof java.sql.Timestamp
+                || value instanceof String
+                || value instanceof Number;
+    }
+
     public static Instant get(Object data) throws Exception {
         if (data == null) {
             return null;
         }
         if (WizLang.isChildOf(data.getClass(), Instant.class)) {
-            return (Instant) data;
+            return Instant.class.cast(data);
         }
         if (data instanceof java.time.LocalDate localDate) {
             return localDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
@@ -39,8 +62,16 @@ public class WizInstant {
                     return format.parse(formatted, Instant::from);
                 }
             }
+        } else if (data instanceof Number number) {
+            return Instant.ofEpochMilli(number.longValue());
         }
         throw new Exception("Could not convert to an Instant value the value of class: " + data.getClass().getName());
+    }
+
+    public static boolean is(String formatted, DateTimeFormatter onFormat) {
+        return Objects.equals(
+                WizChars.replaceLettersOrDigits(formatted, 'x'),
+                WizChars.replaceLettersOrDigits(onFormat.toString(), 'x'));
     }
 
     public static String format(Instant instant) {
@@ -48,12 +79,6 @@ public class WizInstant {
             return "";
         }
         return WizInstant.formatInstantMach(instant);
-    }
-
-    public static boolean is(String formatted, DateTimeFormatter onFormat) {
-        return Objects.equals(
-                WizChars.replaceLettersOrDigits(formatted, 'x'),
-                WizChars.replaceLettersOrDigits(onFormat.toString(), 'x'));
     }
 
     public static String formatDateUser(Instant instant) {

@@ -6,6 +6,29 @@ import java.util.Objects;
 
 public class WizUtilDate {
 
+    private WizUtilDate() {
+    }
+
+    public static boolean is(Object value) {
+        if (value == null) {
+            return false;
+        }
+        return WizLang.isChildOf(value.getClass(), Date.class)
+                || value instanceof java.time.LocalDate
+                || value instanceof java.time.LocalTime
+                || value instanceof java.time.LocalDateTime
+                || value instanceof java.time.ZonedDateTime
+                || value instanceof java.time.OffsetDateTime
+                || value instanceof java.time.OffsetTime
+                || value instanceof java.time.Instant
+                || value instanceof java.util.Date
+                || value instanceof java.sql.Date
+                || value instanceof java.sql.Time
+                || value instanceof java.sql.Timestamp
+                || value instanceof String
+                || value instanceof Number;
+    }
+
     public static Date get(Object data) throws Exception {
         if (data == null) {
             return null;
@@ -27,6 +50,8 @@ public class WizUtilDate {
             return Date.from(offsetTime.atDate(java.time.LocalDate.now()).atZoneSameInstant(java.time.ZoneId.systemDefault()).toInstant());
         } else if (data instanceof java.time.Instant instant) {
             return Date.from(instant);
+        } else if (data instanceof java.util.Date date) {
+            return date;
         } else if (data instanceof java.sql.Date date) {
             return new Date(date.getTime());
         } else if (data instanceof java.sql.Time time) {
@@ -39,8 +64,16 @@ public class WizUtilDate {
                     return format.parse(formatted);
                 }
             }
+        } else if (data instanceof Number number) {
+            return new Date(number.longValue());
         }
         throw new Exception("Could not convert to a Date value the value of class: " + data.getClass().getName());
+    }
+
+    public static boolean is(String formatted, SimpleDateFormat onFormat) {
+        return Objects.equals(
+                WizChars.replaceLettersOrDigits(formatted, 'x'), 
+                WizChars.replaceLettersOrDigits(onFormat.toPattern(), 'x'));
     }
 
     public static String format(Date date) {
@@ -48,12 +81,6 @@ public class WizUtilDate {
             return "";
         }
         return formatTimestampMach(date);
-    }
-
-    public static boolean is(String formatted, SimpleDateFormat onFormat) {
-        return Objects.equals(
-                WizChars.replaceLettersOrDigits(formatted, 'x'), 
-                WizChars.replaceLettersOrDigits(onFormat.toPattern(), 'x'));
     }
 
     public static String formatDateUser(Date date) {

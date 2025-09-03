@@ -2,17 +2,17 @@ package br.com.pointel.jarch.mage;
 
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
+import br.com.pointel.jarch.data.DataClazz;
 import br.com.pointel.jarch.data.Field;
 import br.com.pointel.jarch.data.KeyForeign;
 import br.com.pointel.jarch.data.KeyPrimary;
@@ -38,8 +38,40 @@ public class WizData {
         return gson.fromJson(chars, clazz);
     }
 
-    public static <T> T mapResult(List<Typed> fieldList, ResultSet result, Class<T> onClazz) throws Exception {
-
+    public static <T> T mapResult(ResultSet result, List<Typed> fieldList, Class<T> onClazz) throws Exception {
+        var classes = WizData.getColumnsClasses(result);
+        var values = WizData.getColumnsValues(result);
+        try {
+            var standardOne = onClazz.getConstructor(classes);
+            return standardOne.newInstance(values);
+        } catch (NoSuchMethodException e) {
+            Nature[] natures;
+            if (fieldList == null || fieldList.isEmpty()) {
+                natures = WizData.getNaturesFrom(result);
+            } else {
+                natures = fieldList.stream().map(f -> f.type).toArray(Nature[]::new);
+            }
+            var bestOne = WizLang.getBestConstructor(onClazz, natures);
+            if (bestOne == null) {
+                bestOne = onClazz.getConstructor();
+            }
+            Object[] mappedArgs = new Object[bestOne.getParameterCount()];
+            Class<?>[] paramTypes = bestOne.getParameterTypes();
+            for (int i = 0; i < mappedArgs.length; i++) {
+                mappedArgs[i] = WizData.getOn(values[i], paramTypes[i]);
+            }
+            var instance = onClazz.cast(bestOne.newInstance(mappedArgs));
+            if (mappedArgs.length < values.length) {
+                var columnsNames = WizData.getColumnsNames(result);
+                for (int i = mappedArgs.length; i < values.length; i++) {
+                    var columnName = columnsNames[i];
+                    var field = onClazz.getDeclaredField(columnName);
+                    var mappedField = WizData.getOn(values[i], field.getType());
+                    WizLang.forceSetField(field, instance, mappedField);
+                }
+            }
+            return instance;
+        }
     }
 
     public static Table getTable(TableHead tableHead, Connection connection) throws Exception {
@@ -102,25 +134,6 @@ public class WizData {
         return table;
     }
 
-    public static String[] getColumnsNames(ResultSet results) throws Exception {
-        var meta = results.getMetaData();
-        var names = new String[meta.getColumnCount()];
-        for (int i = 1; i <= names.length; i++) {
-            names[(i - 1)] = meta.getColumnName(i);
-        }
-        return names;
-    }
-
-    public static Class<?>[] getColumnsClasses(ResultSet results) throws Exception {
-        var meta = results.getMetaData();
-        var classes = new Class<?>[meta.getColumnCount()];
-        for (int i = 1; i <= classes.length; i++) {
-            var className = meta.getColumnClassName(i);
-            classes[(i - 1)] = Class.forName(className);
-        }
-        return classes;
-    }
-
     public static void printColumnsNamesAndNatures(ResultSet results) throws Exception {
         printColumnsNamesAndNatures(results, System.out);
     }
@@ -150,14 +163,39 @@ public class WizData {
             out.println(line.toString());
         }
     }
-    
-    public static String[] getColumnNames(ResultSet results) throws Exception {
+
+    public static String[] getColumnsNames(ResultSet results) throws Exception {
         var meta = results.getMetaData();
         var names = new String[meta.getColumnCount()];
         for (int i = 1; i <= names.length; i++) {
             names[(i - 1)] = meta.getColumnName(i);
         }
         return names;
+    }
+
+    public static Class<?>[] getColumnsClasses(ResultSet results) throws Exception {
+        var meta = results.getMetaData();
+        var classes = new Class<?>[meta.getColumnCount()];
+        for (int i = 1; i <= classes.length; i++) {
+            var className = meta.getColumnClassName(i);
+            classes[(i - 1)] = Class.forName(className);
+        }
+        return classes;
+    }
+
+    public static Object[] getColumnsValues(ResultSet results) throws Exception {
+        var meta = results.getMetaData();
+        var values = new Object[meta.getColumnCount()];
+        for (int i = 1; i <= values.length; i++) {
+            values[(i - 1)] = results.getObject(i);
+        }
+        return values;
+    }
+
+    public static void setParams(PreparedStatement statement, Object[] params) throws Exception {
+        for (int i = 0; i < params.length; i++) {
+            statement.setObject(i + 1, params[i]);
+        }
     }
 
     public static Nature[] getNaturesFrom(ResultSet results) throws Exception {
@@ -171,76 +209,371 @@ public class WizData {
 
     public static Nature getNatureOfSQL(int jdbcType) {
         switch (jdbcType) {
-            case 16: return Nature.Bool;
-            case -7: return Nature.Bit;
-            case -6: return Nature.Byte;
-            case 5: return Nature.Small;
-            case 4: return Nature.Int;
-            case -5: return Nature.Long;
-            case 6: return Nature.Float;
-            case 7: return Nature.Real;
-            case 8: return Nature.Double;
-            case 2, 3: return Nature.Numeric;
-            case 1, -15: return Nature.Char;
-            case 12, -1, -9, -16: return Nature.Chars;
-            case 91: return Nature.Date;
-            case 92, 2013: return Nature.Time;
-            case 93, 2014: return Nature.Timestamp;
-            case -2, -3, -4: return Nature.Bytes;
-            case 2004: return Nature.Blob;
-            case 2005: return Nature.Text;
-            case 2000: return Nature.Object;
-            default: throw new UnsupportedOperationException("Could not identify the data nature of jdbc type: " + jdbcType);
+            case 16: // BOOLEAN
+                return Nature.Bool;
+            case -7: // BIT
+                return Nature.Bit;
+            case -6: // TINYINT
+                return Nature.Byte;
+            case 5: // SMALLINT
+                return Nature.Small;
+            case 4: // INTEGER
+                return Nature.Int;
+            case -8: // ROWID
+                return Nature.Serial;
+            case -5: // BIGINT
+                return Nature.Long;
+            case 6: // FLOAT
+                return Nature.Float;
+            case 7: // REAL
+                return Nature.Real;
+            case 8: // DOUBLE
+                return Nature.Double;
+            case 2: // NUMERIC
+                return Nature.Numeric;
+            case 3: // DECIMAL
+                return Nature.BigNumeric;
+            case 1: // CHAR
+            case -15: // NCHAR
+            case -11: // NCHAR
+                return Nature.Char;
+            case 12: // VARCHAR
+            case -1: // LONGVARCHAR
+            case -9: // NVARCHAR
+                return Nature.Chars;
+            case 91: // DATE
+                return Nature.Date;
+            case 92: // TIME
+                return Nature.Time;
+            case 93: // TIMESTAMP
+                return Nature.Timestamp;
+            case 2013: // TIME_WITH_TIMEZONE
+            case 2014: // TIMESTAMP_WITH_TIMEZONE
+                return Nature.ZoneTime;
+            case -2: // BINARY
+            case -3: // VARBINARY
+                return Nature.Bytes;
+            case -4: // LONGVARBINARY
+            case 2004: // BLOB
+                return Nature.Blob;
+            case -16: // LONGNVARCHAR
+            case 2005: // CLOB
+                return Nature.Text;
+            case 1111: // OTHER
+            case 2000: // OBJECT
+                return Nature.Object;
+            default:
+                throw new UnsupportedOperationException("Could not identify the data nature of jdbc type: " + jdbcType);
         }
     }
 
-    public static <T> T getValueFrom(Nature nature, String formatted, Class<T> clazz) throws Exception {
-        return clazz.cast(getValueFrom(nature, formatted));
+    public static <T> T getOn(Object data, Class<T> onClass) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (WizLang.isChildOf(onClass, Boolean.class)) {
+            return onClass.cast(getOnBoolean(data));
+        }
+        throw new UnsupportedOperationException("Could not convert to " + onClass.getCanonicalName() + " from class: " + data.getClass().getCanonicalName());
     }
 
-    public static Object getValueFrom(Nature nature, String formatted) throws Exception {
+    public static Boolean getOnBoolean(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Boolean) {
+            return (Boolean) data;
+        }
+        if (data instanceof Byte) {
+            return (Byte) data != 0;
+        }
+        if (data instanceof Number number) {
+            return number.intValue() != 0;
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Bool, formatted, Boolean.class);
+        }
+        throw new Exception("Could not convert to Byte from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Byte getOnByte(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Byte) {
+            return (Byte) data;
+        }
+        if (data instanceof Number number) {
+            return number.byteValue();
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Byte, formatted, Byte.class);
+        }
+        throw new Exception("Could not convert to Byte from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Short getOnShort(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Short) {
+            return (Short) data;
+        }
+        if (data instanceof Number number) {
+            return number.shortValue();
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Small, formatted, Short.class);
+        }
+        throw new Exception("Could not convert to Short from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Integer getOnInteger(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Integer) {
+            return (Integer) data;
+        }
+        if (data instanceof Number number) {
+            return number.intValue();
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Int, formatted, Integer.class);
+        }
+        throw new Exception("Could not convert to Integer from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Long getOnLong(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Long) {
+            return (Long) data;
+        }
+        if (data instanceof Number number) {
+            return number.longValue();
+        }
+        throw new Exception("Could not convert to Long from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Float getOnFloat(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Float) {
+            return (Float) data;
+        }
+        if (data instanceof Number number) {
+            return number.floatValue();
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Float, formatted, Float.class);
+        }
+        throw new Exception("Could not convert to Float from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Double getOnDouble(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Double) {
+            return (Double) data;
+        }
+        if (data instanceof Number number) {
+            return number.doubleValue();
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Double, formatted, Double.class);
+        }
+        throw new Exception("Could not convert to Double from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static BigInteger getOnBigInteger(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof BigInteger) {
+            return (BigInteger) data;
+        }
+        if (data instanceof Number number) {
+            return new BigInteger(number.toString());
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.BigInt, formatted, BigInteger.class);
+        }
+        throw new Exception("Could not convert to BigInteger from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static BigDecimal getOnBigDecimal(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof BigDecimal) {
+            return (BigDecimal) data;
+        }
+        if (data instanceof Number number) {
+            return new BigDecimal(number.toString());
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.BigNumeric, formatted, BigDecimal.class);
+        }
+        throw new Exception("Could not convert to BigDecimal from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Character getOnChar(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Character) {
+            return (Character) data;
+        }
+        if (data instanceof Number number) {
+            return (char) number.intValue();
+        }
+        if (data instanceof String formatted) {
+            return getDataFormatted(Nature.Char, formatted, Character.class);
+        }
+        throw new Exception("Could not convert to Char from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static String getOnString(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof String) {
+            return (String) data;
+        }
+        if (WizLang.isChildOf(data.getClass(), java.util.Date.class)) {
+            return WizUtilDate.format(java.util.Date.class.cast(data));
+        }
+        return String.valueOf(data);
+    }
+
+    public static java.time.Instant getOnInstant(Object data) throws Exception {
+        return WizInstant.get(data);
+    }
+
+    public static java.time.ZonedDateTime getOnZonedDateTime(Object data) throws Exception {
+        return WizZonedDateTime.get(data);
+    }
+
+    public static java.time.OffsetDateTime getOnOffsetDateTime(Object data) throws Exception {
+        return WizOffsetDateTime.get(data);
+    }
+
+    public static java.time.OffsetTime getOnOffsetTime(Object data) throws Exception {
+        return WizOffsetTime.get(data);
+    }
+
+    public static java.time.LocalDateTime getOnLocalDateTime(Object data) throws Exception {
+        return WizLocalDateTime.get(data);
+    }
+
+    public static java.time.LocalDate getOnLocalDate(Object data) throws Exception {
+        return WizLocalDate.get(data);
+    }
+
+    public static java.time.LocalTime getOnLocalTime(Object data) throws Exception {
+        return WizLocalTime.get(data);
+    }
+
+    public static java.util.Date getOnUtilDate(Object data) throws Exception {
+        return WizUtilDate.get(data);
+    }
+
+    public static java.sql.Date getOnSqlDate(Object data) throws Exception {
+        return WizSqlDate.get(data);
+    }
+
+    public static java.sql.Time getOnSqlTime(Object data) throws Exception {
+        return WizSqlTime.get(data);
+    }
+
+    public static java.sql.Timestamp getOnSqlTimestamp(Object data) throws Exception {
+        return WizSqlTimestamp.get(data);
+    }
+
+    public static byte[] getOnBytes(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof byte[]) {
+            return (byte[]) data;
+        }
+        throw new Exception("Could not convert to Bytes from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Blob getBlob(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Blob) {
+            return (Blob) data;
+        }
+        throw new Exception("Could not convert to Blob from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static Clob getClob(Object data) throws Exception {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof Clob) {
+            return (Clob) data;
+        }
+        throw new Exception("Could not convert to Clob from class: " + data.getClass().getCanonicalName());
+    }
+
+    public static <T> T getDataFormatted(Nature nature, String formatted, Class<T> castTo) throws Exception {
+        return castTo.cast(getDataFormatted(nature, formatted));
+    }
+
+    public static Object getDataFormatted(Nature nature, String formatted) throws Exception {
         if (formatted == null || formatted.isEmpty()) {
             return null;
         }
         switch (nature) {
             case Bool:
                 return Boolean.parseBoolean(formatted);
-            case Bit:
-            case Byte:
+            case Bit, Byte, Tiny:
                 return Byte.parseByte(formatted);
-            case Int:
-            case Serial:
+            case Small:
+                return Short.parseShort(formatted);
+            case Int, Serial:
                 return Integer.parseInt(formatted);
             case Long:
-            case BigSerial:
                 return Long.parseLong(formatted);
             case Float:
             case Real:
                 return Float.parseFloat(formatted);
             case Double:
-            case Numeric:
                 return Double.parseDouble(formatted);
+            case BigInt, BigSerial:
+                return new BigInteger(formatted);
+            case Numeric, BigNumeric:
+                return new BigDecimal(formatted);
             case Char:
                 return formatted.charAt(0);
-            case Chars:
-            case Text:
+            case Chars, Text:
                 return formatted;
             case Date:
-                return WizDate.parseDate(formatted);
+                return WizUtilDate.parseDateMach(formatted);
             case Time:
-                return WizDate.parseTime(formatted);
+                return WizUtilDate.parseTimeMach(formatted);
             case Timestamp:
-                return WizDate.parseTimestamp(formatted);
+                return WizUtilDate.parseTimestampMach(formatted);
             case Bytes:
             case Blob:
                 return WizBytes.decodeFromBase64(formatted);
+            case Object:
+                return DataClazz.fromChars(formatted).getValue();
             default:
                 throw new Exception("DataType Not Supported.");
         }
     }
 
-    public static String formatValue(Nature nature, Object value) throws Exception {
-        if (value == null) {
+    public static String formatData(Nature nature, Object data) throws Exception {
+        if (data == null) {
             return "";
         }
         switch (nature) {
@@ -251,210 +584,33 @@ public class WizData {
             case Small:
             case Int:
             case Long:
+            case BigInt:
+            case Serial:
+            case BigSerial:
             case Float:
             case Real:
             case Double:
             case Numeric:
+            case BigNumeric:
             case Char:
             case Chars:
             case Text:
-                return String.valueOf(value);
+                return String.valueOf(data);
             case Date:
-                return WizDate.formatDate(WizDate.get(value));
+                return WizUtilDate.formatDateMach(WizUtilDate.get(data));
             case Time:
-                return WizDate.formatTime(WizDate.get(value));
+                return WizUtilDate.formatTimeMach(WizUtilDate.get(data));
+            case DateTime:
+                return WizUtilDate.formatDateTimeMach(WizUtilDate.get(data));
             case Timestamp:
-                return WizDate.formatTimestamp(WizDate.get(value));
+                return WizUtilDate.formatTimestampMach(WizUtilDate.get(data));
             case Bytes:
             case Blob:
-                return WizBytes.encodeToBase64(WizBytes.get(value));
+                return WizBytes.encodeToBase64(WizBytes.get(data));
             case Object:
-                return WizData.toChars(value);
+                return new DataClazz(data).toChars();
             default:
                 throw new Exception("DataType Not Supported.");
-        }
-    }
-
-    public static Boolean getBoolean(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Boolean) {
-            return (Boolean) data;
-        }
-        if (data instanceof Number number) {
-            return number.intValue() != 0;
-        }
-        if (data instanceof String formatted) {
-            return getValueFrom(Nature.Bool, formatted, Boolean.class);
-        }
-        throw new RuntimeException("Could not convert to Boolean from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Byte getBit(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Number number) {
-            return number.byteValue();
-        }
-        if (data instanceof Boolean bool) {
-            return bool ? (byte) 1 : (byte) 0;
-        }
-        throw new RuntimeException("Could not convert to Byte from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Byte getByte(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Byte) {
-            return (Byte) data;
-        }
-        if (data instanceof Number number) {
-            return number.byteValue();
-        }
-        if (data instanceof Boolean bool) {
-            return bool ? (byte) 1 : (byte) 0;
-        }
-        throw new RuntimeException("Could not convert to Byte from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Short getShort(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Number number) {
-            return number.shortValue();
-        }
-        if (data instanceof Short) {
-            return (Short) data;
-        }
-        throw new RuntimeException("Could not convert to Short from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Integer getInteger(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Number number) {
-            return number.intValue();
-        }
-        if (data instanceof Integer) {
-            return (Integer) data;
-        }
-        throw new RuntimeException("Could not convert to Integer from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Long getLong(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Number number) {
-            return number.longValue();
-        }
-        if (data instanceof Long) {
-            return (Long) data;
-        }
-        throw new RuntimeException("Could not convert to Long from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Float getFloat(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Number number) {
-            return number.floatValue();
-        }
-        if (data instanceof Float) {
-            return (Float) data;
-        }
-        throw new RuntimeException("Could not convert to Float from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Double getDouble(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Number number) {
-            return number.doubleValue();
-        }
-        if (data instanceof Double) {
-            return (Double) data;
-        }
-        throw new RuntimeException("Could not convert to Double from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static BigDecimal getBigNumeric(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof BigDecimal) {
-            return (BigDecimal) data;
-        }
-        throw new RuntimeException("Could not convert to BigDecimal from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static String getString(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof String) {
-            return (String) data;
-        }
-        return data.toString();
-    }
-
-    public static Date getDate(Object data) throws Exception {
-        return new Date(WizDate.get(data).getTime());
-    }
-
-    public static Time getTime(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Time) {
-            return (Time) data;
-        }
-        throw new RuntimeException("Could not convert to Time from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static Timestamp getTimestamp(Object data) {
-        if (data == null) {
-            return null;
-        }
-
-        if (data instanceof Timestamp) {
-            return (Timestamp) data;
-        }
-        throw new RuntimeException("Could not convert to Timestamp from class: " + data.getClass().getCanonicalName());
-    }
-
-    public static byte[] getBytes(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof byte[]) {
-            return (byte[]) data;
-        }
-        throw new RuntimeException("Could not convert to Bytes from class: " + data
-                        .getClass().getCanonicalName());
-    }
-
-    public static Blob getBlob(Object data) {
-        if (data == null) {
-            return null;
-        }
-        if (data instanceof Blob) {
-            return (Blob) data;
-        }
-        throw new RuntimeException("Could not convert to Blob from class: " + data
-                        .getClass().getCanonicalName());
-    }
-
-    public static void setParams(PreparedStatement statement, Object[] params) throws Exception {
-        for (int i = 0; i < params.length; i++) {
-            statement.setObject(i + 1, params[i]);
         }
     }
 
