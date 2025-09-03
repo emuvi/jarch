@@ -214,14 +214,6 @@ public class Field implements Data {
         return new Valued(getReferenceName(), nature, value);
     }
 
-    public Object getValueFrom(String formatted) throws Exception {
-        return WizData.getValueFrom(this.nature, formatted);
-    }
-
-    public String formatValue(Object value) throws Exception {
-        return WizData.formatValue(this.nature, value);
-    }
-
     public Table getTable() {
         return table;
     }
