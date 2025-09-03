@@ -2,29 +2,31 @@ package br.com.pointel.jarch.data;
 
 public enum Nature {
 
-    Bool(Boolean.class, Number.class),
+    Bool(Boolean.class, Byte.class, Number.class),
     
-    Bit(Byte.class, Number.class, Boolean.class),
+    Bit(Byte.class, Boolean.class, Number.class),
 
-    Byte(Byte.class, Number.class),
+    Byte(Byte.class, Short.class, Number.class),
 
-    Tiny(Byte.class, Short.class, Number.class),
+    Tiny(Short.class, Byte.class, Number.class),
 
     Small(Short.class, Integer.class, Number.class),
 
-    Int(Integer.class, Number.class),
+    Int(Integer.class, Short.class, Number.class),
 
-    Long(Long.class, Number.class),
+    Long(Long.class, java.math.BigInteger.class, Number.class),
+
+    BigInt(java.math.BigInteger.class, Long.class, Number.class),
 
     Serial(Integer.class, Long.class, Number.class),
 
-    BigSerial(Long.class, java.math.BigInteger.class, Number.class),
+    BigSerial(java.math.BigInteger.class, Long.class, Number.class),
 
-    Float(Float.class, Number.class),
+    Float(Float.class, Double.class, Number.class),
 
-    Real(Float.class, Double.class, Number.class),
+    Real(Double.class, Float.class, Number.class),
 
-    Double(Double.class, Number.class),
+    Double(Double.class, java.math.BigDecimal.class, Number.class),
 
     Numeric(java.math.BigDecimal.class, Double.class, Number.class),
 
@@ -32,32 +34,34 @@ public enum Nature {
 
     Char(Character.class, String.class, Number.class),
 
-    Chars(String.class, java.sql.Blob.class, Byte[].class),
+    Chars(String.class, Byte[].class, java.sql.Clob.class, java.sql.Blob.class),
 
-    Date(java.time.LocalDate.class, java.sql.Date.class, java.util.Date.class),
+    Date(java.time.LocalDate.class, java.util.Date.class, java.sql.Date.class),
 
     Time(java.time.LocalTime.class, java.util.Date.class, java.sql.Time.class),
 
-    DateTime(java.time.Instant.class, java.sql.Timestamp.class, java.util.Date.class),
+    DateTime(java.time.LocalDateTime.class, java.util.Date.class, java.sql.Timestamp.class),
 
-    Timestamp(java.time.Instant.class, java.sql.Timestamp.class, java.util.Date.class),
+    ZoneTime(java.time.ZonedDateTime.class, java.time.OffsetDateTime.class, java.time.OffsetTime.class, java.util.Date.class, java.sql.Timestamp.class),
 
-    Bytes(Byte[].class, String.class, java.sql.Blob.class),
+    Timestamp(java.time.Instant.class, java.util.Date.class, java.sql.Timestamp.class),
 
-    Blob(java.sql.Blob.class, Byte[].class, String.class),
+    Bytes(Byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
 
-    Text(String.class, java.sql.Blob.class, Byte[].class),
+    Blob(Byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
 
-    Object(String.class, java.sql.Blob.class, Byte[].class, Object.class);
+    Text(String.class, Byte[].class, java.sql.Clob.class, java.sql.Blob.class),
 
-    private final Class<?>[] types;
+    Object(String.class, Byte[].class, java.sql.Blob.class, java.sql.Clob.class, Object.class);
 
-    Nature(Class<?>... types) {
-        this.types = types;
+    private final Class<?>[] mapTypes;
+
+    Nature(Class<?>... mapTypes) {
+        this.mapTypes = mapTypes;
     }
 
-    public Class<?>[] getTypes() {
-        return types;
+    public Class<?>[] getMapTypes() {
+        return mapTypes;
     }
 
 }
