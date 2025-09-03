@@ -165,7 +165,7 @@ public class BasedLink implements Data {
         result.name = assigned.get("name");
         result.base = WizData.fromChars(assigned.get("base"), Based.class);
         result.path = assigned.get("path");
-        result.port = WizInt.fromChars(assigned.get("port"));
+        result.port = WizInt.get(assigned.get("port"));
         result.data = assigned.get("data");
         result.user = assigned.get("user");
         result.pass = assigned.get("pass");

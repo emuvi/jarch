@@ -15,11 +15,11 @@ public class WizArray {
     }
 
     public static boolean is(Object value) {
-        return value != null && 
-            (value.getClass().isArray() || 
-            value instanceof List ||
-            value instanceof Set ||
-            value instanceof Map);
+        if (value == null) return false;
+        return value.getClass().isArray()
+                || value instanceof List
+                || value instanceof Set
+                || value instanceof Map;
     }
 
     public static Object[] get(Object value) {

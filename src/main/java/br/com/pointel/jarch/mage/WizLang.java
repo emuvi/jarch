@@ -104,6 +104,11 @@ public class WizLang {
         }
         child = stripPrimitive(child);
         parent = stripPrimitive(parent);
+        if (child.isArray() && parent.isArray()) {
+            Class<?> childComponent = child.getComponentType();
+            Class<?> parentComponent = parent.getComponentType();
+            return isChildOf(childComponent, parentComponent);
+        }
         return parent.isAssignableFrom(child);
     }
 

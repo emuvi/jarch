@@ -14,9 +14,7 @@ public class WizClob {
     }
 
     public static boolean is(Object value) {
-        if (value == null) {
-            return false;
-        }
+        if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), byte[].class)
                 || value instanceof Serializable
                 || value instanceof Blob
@@ -25,29 +23,29 @@ public class WizClob {
                 || value instanceof Number;
     }
 
-    public static Clob get(Object data) throws Exception {
-        if (data == null) {
+    public static Clob get(Object value) throws Exception {
+        if (value == null) {
             return null;
         }
-        if (WizLang.isChildOf(data.getClass(), Clob.class)) {
-            return Clob.class.cast(data);
+        if (WizLang.isChildOf(value.getClass(), Clob.class)) {
+            return Clob.class.cast(value);
         }
         String base;
-        if (data instanceof String string) {
+        if (value instanceof String string) {
             base = string;
-        } else if (WizLang.isChildOf(data.getClass(), byte[].class)) {
-            base = new String(byte[].class.cast(data), StandardCharsets.UTF_8);
-        } else if (data instanceof Serializable) {
+        } else if (WizLang.isChildOf(value.getClass(), byte[].class)) {
+            base = new String(byte[].class.cast(value), StandardCharsets.UTF_8);
+        } else if (value instanceof Serializable) {
             try (var bos = new ByteArrayOutputStream();
                  var oos = new ObjectOutputStream(bos)) {
-                oos.writeObject(data);
+                oos.writeObject(value);
                 oos.flush();
                 base = bos.toString(StandardCharsets.UTF_8);
             }
-        } else if (data instanceof Number number) {
+        } else if (value instanceof Number number) {
             base = String.valueOf(number);
         } else {
-            throw new Exception("Could not convert to a Clob value the value of class: " + data.getClass().getName());
+            throw new Exception("Could not convert to a Clob value the value of class: " + value.getClass().getName());
         }
         return new SerialClob(base.toCharArray());
     }

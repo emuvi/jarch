@@ -260,7 +260,7 @@ public class EOrmBase extends EOrm {
             for (var join : select.joinList) {
                 if (join.hasFilters()) {
                     for (var clause : join.filterList) {
-                        if (clause.valued != null && clause.valued.data != null) {
+                        if (clause.valued != null && clause.valued.value != null) {
                             setParameter(prepared, param_index, clause.valued);
                             param_index++;
                         }
@@ -270,7 +270,7 @@ public class EOrmBase extends EOrm {
         }
         if (select.hasFilters()) {
             for (var clause : select.filterList) {
-                if (clause.valued != null && clause.valued.data != null) {
+                if (clause.valued != null && clause.valued.value != null) {
                     setParameter(prepared, param_index, clause.valued);
                     param_index++;
                 }
@@ -313,7 +313,7 @@ public class EOrmBase extends EOrm {
                 builder.append(", ");
             }
             final var valued = insert.valuedList.get(i);
-            if (valued.data != null) {
+            if (valued.value != null) {
                 builder.append("?");
             } else {
                 builder.append("NULL");
@@ -335,7 +335,7 @@ public class EOrmBase extends EOrm {
         var prepared = getLink().prepareStatement(insertSQL);
         var param_index = 1;
         for (var valued : insert.valuedList) {
-            if (valued.data != null) {
+            if (valued.value != null) {
                 setParameter(prepared, param_index, valued);
                 param_index++;
             }
@@ -364,7 +364,7 @@ public class EOrmBase extends EOrm {
             }
             builder.append(update.valuedList.get(i).name);
             builder.append(" = ");
-            if (update.valuedList.get(i).data == null) {
+            if (update.valuedList.get(i).value == null) {
                 builder.append("NULL");
             } else {
                 builder.append("?");
@@ -424,7 +424,7 @@ public class EOrmBase extends EOrm {
         var param_index = 1;
         if (delete.filterList != null && !delete.filterList.isEmpty()) {
             for (var clause : delete.filterList) {
-                if (clause.valued.data != null) {
+                if (clause.valued.value != null) {
                     setParameter(prepared, param_index, clause.valued);
                     param_index++;
                 }
@@ -448,7 +448,7 @@ public class EOrmBase extends EOrm {
     protected void putID(Insert insert, Object next) {
         for (var valued : insert.valuedList) {
             if (Objects.equals(insert.toGetID.name, valued.name)) {
-                valued.data = next;
+                valued.value = next;
                 break;
             }
         }
@@ -502,7 +502,7 @@ public class EOrmBase extends EOrm {
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
                                         + insert.tableHead.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
-                                        + insert.toGetID.filter.data.toString() + "'");
+                                        + insert.toGetID.filter.value.toString() + "'");
         String last = null;
         if (rst.next()) {
             last = rst.getString(1);
@@ -521,7 +521,7 @@ public class EOrmBase extends EOrm {
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
                                         + insert.tableHead.name + " WHERE "
                                         + insert.toGetID.filter.name + " = '"
-                                        + insert.toGetID.filter.data.toString() + "'");
+                                        + insert.toGetID.filter.value.toString() + "'");
         String last = null;
         if (rst.next()) {
             last = rst.getString(1);
@@ -722,7 +722,7 @@ public class EOrmBase extends EOrm {
                     builder.append(".");
                 }
                 builder.append(clause.valued.name);
-                if (clause.valued.data == null) {
+                if (clause.valued.value == null) {
                     builder.append(" IS NULL ");
                 } else {
                     builder.append(makeCondition(clause.likes, "?"));
@@ -767,59 +767,59 @@ public class EOrmBase extends EOrm {
     protected void setParameter(PreparedStatement prepared, int index, Valued valued)
                     throws Exception {
         if (valued.type == null) {
-            prepared.setObject(index, valued.data);
+            prepared.setObject(index, valued.value);
         } else {
             switch (valued.type) {
                 case Bool:
-                    prepared.setBoolean(index, WizData.getBoolean(valued.data));
+                    prepared.setBoolean(index, WizData.getOnBoolean(valued.value));
                     break;
                 case Bit:
                 case Byte:
-                    prepared.setByte(index, WizData.getByte(valued.data));
+                    prepared.setByte(index, WizData.getOnByte(valued.value));
                     break;
                 case Tiny:
                 case Small:
-                    prepared.setShort(index, WizData.getShort(valued.data));
+                    prepared.setShort(index, WizData.getOnShort(valued.value));
                     break;
                 case Int:
                 case Serial:
-                    prepared.setInt(index, WizData.getInteger(valued.data));
+                    prepared.setInt(index, WizData.getOnInteger(valued.value));
                     break;
                 case Long:
                 case BigSerial:
-                    prepared.setLong(index, WizData.getLong(valued.data));
+                    prepared.setLong(index, WizData.getOnLong(valued.value));
                     break;
                 case Float:
                 case Real:
-                    prepared.setFloat(index, WizData.getFloat(valued.data));
+                    prepared.setFloat(index, WizData.getOnFloat(valued.value));
                     break;
                 case Double:
                 case Numeric:
-                    prepared.setDouble(index, WizData.getDouble(valued.data));
+                    prepared.setDouble(index, WizData.getOnDouble(valued.value));
                     break;
                 case BigNumeric:
-                    prepared.setBigDecimal(index, WizData.getBigNumeric(valued.data));
+                    prepared.setBigDecimal(index, WizData.getOnBigNumeric(valued.value));
                     break;
                 case Char:
                 case Chars:
-                    prepared.setString(index, WizData.getString(valued.data));
+                    prepared.setString(index, WizData.getOnString(valued.value));
                     break;
                 case Date:
-                    prepared.setDate(index, WizData.getDate(valued.data));
+                    prepared.setDate(index, WizData.getOnDate(valued.value));
                     break;
                 case Time:
-                    prepared.setTime(index, WizData.getTime(valued.data));
+                    prepared.setTime(index, WizData.getOnTime(valued.value));
                     break;
                 case DateTime:
                 case Timestamp:
-                    prepared.setTimestamp(index, WizData.getTimestamp(valued.data));
+                    prepared.setTimestamp(index, WizData.getOnTimestamp(valued.value));
                     break;
                 case Bytes:
-                    prepared.setBytes(index, WizData.getBytes(valued.data));
+                    prepared.setBytes(index, WizData.getOnBytes(valued.value));
                     break;
                 case Blob:
                 case Text:
-                    prepared.setBlob(index, WizData.getBlob(valued.data));
+                    prepared.setBlob(index, WizData.getOnBlob(valued.value));
                     break;
                 default:
                     throw new UnsupportedOperationException();

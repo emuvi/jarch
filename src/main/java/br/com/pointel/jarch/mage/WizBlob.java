@@ -14,9 +14,7 @@ public class WizBlob {
     }
 
     public static boolean is(Object value) {
-        if (value == null) {
-            return false;
-        }
+        if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), byte[].class)
                 || value instanceof Serializable
                 || value instanceof Blob
@@ -25,31 +23,31 @@ public class WizBlob {
                 || value instanceof Number;
     }
 
-    public static Blob get(Object data) throws Exception {
-        if (data == null) {
+    public static Blob get(Object value) throws Exception {
+        if (value == null) {
             return null;
         }
-        if (data instanceof Blob blob) {
+        if (value instanceof Blob blob) {
             return blob;
         }
         byte[] bytes;
-        if (WizLang.isChildOf(data.getClass(), byte[].class)) {
-            bytes = byte[].class.cast(data);
-        } else if (data instanceof Serializable) {
+        if (WizLang.isChildOf(value.getClass(), byte[].class)) {
+            bytes = byte[].class.cast(value);
+        } else if (value instanceof Serializable) {
             try (var bos = new ByteArrayOutputStream();
                  var oos = new ObjectOutputStream(bos)) {
-                oos.writeObject(data);
+                oos.writeObject(value);
                 oos.flush();
                 bytes = bos.toByteArray();
             }
-        } else if (data instanceof Clob clob) {
+        } else if (value instanceof Clob clob) {
             bytes = clob.getSubString(1, (int) clob.length()).getBytes(StandardCharsets.UTF_8);
-        } else if (data instanceof String string) {
+        } else if (value instanceof String string) {
             bytes = string.getBytes(StandardCharsets.UTF_8);
-        } else if (data instanceof Number number) {
+        } else if (value instanceof Number number) {
             bytes = String.valueOf(number).getBytes(StandardCharsets.UTF_8);
         } else {
-            throw new Exception("Could not convert to a Blob value the value of class: " + data.getClass().getName());
+            throw new Exception("Could not convert to a Blob value the value of class: " + value.getClass().getName());
         }
         return new SerialBlob(bytes);
     }

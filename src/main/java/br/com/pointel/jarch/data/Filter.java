@@ -36,19 +36,19 @@ public class Filter implements Data {
         return this;
     }
 
-    public Filter withField(Field field, Object withValue) {
+    public Filter withField(Field field, Object value) {
         if (field == null) {
             throw new IllegalArgumentException("Field cannot be null");
         }
-        this.valued = field.toValued(withValue);
+        this.valued = field.toValued(value);
         return this;
     }
 
-    public Filter withValue(Object withValue) {
+    public Filter withValue(Object value) {
         if (this.valued == null) {
             throw new IllegalArgumentException("Valued cannot be null");
         }
-        this.valued.data = withValue;
+        this.valued.value = value;
         return this;
     }
 

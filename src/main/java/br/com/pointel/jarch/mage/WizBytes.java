@@ -17,9 +17,7 @@ public class WizBytes {
     }
 
     public static boolean is(Object value) {
-        if (value == null) {
-            return false;
-        }
+        if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), byte[].class)
                 || value instanceof Serializable
                 || value instanceof Blob
@@ -28,30 +26,30 @@ public class WizBytes {
                 || value instanceof Number;
     }
 
-    public static byte[] get(Object data) throws Exception {
-        if (data == null) {
+    public static byte[] get(Object value) throws Exception {
+        if (value == null) {
             return null;
         }
-        if (WizLang.isChildOf(data.getClass(), byte[].class)) {
-            return byte[].class.cast(data);
+        if (WizLang.isChildOf(value.getClass(), byte[].class)) {
+            return byte[].class.cast(value);
         }
-        if (data instanceof Serializable) {
+        if (value instanceof Serializable) {
             try (var bos = new ByteArrayOutputStream(); 
                 var oos = new ObjectOutputStream(bos)) {
-                oos.writeObject(data);
+                oos.writeObject(value);
                 oos.flush();
                 return bos.toByteArray();
             }
-        } else if (data instanceof Blob blob) {
+        } else if (value instanceof Blob blob) {
             return blob.getBytes(1, (int) blob.length());
-        } else if (data instanceof Clob clob) {
+        } else if (value instanceof Clob clob) {
             return clob.getSubString(1, (int) clob.length()).getBytes();
-        } else if (data instanceof String str) {
+        } else if (value instanceof String str) {
             return str.getBytes(StandardCharsets.UTF_8);
-        } else if (data instanceof Number number) {
+        } else if (value instanceof Number number) {
             return String.valueOf(number).getBytes(StandardCharsets.UTF_8);
         }
-        throw new Exception("Could not convert to a byte[] value the value of class: " + data.getClass().getName());
+        throw new Exception("Could not convert to a byte[] value the value of class: " + value.getClass().getName());
     }
 
     public static String encodeToBase64(byte[] bytes) {

@@ -1,10 +1,10 @@
-package br.com.pointel.jarch.data;
+package br.com.pointel.jarch.value;
 
-public class Valued implements Data {
+public class Valued implements value {
 
     public String name;
     public Nature type;
-    public Object data;
+    public Object value;
 
     public Valued() {}
 
@@ -17,15 +17,15 @@ public class Valued implements Data {
         this.type = type;
     }
 
-    public Valued(String name, Object data) {
+    public Valued(String name, Object value) {
         this.name = name;
-        this.data = data;
+        this.value = value;
     }
 
-    public Valued(String name, Nature type, Object data) {
+    public Valued(String name, Nature type, Object value) {
         this.name = name;
         this.type = type;
-        this.data = data;
+        this.value = value;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Valued implements Data {
     }
 
     public static Valued fromChars(String chars) {
-        return Data.fromChars(chars, Valued.class);
+        return value.fromChars(chars, Valued.class);
     }
 
 }

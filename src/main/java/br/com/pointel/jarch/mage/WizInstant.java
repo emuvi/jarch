@@ -10,9 +10,7 @@ public class WizInstant {
     }
 
     public static boolean is(Object value) {
-        if (value == null) {
-            return false;
-        }
+        if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), Instant.class)
                 || value instanceof java.time.LocalDate
                 || value instanceof java.time.LocalTime
@@ -29,43 +27,43 @@ public class WizInstant {
                 || value instanceof Number;
     }
 
-    public static Instant get(Object data) throws Exception {
-        if (data == null) {
+    public static Instant get(Object value) throws Exception {
+        if (value == null) {
             return null;
         }
-        if (WizLang.isChildOf(data.getClass(), Instant.class)) {
-            return Instant.class.cast(data);
+        if (WizLang.isChildOf(value.getClass(), Instant.class)) {
+            return Instant.class.cast(value);
         }
-        if (data instanceof java.time.LocalDate localDate) {
+        if (value instanceof java.time.LocalDate localDate) {
             return localDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
-        } else if (data instanceof java.time.LocalTime localTime) {
+        } else if (value instanceof java.time.LocalTime localTime) {
             return localTime.atDate(java.time.LocalDate.now()).atZone(java.time.ZoneId.systemDefault()).toInstant();
-        } else if (data instanceof java.time.LocalDateTime localDateTime) {
+        } else if (value instanceof java.time.LocalDateTime localDateTime) {
             return localDateTime.atZone(java.time.ZoneId.systemDefault()).toInstant();
-        } else if (data instanceof java.time.ZonedDateTime zonedDateTime) {
+        } else if (value instanceof java.time.ZonedDateTime zonedDateTime) {
             return zonedDateTime.toInstant();
-        } else if (data instanceof java.time.OffsetDateTime offsetDateTime) {
+        } else if (value instanceof java.time.OffsetDateTime offsetDateTime) {
             return offsetDateTime.toInstant();
-        } else if (data instanceof java.time.OffsetTime offsetTime) {
+        } else if (value instanceof java.time.OffsetTime offsetTime) {
             return offsetTime.atDate(java.time.LocalDate.now()).atZoneSameInstant(java.time.ZoneId.systemDefault()).toInstant();
-        } else if (data instanceof java.util.Date date) {
+        } else if (value instanceof java.util.Date date) {
             return date.toInstant();
-        } else if (data instanceof java.sql.Date date) {
+        } else if (value instanceof java.sql.Date date) {
             return date.toInstant();
-        } else if (data instanceof java.sql.Time time) {
+        } else if (value instanceof java.sql.Time time) {
             return time.toInstant();
-        } else if (data instanceof java.sql.Timestamp timestamp) {
+        } else if (value instanceof java.sql.Timestamp timestamp) {
             return timestamp.toInstant();
-        } else if (data instanceof String formatted) {
+        } else if (value instanceof String formatted) {
             for (var format : WizInstant.getFormats()) {
                 if (WizInstant.is(formatted, format)) {
                     return format.parse(formatted, Instant::from);
                 }
             }
-        } else if (data instanceof Number number) {
+        } else if (value instanceof Number number) {
             return Instant.ofEpochMilli(number.longValue());
         }
-        throw new Exception("Could not convert to an Instant value the value of class: " + data.getClass().getName());
+        throw new Exception("Could not convert to an Instant value the value of class: " + value.getClass().getName());
     }
 
     public static boolean is(String formatted, DateTimeFormatter onFormat) {
