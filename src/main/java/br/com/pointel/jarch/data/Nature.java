@@ -36,15 +36,15 @@ public enum Nature {
 
     Chars(String.class, Byte[].class, java.sql.Clob.class, java.sql.Blob.class),
 
-    Date(java.time.LocalDate.class, java.util.Date.class, java.sql.Date.class),
+    Date(java.time.LocalDate.class, java.time.OffsetDateTime.class, java.util.Date.class, java.sql.Date.class),
 
-    Time(java.time.LocalTime.class, java.util.Date.class, java.sql.Time.class),
+    Time(java.time.LocalTime.class, java.time.OffsetTime.class, java.util.Date.class, java.sql.Time.class),
 
-    DateTime(java.time.LocalDateTime.class, java.util.Date.class, java.sql.Timestamp.class),
+    DateTime(java.time.LocalDateTime.class, java.time.OffsetDateTime.class, java.util.Date.class, java.sql.Timestamp.class),
 
     ZoneTime(java.time.ZonedDateTime.class, java.time.OffsetDateTime.class, java.time.OffsetTime.class, java.util.Date.class, java.sql.Timestamp.class),
 
-    Timestamp(java.time.Instant.class, java.util.Date.class, java.sql.Timestamp.class),
+    Timestamp(java.time.Instant.class,  java.time.OffsetDateTime.class, java.util.Date.class, java.sql.Timestamp.class),
 
     Bytes(Byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
 

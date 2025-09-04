@@ -21,6 +21,7 @@ import br.com.pointel.jarch.flow.NotFixNulls;
 import br.com.pointel.jarch.flow.FixObject;
 import br.com.pointel.jarch.flow.FixShort;
 import br.com.pointel.jarch.flow.FixVals;
+import br.com.pointel.jarch.flow.MapName;
 
 public class WizLang {
 
@@ -132,6 +133,11 @@ public class WizLang {
             clazz.equals(void.class);
     }
 
+    /***
+     * Checks if a class is a child of another class.
+     * A child can be assigned to a parent variable.
+     * But a parent cannot be assigned to a child variable.
+     */
     public static boolean isChildOf(Class<?> child, Class<?> parent) {
         if (child == null || parent == null) {
             return false;
@@ -146,29 +152,44 @@ public class WizLang {
         return parent.isAssignableFrom(child);
     }
 
-    public static Constructor<?> getBestConstructor(Class<?> fromClazz, Nature[] natures, String[] names) {
-        if (fromClazz == null || natures == null || natures.length == 0) {
+    public static Constructor<?> getBestConstructor(Class<?> fromClazz, Nature[] valNatures, String[] valNames) {
+        if (fromClazz == null || valNatures == null || valNatures.length == 0) {
             return null;
         }
-        Constructor<?> bestOne = null;
         int bestScore = 0;
+        Constructor<?> bestOne = null;
         for (Constructor<?> constructor : fromClazz.getConstructors()) {
-            Class<?>[] paramTypes = constructor.getParameterTypes();
-            if (paramTypes.length > natures.length) {
+            var paramTypes = constructor.getParameterTypes();
+            if (paramTypes.length > valNatures.length) {
                 continue;
             }
             int score = 0;
             boolean match = true;
+            var paramNotes = constructor.getParameterAnnotations();
             for (int iP = 0; iP < paramTypes.length; iP++) {
-                Class<?> paramType = paramTypes[iP];
-                Nature nature = natures[iP];
-                boolean found = true;
-                for (int iN = 0; iN < nature.getMapTypes().length; iN++) {
-                    Class<?> natureType = nature.getMapTypes()[iN];
-                    if (isChildOf(natureType, paramType)) {
-                        score = score + (100 - (iN * 10));
+                String hasMapName = null;
+                for (var note : paramNotes[iP]) {
+                    if (note instanceof MapName mapName) {
+                        hasMapName = mapName.value();
+                        break;
+                    }
+                }
+                if (hasMapName != null && valNames != null && valNames.length > iP) {
+                    if (Objects.equals(hasMapName, valNames[iP])) {
+                        score = score + 100;
                     } else {
-                        found = false;
+                        match = false;
+                        break;
+                    }
+                }
+                var paramType = paramTypes[iP];
+                var valNature = valNatures[iP];
+                boolean found = false;
+                for (int iN = 0; iN < valNature.getMapTypes().length; iN++) {
+                    Class<?> valNatureType = valNature.getMapTypes()[iN];
+                    if (isChildOf(valNatureType, paramType)) {
+                        score = score + (100 - (iN * 10));
+                        found = true;
                         break;
                     }
                 }
@@ -178,8 +199,8 @@ public class WizLang {
                 }
             }
             if (match && score > bestScore) {
-                bestScore = score;
                 bestOne = constructor;
+                bestScore = score;
             }
         }
         return bestOne;

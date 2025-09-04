@@ -45,36 +45,45 @@ public class WizData {
         return gson.fromJson(chars, clazz);
     }
 
+    public static <T> List<T> mapResults(ResultSet result, List<Typed> fieldList, Class<T> onClazz) throws Exception {
+        var results = new ArrayList<T>();
+        while (result.next()) {
+            var mapped = mapResult(result, fieldList, onClazz);
+            results.add(mapped);
+        }
+        return results;
+    }
+
     public static <T> T mapResult(ResultSet result, List<Typed> fieldList, Class<T> onClazz) throws Exception {
-        var classes = WizData.getColumnsClasses(result);
-        var values = WizData.getColumnsValues(result);
+        var colsClasses = WizData.getColumnsClasses(result);
+        var colsValues = WizData.getColumnsValues(result);
         try {
-            var standardOne = onClazz.getConstructor(classes);
-            return standardOne.newInstance(values);
+            var standardOne = onClazz.getConstructor(colsClasses);
+            return standardOne.newInstance(colsValues);
         } catch (NoSuchMethodException e) {
-            Nature[] natures;
+            Nature[] colsNatures;
             if (fieldList == null || fieldList.isEmpty()) {
-                natures = WizData.getNaturesFrom(result);
+                colsNatures = WizData.getNaturesFrom(result);
             } else {
-                natures = fieldList.stream().map(f -> f.type).toArray(Nature[]::new);
+                colsNatures = fieldList.stream().map(f -> f.type).toArray(Nature[]::new);
             }
-            var names = WizData.getColumnsNames(result);
-            var bestOne = WizLang.getBestConstructor(onClazz, natures, names);
+            var colsNames = WizData.getColumnsNames(result);
+            var bestOne = WizLang.getBestConstructor(onClazz, colsNatures, colsNames);
             if (bestOne == null) {
                 bestOne = onClazz.getConstructor();
             }
             Object[] argsValues = new Object[bestOne.getParameterCount()];
             Class<?>[] argsTypes = bestOne.getParameterTypes();
             for (int i = 0; i < argsValues.length; i++) {
-                argsValues[i] = WizData.getOn(values[i], argsTypes[i]);
+                argsValues[i] = WizData.getOn(colsValues[i], argsTypes[i]);
             }
             var instance = onClazz.cast(bestOne.newInstance(argsValues));
-            if (argsValues.length < values.length) {
+            if (argsValues.length < colsValues.length) {
                 var columnsNames = WizData.getColumnsNames(result);
-                for (int i = argsValues.length; i < values.length; i++) {
+                for (int i = argsValues.length; i < colsValues.length; i++) {
                     var columnName = columnsNames[i];
                     var field = onClazz.getDeclaredField(columnName);
-                    var mappedField = WizData.getOn(values[i], field.getType());
+                    var mappedField = WizData.getOn(colsValues[i], field.getType());
                     WizLang.forceSetField(field, instance, mappedField);
                 }
             }

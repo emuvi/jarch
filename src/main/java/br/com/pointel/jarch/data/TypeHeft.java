@@ -29,4 +29,8 @@ public class TypeHeft implements Firm {
         return Firm.fromChars(chars, TypeHeft.class);
     }
 
+    public static TypeHeft of(Class<?> type, int heft) {
+        return new TypeHeft(type, heft);
+    }
+
 }
