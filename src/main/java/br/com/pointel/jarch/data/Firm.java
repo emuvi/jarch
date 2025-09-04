@@ -1,10 +1,10 @@
 package br.com.pointel.jarch.data;
 
-import br.com.pointel.jarch.flow.FixVals;
+import java.io.Serializable;
 import br.com.pointel.jarch.mage.WizData;
 import br.com.pointel.jarch.mage.WizLang;
 
-public interface Data extends FixVals {
+public interface Firm extends Serializable {
 
     public default boolean deepEquals(Object that) {
         return WizLang.deepEquals(this, that);

@@ -3,6 +3,7 @@ package br.com.pointel.jarch.mage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.Nature;
@@ -26,6 +27,39 @@ public class WizLang {
     private static final Logger log = LoggerFactory.getLogger(WizLang.class);
 
     private WizLang() {
+    }
+
+    public static boolean deepEquals(Object valueA, Object valueB) {
+        try {
+            if (valueB == valueA) return true;
+            if (valueA == null || valueB == null) return false;
+            if (!valueA.getClass().equals(valueB.getClass())) return false;
+            if (WizArray.is(valueA)) {
+                final var valueAItems = WizArray.get(valueA);
+                final var valueBItems = WizArray.get(valueB);
+                return Objects.deepEquals(valueAItems, valueBItems);
+            } else {
+                final var valueAMembers = WizLang.getValuesFromMembers(valueA);
+                final var valueBMembers = WizLang.getValuesFromMembers(valueB);
+                return Objects.deepEquals(valueAMembers, valueBMembers);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int deepHash(Object value) {
+        try {
+            if (WizArray.is(value)) {
+                final var valueItems = WizArray.get(value);
+                return Objects.hash(valueItems);
+            } else {
+                final var valueMembers = WizLang.getValuesFromMembers(value);
+                return Objects.hash(valueMembers);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Class<?> getPrimitive(Class<?> ofClazz) {
@@ -112,22 +146,22 @@ public class WizLang {
         return parent.isAssignableFrom(child);
     }
 
-    public static Constructor<?> getBestConstructor(Class<?> fromClazz, Nature[] toNatures) {
-        if (fromClazz == null || toNatures == null || toNatures.length == 0) {
+    public static Constructor<?> getBestConstructor(Class<?> fromClazz, Nature[] natures, String[] names) {
+        if (fromClazz == null || natures == null || natures.length == 0) {
             return null;
         }
         Constructor<?> bestOne = null;
         int bestScore = 0;
         for (Constructor<?> constructor : fromClazz.getConstructors()) {
             Class<?>[] paramTypes = constructor.getParameterTypes();
-            if (paramTypes.length > toNatures.length) {
+            if (paramTypes.length > natures.length) {
                 continue;
             }
             int score = 0;
             boolean match = true;
             for (int iP = 0; iP < paramTypes.length; iP++) {
                 Class<?> paramType = paramTypes[iP];
-                Nature nature = toNatures[iP];
+                Nature nature = natures[iP];
                 boolean found = true;
                 for (int iN = 0; iN < nature.getMapTypes().length; iN++) {
                     Class<?> natureType = nature.getMapTypes()[iN];
