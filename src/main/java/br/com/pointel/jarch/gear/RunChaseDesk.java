@@ -1,4 +1,4 @@
-package br.com.pointel.jarch.gears;
+package br.com.pointel.jarch.gear;
 
 import javax.swing.SwingUtilities;
 import br.com.pointel.jarch.mage.WizDesk;

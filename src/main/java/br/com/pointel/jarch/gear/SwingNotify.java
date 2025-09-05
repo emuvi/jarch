@@ -1,4 +1,4 @@
-package br.com.pointel.jarch.gears;
+package br.com.pointel.jarch.gear;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
