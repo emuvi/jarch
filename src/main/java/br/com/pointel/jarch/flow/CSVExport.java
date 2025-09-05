@@ -63,7 +63,7 @@ public class CSVExport implements Runnable {
                             row[i] = table.fieldList.get(i).name;
                         }
                         csvFile.writeLine(row);
-                        var rstOrigin = eOrmOrigin.select(new Select(tableHead));
+                        var rstOrigin = eOrmOrigin.select(new Select(tableHead)).resultSet;
                         var recordCount = 0L;
                         while (rstOrigin.next()) {
                             recordCount++;
