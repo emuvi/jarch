@@ -47,6 +47,6 @@ public class BasedJdbc implements Data {
     }
 
     public static BasedJdbc fromChars(String chars) {
-        return Data.fromChars(chars, BasedJdbc.class);
+        return Base.fromChars(chars, BasedJdbc.class);
     }
 }

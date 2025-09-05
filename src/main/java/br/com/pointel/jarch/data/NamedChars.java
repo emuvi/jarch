@@ -32,7 +32,7 @@ public class NamedChars implements Data {
     }
 
     public static NamedChars fromChars(String chars) {
-        return Data.fromChars(chars, NamedChars.class);
+        return Base.fromChars(chars, NamedChars.class);
     }
 
 }

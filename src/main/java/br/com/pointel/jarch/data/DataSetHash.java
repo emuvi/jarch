@@ -20,7 +20,7 @@ public class DataSetHash<T> extends HashSet<T> implements Data {
     }
 
     public static DataSetHash fromChars(String chars) {
-        return Data.fromChars(chars, DataSetHash.class);
+        return Base.fromChars(chars, DataSetHash.class);
     }
     
 }

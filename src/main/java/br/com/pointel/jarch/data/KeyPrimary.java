@@ -39,7 +39,7 @@ public class KeyPrimary implements Data {
     }
 
     public static KeyPrimary fromChars(String chars) {
-        return Data.fromChars(chars, KeyPrimary.class);
+        return Base.fromChars(chars, KeyPrimary.class);
     }
 
 }

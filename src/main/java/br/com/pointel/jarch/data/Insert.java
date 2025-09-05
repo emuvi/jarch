@@ -42,7 +42,7 @@ public class Insert implements Data {
     }
 
     public static Insert fromChars(String chars) {
-        return Data.fromChars(chars, Insert.class);
+        return Base.fromChars(chars, Insert.class);
     }
 
 }

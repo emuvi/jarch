@@ -156,7 +156,7 @@ public class BasedLink implements Data {
     }
 
     public static BasedLink fromChars(String chars) {
-        return Data.fromChars(chars, BasedLink.class);
+        return Base.fromChars(chars, BasedLink.class);
     }
 
     public static BasedLink fromAssigned(String chars) throws Exception {

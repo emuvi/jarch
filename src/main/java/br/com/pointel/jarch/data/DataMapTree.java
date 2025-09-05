@@ -20,7 +20,7 @@ public class DataMapTree<K, V> extends TreeMap<K, V> implements Data {
     }
 
     public static DataMapTree fromChars(String chars) {
-        return Data.fromChars(chars, DataMapTree.class);
+        return Base.fromChars(chars, DataMapTree.class);
     }
 
 }

@@ -45,7 +45,7 @@ public class Match implements Data {
     }
 
     public static Match fromChars(String chars) {
-        return Data.fromChars(chars, Match.class);
+        return Base.fromChars(chars, Match.class);
     }
 
 }

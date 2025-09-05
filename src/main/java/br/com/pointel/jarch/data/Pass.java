@@ -36,7 +36,7 @@ public class Pass implements Data {
     }
 
     public static Pass fromChars(String chars) {
-        return Data.fromChars(chars, Pass.class);
+        return Base.fromChars(chars, Pass.class);
     }
     
 }

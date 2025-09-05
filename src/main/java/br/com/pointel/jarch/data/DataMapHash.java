@@ -20,7 +20,7 @@ public class DataMapHash<K, V> extends HashMap<K, V> implements Data {
     }
 
     public static DataMapHash fromChars(String chars) {
-        return Data.fromChars(chars, DataMapHash.class);
+        return Base.fromChars(chars, DataMapHash.class);
     }
 
 }

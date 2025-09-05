@@ -20,7 +20,7 @@ public class DataMapLinked<K, V> extends LinkedHashMap<K, V> implements Data {
     }
 
     public static DataMapLinked fromChars(String chars) {
-        return Data.fromChars(chars, DataMapLinked.class);
+        return Base.fromChars(chars, DataMapLinked.class);
     }
 
 }

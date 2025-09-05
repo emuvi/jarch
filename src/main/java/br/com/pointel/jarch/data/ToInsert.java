@@ -41,7 +41,7 @@ public class ToInsert implements Data {
     }
 
     public static ToInsert fromChars(String chars) {
-        return Data.fromChars(chars, ToInsert.class);
+        return Base.fromChars(chars, ToInsert.class);
     }
 
 }

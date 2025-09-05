@@ -20,7 +20,7 @@ public class DataListLinked<T> extends LinkedList<T> implements Data {
     }
 
     public static DataListLinked fromChars(String chars) {
-        return Data.fromChars(chars, DataListLinked.class);
+        return Base.fromChars(chars, DataListLinked.class);
     }
     
 }

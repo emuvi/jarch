@@ -76,7 +76,7 @@ public class Join implements Data {
     }
 
     public static Join fromChars(String chars) {
-        return Data.fromChars(chars, Join.class);
+        return Base.fromChars(chars, Join.class);
     }
 
 }

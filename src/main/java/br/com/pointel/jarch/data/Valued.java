@@ -44,7 +44,7 @@ public class Valued implements Data {
     }
 
     public static Valued fromChars(String chars) {
-        return Data.fromChars(chars, Valued.class);
+        return Base.fromChars(chars, Valued.class);
     }
 
 }

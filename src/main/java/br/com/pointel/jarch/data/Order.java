@@ -33,7 +33,7 @@ public class Order implements Data {
     }
 
     public static Order fromChars(String chars) {
-        return Data.fromChars(chars, Order.class);
+        return Base.fromChars(chars, Order.class);
     }
 
 }

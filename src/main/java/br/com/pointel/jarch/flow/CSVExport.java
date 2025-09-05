@@ -69,7 +69,7 @@ public class CSVExport implements Runnable {
                             recordCount++;
                             pace.debug("Writing record " + recordCount + " of " + tableHead.name);
                             for (var i = 0; i < table.fieldList.size(); i++) {
-                                row[i] = table.fieldList.get(i).formatValue(rstOrigin.getObject(i + 1));
+                                row[i] = table.fieldList.get(i).toFormatted(rstOrigin.getObject(i + 1));
                             }
                             csvFile.writeLine(row);
                         }

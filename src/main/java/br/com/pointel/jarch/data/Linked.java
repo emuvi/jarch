@@ -33,7 +33,7 @@ public class Linked implements Data {
     }
 
     public static Linked fromChars(String chars) {
-        return Data.fromChars(chars, Linked.class);
+        return Base.fromChars(chars, Linked.class);
     }
 
 }

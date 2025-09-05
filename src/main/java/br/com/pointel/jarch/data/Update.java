@@ -50,7 +50,7 @@ public class Update implements Data {
     }
 
     public static Update fromChars(String chars) {
-        return Data.fromChars(chars, Update.class);
+        return Base.fromChars(chars, Update.class);
     }
 
 }

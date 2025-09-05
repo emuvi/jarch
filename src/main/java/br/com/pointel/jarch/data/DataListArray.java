@@ -20,7 +20,7 @@ public class DataListArray<T> extends ArrayList<T> implements Data {
     }
 
     public static DataListArray fromChars(String chars) {
-        return Data.fromChars(chars, DataListArray.class);
+        return Base.fromChars(chars, DataListArray.class);
     }
     
 }

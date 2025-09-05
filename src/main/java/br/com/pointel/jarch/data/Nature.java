@@ -34,7 +34,7 @@ public enum Nature {
 
     Char(Character.class, String.class, Number.class),
 
-    Chars(String.class, Byte[].class, java.sql.Clob.class, java.sql.Blob.class),
+    Chars(String.class, byte[].class, java.sql.Clob.class, java.sql.Blob.class),
 
     Date(java.time.LocalDate.class, java.time.OffsetDateTime.class, java.util.Date.class, java.sql.Date.class),
 
@@ -46,13 +46,13 @@ public enum Nature {
 
     Timestamp(java.time.Instant.class,  java.time.OffsetDateTime.class, java.util.Date.class, java.sql.Timestamp.class),
 
-    Bytes(Byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
+    Bytes(byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
 
-    Blob(Byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
+    Blob(byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
 
-    Text(String.class, Byte[].class, java.sql.Clob.class, java.sql.Blob.class),
+    Text(String.class, byte[].class, java.sql.Clob.class, java.sql.Blob.class),
 
-    Object(String.class, Byte[].class, java.sql.Blob.class, java.sql.Clob.class, Object.class);
+    Object(Object.class, byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class);
 
     private final Class<?>[] mapTypes;
 

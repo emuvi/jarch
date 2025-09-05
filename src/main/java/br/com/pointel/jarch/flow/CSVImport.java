@@ -95,7 +95,7 @@ public class CSVImport implements Runnable {
                         values[i] = line[i];
                     } else {
                         var field = table.fieldList.get(i);
-                        values[i] = field.getValueFrom(line[i]);
+                        values[i] = field.fromFormatted(line[i]);
                         fixValuesForSQLTypes(values, i, field);
                     }
                 }

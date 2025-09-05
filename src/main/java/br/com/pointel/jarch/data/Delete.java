@@ -35,7 +35,7 @@ public class Delete implements Data {
     }
 
     public static Delete fromChars(String chars) {
-        return Data.fromChars(chars, Delete.class);
+        return Base.fromChars(chars, Delete.class);
     }
 
 }

@@ -44,7 +44,7 @@ public class DataClazz implements Data {
     }
 
     public static DataClazz fromChars(String chars) {
-        return Data.fromChars(chars, DataClazz.class);
+        return Base.fromChars(chars, DataClazz.class);
     }
 
 }

@@ -20,7 +20,7 @@ public class DataListTree<T> extends TreeList<T> implements Data {
     }
 
     public static DataListTree fromChars(String chars) {
-        return Data.fromChars(chars, DataListTree.class);
+        return Base.fromChars(chars, DataListTree.class);
     }
     
 }

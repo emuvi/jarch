@@ -68,7 +68,7 @@ public class Filter implements Data {
     }
 
     public static Filter fromChars(String chars) {
-        return Data.fromChars(chars, Filter.class);
+        return Base.fromChars(chars, Filter.class);
     }
 
 }

@@ -70,7 +70,7 @@ public class KeyForeign implements Data {
     }
 
     public static KeyForeign fromChars(String chars) {
-        return Data.fromChars(chars, KeyForeign.class);
+        return Base.fromChars(chars, KeyForeign.class);
     }
 
 }

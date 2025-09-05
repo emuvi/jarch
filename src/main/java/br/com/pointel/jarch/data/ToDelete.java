@@ -41,7 +41,7 @@ public class ToDelete implements Data {
     }
 
     public static ToDelete fromChars(String chars) {
-        return Data.fromChars(chars, ToDelete.class);
+        return Base.fromChars(chars, ToDelete.class);
     }
 
 }

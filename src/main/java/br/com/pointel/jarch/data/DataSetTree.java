@@ -20,7 +20,7 @@ public class DataSetTree<T> extends TreeSet<T> implements Data {
     }
 
     public static DataSetTree fromChars(String chars) {
-        return Data.fromChars(chars, DataSetTree.class);
+        return Base.fromChars(chars, DataSetTree.class);
     }
     
 }

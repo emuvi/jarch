@@ -55,7 +55,7 @@ public class Index implements Data {
     }
 
     public static Index fromChars(String chars) {
-        return Data.fromChars(chars, Index.class);
+        return Base.fromChars(chars, Index.class);
     }
 
 }

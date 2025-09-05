@@ -214,6 +214,18 @@ public class Field implements Data {
         return new Valued(getReferenceName(), nature, value);
     }
 
+    public String toFormatted(Object value) throws Exception {
+        return WizData.toFormatted(this.nature, value);
+    }
+
+    public <T> T fromFormatted(String formatted, Class<T> onClass) throws Exception {
+        return WizData.fromFormatted(this.nature, formatted, onClass);
+    }
+    
+    public Object fromFormatted(String formatted) throws Exception {
+        return WizData.fromFormatted(this.nature, formatted);
+    }
+
     public Table getTable() {
         return table;
     }
@@ -238,7 +250,7 @@ public class Field implements Data {
     }
 
     public static Field fromChars(String chars) {
-        return Data.fromChars(chars, Field.class);
+        return Base.fromChars(chars, Field.class);
     }
     
 }

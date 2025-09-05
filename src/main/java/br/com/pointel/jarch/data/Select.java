@@ -88,7 +88,7 @@ public class Select implements Data {
     }
 
     public static Select fromChars(String chars) {
-        return Data.fromChars(chars, Select.class);
+        return Base.fromChars(chars, Select.class);
     }
 
 }

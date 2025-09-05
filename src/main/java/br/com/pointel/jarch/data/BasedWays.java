@@ -114,7 +114,7 @@ public class BasedWays implements Data {
     }
 
     public static BasedWays fromChars(String chars) {
-        return Data.fromChars(chars, BasedWays.class);
+        return Base.fromChars(chars, BasedWays.class);
     }
 
 }

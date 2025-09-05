@@ -37,7 +37,7 @@ public class Registry implements Data {
     }
 
     public static Registry fromChars(String chars) {
-        return Data.fromChars(chars, Registry.class);
+        return Base.fromChars(chars, Registry.class);
     }
 
 }

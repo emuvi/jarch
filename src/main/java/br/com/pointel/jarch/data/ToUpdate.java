@@ -40,7 +40,7 @@ public class ToUpdate implements Data {
     }
 
     public static ToUpdate fromChars(String chars) {
-        return Data.fromChars(chars, ToUpdate.class);
+        return Base.fromChars(chars, ToUpdate.class);
     }
 
 }

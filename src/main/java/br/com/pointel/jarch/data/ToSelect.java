@@ -41,7 +41,7 @@ public class ToSelect implements Data {
     }
 
     public static ToSelect fromChars(String chars) {
-        return Data.fromChars(chars, ToSelect.class);
+        return Base.fromChars(chars, ToSelect.class);
     }
 
 }

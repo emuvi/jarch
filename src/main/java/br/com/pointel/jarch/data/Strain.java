@@ -40,7 +40,7 @@ public class Strain implements Data {
     }
 
     public static Strain fromChars(String chars) {
-        return Data.fromChars(chars, Strain.class);
+        return Base.fromChars(chars, Strain.class);
     }
 
 }

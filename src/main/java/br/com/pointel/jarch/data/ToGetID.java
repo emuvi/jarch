@@ -36,7 +36,7 @@ public class ToGetID implements Data {
     }
 
     public static ToGetID fromChars(String chars) {
-        return Data.fromChars(chars, ToGetID.class);
+        return Base.fromChars(chars, ToGetID.class);
     }
 
 }

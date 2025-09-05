@@ -29,7 +29,7 @@ public class Pair<K, V> implements Data {
     }
 
     public static Pair fromChars(String chars) {
-        return Data.fromChars(chars, Pair.class);
+        return Base.fromChars(chars, Pair.class);
     }
 
     public static <K, V> Pair<K, V> of(K key, V val) {

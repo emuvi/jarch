@@ -77,7 +77,7 @@ public class TableHead implements Data {
     }
 
     public static TableHead fromChars(String chars) {
-        return Data.fromChars(chars, TableHead.class);
+        return Base.fromChars(chars, TableHead.class);
     }
 
 }

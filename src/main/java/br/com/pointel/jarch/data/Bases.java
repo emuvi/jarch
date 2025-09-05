@@ -32,7 +32,7 @@ public class Bases extends DataListArray<BasedWays> implements Data {
     }
 
     public static Bases fromChars(String chars) {
-        return Data.fromChars(chars, Bases.class);
+        return Base.fromChars(chars, Bases.class);
     }
 
 }

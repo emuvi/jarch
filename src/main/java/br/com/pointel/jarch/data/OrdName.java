@@ -33,7 +33,7 @@ public class OrdName implements Data {
     }
 
     public static OrdName fromChars(String chars) {
-        return Data.fromChars(chars, OrdName.class);
+        return Base.fromChars(chars, OrdName.class);
     }
 
 }

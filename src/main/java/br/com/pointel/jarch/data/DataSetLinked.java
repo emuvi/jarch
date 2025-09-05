@@ -20,7 +20,7 @@ public class DataSetLinked<T> extends LinkedHashSet<T> implements Data {
     }
 
     public static DataSetLinked fromChars(String chars) {
-        return Data.fromChars(chars, DataSetLinked.class);
+        return Base.fromChars(chars, DataSetLinked.class);
     }
     
 }

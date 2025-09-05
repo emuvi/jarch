@@ -62,7 +62,7 @@ public class Table implements Data {
     }
 
     public static Table fromChars(String chars) {
-        return Data.fromChars(chars, Table.class);
+        return Base.fromChars(chars, Table.class);
     }
 
 }

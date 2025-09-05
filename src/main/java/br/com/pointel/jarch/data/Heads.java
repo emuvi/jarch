@@ -23,7 +23,7 @@ public class Heads extends ArrayList<TableHead> implements Data {
     }
 
     public static Heads fromChars(String chars) {
-        return Data.fromChars(chars, Heads.class);
+        return Base.fromChars(chars, Heads.class);
     }
 
 }
