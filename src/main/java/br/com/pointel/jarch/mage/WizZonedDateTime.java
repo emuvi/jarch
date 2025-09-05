@@ -75,4 +75,9 @@ public class WizZonedDateTime {
         throw new Exception("Could not convert to a ZonedDateTime value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(ZonedDateTime value) {
+        if (value == null) return "";
+        return WizInstant.formatInstantMach.format(value);
+    }
+
 }

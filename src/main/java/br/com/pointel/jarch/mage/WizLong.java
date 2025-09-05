@@ -32,4 +32,8 @@ public class WizLong {
         throw new Exception("Could not convert to an Long value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(Long value) {
+        return value == null ? "" : value.toString();
+    }
+
 }

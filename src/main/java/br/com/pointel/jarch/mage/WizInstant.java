@@ -83,137 +83,99 @@ public class WizInstant {
                 WizString.replaceLettersOrDigits(onFormat.toString(), 'x'));
     }
 
-    public static String format(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatInstantMach(instant);
+    public static String format(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatInstantMach(value);
     }
 
-    public static String formatDateUser(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatDateUser.format(instant);
+    public static String formatDateUser(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatDateUser.format(value);
     }
 
-    public static String formatTimeUser(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatTimeUser.format(instant);
+    public static String formatTimeUser(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatTimeUser.format(value);
     }
 
-    public static String formatMillisUser(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatMillisUser.format(instant);
+    public static String formatMillisUser(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatMillisUser.format(value);
     }
 
-    public static String formatDateTimeUser(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatDateTimeUser.format(instant);
+    public static String formatDateTimeUser(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatDateTimeUser.format(value);
     }
 
-    public static String formatTimestampUser(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatTimestampUser.format(instant);
+    public static String formatTimestampUser(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatTimestampUser.format(value);
     }
 
-    public static String formatInstantUser(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatInstantUser.format(instant);
+    public static String formatInstantUser(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatInstantUser.format(value);
     }
 
-    public static String formatDateMach(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatDateMach.format(instant);
+    public static String formatDateMach(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatDateMach.format(value);
     }
 
-    public static String formatTimeMach(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatTimeMach.format(instant);
+    public static String formatTimeMach(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatTimeMach.format(value);
     }
 
-    public static String formatMillisMach(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatMillisMach.format(instant);
+    public static String formatMillisMach(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatMillisMach.format(value);
     }
 
-    public static String formatDateTimeMach(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatDateTimeMach.format(instant);
+    public static String formatDateTimeMach(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatDateTimeMach.format(value);
     }
 
-    public static String formatTimestampMach(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatTimestampMach.format(instant);
+    public static String formatTimestampMach(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatTimestampMach.format(value);
     }
 
-    public static String formatInstantMach(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatInstantMach.format(instant);
+    public static String formatInstantMach(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatInstantMach.format(value);
     }
 
-    public static String formatDateFile(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatDateFile.format(instant);
+    public static String formatDateFile(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatDateFile.format(value);
     }
 
-    public static String formatTimeFile(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatTimeFile.format(instant);
+    public static String formatTimeFile(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatTimeFile.format(value);
     }
 
-    public static String formatMillisFile(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatMillisFile.format(instant);
+    public static String formatMillisFile(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatMillisFile.format(value);
     }
 
-    public static String formatDateTimeFile(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatDateTimeFile.format(instant);
+    public static String formatDateTimeFile(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatDateTimeFile.format(value);
     }
 
-    public static String formatTimestampFile(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatTimestampFile.format(instant);
+    public static String formatTimestampFile(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatTimestampFile.format(value);
     }
 
-    public static String formatInstantFile(Instant instant) {
-        if (instant == null) {
-            return "";
-        }
-        return WizInstant.formatInstantFile.format(instant);
+    public static String formatInstantFile(Instant value) {
+        if (value == null) return "";
+        return WizInstant.formatInstantFile.format(value);
     }
 
     public static Instant parseDateUser(String formatted) throws Exception {

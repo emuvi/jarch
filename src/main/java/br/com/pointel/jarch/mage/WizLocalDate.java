@@ -78,4 +78,9 @@ public class WizLocalDate {
         throw new Exception("Could not convert to a LocalDate value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(LocalDate value) {
+        if (value == null) return "";
+        return WizInstant.formatDateMach.format(value);
+    }
+
 }

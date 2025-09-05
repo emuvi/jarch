@@ -13,6 +13,8 @@ import java.util.Base64;
 
 public class WizBytes {
 
+    public static String byteArrayOnBase64Prefix = "byte[]^64:";
+
     private WizBytes() {
     }
 
@@ -40,20 +42,33 @@ public class WizBytes {
             return clob.getSubString(1, (int) clob.length()).getBytes(StandardCharsets.UTF_8);
         }
         if (WizLang.isChildOf(value.getClass(), String.class)) {
-            return String.class.cast(value).getBytes(StandardCharsets.UTF_8);
+            var string = String.class.cast(value);
+            if (string.isEmpty()) return null;
+            if (string.startsWith(byteArrayOnBase64Prefix)) {
+                return WizBytes.decodeFromBase64(string.substring(byteArrayOnBase64Prefix.length()));
+            } else if (string.startsWith(WizObject.objectOnBase64Prefix)) {
+                return WizBytes.decodeFromBase64(string.substring(WizObject.objectOnBase64Prefix.length()));
+            } else {
+                return string.getBytes(StandardCharsets.UTF_8);
+            }
         }
         if (WizLang.isChildOf(value.getClass(), Number.class)) {
             return String.valueOf(Number.class.cast(value)).getBytes(StandardCharsets.UTF_8);
         }
         if (WizLang.isChildOf(value.getClass(), Serializable.class)) {
             try (var bos = new ByteArrayOutputStream();
-                var oos = new ObjectOutputStream(bos)) {
+                    var oos = new ObjectOutputStream(bos)) {
                 oos.writeObject(Serializable.class.cast(value));
                 oos.flush();
                 return bos.toByteArray();
             }
         }
         throw new Exception("Could not convert to a byte[] value the value of class: " + value.getClass().getName());
+    }
+
+    public static String format(byte[] value) {
+        if (value == null) return "";
+        return byteArrayOnBase64Prefix + WizBytes.encodeToBase64(value);
     }
 
     public static String encodeToBase64(byte[] bytes) {

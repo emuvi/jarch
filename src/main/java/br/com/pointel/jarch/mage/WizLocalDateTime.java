@@ -75,4 +75,10 @@ public class WizLocalDateTime {
         }
         throw new Exception("Could not convert to a LocalDateTime value the value of class: " + value.getClass().getName());
     }
+
+    public static String format(LocalDateTime value) {
+        if (value == null) return "";
+        return WizInstant.formatDateTimeMach.format(value);
+    }
+
 }

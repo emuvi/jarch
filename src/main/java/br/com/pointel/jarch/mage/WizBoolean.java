@@ -28,4 +28,8 @@ public class WizBoolean {
         throw new Exception("Could not convert to an Boolean value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(Boolean value) {
+        return value == null ? "" : value.toString();
+    }
+
 }

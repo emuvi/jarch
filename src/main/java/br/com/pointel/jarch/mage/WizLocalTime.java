@@ -78,4 +78,9 @@ public class WizLocalTime {
         throw new Exception("Could not convert to a LocalTime value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(LocalTime value) {
+        if (value == null) return "";
+        return WizInstant.formatTimeMach.format(value);
+    }
+
 }

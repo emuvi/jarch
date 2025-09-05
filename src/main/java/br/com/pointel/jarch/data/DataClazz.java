@@ -21,11 +21,11 @@ public class DataClazz implements Data {
     }
 
     public Object getValue() throws Exception {
-        return this.data != null ? WizData.fromChars(this.data, Class.forName( this.clazz)) : null;
+        return this.data == null ? null : WizData.fromChars(this.data, Class.forName( this.clazz));
     }
 
-    public <T> T getValue(Class<T> clazz) throws Exception {
-        return WizData.fromChars(this.data, clazz);
+    public <T> T getValueOn(Class<T> clazz) throws Exception {
+        return WizData.getOn(getValue(), clazz);
     }
 
     @Override

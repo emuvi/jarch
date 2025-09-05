@@ -28,4 +28,8 @@ public class WizCharacter {
         throw new Exception("Could not convert to a Character value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(Character value) {
+        return value == null ? "" : value.toString();
+    }
+
 }

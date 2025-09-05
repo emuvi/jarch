@@ -32,4 +32,8 @@ public class WizShort {
         throw new Exception("Could not convert to an Short value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(Short value) {
+        return value == null ? "" : value.toString();
+    }
+
 }

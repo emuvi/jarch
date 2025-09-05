@@ -284,6 +284,78 @@ public class WizData {
         }
     }
 
+    public static String toFormatted(Nature nature, Object value) throws Exception {
+        if (value == null) return "";
+        switch (nature) {
+            case Bool: return WizBoolean.format(WizBoolean.get(value));
+            case Bit: return WizByte.format(WizByte.get(value));
+            case Byte: return WizByte.format(WizByte.get(value));
+            case Tiny: return WizShort.format(WizShort.get(value));
+            case Small: return WizShort.format(WizShort.get(value));
+            case Int: return WizInteger.format(WizInteger.get(value));
+            case Long: return WizLong.format(WizLong.get(value));
+            case BigInt: return WizBigInteger.format(WizBigInteger.get(value));
+            case Serial: return WizInteger.format(WizInteger.get(value));
+            case BigSerial: return WizBigInteger.format(WizBigInteger.get(value));
+            case Float: return WizFloat.format(WizFloat.get(value));
+            case Real: return WizDouble.format(WizDouble.get(value));
+            case Double: return WizDouble.format(WizDouble.get(value));
+            case Numeric: return WizBigDecimal.format(WizBigDecimal.get(value));
+            case BigNumeric: return WizBigDecimal.format(WizBigDecimal.get(value));
+            case Char: return WizCharacter.format(WizCharacter.get(value));
+            case Chars: return WizString.get(value);
+            case Date: return WizLocalDate.format(WizLocalDate.get(value));
+            case Time: return WizLocalTime.format(WizLocalTime.get(value));
+            case DateTime: return WizLocalDateTime.format(WizLocalDateTime.get(value));
+            case ZoneTime: return WizZonedDateTime.format(WizZonedDateTime.get(value));
+            case Timestamp: return WizInstant.format(WizInstant.get(value));
+            case Bytes: return WizBytes.format(WizBytes.get(value));
+            case Blob: return WizBytes.format(WizBytes.get(value));
+            case Text: return WizString.get(value);
+            case Object: return WizObject.format(value);
+        }
+        throw new Exception("Nature " + nature + " not supported for value class: " + value.getClass().getName());
+    }
+
+    public static <T> T fromFormatted(Nature nature, String formatted, Class<T> onClass) throws Exception {
+        return getOn(fromFormatted(nature, formatted), onClass);
+    }
+
+    public static Object fromFormatted(Nature nature, String formatted) throws Exception {
+        if (formatted == null || formatted.isEmpty()) {
+            return null;
+        }
+        switch (nature) {
+            case Bool: return WizBoolean.get(formatted);
+            case Bit: return WizByte.get(formatted);
+            case Byte: return WizByte.get(formatted);
+            case Tiny: return WizShort.get(formatted);
+            case Small: return WizShort.get(formatted);
+            case Int: return WizInteger.get(formatted);
+            case Long: return WizLong.get(formatted);
+            case BigInt: return WizBigInteger.get(formatted);
+            case Serial: return WizInteger.get(formatted);
+            case BigSerial: return WizBigInteger.get(formatted);
+            case Float: return WizFloat.get(formatted);
+            case Real: return WizDouble.get(formatted);
+            case Double: return WizDouble.get(formatted);
+            case Numeric: return WizBigDecimal.get(formatted);
+            case BigNumeric: return WizBigDecimal.get(formatted);
+            case Char: return WizCharacter.get(formatted);
+            case Chars: return WizString.get(formatted);
+            case Date: return WizLocalDate.get(formatted);
+            case Time: return WizLocalTime.get(formatted);
+            case DateTime: return WizLocalDateTime.get(formatted);
+            case ZoneTime: return WizZonedDateTime.get(formatted);
+            case Timestamp: return WizInstant.get(formatted);
+            case Bytes: return WizBytes.get(formatted);
+            case Blob: return WizBytes.get(formatted);
+            case Text: return WizString.get(formatted);
+            case Object: return WizObject.get(formatted);
+        }
+        throw new Exception("Nature " + nature + " not supported for the formatted: " + formatted);
+    }
+
     public static <T> T getOn(Object value, Class<T> onClass) throws Exception {
         if (value == null) {
             return null;
@@ -467,96 +539,6 @@ public class WizData {
 
     public static Clob getOnClob(Object value) throws Exception {
         return WizClob.get(value);
-    }
-
-    public static <T> T getDataFormatted(Nature nature, String formatted, Class<T> castTo) throws Exception {
-        return castTo.cast(getDataFormatted(nature, formatted));
-    }
-
-    public static Object getDataFormatted(Nature nature, String formatted) throws Exception {
-        if (formatted == null || formatted.isEmpty()) {
-            return null;
-        }
-        switch (nature) {
-            case Bool:
-                return Boolean.parseBoolean(formatted);
-            case Bit, Byte, Tiny:
-                return Byte.parseByte(formatted);
-            case Small:
-                return Short.parseShort(formatted);
-            case Int, Serial:
-                return Integer.parseInt(formatted);
-            case Long:
-                return Long.parseLong(formatted);
-            case Float:
-            case Real:
-                return Float.parseFloat(formatted);
-            case Double:
-                return Double.parseDouble(formatted);
-            case BigInt, BigSerial:
-                return new BigInteger(formatted);
-            case Numeric, BigNumeric:
-                return new BigDecimal(formatted);
-            case Char:
-                return formatted.charAt(0);
-            case Chars, Text:
-                return formatted;
-            case Date:
-                return WizUtilDate.parseDateMach(formatted);
-            case Time:
-                return WizUtilDate.parseTimeMach(formatted);
-            case Timestamp:
-                return WizUtilDate.parseTimestampMach(formatted);
-            case Bytes:
-            case Blob:
-                return WizBytes.decodeFromBase64(formatted);
-            case Object:
-                return DataClazz.fromChars(formatted).getValue();
-            default:
-                throw new Exception("DataType Not Supported.");
-        }
-    }
-
-    public static String formatData(Nature nature, Object value) throws Exception {
-        if (value == null) {
-            return "";
-        }
-        switch (nature) {
-            case Bool:
-            case Bit:
-            case Byte:
-            case Tiny:
-            case Small:
-            case Int:
-            case Long:
-            case BigInt:
-            case Serial:
-            case BigSerial:
-            case Float:
-            case Real:
-            case Double:
-            case Numeric:
-            case BigNumeric:
-            case Char:
-            case Chars:
-            case Text:
-                return String.valueOf(value);
-            case Date:
-                return WizUtilDate.formatDateMach(WizUtilDate.get(value));
-            case Time:
-                return WizUtilDate.formatTimeMach(WizUtilDate.get(value));
-            case DateTime:
-                return WizUtilDate.formatDateTimeMach(WizUtilDate.get(value));
-            case Timestamp:
-                return WizUtilDate.formatTimestampMach(WizUtilDate.get(value));
-            case Bytes:
-            case Blob:
-                return WizBytes.encodeToBase64(WizBytes.get(value));
-            case Object:
-                return new DataClazz(value).toChars();
-            default:
-                throw new Exception("DataType Not Supported.");
-        }
     }
 
 }

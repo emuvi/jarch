@@ -32,4 +32,8 @@ public class WizDouble {
         throw new Exception("Could not convert to an Double value the value of class: " + value.getClass().getName());
     }
 
+    public static String format(Double value) {
+        return value == null ? "" : value.toString();
+    }
+
 }
