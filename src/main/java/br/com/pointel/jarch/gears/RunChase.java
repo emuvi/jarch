@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import br.com.pointel.jarch.mage.WizBase;
+import br.com.pointel.jarch.mage.WizThread;
 
 /**
  *
@@ -107,13 +107,13 @@ public class RunChase {
     
     public void waitOnPause() {
         while (paused.get()) {
-            WizBase.sleep(10);
+            WizThread.sleep(10);
         }
     }
     
     public void waitOnPauseThrowOnStop() throws Exception {
         while (paused.get()) {
-            WizBase.sleep(10);
+            WizThread.sleep(10);
             if (stopped.get()) {
                 throw new Exception("Process stopped.");
             }

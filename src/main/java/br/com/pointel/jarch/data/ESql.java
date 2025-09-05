@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import br.com.pointel.jarch.mage.WizData;
+import br.com.pointel.jarch.mage.WizBased;
 
 public class ESql implements Closeable {
 
@@ -38,7 +38,7 @@ public class ESql implements Closeable {
     public boolean execute(String sql, Object... params) throws Exception {
         if (params != null && params.length > 0) {
             var statement = this.link.prepareStatement(sql);
-            WizData.setParams(statement, params);
+            WizBased.setParams(statement, params);
             return statement.execute();
         } else {
             try (var statement = this.link.createStatement()) {
@@ -50,7 +50,7 @@ public class ESql implements Closeable {
     public int update(String sql, Object... params) throws Exception {
         if (params != null && params.length > 0) {
             var statement = this.link.prepareStatement(sql);
-            WizData.setParams(statement, params);
+            WizBased.setParams(statement, params);
             return statement.executeUpdate();
         } else {
             try (var statement = this.link.createStatement()) {
@@ -63,7 +63,7 @@ public class ESql implements Closeable {
         ResultSet rst;
         if (params != null && params.length > 0) {
             var statement = this.link.prepareStatement(sql);
-            WizData.setParams(statement, params);
+            WizBased.setParams(statement, params);
             rst = statement.executeQuery();
         } else {
             try (var statement = this.link.createStatement()) {
@@ -86,7 +86,7 @@ public class ESql implements Closeable {
         ResultSet rst;
         if (params != null && params.length > 0) {
             var statement = this.link.prepareStatement(sql);
-            WizData.setParams(statement, params);
+            WizBased.setParams(statement, params);
             rst = statement.executeQuery();
         } else {
             try (var statement = this.link.createStatement()) {
@@ -107,7 +107,7 @@ public class ESql implements Closeable {
         ResultSet rst;
         if (params != null && params.length > 0) {
             var statement = this.link.prepareStatement(sql);
-            WizData.setParams(statement, params);
+            WizBased.setParams(statement, params);
             rst = statement.executeQuery();
         } else {
             try (var statement = this.link.createStatement()) {

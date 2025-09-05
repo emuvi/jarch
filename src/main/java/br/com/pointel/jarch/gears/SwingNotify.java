@@ -9,8 +9,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import br.com.pointel.jarch.mage.WizBase;
 import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizThread;
 
 /**
  *
@@ -61,7 +61,7 @@ public class SwingNotify {
             @Override
             public void run() {
                 while (frame.isVisible()) {
-                    WizBase.sleep(10);
+                    WizThread.sleep(10);
                     SwingUtilities.invokeLater(() -> {
                         viewProgress.setValue(viewProgress.getValue() + 1);
                         if (viewProgress.getValue() == viewProgress.getMaximum()) {

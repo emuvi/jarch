@@ -1,8 +1,8 @@
 package br.com.pointel.jarch.data;
 
 import java.sql.Connection;
+import br.com.pointel.jarch.mage.WizBased;
 import br.com.pointel.jarch.mage.WizString;
-import br.com.pointel.jarch.mage.WizData;
 
 public class TableHead implements Data {
 
@@ -56,7 +56,7 @@ public class TableHead implements Data {
 
     public Table getTable(Connection connection) throws Exception {
         if (table == null) {
-            table = WizData.getTable(this, connection);
+            table = WizBased.getTable(this, connection);
         }
         return table;
     }

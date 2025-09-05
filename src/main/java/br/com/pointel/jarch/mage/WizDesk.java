@@ -860,7 +860,7 @@ public class WizDesk {
         new Thread("Trigger Debounce") {
             @Override
             public void run() {
-                WizBase.sleep(millis);
+                WizThread.sleep(millis);
                 SwingUtilities.invokeLater(action);
             }
         }.start();

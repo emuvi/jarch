@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import br.com.pointel.jarch.data.Nature;
 import br.com.pointel.jarch.data.Typed;
+import br.com.pointel.jarch.mage.WizBased;
 import br.com.pointel.jarch.mage.WizData;
 
 public class CSVMaker {
@@ -18,7 +19,7 @@ public class CSVMaker {
                 this.natures[i] = typeds.get(i).type;
             }
         } else {
-            this.natures = WizData.getNaturesFrom(results);
+            this.natures = WizBased.getNaturesFrom(results);
         }
     }
 
@@ -27,7 +28,7 @@ public class CSVMaker {
         if (natures != null) {
             this.natures = natures;
         } else {
-            this.natures = WizData.getNaturesFrom(results);
+            this.natures = WizBased.getNaturesFrom(results);
         }
     }
 

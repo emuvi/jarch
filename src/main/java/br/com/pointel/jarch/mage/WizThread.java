@@ -11,7 +11,25 @@ import org.slf4j.LoggerFactory;
 
 public class WizThread {
 
+    private WizThread() {
+    }
+
     private static Logger log = LoggerFactory.getLogger(WizThread.class);
+
+    public static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Thread startDaemon(Runnable task, String name) {
+        var result = new Thread(task, name);
+        result.setDaemon(true);
+        result.start();
+        return result;
+    }
 
     @SafeVarargs
     public static <T> List<T> wait(Future<T>... futures) throws Exception {
@@ -72,4 +90,5 @@ public class WizThread {
     public static <T> Future<T> submit(Callable<T> callable) {
         return getExecutor().submit(callable);
     }
+
 }
