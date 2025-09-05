@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
-import br.com.pointel.jarch.data.DataClazz;
 import br.com.pointel.jarch.data.Field;
 import br.com.pointel.jarch.data.KeyForeign;
 import br.com.pointel.jarch.data.KeyPrimary;
@@ -83,8 +82,8 @@ public class WizData {
                 for (int i = argsValues.length; i < colsValues.length; i++) {
                     var columnName = columnsNames[i];
                     var field = onClazz.getDeclaredField(columnName);
-                    var mappedField = WizData.getOn(colsValues[i], field.getType());
-                    WizLang.forceSetField(field, instance, mappedField);
+                    var onValue = WizData.getOn(colsValues[i], field.getType());
+                    WizLang.forceSetField(field, instance, onValue);
                 }
             }
             return instance;
@@ -361,184 +360,81 @@ public class WizData {
             return null;
         }
         if (WizLang.isChildOf(onClass, Boolean.class)) {
-            return onClass.cast(getOnBoolean(value));
+            return onClass.cast(WizBoolean.get(value));
         }
         if (WizLang.isChildOf(onClass, Byte.class)) {
-            return onClass.cast(getOnByte(value));
+            return onClass.cast(WizByte.get(value));
         }
         if (WizLang.isChildOf(onClass, Short.class)) {
-            return onClass.cast(getOnShort(value));
+            return onClass.cast(WizShort.get(value));
         }
         if (WizLang.isChildOf(onClass, Integer.class)) {
-            return onClass.cast(getOnInteger(value));
+            return onClass.cast(WizInteger.get(value));
         }
         if (WizLang.isChildOf(onClass, Long.class)) {
-            return onClass.cast(getOnLong(value));
+            return onClass.cast(WizLong.get(value));
         }
         if (WizLang.isChildOf(onClass, Float.class)) {
-            return onClass.cast(getOnFloat(value));
+            return onClass.cast(WizFloat.get(value));
         }
         if (WizLang.isChildOf(onClass, Double.class)) {
-            return onClass.cast(getOnDouble(value));
+            return onClass.cast(WizDouble.get(value));
         }
         if (WizLang.isChildOf(onClass, BigInteger.class)) {
-            return onClass.cast(getOnBigInteger(value));
+            return onClass.cast(WizBigInteger.get(value));
         }
         if (WizLang.isChildOf(onClass, BigDecimal.class)) {
-            return onClass.cast(getOnBigDecimal(value));
+            return onClass.cast(WizBigDecimal.get(value));
         }
         if (WizLang.isChildOf(onClass, Character.class)) {
-            return onClass.cast(getOnCharacter(value));
+            return onClass.cast(WizCharacter.get(value));
         }
         if (WizLang.isChildOf(onClass, String.class)) {
-            return onClass.cast(getOnString(value));
+            return onClass.cast(WizString.get(value));
         }
         if (WizLang.isChildOf(onClass, Instant.class)) {
-            return onClass.cast(getOnInstant(value));
-        }
-        if (WizLang.isChildOf(onClass, Long.class)) {
-            return onClass.cast(getOnLong(value));
+            return onClass.cast(WizInstant.get(value));
         }
         if (WizLang.isChildOf(onClass, ZonedDateTime.class)) {
-            return onClass.cast(getOnZonedDateTime(value));
+            return onClass.cast(WizZonedDateTime.get(value));
         }
         if (WizLang.isChildOf(onClass, OffsetDateTime.class)) {
-            return onClass.cast(getOnOffsetDateTime(value));
+            return onClass.cast(WizOffsetDateTime.get(value));
         }
         if (WizLang.isChildOf(onClass, OffsetTime.class)) {
-            return onClass.cast(getOnOffsetTime(value));
+            return onClass.cast(WizOffsetTime.get(value));
         }
         if (WizLang.isChildOf(onClass, LocalDateTime.class)) {
-            return onClass.cast(getOnLocalDateTime(value));
+            return onClass.cast(WizLocalDateTime.get(value));
         }
         if (WizLang.isChildOf(onClass, LocalDate.class)) {
-            return onClass.cast(getOnLocalDate(value));
+            return onClass.cast(WizLocalDate.get(value));
         }
         if (WizLang.isChildOf(onClass, LocalTime.class)) {
-            return onClass.cast(getOnLocalTime(value));
+            return onClass.cast(WizLocalTime.get(value));
         }
         if (WizLang.isChildOf(onClass, java.util.Date.class)) {
-            return onClass.cast(getOnUtilDate(value));
+            return onClass.cast(WizUtilDate.get(value));
         }
         if (WizLang.isChildOf(onClass, java.sql.Date.class)) {
-            return onClass.cast(getOnSqlDate(value));
+            return onClass.cast(WizSqlDate.get(value));
         }
         if (WizLang.isChildOf(onClass, java.sql.Time.class)) {
-            return onClass.cast(getOnSqlTime(value));
+            return onClass.cast(WizSqlTime.get(value));
         }
         if (WizLang.isChildOf(onClass, java.sql.Timestamp.class)) {
-            return onClass.cast(getOnSqlTimestamp(value));
+            return onClass.cast(WizSqlTimestamp.get(value));
         }
         if (WizLang.isChildOf(onClass, byte[].class)) {
-            return onClass.cast(getOnBytes(value));
+            return onClass.cast(WizBytes.get(value));
         }
         if (WizLang.isChildOf(onClass, Blob.class)) {
-            return onClass.cast(getOnBlob(value));
+            return onClass.cast(WizBlob.get(value));
         }
         if (WizLang.isChildOf(onClass, Clob.class)) {
-            return onClass.cast(getOnClob(value));
+            return onClass.cast(WizClob.get(value));
         }
         throw new UnsupportedOperationException("Could not convert to " + onClass.getCanonicalName() + " from class: " + value.getClass().getName());
-    }
-
-    public static Boolean getOnBoolean(Object value) throws Exception {
-        return WizBoolean.get(value);
-    }
-
-    public static Byte getOnByte(Object value) throws Exception {
-        return WizByte.get(value);
-    }
-
-    public static Short getOnShort(Object value) throws Exception {
-        return WizShort.get(value);
-    }
-
-    public static Integer getOnInteger(Object value) throws Exception {
-        return WizInteger.get(value);
-    }
-
-    public static Long getOnLong(Object value) throws Exception {
-        return WizLong.get(value);
-    }
-
-    public static Float getOnFloat(Object value) throws Exception {
-        return WizFloat.get(value);
-    }
-
-    public static Double getOnDouble(Object value) throws Exception {
-        return WizDouble.get(value);
-    }
-
-    public static BigInteger getOnBigInteger(Object value) throws Exception {
-        return WizBigInteger.get(value);
-    }
-
-    public static BigDecimal getOnBigDecimal(Object value) throws Exception {
-        return WizBigDecimal.get(value);
-    }
-
-    public static Character getOnCharacter(Object value) throws Exception {
-        return WizCharacter.get(value);
-    }
-
-    public static String getOnString(Object value) throws Exception {
-        return WizString.get(value);
-    }
-
-    public static Instant getOnInstant(Object value) throws Exception {
-        return WizInstant.get(value);
-    }
-
-    public static ZonedDateTime getOnZonedDateTime(Object value) throws Exception {
-        return WizZonedDateTime.get(value);
-    }
-
-    public static OffsetDateTime getOnOffsetDateTime(Object value) throws Exception {
-        return WizOffsetDateTime.get(value);
-    }
-
-    public static OffsetTime getOnOffsetTime(Object value) throws Exception {
-        return WizOffsetTime.get(value);
-    }
-
-    public static LocalDateTime getOnLocalDateTime(Object value) throws Exception {
-        return WizLocalDateTime.get(value);
-    }
-
-    public static LocalDate getOnLocalDate(Object value) throws Exception {
-        return WizLocalDate.get(value);
-    }
-
-    public static LocalTime getOnLocalTime(Object value) throws Exception {
-        return WizLocalTime.get(value);
-    }
-
-    public static java.util.Date getOnUtilDate(Object value) throws Exception {
-        return WizUtilDate.get(value);
-    }
-
-    public static java.sql.Date getOnSqlDate(Object value) throws Exception {
-        return WizSqlDate.get(value);
-    }
-
-    public static java.sql.Time getOnSqlTime(Object value) throws Exception {
-        return WizSqlTime.get(value);
-    }
-
-    public static java.sql.Timestamp getOnSqlTimestamp(Object value) throws Exception {
-        return WizSqlTimestamp.get(value);
-    }
-
-    public static byte[] getOnBytes(Object value) throws Exception {
-        return WizBytes.get(value);
-    }
-
-    public static Blob getOnBlob(Object value) throws Exception {
-        return WizBlob.get(value);
-    }
-
-    public static Clob getOnClob(Object value) throws Exception {
-        return WizClob.get(value);
     }
 
 }

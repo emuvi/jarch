@@ -48,7 +48,7 @@ public enum Nature {
 
     Bytes(byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
 
-    Blob(byte[].class, String.class, java.sql.Blob.class, java.sql.Clob.class),
+    Blob(java.sql.Blob.class, java.sql.Clob.class, byte[].class, String.class),
 
     Text(String.class, byte[].class, java.sql.Clob.class, java.sql.Blob.class),
 

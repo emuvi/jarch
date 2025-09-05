@@ -1,8 +1,16 @@
 package br.com.pointel.jarch.data;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -771,85 +779,85 @@ public class EOrmBase extends EOrm {
         } else {
             switch (valued.type) {
                 case Bool:
-                    prepared.setBoolean(index, WizData.getOnBoolean(valued.value));
+                    prepared.setBoolean(index, WizData.getOn(valued.value, Boolean.class));
                     break;
                 case Bit:
-                    prepared.setByte(index, WizData.getOnByte(valued.value));
+                    prepared.setByte(index, WizData.getOn(valued.value, Byte.class));
                     break;
                 case Byte:
-                    prepared.setByte(index, WizData.getOnByte(valued.value));
+                    prepared.setByte(index, WizData.getOn(valued.value, Byte.class));
                     break;
                 case Tiny:
-                    prepared.setShort(index, WizData.getOnShort(valued.value));
+                    prepared.setShort(index, WizData.getOn(valued.value, Short.class));
                     break;
                 case Small:
-                    prepared.setShort(index, WizData.getOnShort(valued.value));
+                    prepared.setShort(index, WizData.getOn(valued.value, Short.class));
                     break;
                 case Int:
-                    prepared.setInt(index, WizData.getOnInteger(valued.value));
+                    prepared.setInt(index, WizData.getOn(valued.value, Integer.class));
                     break;
                 case Long:
-                    prepared.setLong(index, WizData.getOnLong(valued.value));
+                    prepared.setLong(index, WizData.getOn(valued.value, Long.class));
                     break;
                 case BigInt:
-                    prepared.setObject(index, WizData.getOnBigInteger(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, BigInteger.class));
                     break;
                 case Serial:
-                    prepared.setInt(index, WizData.getOnInteger(valued.value));
+                    prepared.setInt(index, WizData.getOn(valued.value, Integer.class));
                     break;
                 case BigSerial:
-                    prepared.setObject(index, WizData.getOnBigInteger(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, BigInteger.class));
                     break;
                 case Float:
-                    prepared.setFloat(index, WizData.getOnFloat(valued.value));
+                    prepared.setFloat(index, WizData.getOn(valued.value, Float.class));
                     break;
                 case Real:
-                    prepared.setDouble(index, WizData.getOnDouble(valued.value));
+                    prepared.setDouble(index, WizData.getOn(valued.value, Double.class));
                     break;
                 case Double:
-                    prepared.setDouble(index, WizData.getOnDouble(valued.value));
+                    prepared.setDouble(index, WizData.getOn(valued.value, Double.class));
                     break;
                 case Numeric:
-                    prepared.setBigDecimal(index, WizData.getOnBigDecimal(valued.value));
+                    prepared.setBigDecimal(index, WizData.getOn(valued.value, BigDecimal.class));
                     break;
                 case BigNumeric:
-                    prepared.setBigDecimal(index, WizData.getOnBigDecimal(valued.value));
+                    prepared.setBigDecimal(index, WizData.getOn(valued.value, BigDecimal.class));
                     break;
                 case Char:
-                    prepared.setString(index, String.valueOf(WizData.getOnCharacter(valued.value)));
+                    prepared.setString(index, String.valueOf(WizData.getOn(valued.value, Character.class)));
                     break;
                 case Chars:
-                    prepared.setString(index, WizData.getOnString(valued.value));
+                    prepared.setString(index, WizData.getOn(valued.value, String.class));
                     break;
                 case Date:
-                    prepared.setDate(index, WizData.getOnSqlDate(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, LocalDate.class));
                     break;
                 case Time:
-                    prepared.setTime(index, WizData.getOnSqlTime(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, LocalTime.class));
                     break;
                 case DateTime:
-                    prepared.setTimestamp(index, WizData.getOnSqlTimestamp(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, LocalDateTime.class));
                     break;
                 case ZoneTime:
-                    prepared.setTimestamp(index, WizData.getOnSqlTimestamp(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, ZonedDateTime.class));
                     break;
                 case Timestamp:
-                    prepared.setTimestamp(index, WizData.getOnSqlTimestamp(valued.value));
+                    prepared.setObject(index, WizData.getOn(valued.value, Instant.class));
                     break;
                 case Bytes:
-                    prepared.setBytes(index, WizData.getOnBytes(valued.value));
+                    prepared.setBytes(index, WizData.getOn(valued.value, byte[].class));
                     break;
                 case Blob:
-                    prepared.setBlob(index, WizData.getOnBlob(valued.value));
+                    prepared.setBlob(index, WizData.getOn(valued.value, Blob.class));
                     break;
                 case Text:
-                    prepared.setString(index, WizData.getOnString(valued.value));
+                    prepared.setString(index, WizData.getOn(valued.value, String.class));
                     break;
                 case Object:
                     prepared.setObject(index, valued.value);
                     break;
                 default:
-                    throw new UnsupportedOperationException();
+                    throw new UnsupportedOperationException("Unsupported field type for parameter: " + valued.type);
             }
         }
     }
