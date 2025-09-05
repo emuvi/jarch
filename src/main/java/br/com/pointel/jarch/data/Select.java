@@ -1,6 +1,9 @@
 package br.com.pointel.jarch.data;
 
+import java.sql.ResultSet;
 import java.util.List;
+import br.com.pointel.jarch.mage.WizBased;
+import br.com.pointel.jarch.mage.WizData;
 
 public class Select implements Data {
 
@@ -70,6 +73,14 @@ public class Select implements Data {
 
     public boolean hasFilters() {
         return this.filterList != null && !this.filterList.isEmpty();
+    }
+
+    public <T> T mapResult(ResultSet resultSet, Class<T> clazz) throws Exception {
+        return WizBased.mapResult(resultSet, fieldList, clazz);
+    }
+
+    public <T> List<T> mapResults(ResultSet resultSet, Class<T> clazz) throws Exception {
+        return WizBased.mapResults(resultSet, fieldList, clazz);
     }
 
     @Override
