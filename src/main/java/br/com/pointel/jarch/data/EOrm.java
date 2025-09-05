@@ -40,9 +40,9 @@ public abstract class EOrm implements Closeable {
         create(index, true);
     }
 
-    public abstract ResultSet select(Select select, Strain strain) throws Exception;
+    public abstract Selected select(Select select, Strain strain) throws Exception;
 
-    public ResultSet select(Select select) throws Exception {
+    public Selected select(Select select) throws Exception {
         return select(select, null);
     }
 

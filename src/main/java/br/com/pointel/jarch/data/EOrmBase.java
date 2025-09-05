@@ -176,7 +176,7 @@ public class EOrmBase extends EOrm {
     }
 
     @Override
-    public ResultSet select(Select select, Strain strain) throws Exception {
+    public Selected select(Select select, Strain strain) throws Exception {
         var builder = new StringBuilder("SELECT ");
         var fromSource = select.tableHead.getCatalogSchemaName();
         var dataSource = select.tableHead.alias != null
@@ -284,7 +284,8 @@ public class EOrmBase extends EOrm {
                 }
             }
         }
-        return prepared.executeQuery();
+        var resultSet = prepared.executeQuery();
+        return new Selected(select, resultSet);
     }
 
     @Override
