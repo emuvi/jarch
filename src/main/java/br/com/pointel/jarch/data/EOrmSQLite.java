@@ -11,7 +11,7 @@ public class EOrmSQLite extends EOrmBase {
     protected String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
-            case Bool, Bit, Byte, Tiny, Small, Int, Serial, Long, BigSerial:
+            case Bool, Bit, Byte, Tiny, Small, Int, BigInt, Serial, Long, BigSerial:
                 builder.append(" INTEGER");
                 break;
             case Float, Real, Double:
@@ -20,7 +20,7 @@ public class EOrmSQLite extends EOrmBase {
             case Numeric, BigNumeric:
                 builder.append(" NUMERIC");
                 break;
-            case Char, Chars, Date, Time, DateTime, Timestamp, Text:
+            case Char, Chars, Date, Time, DateTime, ZoneTime, Timestamp, Text:
                 builder.append(" TEXT");
                 break;
             case Bytes, Blob, Object:
