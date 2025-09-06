@@ -6,6 +6,10 @@ import br.com.pointel.jarch.mage.WizLang;
 
 public interface Base extends Serializable {
 
+    public default Base deepClone() {
+        return WizLang.deepClone(this);
+    }
+
     public default boolean deepEquals(Object that) {
         return WizLang.deepEquals(this, that);
     }

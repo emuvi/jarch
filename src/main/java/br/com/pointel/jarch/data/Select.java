@@ -66,30 +66,235 @@ public class Select implements Data {
         this.limit = limit;
     }
 
-    public boolean hasJoins() {
+    public boolean hasTableHead() {
+        return this.tableHead != null;
+    }
+
+    public boolean hasFieldList() {
+        return this.fieldList != null && !this.fieldList.isEmpty();
+    }
+
+    public boolean hasJoinList() {
         return this.joinList != null && !this.joinList.isEmpty();
     }
 
-    public boolean hasFilters() {
+    public boolean hasFilterList() {
         return this.filterList != null && !this.filterList.isEmpty();
     }
 
-    public Select withFilter(Filter... filters) {
+    public boolean hasOrderList() {
+        return this.orderList != null && !this.orderList.isEmpty();
+    }
+
+    public boolean hasOffset() {
+        return this.offset != null;
+    }
+
+    public boolean hasLimit() {
+        return this.limit != null;
+    }
+
+    public Select withTableHead(TableHead tableHead) {
+        this.tableHead = tableHead;
+        return this;
+    }
+
+    public Select withNoTableHead() {
+        this.tableHead = null;
+        return this;
+    }
+
+    public Select withFieldList(List<Typed> fieldList) {
+        this.fieldList = fieldList;
+        return this;
+    }
+
+    public Select withFieldList(Typed... fields) {
+        this.fieldList = List.of(fields);
+        return this;
+    }
+
+    public Select withNoFieldList() {
+        this.fieldList = null;
+        return this;
+    }
+
+    public Select withJoinList(List<Join> joinList) {
+        this.joinList = joinList;
+        return this;
+    }
+
+    public Select withJoinList(Join... joins) {
+        this.joinList = List.of(joins);
+        return this;
+    }
+
+    public Select withNoJoinList() {
+        this.joinList = null;
+        return this;
+    }
+
+    public Select withFilterList(List<Filter> filters) {
+        this.filterList = filters;
+        return this;
+    }
+
+    public Select withFilterList(Filter... filters) {
         this.filterList = List.of(filters);
         return this;
     }
 
-    public Select withNoFilter() {
+    public Select withNoFilterList() {
         this.filterList = null;
         return this;
     }
 
-    public <T> T mapResult(ResultSet resultSet, Class<T> clazz) throws Exception {
-        return WizBased.mapResult(resultSet, fieldList, clazz);
+    public Select withOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+        return this;
     }
 
-    public <T> List<T> mapResults(ResultSet resultSet, Class<T> clazz) throws Exception {
-        return WizBased.mapResults(resultSet, fieldList, clazz);
+    public Select withOrderList(Order... orders) {
+        this.orderList = List.of(orders);
+        return this;
+    }
+
+    public Select withNoOrderList() {
+        this.orderList = null;
+        return this;
+    }
+
+    public Select withOffset(Integer offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    public Select withNoOffset() {
+        this.offset = null;
+        return this;
+    }
+
+    public Select withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public Select withNoLimit() {
+        this.limit = null;
+        return this;
+    }
+
+    public Select uponTableHead(TableHead tableHead) {
+        var clone = this.clone();
+        clone.tableHead = tableHead;
+        return clone;
+    }
+
+    public Select uponNoTableHead() {
+        var clone = this.clone();
+        clone.tableHead = null;
+        return clone;
+    }
+
+    public Select uponFieldList(List<Typed> fieldList) {
+        var clone = this.clone();
+        clone.fieldList = fieldList;
+        return clone;
+    }
+
+    public Select uponFieldList(Typed... fields) {
+        var clone = this.clone();
+        clone.fieldList = List.of(fields);
+        return clone;
+    }
+
+    public Select uponNoFieldList() {
+        var clone = this.clone();
+        clone.fieldList = null;
+        return clone;
+    }
+
+    public Select uponJoinList(List<Join> joinList) {
+        var clone = this.clone();
+        clone.joinList = joinList;
+        return clone;
+    }
+
+    public Select uponJoinList(Join... joins) {
+        var clone = this.clone();
+        clone.joinList = List.of(joins);
+        return clone;
+    }
+
+    public Select uponNoJoinList() {
+        var clone = this.clone();
+        clone.joinList = null;
+        return clone;
+    }
+
+    public Select uponFilterList(List<Filter> filters) {
+        var clone = this.clone();
+        clone.filterList = filters;
+        return clone;
+    }
+
+    public Select uponFilterList(Filter... filters) {
+        var clone = this.clone();
+        clone.filterList = List.of(filters);
+        return clone;
+    }
+
+    public Select uponNoFilterList() {
+        var clone = this.clone();
+        clone.filterList = null;
+        return clone;
+    }
+
+    public Select uponOrderList(List<Order> orderList) {
+        var clone = this.clone();
+        clone.orderList = orderList;
+        return clone;
+    }
+
+    public Select uponOrderList(Order... orders) {
+        var clone = this.clone();
+        clone.orderList = List.of(orders);
+        return clone;
+    }
+
+    public Select uponNoOrderList() {
+        var clone = this.clone();
+        clone.orderList = null;
+        return clone;
+    }
+
+    public Select uponOffset(Integer offset) {
+        var clone = this.clone();
+        clone.offset = offset;
+        return clone;
+    }
+
+    public Select uponNoOffset() {
+        var clone = this.clone();
+        clone.offset = null;
+        return clone;
+    }
+
+    public Select uponLimit(Integer limit) {
+        var clone = this.clone();
+        clone.limit = limit;
+        return clone;
+    }
+
+    public Select uponNoLimit() {
+        var clone = this.clone();
+        clone.limit = null;
+        return clone;
+    }
+
+    @Override
+    public Select clone() {
+        return (Select) this.deepClone();
     }
 
     @Override
@@ -109,6 +314,14 @@ public class Select implements Data {
 
     public static Select fromChars(String chars) {
         return Base.fromChars(chars, Select.class);
+    }
+
+    public <T> T mapResult(ResultSet resultSet, Class<T> clazz) throws Exception {
+        return WizBased.mapResult(resultSet, fieldList, clazz);
+    }
+
+    public <T> List<T> mapResults(ResultSet resultSet, Class<T> clazz) throws Exception {
+        return WizBased.mapResults(resultSet, fieldList, clazz);
     }
 
 }

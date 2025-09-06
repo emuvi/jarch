@@ -5,6 +5,11 @@ import java.util.LinkedHashSet;
 public class DataSetLinked<T> extends LinkedHashSet<T> implements Data {
 
     @Override
+    public DataSetLinked<T> clone() {
+        return (DataSetLinked<T>) this.deepClone();
+    }
+    
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

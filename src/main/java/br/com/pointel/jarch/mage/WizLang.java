@@ -1,9 +1,11 @@
 package br.com.pointel.jarch.mage;
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.Nature;
@@ -28,6 +30,15 @@ public class WizLang {
     private static final Logger log = LoggerFactory.getLogger(WizLang.class);
 
     private WizLang() {
+    }
+
+    public static <T extends Serializable> T deepClone(final T value) {
+        try {
+            if (value == null) return null;
+            return SerializationUtils.clone(value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static boolean deepEquals(Object valueA, Object valueB) {

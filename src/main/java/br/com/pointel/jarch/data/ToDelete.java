@@ -21,8 +21,61 @@ public class ToDelete implements Data {
         this.delete = delete;
     }
 
-    public Registry getRegistry() {
-        return new Registry(base, delete.tableHead);
+    public boolean hasBase() {
+        return this.base != null && !this.base.isEmpty();
+    }
+
+    public boolean hasDelete() {
+        return this.delete != null;
+    }
+
+    public ToDelete withBase(String base) {
+        this.base = base;
+        return this;
+    }
+
+    public ToDelete withNoBase() {
+        this.base = null;
+        return this;
+    }
+
+    public ToDelete withDelete(Delete delete) {
+        this.delete = delete;
+        return this;
+    }
+
+    public ToDelete withNoDelete() {
+        this.delete = null;
+        return this;
+    }
+
+    public ToDelete uponBase(String base) {
+        var clone = this.clone();
+        clone.base = base;
+        return clone;
+    }
+
+    public ToDelete uponNoBase() {
+        var clone = this.clone();
+        clone.base = null;
+        return clone;
+    }
+
+    public ToDelete uponDelete(Delete delete) {
+        var clone = this.clone();
+        clone.delete = delete;
+        return clone;
+    }
+
+    public ToDelete uponNoDelete() {
+        var clone = this.clone();
+        clone.delete = null;
+        return clone;
+    }
+
+    @Override
+    public ToDelete clone() {
+        return (ToDelete) this.deepClone();
     }
 
     @Override
@@ -42,6 +95,10 @@ public class ToDelete implements Data {
 
     public static ToDelete fromChars(String chars) {
         return Base.fromChars(chars, ToDelete.class);
+    }
+
+    public Registry getRegistry() {
+        return new Registry(base, delete.tableHead);
     }
 
 }

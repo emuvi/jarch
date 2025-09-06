@@ -3,6 +3,11 @@ package br.com.pointel.jarch.data;
 import java.util.TreeSet;
 
 public class DataSetTree<T> extends TreeSet<T> implements Data {
+    
+    @Override
+    public DataSetTree<T> clone() {
+        return (DataSetTree<T>) this.deepClone();
+    }
 
     @Override
     public boolean equals(Object that) {

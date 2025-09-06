@@ -56,8 +56,124 @@ public class Join implements Data {
         this.ties = ties;
     }
 
-    public boolean hasFilters() {
+    public boolean hasTableHead() {
+        return this.tableHead != null;
+    }
+
+    public boolean hasAlias() {
+        return this.alias != null && !this.alias.isEmpty();
+    }
+
+    public boolean hasFilterList() {
         return this.filterList != null && !this.filterList.isEmpty();
+    }
+
+    public boolean hasTies() {
+        return this.ties != null;
+    }
+
+    public Join withTableHead(TableHead tableHead) {
+        this.tableHead = tableHead;
+        return this;
+    }
+
+    public Join withNoTableHead() {
+        this.tableHead = null;
+        return this;
+    }
+
+    public Join withAlias(String alias) {
+        this.alias = alias;
+        return this;
+    }
+
+    public Join withNoAlias() {
+        this.alias = null;
+        return this;
+    }
+
+    public Join withFilterList(List<Filter> filterList) {
+        this.filterList = filterList;
+        return this;
+    }
+
+    public Join withFilterList(Filter... filters) {
+        this.filterList = List.of(filters);
+        return this;
+    }
+
+    public Join withNoFilterList() {
+        this.filterList = null;
+        return this;
+    }
+
+    public Join withTies(JoinTies ties) {
+        this.ties = ties;
+        return this;
+    }
+
+    public Join withNoTies() {
+        this.ties = null;
+        return this;
+    }
+
+    public Join uponTableHead(TableHead tableHead) {
+        var clone = this.clone();
+        clone.tableHead = tableHead;
+        return clone;
+    }
+
+    public Join uponNoTableHead() {
+        var clone = this.clone();
+        clone.tableHead = null;
+        return clone;
+    }
+
+    public Join uponAlias(String alias) {
+        var clone = this.clone();
+        clone.alias = alias;
+        return clone;
+    }
+
+    public Join uponNoAlias() {
+        var clone = this.clone();
+        clone.alias = null;
+        return clone;
+    }
+
+    public Join uponFilterList(List<Filter> filterList) {
+        var clone = this.clone();
+        clone.filterList = filterList;
+        return clone;
+    }
+
+    public Join uponFilterList(Filter... filters) {
+        var clone = this.clone();
+        clone.filterList = List.of(filters);
+        return clone;
+    }
+
+    public Join uponNoFilterList() {
+        var clone = this.clone();
+        clone.filterList = null;
+        return clone;
+    }
+
+    public Join uponTies(JoinTies ties) {
+        var clone = this.clone();
+        clone.ties = ties;
+        return clone;
+    }
+
+    public Join uponNoTies() {
+        var clone = this.clone();
+        clone.ties = null;
+        return clone;
+    }
+
+    @Override
+    public Join clone() {
+        return (Join) this.deepClone();
     }
 
     @Override

@@ -3,6 +3,11 @@ package br.com.pointel.jarch.data;
 import java.util.LinkedHashMap;
 
 public class DataMapLinked<K, V> extends LinkedHashMap<K, V> implements Data {
+    
+    @Override
+    public DataMapLinked<K, V> clone() {
+        return (DataMapLinked<K, V>) this.deepClone();
+    }
 
     @Override
     public boolean equals(Object that) {

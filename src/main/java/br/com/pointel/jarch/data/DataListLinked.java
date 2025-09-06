@@ -5,6 +5,11 @@ import java.util.LinkedList;
 public class DataListLinked<T> extends LinkedList<T> implements Data {
 
     @Override
+    public DataListLinked<T> clone() {
+        return (DataListLinked<T>) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

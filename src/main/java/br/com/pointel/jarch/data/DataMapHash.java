@@ -3,7 +3,12 @@ package br.com.pointel.jarch.data;
 import java.util.HashMap;
 
 public class DataMapHash<K, V> extends HashMap<K, V> implements Data {
-
+    
+    @Override
+    public DataMapHash<K, V> clone() {
+        return (DataMapHash<K, V>) this.deepClone();
+    }
+    
     @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);

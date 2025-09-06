@@ -34,16 +34,146 @@ public class Table implements Data {
         this.keyForeignList = keyForeignList;
     }
 
-    public String getReferenceName() {
-        return this.tableHead.getReferenceName();
+    public boolean hasTableHead() {
+        return this.tableHead != null;
     }
 
-    public String getSchemaName() {
-        return this.tableHead.getSchemaName();
+    public boolean hasFieldList() {
+        return this.fieldList != null && !this.fieldList.isEmpty();
     }
 
-    public String getCatalogSchemaName() {
-        return this.tableHead.getCatalogSchemaName();
+    public boolean hasKeyPrimaryList() {
+        return this.keyPrimaryList != null && !this.keyPrimaryList.isEmpty();
+    }
+
+    public boolean hasKeyForeignList() {
+        return this.keyForeignList != null && !this.keyForeignList.isEmpty();
+    }
+
+    public Table withTableHead(TableHead tableHead) {
+        this.tableHead = tableHead;
+        return this;
+    }
+
+    public Table withNoTableHead() {
+        this.tableHead = null;
+        return this;
+    }
+
+    public Table withFieldList(List<Field> fieldList) {
+        this.fieldList = fieldList;
+        return this;
+    }
+
+    public Table withFieldList(Field... fields) {
+        this.fieldList = List.of(fields);
+        return this;
+    }
+
+    public Table withNoFieldList() {
+        this.fieldList = null;
+        return this;
+    }
+
+    public Table withKeyPrimaryList(List<KeyPrimary> keyPrimaryList) {
+        this.keyPrimaryList = keyPrimaryList;
+        return this;
+    }
+
+    public Table withKeyPrimaryList(KeyPrimary... keyPrimaries) {
+        this.keyPrimaryList = List.of(keyPrimaries);
+        return this;
+    }
+
+    public Table withNoKeyPrimaryList() {
+        this.keyPrimaryList = null;
+        return this;
+    }
+
+    public Table withKeyForeignList(List<KeyForeign> keyForeignList) {
+        this.keyForeignList = keyForeignList;
+        return this;
+    }
+
+    public Table withKeyForeignList(KeyForeign... keyForeigns) {
+        this.keyForeignList = List.of(keyForeigns);
+        return this;
+    }
+
+    public Table withNoKeyForeignList() {
+        this.keyForeignList = null;
+        return this;
+    }
+
+    public Table uponTableHead(TableHead tableHead) {
+        var clone = this.clone();
+        clone.tableHead = tableHead;
+        return clone;
+    }
+
+    public Table uponNoTableHead() {
+        var clone = this.clone();
+        clone.tableHead = null;
+        return clone;
+    }
+
+    public Table uponFieldList(List<Field> fieldList) {
+        var clone = this.clone();
+        clone.fieldList = fieldList;
+        return clone;
+    }
+
+    public Table uponFieldList(Field... fields) {
+        var clone = this.clone();
+        clone.fieldList = List.of(fields);
+        return clone;
+    }
+
+    public Table uponNoFieldList() {
+        var clone = this.clone();
+        clone.fieldList = null;
+        return clone;
+    }
+
+    public Table uponKeyPrimaryList(List<KeyPrimary> keyPrimaryList) {
+        var clone = this.clone();
+        clone.keyPrimaryList = keyPrimaryList;
+        return clone;
+    }
+
+    public Table uponKeyPrimaryList(KeyPrimary... keyPrimaries) {
+        var clone = this.clone();
+        clone.keyPrimaryList = List.of(keyPrimaries);
+        return clone;
+    }
+
+    public Table uponNoKeyPrimaryList() {
+        var clone = this.clone();
+        clone.keyPrimaryList = null;
+        return clone;
+    }
+
+    public Table uponKeyForeignList(List<KeyForeign> keyForeignList) {
+        var clone = this.clone();
+        clone.keyForeignList = keyForeignList;
+        return clone;
+    }
+
+    public Table uponKeyForeignList(KeyForeign... keyForeigns) {
+        var clone = this.clone();
+        clone.keyForeignList = List.of(keyForeigns);
+        return clone;
+    }
+
+    public Table uponNoKeyForeignList() {
+        var clone = this.clone();
+        clone.keyForeignList = null;
+        return clone;
+    }
+
+    @Override
+    public Table clone() {
+        return (Table) this.deepClone();
     }
 
     @Override
@@ -63,6 +193,18 @@ public class Table implements Data {
 
     public static Table fromChars(String chars) {
         return Base.fromChars(chars, Table.class);
+    }
+
+    public String getReferenceName() {
+        return this.tableHead.getReferenceName();
+    }
+
+    public String getSchemaName() {
+        return this.tableHead.getSchemaName();
+    }
+
+    public String getCatalogSchemaName() {
+        return this.tableHead.getCatalogSchemaName();
     }
 
 }

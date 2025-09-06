@@ -19,7 +19,8 @@ public class BasedLink implements Data {
 
     private transient Connection linked = null;
 
-    public BasedLink() {}
+    public BasedLink() {
+    }
 
     public BasedLink(String name) {
         this.name = name;
@@ -36,11 +37,11 @@ public class BasedLink implements Data {
         this.path = path;
     }
 
-    public BasedLink(String name, Based base, String path, String data) {
+    public BasedLink(String name, Based base, String path, Integer port) {
         this.name = name;
         this.base = base;
         this.path = path;
-        this.data = data;
+        this.port = port;
     }
 
     public BasedLink(String name, Based base, String path, Integer port, String data) {
@@ -51,45 +52,6 @@ public class BasedLink implements Data {
         this.data = data;
     }
 
-    public BasedLink(String name, Based base, String path, String data, String user, String pass) {
-        this.name = name;
-        this.base = base;
-        this.path = path;
-        this.data = data;
-        this.user = user;
-        this.pass = pass;
-    }
-
-    public BasedLink(Based base) {
-        this.base = base;
-    }
-
-    public BasedLink(Based base, String path) {
-        this.base = base;
-        this.path = path;
-    }
-
-    public BasedLink(Based base, String path, String data) {
-        this.base = base;
-        this.path = path;
-        this.data = data;
-    }
-
-    public BasedLink(Based base, String path, Integer port, String data) {
-        this.base = base;
-        this.path = path;
-        this.port = port;
-        this.data = data;
-    }
-
-    public BasedLink(Based base, String path, String data, String user, String pass) {
-        this.base = base;
-        this.path = path;
-        this.data = data;
-        this.user = user;
-        this.pass = pass;
-    }
-
     public BasedLink(String name, Based base, String path, Integer port, String data, String user, String pass) {
         this.name = name;
         this.base = base;
@@ -98,6 +60,212 @@ public class BasedLink implements Data {
         this.data = data;
         this.user = user;
         this.pass = pass;
+    }
+
+    public boolean hasName() {
+        return this.name != null && !this.name.isEmpty();
+    }
+
+    public boolean hasBase() {
+        return this.base != null;
+    }
+
+    public boolean hasPath() {
+        return this.path != null && !this.path.isEmpty();
+    }
+
+    public boolean hasPort() {
+        return this.port != null;
+    }
+
+    public boolean hasData() {
+        return this.data != null && !this.data.isEmpty();
+    }
+
+    public boolean hasUser() {
+        return this.user != null && !this.user.isEmpty();
+    }
+
+    public boolean hasPass() {
+        return this.pass != null && !this.pass.isEmpty();
+    }
+
+    public BasedLink withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public BasedLink withNoName() {
+        this.name = null;
+        return this;
+    }
+
+    public BasedLink withBase(Based base) {
+        this.base = base;
+        return this;
+    }
+
+    public BasedLink withNoBase() {
+        this.base = null;
+        return this;
+    }
+
+    public BasedLink withPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    public BasedLink withNoPath() {
+        this.path = null;
+        return this;
+    }
+
+    public BasedLink withPort(Integer port) {
+        this.port = port;
+        return this;
+    }
+
+    public BasedLink withNoPort() {
+        this.port = null;
+        return this;
+    }
+
+    public BasedLink withData(String data) {
+        this.data = data;
+        return this;
+    }
+
+    public BasedLink withNoData() {
+        this.data = null;
+        return this;
+    }
+
+    public BasedLink withUser(String user) {
+        this.user = user;
+        return this;
+    }
+
+    public BasedLink withNoUser() {
+        this.user = null;
+        return this;
+    }
+
+    public BasedLink withPass(String pass) {
+        this.pass = pass;
+        return this;
+    }
+
+    public BasedLink withNoPass() {
+        this.pass = null;
+        return this;
+    }
+
+    public BasedLink uponName(String name) {
+        var clone = this.clone();
+        clone.name = name;
+        return clone;
+    }
+
+    public BasedLink uponNoName() {
+        var clone = this.clone();
+        clone.name = null;
+        return clone;
+    }
+
+    public BasedLink uponBase(Based base) {
+        var clone = this.clone();
+        clone.base = base;
+        return clone;
+    }
+
+    public BasedLink uponNoBase() {
+        var clone = this.clone();
+        clone.base = null;
+        return clone;
+    }
+
+    public BasedLink uponPath(String path) {
+        var clone = this.clone();
+        clone.path = path;
+        return clone;
+    }
+
+    public BasedLink uponNoPath() {
+        var clone = this.clone();
+        clone.path = null;
+        return clone;
+    }
+
+    public BasedLink uponPort(Integer port) {
+        var clone = this.clone();
+        clone.port = port;
+        return clone;
+    }
+
+    public BasedLink uponNoPort() {
+        var clone = this.clone();
+        clone.port = null;
+        return clone;
+    }
+
+    public BasedLink uponData(String data) {
+        var clone = this.clone();
+        clone.data = data;
+        return clone;
+    }
+
+    public BasedLink uponNoData() {
+        var clone = this.clone();
+        clone.data = null;
+        return clone;
+    }
+
+    public BasedLink uponUser(String user) {
+        var clone = this.clone();
+        clone.user = user;
+        return clone;
+    }
+
+    public BasedLink uponNoUser() {
+        var clone = this.clone();
+        clone.user = null;
+        return clone;
+    }
+
+    public BasedLink uponPass(String pass) {
+        var clone = this.clone();
+        clone.pass = pass;
+        return clone;
+    }
+
+    public BasedLink uponNoPass() {
+        var clone = this.clone();
+        clone.pass = null;
+        return clone;
+    }
+
+    @Override
+    public BasedLink clone() {
+        return (BasedLink) this.deepClone();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.deepHash();
+    }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static BasedLink fromChars(String chars) {
+        return Base.fromChars(chars, BasedLink.class);
     }
 
     public String formUrl() {
@@ -138,25 +306,6 @@ public class BasedLink implements Data {
 
     public EOrm getEOrm(Connection link) throws Exception {
         return this.base.eOrmClazz.getConstructor(Connection.class).newInstance(link);
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        return this.deepEquals(that);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.deepHash();
-    }
-
-    @Override
-    public String toString() {
-        return this.toChars();
-    }
-
-    public static BasedLink fromChars(String chars) {
-        return Base.fromChars(chars, BasedLink.class);
     }
 
     public static BasedLink fromAssigned(String chars) throws Exception {

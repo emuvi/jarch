@@ -8,6 +8,11 @@ public class Heads extends ArrayList<TableHead> implements Data {
     }
 
     @Override
+    public Heads clone() {
+        return (Heads) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

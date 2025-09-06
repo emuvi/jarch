@@ -34,6 +34,137 @@ public class Update implements Data {
         this.limit = limit;
     }
 
+    public boolean hasTableHead() {
+        return this.tableHead != null;
+    }
+
+    public boolean hasValuedList() {
+        return this.valuedList != null && !this.valuedList.isEmpty();
+    }
+
+    public boolean hasFilterList() {
+        return this.filterList != null && !this.filterList.isEmpty();
+    }
+
+    public boolean hasLimit() {
+        return this.limit != null;
+    }
+
+    public Update withTableHead(TableHead tableHead) {
+        this.tableHead = tableHead;
+        return this;
+    }
+
+    public Update withNoTableHead() {
+        this.tableHead = null;
+        return this;
+    }
+
+    public Update withValuedList(List<Valued> valuedList) {
+        this.valuedList = valuedList;
+        return this;
+    }
+
+    public Update withValuedList(Valued... valued) {
+        this.valuedList = List.of(valued);
+        return this;
+    }
+
+    public Update withNoValuedList() {
+        this.valuedList = null;
+        return this;
+    }
+
+    public Update withFilterList(List<Filter> filterList) {
+        this.filterList = filterList;
+        return this;
+    }
+
+    public Update withFilterList(Filter... filters) {
+        this.filterList = List.of(filters);
+        return this;
+    }
+
+    public Update withNoFilterList() {
+        this.filterList = null;
+        return this;
+    }
+
+    public Update withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public Update withNoLimit() {
+        this.limit = null;
+        return this;
+    }
+
+    public Update uponTableHead(TableHead tableHead) {
+        var clone = this.clone();
+        clone.tableHead = tableHead;
+        return clone;
+    }
+
+    public Update uponNoTableHead() {
+        var clone = this.clone();
+        clone.tableHead = null;
+        return clone;
+    }
+
+    public Update uponValuedList(List<Valued> valuedList) {
+        var clone = this.clone();
+        clone.valuedList = valuedList;
+        return clone;
+    }
+
+    public Update uponValuedList(Valued... valued) {
+        var clone = this.clone();
+        clone.valuedList = List.of(valued);
+        return clone;
+    }
+
+    public Update uponNoValuedList() {
+        var clone = this.clone();
+        clone.valuedList = null;
+        return clone;
+    }
+
+    public Update uponFilterList(List<Filter> filterList) {
+        var clone = this.clone();
+        clone.filterList = filterList;
+        return clone;
+    }
+
+    public Update uponFilterList(Filter... filters) {
+        var clone = this.clone();
+        clone.filterList = List.of(filters);
+        return clone;
+    }
+
+    public Update uponNoFilterList() {
+        var clone = this.clone();
+        clone.filterList = null;
+        return clone;
+    }
+
+    public Update uponLimit(Integer limit) {
+        var clone = this.clone();
+        clone.limit = limit;
+        return clone;
+    }
+
+    public Update uponNoLimit() {
+        var clone = this.clone();
+        clone.limit = null;
+        return clone;
+    }
+
+    @Override
+    public Update clone() {
+        return (Update) this.deepClone();
+    }
+
     @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);

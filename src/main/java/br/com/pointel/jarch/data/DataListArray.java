@@ -5,6 +5,11 @@ import java.util.ArrayList;
 public class DataListArray<T> extends ArrayList<T> implements Data {
 
     @Override
+    public DataListArray<T> clone() {
+        return (DataListArray<T>) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

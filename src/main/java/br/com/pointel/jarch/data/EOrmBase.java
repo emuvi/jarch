@@ -204,7 +204,7 @@ public class EOrmBase extends EOrm {
             builder.append(" AS ");
             builder.append(select.tableHead.alias);
         }
-        if (select.hasJoins()) {
+        if (select.hasJoinList()) {
             for (var join : select.joinList) {
                 if (join.ties != null) {
                     builder.append(" ");
@@ -230,12 +230,12 @@ public class EOrmBase extends EOrm {
                 }
             }
         }
-        if (select.hasFilters()) {
+        if (select.hasFilterList()) {
             builder.append(" WHERE ");
             builder.append(makeClauses(select.filterList, dataSource, null));
         }
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
-            builder.append(!select.hasFilters() ? " WHERE " : " AND ");
+            builder.append(!select.hasFilterList() ? " WHERE " : " AND ");
             var restricted = replaceVariables(strain.restrict, dataSource);
             builder.append(restricted);
         }
@@ -264,7 +264,7 @@ public class EOrmBase extends EOrm {
         log.debug("Selecting with SQL: {}", selectSQL);
         var prepared = getLink().prepareStatement(selectSQL);
         var paramIndex = 1;
-        if (select.hasJoins()) {
+        if (select.hasJoinList()) {
             for (var join : select.joinList) {
                 if (join.hasFilters()) {
                     for (var clause : join.filterList) {
@@ -276,7 +276,7 @@ public class EOrmBase extends EOrm {
                 }
             }
         }
-        if (select.hasFilters()) {
+        if (select.hasFilterList()) {
             for (var clause : select.filterList) {
                 if (clause.valued != null && clause.valued.value != null) {
                     setParameter(prepared, paramIndex, clause.valued);

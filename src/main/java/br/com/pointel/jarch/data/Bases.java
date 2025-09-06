@@ -7,13 +7,9 @@ public class Bases extends DataListArray<BasedWays> implements Data {
     public Bases() {
     }
 
-    public BasedWays getFromName(String name) {
-        for (var dataWay : this) {
-            if (Objects.equals(dataWay.getName(), name)) {
-                return dataWay;
-            }
-        }
-        return null;
+    @Override
+    public Bases clone() {
+        return (Bases) this.deepClone();
     }
 
     @Override
@@ -33,6 +29,15 @@ public class Bases extends DataListArray<BasedWays> implements Data {
 
     public static Bases fromChars(String chars) {
         return Base.fromChars(chars, Bases.class);
+    }
+
+    public BasedWays getFromName(String name) {
+        for (var dataWay : this) {
+            if (Objects.equals(dataWay.getName(), name)) {
+                return dataWay;
+            }
+        }
+        return null;
     }
 
 }

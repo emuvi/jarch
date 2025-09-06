@@ -3,7 +3,12 @@ package br.com.pointel.jarch.data;
 import java.util.HashSet;
 
 public class DataSetHash<T> extends HashSet<T> implements Data {
-
+    
+    @Override
+    public DataSetHash<T> clone() {
+        return (DataSetHash<T>) this.deepClone();
+    }
+    
     @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);

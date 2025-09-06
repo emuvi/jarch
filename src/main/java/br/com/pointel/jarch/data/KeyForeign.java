@@ -54,6 +54,126 @@ public class KeyForeign implements Data {
         this.matchList = matchList;
     }
 
+    public boolean hasInName() {
+        return this.inName != null;
+    }
+
+    public boolean hasOutName() {
+        return this.outName != null;
+    }
+
+    public boolean hasOutTableHead() {
+        return this.outTableHead != null;
+    }
+
+    public boolean hasMatchList() {
+        return this.matchList != null && !this.matchList.isEmpty();
+    }
+
+    public KeyForeign withInName(String inName) {
+        this.inName = inName;
+        return this;
+    }
+
+    public KeyForeign withNoInName() {
+        this.inName = null;
+        return this;
+    }
+
+    public KeyForeign withOutName(String outName) {
+        this.outName = outName;
+        return this;
+    }
+
+    public KeyForeign withNoOutName() {
+        this.outName = null;
+        return this;
+    }
+
+    public KeyForeign withOutTableHead(TableHead outTableHead) {
+        this.outTableHead = outTableHead;
+        return this;
+    }
+
+    public KeyForeign withNoOutTableHead() {
+        this.outTableHead = null;
+        return this;
+    }
+
+    public KeyForeign withMatchList(List<Match> matchList) {
+        this.matchList = matchList;
+        return this;
+    }
+
+    public KeyForeign withMatchList(Match... matches) {
+        this.matchList = List.of(matches);
+        return this;
+    }
+
+    public KeyForeign withNoMatchList() {
+        this.matchList = null;
+        return this;
+    }
+
+    public KeyForeign uponInName(String inName) {
+        var clone = this.clone();
+        clone.inName = inName;
+        return clone;
+    }
+
+    public KeyForeign uponNoInName() {
+        var clone = this.clone();
+        clone.inName = null;
+        return clone;
+    }
+
+    public KeyForeign uponOutName(String outName) {
+        var clone = this.clone();
+        clone.outName = outName;
+        return clone;
+    }
+
+    public KeyForeign uponNoOutName() {
+        var clone = this.clone();
+        clone.outName = null;
+        return clone;
+    }
+
+    public KeyForeign uponOutTableHead(TableHead outTableHead) {
+        var clone = this.clone();
+        clone.outTableHead = outTableHead;
+        return clone;
+    }
+
+    public KeyForeign uponNoOutTableHead() {
+        var clone = this.clone();
+        clone.outTableHead = null;
+        return clone;
+    }
+
+    public KeyForeign uponMatchList(List<Match> matchList) {
+        var clone = this.clone();
+        clone.matchList = matchList;
+        return clone;
+    }
+
+    public KeyForeign uponMatchList(Match... matches) {
+        var clone = this.clone();
+        clone.matchList = List.of(matches);
+        return clone;
+    }
+
+    public KeyForeign uponNoMatchList() {
+        var clone = this.clone();
+        clone.matchList = null;
+        return clone;
+    }
+
+    @Override
+    public KeyForeign clone() {
+        return (KeyForeign) this.deepClone();
+    }
+
     @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);

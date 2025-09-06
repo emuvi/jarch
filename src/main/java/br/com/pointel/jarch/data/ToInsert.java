@@ -21,8 +21,61 @@ public class ToInsert implements Data {
         this.insert = insert;
     }
 
-    public Registry getRegistry() {
-        return new Registry(base, insert.tableHead);
+    public boolean hasBase() {
+        return this.base != null;
+    }
+
+    public boolean hasInsert() {
+        return this.insert != null;
+    }
+
+    public ToInsert withBase(String base) {
+        this.base = base;
+        return this;
+    }
+
+    public ToInsert withNoBase() {
+        this.base = null;
+        return this;
+    }
+
+    public ToInsert withInsert(Insert insert) {
+        this.insert = insert;
+        return this;
+    }
+
+    public ToInsert withNoInsert() {
+        this.insert = null;
+        return this;
+    }
+
+    public ToInsert uponBase(String base) {
+        var clone = this.clone();
+        clone.base = base;
+        return clone;
+    }
+
+    public ToInsert uponNoBase() {
+        var clone = this.clone();
+        clone.base = null;
+        return clone;
+    }
+
+    public ToInsert uponInsert(Insert insert) {
+        var clone = this.clone();
+        clone.insert = insert;
+        return clone;
+    }
+
+    public ToInsert uponNoInsert() {
+        var clone = this.clone();
+        clone.insert = null;
+        return clone;
+    }
+
+    @Override
+    public ToInsert clone() {
+        return (ToInsert) this.deepClone();
     }
 
     @Override
@@ -42,6 +95,10 @@ public class ToInsert implements Data {
 
     public static ToInsert fromChars(String chars) {
         return Base.fromChars(chars, ToInsert.class);
+    }
+
+    public Registry getRegistry() {
+        return new Registry(base, insert.tableHead);
     }
 
 }

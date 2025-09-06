@@ -20,8 +20,61 @@ public class ToUpdate implements Data {
         this.update = update;
     }
 
-    public Registry getRegistry() {
-        return new Registry(base, update.tableHead);
+    public boolean hasBase() {
+        return this.base != null && !this.base.isEmpty();
+    }
+
+    public boolean hasUpdate() {
+        return this.update != null;
+    }
+
+    public ToUpdate withBase(String base) {
+        this.base = base;
+        return this;
+    }
+
+    public ToUpdate withNoBase() {
+        this.base = null;
+        return this;
+    }
+
+    public ToUpdate withUpdate(Update update) {
+        this.update = update;
+        return this;
+    }
+
+    public ToUpdate withNoUpdate() {
+        this.update = null;
+        return this;
+    }
+
+    public ToUpdate uponBase(String base) {
+        var clone = this.clone();
+        clone.base = base;
+        return clone;
+    }
+
+    public ToUpdate uponNoBase() {
+        var clone = this.clone();
+        clone.base = null;
+        return clone;
+    }
+
+    public ToUpdate uponUpdate(Update update) {
+        var clone = this.clone();
+        clone.update = update;
+        return clone;
+    }
+
+    public ToUpdate uponNoUpdate() {
+        var clone = this.clone();
+        clone.update = null;
+        return clone;
+    }
+
+    @Override
+    public ToUpdate clone() {
+        return (ToUpdate) this.deepClone();
     }
 
     @Override
@@ -41,6 +94,10 @@ public class ToUpdate implements Data {
 
     public static ToUpdate fromChars(String chars) {
         return Base.fromChars(chars, ToUpdate.class);
+    }
+
+    public Registry getRegistry() {
+        return new Registry(base, update.tableHead);
     }
 
 }

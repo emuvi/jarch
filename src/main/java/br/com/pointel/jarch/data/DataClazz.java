@@ -20,12 +20,61 @@ public class DataClazz implements Data {
         this.clazz = clazz;
     }
 
-    public Object getValue() throws Exception {
-        return this.data == null ? null : WizData.fromChars(this.data, Class.forName( this.clazz));
+    public boolean hasData() {
+        return this.data != null;
     }
 
-    public <T> T getValueOn(Class<T> clazz) throws Exception {
-        return WizData.getOn(getValue(), clazz);
+    public boolean hasClazz() {
+        return this.clazz != null;
+    }
+
+    public DataClazz withData(String data) {
+        this.data = data;
+        return this;
+    }
+
+    public DataClazz withNoData() {
+        this.data = null;
+        return this;
+    }
+
+    public DataClazz withClazz(String clazz) {
+        this.clazz = clazz;
+        return this;
+    }
+
+    public DataClazz withNoClazz() {
+        this.clazz = null;
+        return this;
+    }
+
+    public DataClazz uponData(String data) {
+        var clone = this.clone();
+        clone.data = data;
+        return clone;
+    }
+
+    public DataClazz uponNoData() {
+        var clone = this.clone();
+        clone.data = null;
+        return clone;
+    }
+
+    public DataClazz uponClazz(String clazz) {
+        var clone = this.clone();
+        clone.clazz = clazz;
+        return clone;
+    }
+
+    public DataClazz uponNoClazz() {
+        var clone = this.clone();
+        clone.clazz = null;
+        return clone;
+    }
+
+    @Override
+    public DataClazz clone() {
+        return (DataClazz) this.deepClone();
     }
 
     @Override
@@ -45,6 +94,14 @@ public class DataClazz implements Data {
 
     public static DataClazz fromChars(String chars) {
         return Base.fromChars(chars, DataClazz.class);
+    }
+
+    public Object getValue() throws Exception {
+        return this.data == null ? null : WizData.fromChars(this.data, Class.forName( this.clazz));
+    }
+
+    public <T> T getValueOn(Class<T> clazz) throws Exception {
+        return WizData.getOn(getValue(), clazz);
     }
 
 }
