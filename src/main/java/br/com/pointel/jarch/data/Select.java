@@ -3,7 +3,6 @@ package br.com.pointel.jarch.data;
 import java.sql.ResultSet;
 import java.util.List;
 import br.com.pointel.jarch.mage.WizBased;
-import br.com.pointel.jarch.mage.WizData;
 
 public class Select implements Data {
 
@@ -73,6 +72,11 @@ public class Select implements Data {
 
     public boolean hasFilters() {
         return this.filterList != null && !this.filterList.isEmpty();
+    }
+
+    public Select withFilter(Filter... filters) {
+        this.filterList = List.of(filters);
+        return this;
     }
 
     public <T> T mapResult(ResultSet resultSet, Class<T> clazz) throws Exception {

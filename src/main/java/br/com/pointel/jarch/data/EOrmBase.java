@@ -263,14 +263,14 @@ public class EOrmBase extends EOrm {
         var selectSQL = builder.toString();
         log.debug("Selecting with SQL: {}", selectSQL);
         var prepared = getLink().prepareStatement(selectSQL);
-        var param_index = 1;
+        var paramIndex = 1;
         if (select.hasJoins()) {
             for (var join : select.joinList) {
                 if (join.hasFilters()) {
                     for (var clause : join.filterList) {
                         if (clause.valued != null && clause.valued.value != null) {
-                            setParameter(prepared, param_index, clause.valued);
-                            param_index++;
+                            setParameter(prepared, paramIndex, clause.valued);
+                            paramIndex++;
                         }
                     }
                 }
@@ -279,8 +279,8 @@ public class EOrmBase extends EOrm {
         if (select.hasFilters()) {
             for (var clause : select.filterList) {
                 if (clause.valued != null && clause.valued.value != null) {
-                    setParameter(prepared, param_index, clause.valued);
-                    param_index++;
+                    setParameter(prepared, paramIndex, clause.valued);
+                    paramIndex++;
                 }
             }
         }
