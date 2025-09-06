@@ -39,7 +39,10 @@ public class WizBased {
     }
 
     public static <T> T mapResult(ResultSet result, List<Typed> fieldList, Class<T> onClazz) throws Exception {
-        var colsClasses = WizBased.getColumnsClasses(result);
+        if (WizData.isNatureData(onClazz)) {
+			return WizData.getOn(result.getObject(1), onClazz);
+		}
+		var colsClasses = WizBased.getColumnsClasses(result);
         var colsValues = WizBased.getColumnsValues(result);
         try {
             var standardOne = onClazz.getConstructor(colsClasses);

@@ -183,4 +183,35 @@ public class WizData {
         throw new UnsupportedOperationException("Could not convert to " + onClass.getCanonicalName() + " from class: " + value.getClass().getName());
     }
 
+    public static boolean isNatureData(Class<?> clazz) throws Exception {
+        if (clazz == null) {
+            return false;
+        }
+        return WizLang.isChildOf(clazz, Boolean.class)
+            || WizLang.isChildOf(clazz, Byte.class)
+            || WizLang.isChildOf(clazz, Short.class)
+            || WizLang.isChildOf(clazz, Integer.class)
+            || WizLang.isChildOf(clazz, Long.class)
+            || WizLang.isChildOf(clazz, Float.class)
+            || WizLang.isChildOf(clazz, Double.class)
+            || WizLang.isChildOf(clazz, BigInteger.class)
+            || WizLang.isChildOf(clazz, BigDecimal.class)
+            || WizLang.isChildOf(clazz, Character.class)
+            || WizLang.isChildOf(clazz, String.class)
+            || WizLang.isChildOf(clazz, Instant.class)
+            || WizLang.isChildOf(clazz, ZonedDateTime.class)
+            || WizLang.isChildOf(clazz, OffsetDateTime.class)
+            || WizLang.isChildOf(clazz, OffsetTime.class)
+            || WizLang.isChildOf(clazz, LocalDateTime.class)
+            || WizLang.isChildOf(clazz, LocalDate.class)
+            || WizLang.isChildOf(clazz, LocalTime.class)
+            || WizLang.isChildOf(clazz, java.util.Date.class)
+            || WizLang.isChildOf(clazz, java.sql.Date.class)
+            || WizLang.isChildOf(clazz, java.sql.Time.class)
+            || WizLang.isChildOf(clazz, java.sql.Timestamp.class)
+            || WizLang.isChildOf(clazz, byte[].class)
+            || WizLang.isChildOf(clazz, Blob.class)
+            || WizLang.isChildOf(clazz, Clob.class);
+    }
+
 }
