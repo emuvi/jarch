@@ -224,7 +224,7 @@ public class EOrmBase extends EOrm {
                     withAlias = join.tableHead.alias;
                     builder.append(withAlias);
                 }
-                if (join.hasFilters()) {
+                if (join.hasFilterList()) {
                     builder.append(" ON ");
                     builder.append(makeClauses(join.filterList, dataSource, withAlias));
                 }
@@ -266,7 +266,7 @@ public class EOrmBase extends EOrm {
         var paramIndex = 1;
         if (select.hasJoinList()) {
             for (var join : select.joinList) {
-                if (join.hasFilters()) {
+                if (join.hasFilterList()) {
                     for (var clause : join.filterList) {
                         if (clause.valued != null && clause.valued.value != null) {
                             setParameter(prepared, paramIndex, clause.valued);
