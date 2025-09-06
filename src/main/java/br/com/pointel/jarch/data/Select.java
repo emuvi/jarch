@@ -79,6 +79,11 @@ public class Select implements Data {
         return this;
     }
 
+    public Select withNoFilter() {
+        this.filterList = null;
+        return this;
+    }
+
     public <T> T mapResult(ResultSet resultSet, Class<T> clazz) throws Exception {
         return WizBased.mapResult(resultSet, fieldList, clazz);
     }
