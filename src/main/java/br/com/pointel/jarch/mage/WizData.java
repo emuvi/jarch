@@ -180,7 +180,7 @@ public class WizData {
         if (WizLang.isChildOf(onClass, Clob.class)) {
             return onClass.cast(WizClob.get(value));
         }
-        throw new UnsupportedOperationException("Could not convert to " + onClass.getCanonicalName() + " from class: " + value.getClass().getName());
+        throw new UnsupportedOperationException("Could not convert to " + onClass.getName() + " from class: " + value.getClass().getName());
     }
 
     public static boolean isNatureData(Class<?> clazz) throws Exception {
