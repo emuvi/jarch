@@ -17,6 +17,7 @@ public class EOrmPostgre extends EOrmBase {
             case Byte, Tiny: builder.append(" SMALLINT"); break;
             case Small: builder.append(" SMALLINT"); break;
             case Int: builder.append(" INTEGER"); break;
+            case BigInt: builder.append(" BIGINT"); break;
             case Serial: builder.append(" SERIAL"); break;
             case Long: builder.append(" BIGINT"); break;
             case BigSerial: builder.append(" BIGSERIAL"); break;
@@ -41,7 +42,9 @@ public class EOrmPostgre extends EOrmBase {
                 break;
             case Date: builder.append(" DATE"); break;
             case Time: builder.append(" TIME"); break;
-            case DateTime, Timestamp: builder.append(" TIMESTAMP"); break;
+            case DateTime: builder.append(" TIMESTAMP WITHOUT TIME ZONE"); break;
+            case ZoneTime: builder.append(" TIMESTAMP WITH TIME ZONE"); break;
+            case Timestamp: builder.append(" TIMESTAMP"); break;
             case Bytes, Blob: builder.append(" BYTEA"); break;
             case Text: builder.append(" TEXT"); break;
             case Object: builder.append(" JSONB"); break;
