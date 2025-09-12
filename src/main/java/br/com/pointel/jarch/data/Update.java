@@ -195,7 +195,13 @@ public class Update implements Data {
             this.valuedList.get(i).value = values[i];
         }
         return this;
-    } 
+    }
+
+    public Update valuedUponValues(Object... values) {
+        var clone = this.clone();
+        clone.valuedWithValues(values);
+        return clone;
+    }
 
     public Update filterWithValues(Object... values) {
         if (values == null || values.length == 0) {

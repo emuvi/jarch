@@ -150,6 +150,12 @@ public class Insert implements Data {
             this.valuedList.get(i).value = values[i];
         }
         return this;
-    } 
+    }
+
+    public Insert valuedUponValues(Object... values) {
+        var clone = this.clone();
+        clone.valuedWithValues(values);
+        return clone;
+    }
 
 }
