@@ -106,4 +106,17 @@ public class Delete implements Data {
         return Base.fromChars(chars, Delete.class);
     }
 
+    public Delete filterWithValues(Object... values) {
+        if (values == null || values.length == 0) {
+            return this;
+        }
+        if (this.filterList == null || this.filterList.size() < values.length) {
+            throw new IllegalArgumentException("Filter list is null or has less elements than values");
+        }
+        for (int i = 0; i < values.length; i++) {
+            this.filterList.get(i).valued.value = values[i];
+        }
+        return this;
+    } 
+
 }
