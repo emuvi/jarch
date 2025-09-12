@@ -117,6 +117,12 @@ public class Delete implements Data {
             this.filterList.get(i).valued.value = values[i];
         }
         return this;
-    } 
+    }
+
+    public Delete filterUponValues(Object... values) {
+        var clone = this.clone();
+        clone.filterWithValues(values);
+        return clone;
+    }
 
 }

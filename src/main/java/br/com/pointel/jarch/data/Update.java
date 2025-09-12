@@ -208,6 +208,12 @@ public class Update implements Data {
             this.filterList.get(i).valued.value = values[i];
         }
         return this;
-    } 
+    }
+
+    public Update filterUponValues(Object... values) {
+        var clone = this.clone();
+        clone.filterWithValues(values);
+        return clone;
+    }
 
 }

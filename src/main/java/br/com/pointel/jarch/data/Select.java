@@ -329,6 +329,12 @@ public class Select implements Data {
         return this;
     } 
 
+    public Select filterUponValues(Object... values) {
+        var clone = this.clone();
+        clone.filterWithValues(values);
+        return clone;
+    }
+
     public <T> T mapResult(ResultSet resultSet, Class<T> clazz) throws Exception {
         return WizBased.mapResult(resultSet, fieldList, clazz);
     }
