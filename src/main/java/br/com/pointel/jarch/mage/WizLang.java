@@ -163,13 +163,13 @@ public class WizLang {
         return parent.isAssignableFrom(child);
     }
 
-    public static Constructor<?> getBestConstructor(Class<?> fromClazz, Nature[] valNatures, String[] valNames) {
-        if (fromClazz == null || valNatures == null || valNatures.length == 0) {
+    public static Constructor<?> getBestConstructor(Class<?> fromClass, Nature[] valNatures, String[] valNames) {
+        if (fromClass == null || valNatures == null || valNatures.length == 0) {
             return null;
         }
         int bestScore = 0;
         Constructor<?> bestOne = null;
-        for (Constructor<?> constructor : fromClazz.getConstructors()) {
+        for (Constructor<?> constructor : fromClass.getConstructors()) {
             var paramTypes = constructor.getParameterTypes();
             if (paramTypes.length > valNatures.length) {
                 continue;

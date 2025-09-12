@@ -25,8 +25,8 @@ public class WizData {
         return gson.toJson(value);
     }
 
-    public static <T> T fromChars(String chars, Class<T> clazz) {
-        return gson.fromJson(chars, clazz);
+    public static <T> T fromChars(String chars, Class<T> ofClass) {
+        return gson.fromJson(chars, ofClass);
     }
 
     public static String toFormatted(Nature nature, Object value) throws Exception {

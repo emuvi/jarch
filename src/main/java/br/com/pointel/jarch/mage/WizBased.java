@@ -21,31 +21,31 @@ public class WizBased {
     private WizBased() {
     }
 
-    public static <T> List<T> mapResults(ResultSet result, Class<T> onClazz) throws Exception {
-        return WizBased.mapResults(result, null, onClazz);
+    public static <T> List<T> mapResults(ResultSet result, Class<T> onClass) throws Exception {
+        return WizBased.mapResults(result, null, onClass);
     }
 
-    public static <T> List<T> mapResults(ResultSet result, List<Typed> fieldList, Class<T> onClazz) throws Exception {
+    public static <T> List<T> mapResults(ResultSet result, List<Typed> fieldList, Class<T> onClass) throws Exception {
         var results = new ArrayList<T>();
         while (result.next()) {
-            var mapped = WizBased.mapResult(result, fieldList, onClazz);
+            var mapped = WizBased.mapResult(result, fieldList, onClass);
             results.add(mapped);
         }
         return results;
     }
 
-    public static <T> T mapResult(ResultSet result, Class<T> onClazz) throws Exception {
-        return WizBased.mapResult(result, null, onClazz);
+    public static <T> T mapResult(ResultSet result, Class<T> onClass) throws Exception {
+        return WizBased.mapResult(result, null, onClass);
     }
 
-    public static <T> T mapResult(ResultSet result, List<Typed> fieldList, Class<T> onClazz) throws Exception {
-        if (WizData.isNatureData(onClazz)) {
-			return WizData.getOn(result.getObject(1), onClazz);
+    public static <T> T mapResult(ResultSet result, List<Typed> fieldList, Class<T> onClass) throws Exception {
+        if (WizData.isNatureData(onClass)) {
+			return WizData.getOn(result.getObject(1), onClass);
 		}
 		var colsClasses = WizBased.getColumnsClasses(result);
         var colsValues = WizBased.getColumnsValues(result);
         try {
-            var standardOne = onClazz.getConstructor(colsClasses);
+            var standardOne = onClass.getConstructor(colsClasses);
             return standardOne.newInstance(colsValues);
         } catch (NoSuchMethodException e) {
             Nature[] colsNatures;
@@ -55,21 +55,21 @@ public class WizBased {
                 colsNatures = fieldList.stream().map(f -> f.type).toArray(Nature[]::new);
             }
             var colsNames = WizBased.getColumnsNames(result);
-            var bestOne = WizLang.getBestConstructor(onClazz, colsNatures, colsNames);
+            var bestOne = WizLang.getBestConstructor(onClass, colsNatures, colsNames);
             if (bestOne == null) {
-                bestOne = onClazz.getConstructor();
+                bestOne = onClass.getConstructor();
             }
             Object[] argsValues = new Object[bestOne.getParameterCount()];
             Class<?>[] argsTypes = bestOne.getParameterTypes();
             for (int i = 0; i < argsValues.length; i++) {
                 argsValues[i] = WizData.getOn(colsValues[i], argsTypes[i]);
             }
-            var instance = onClazz.cast(bestOne.newInstance(argsValues));
+            var instance = onClass.cast(bestOne.newInstance(argsValues));
             if (argsValues.length < colsValues.length) {
                 var columnsNames = WizBased.getColumnsNames(result);
                 for (int i = argsValues.length; i < colsValues.length; i++) {
                     var columnName = columnsNames[i];
-                    var field = onClazz.getDeclaredField(columnName);
+                    var field = onClass.getDeclaredField(columnName);
                     var onValue = WizData.getOn(colsValues[i], field.getType());
                     WizLang.forceSetField(field, instance, onValue);
                 }

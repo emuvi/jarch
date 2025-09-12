@@ -18,16 +18,16 @@ public class Selected {
         return this.resultSet != null && this.resultSet.isBeforeFirst();
     }
 
-    public <T> T mapResult(Class<T> clazz) throws Exception {
+    public <T> T mapResult(Class<T> onClass) throws Exception {
         if (resultSet.next()) {
-            return WizBased.mapResult(resultSet, select.fieldList, clazz);
+            return WizBased.mapResult(resultSet, select.fieldList, onClass);
         } else {
             return null;
         }
     }
 
-    public <T> List<T> mapResults(Class<T> clazz) throws Exception {
-        return WizBased.mapResults(resultSet, select.fieldList, clazz);
+    public <T> List<T> mapResults(Class<T> onClass) throws Exception {
+        return WizBased.mapResults(resultSet, select.fieldList, onClass);
     }
     
 }
