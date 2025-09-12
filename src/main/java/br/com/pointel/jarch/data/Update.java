@@ -184,6 +184,19 @@ public class Update implements Data {
         return Base.fromChars(chars, Update.class);
     }
 
+    public Update valuedWithValues(Object... values) {
+        if (values == null || values.length == 0) {
+            return this;
+        }
+        if (this.valuedList == null || this.valuedList.size() < values.length) {
+            throw new IllegalArgumentException("Valued list is null or has less elements than values");
+        }
+        for (int i = 0; i < values.length; i++) {
+            this.valuedList.get(i).value = values[i];
+        }
+        return this;
+    } 
+
     public Update filterWithValues(Object... values) {
         if (values == null || values.length == 0) {
             return this;

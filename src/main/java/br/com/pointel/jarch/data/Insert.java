@@ -139,4 +139,17 @@ public class Insert implements Data {
         return Base.fromChars(chars, Insert.class);
     }
 
+    public Insert valuedWithValues(Object... values) {
+        if (values == null || values.length == 0) {
+            return this;
+        }
+        if (this.valuedList == null || this.valuedList.size() < values.length) {
+            throw new IllegalArgumentException("Valued list is null or has less elements than values");
+        }
+        for (int i = 0; i < values.length; i++) {
+            this.valuedList.get(i).value = values[i];
+        }
+        return this;
+    } 
+
 }
