@@ -76,8 +76,8 @@ public class Index implements Data {
         return this;
     }
 
-    public Index withFieldList(Field... fields) {
-        this.fieldList = List.of(fields);
+    public Index withFieldList(Field... fieldArgs) {
+        this.fieldList = List.of(fieldArgs);
         return this;
     }
 
@@ -116,9 +116,9 @@ public class Index implements Data {
         return clone;
     }
 
-    public Index uponFieldList(Field... fields) {
+    public Index uponFieldList(Field... fieldArgs) {
         var clone = this.clone();
-        clone.fieldList = List.of(fields);
+        clone.fieldList = List.of(fieldArgs);
         return clone;
     }
 

@@ -53,8 +53,8 @@ public class Insert implements Data {
         return this;
     }
 
-    public Insert withValuedList(Valued... values) {
-        this.valuedList = List.of(values);
+    public Insert withValuedList(Valued... valuedArgs) {
+        this.valuedList = List.of(valuedArgs);
         return this;
     }
 
@@ -91,9 +91,9 @@ public class Insert implements Data {
         return clone;
     }
 
-    public Insert uponValuedList(Valued... values) {
+    public Insert uponValuedList(Valued... valuedArgs) {
         var clone = this.clone();
-        clone.valuedList = List.of(values);
+        clone.valuedList = List.of(valuedArgs);
         return clone;
     }
 

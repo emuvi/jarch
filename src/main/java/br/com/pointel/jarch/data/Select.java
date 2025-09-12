@@ -109,8 +109,8 @@ public class Select implements Data {
         return this;
     }
 
-    public Select withFieldList(Typed... fields) {
-        this.fieldList = List.of(fields);
+    public Select withFieldList(Typed... fieldArgs) {
+        this.fieldList = List.of(fieldArgs);
         return this;
     }
 
@@ -124,8 +124,8 @@ public class Select implements Data {
         return this;
     }
 
-    public Select withJoinList(Join... joins) {
-        this.joinList = List.of(joins);
+    public Select withJoinList(Join... joinArgs) {
+        this.joinList = List.of(joinArgs);
         return this;
     }
 
@@ -134,13 +134,13 @@ public class Select implements Data {
         return this;
     }
 
-    public Select withFilterList(List<Filter> filters) {
-        this.filterList = filters;
+    public Select withFilterList(List<Filter> filterList) {
+        this.filterList = filterList;
         return this;
     }
 
-    public Select withFilterList(Filter... filters) {
-        this.filterList = List.of(filters);
+    public Select withFilterList(Filter... filterArgs) {
+        this.filterList = List.of(filterArgs);
         return this;
     }
 
@@ -154,8 +154,8 @@ public class Select implements Data {
         return this;
     }
 
-    public Select withOrderList(Order... orders) {
-        this.orderList = List.of(orders);
+    public Select withOrderList(Order... orderArgs) {
+        this.orderList = List.of(orderArgs);
         return this;
     }
 
@@ -202,9 +202,9 @@ public class Select implements Data {
         return clone;
     }
 
-    public Select uponFieldList(Typed... fields) {
+    public Select uponFieldList(Typed... fieldArgs) {
         var clone = this.clone();
-        clone.fieldList = List.of(fields);
+        clone.fieldList = List.of(fieldArgs);
         return clone;
     }
 
@@ -220,9 +220,9 @@ public class Select implements Data {
         return clone;
     }
 
-    public Select uponJoinList(Join... joins) {
+    public Select uponJoinList(Join... joinArgs) {
         var clone = this.clone();
-        clone.joinList = List.of(joins);
+        clone.joinList = List.of(joinArgs);
         return clone;
     }
 
@@ -232,15 +232,15 @@ public class Select implements Data {
         return clone;
     }
 
-    public Select uponFilterList(List<Filter> filters) {
+    public Select uponFilterList(List<Filter> filterList) {
         var clone = this.clone();
-        clone.filterList = filters;
+        clone.filterList = filterList;
         return clone;
     }
 
-    public Select uponFilterList(Filter... filters) {
+    public Select uponFilterList(Filter... filterArgs) {
         var clone = this.clone();
-        clone.filterList = List.of(filters);
+        clone.filterList = List.of(filterArgs);
         return clone;
     }
 
@@ -256,9 +256,9 @@ public class Select implements Data {
         return clone;
     }
 
-    public Select uponOrderList(Order... orders) {
+    public Select uponOrderList(Order... orderArgs) {
         var clone = this.clone();
-        clone.orderList = List.of(orders);
+        clone.orderList = List.of(orderArgs);
         return clone;
     }
 

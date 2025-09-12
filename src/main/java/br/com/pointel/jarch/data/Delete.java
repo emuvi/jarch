@@ -42,8 +42,8 @@ public class Delete implements Data {
         return this;
     }
 
-    public Delete withFilterList(Filter... filters) {
-        this.filterList = List.of(filters);
+    public Delete withFilterList(Filter... filterArgs) {
+        this.filterList = List.of(filterArgs);
         return this;
     }
 
@@ -70,9 +70,9 @@ public class Delete implements Data {
         return clone;
     }
 
-    public Delete uponFilterList(Filter... filters) {
+    public Delete uponFilterList(Filter... filterArgs) {
         var clone = this.clone();
-        clone.filterList = List.of(filters);
+        clone.filterList = List.of(filterArgs);
         return clone;
     }
 

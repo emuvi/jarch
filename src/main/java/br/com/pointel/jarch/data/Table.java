@@ -65,8 +65,8 @@ public class Table implements Data {
         return this;
     }
 
-    public Table withFieldList(Field... fields) {
-        this.fieldList = List.of(fields);
+    public Table withFieldList(Field... fieldArgs) {
+        this.fieldList = List.of(fieldArgs);
         return this;
     }
 
@@ -80,8 +80,8 @@ public class Table implements Data {
         return this;
     }
 
-    public Table withKeyPrimaryList(KeyPrimary... keyPrimaries) {
-        this.keyPrimaryList = List.of(keyPrimaries);
+    public Table withKeyPrimaryList(KeyPrimary... keyPrimaryArgs) {
+        this.keyPrimaryList = List.of(keyPrimaryArgs);
         return this;
     }
 
@@ -95,8 +95,8 @@ public class Table implements Data {
         return this;
     }
 
-    public Table withKeyForeignList(KeyForeign... keyForeigns) {
-        this.keyForeignList = List.of(keyForeigns);
+    public Table withKeyForeignList(KeyForeign... keyForeignArgs) {
+        this.keyForeignList = List.of(keyForeignArgs);
         return this;
     }
 
@@ -123,9 +123,9 @@ public class Table implements Data {
         return clone;
     }
 
-    public Table uponFieldList(Field... fields) {
+    public Table uponFieldList(Field... fieldArgs) {
         var clone = this.clone();
-        clone.fieldList = List.of(fields);
+        clone.fieldList = List.of(fieldArgs);
         return clone;
     }
 
@@ -141,9 +141,9 @@ public class Table implements Data {
         return clone;
     }
 
-    public Table uponKeyPrimaryList(KeyPrimary... keyPrimaries) {
+    public Table uponKeyPrimaryList(KeyPrimary... keyPrimaryArgs) {
         var clone = this.clone();
-        clone.keyPrimaryList = List.of(keyPrimaries);
+        clone.keyPrimaryList = List.of(keyPrimaryArgs);
         return clone;
     }
 
@@ -159,9 +159,9 @@ public class Table implements Data {
         return clone;
     }
 
-    public Table uponKeyForeignList(KeyForeign... keyForeigns) {
+    public Table uponKeyForeignList(KeyForeign... keyForeignArgs) {
         var clone = this.clone();
-        clone.keyForeignList = List.of(keyForeigns);
+        clone.keyForeignList = List.of(keyForeignArgs);
         return clone;
     }
 

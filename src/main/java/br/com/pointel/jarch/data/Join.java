@@ -97,8 +97,8 @@ public class Join implements Data {
         return this;
     }
 
-    public Join withFilterList(Filter... filters) {
-        this.filterList = List.of(filters);
+    public Join withFilterList(Filter... filterArgs) {
+        this.filterList = List.of(filterArgs);
         return this;
     }
 
@@ -147,9 +147,9 @@ public class Join implements Data {
         return clone;
     }
 
-    public Join uponFilterList(Filter... filters) {
+    public Join uponFilterList(Filter... filterArgs) {
         var clone = this.clone();
-        clone.filterList = List.of(filters);
+        clone.filterList = List.of(filterArgs);
         return clone;
     }
 

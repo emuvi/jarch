@@ -65,8 +65,8 @@ public class Update implements Data {
         return this;
     }
 
-    public Update withValuedList(Valued... valued) {
-        this.valuedList = List.of(valued);
+    public Update withValuedList(Valued... valuedArgs) {
+        this.valuedList = List.of(valuedArgs);
         return this;
     }
 
@@ -80,8 +80,8 @@ public class Update implements Data {
         return this;
     }
 
-    public Update withFilterList(Filter... filters) {
-        this.filterList = List.of(filters);
+    public Update withFilterList(Filter... filterArgs) {
+        this.filterList = List.of(filterArgs);
         return this;
     }
 
@@ -118,9 +118,9 @@ public class Update implements Data {
         return clone;
     }
 
-    public Update uponValuedList(Valued... valued) {
+    public Update uponValuedList(Valued... valuedArgs) {
         var clone = this.clone();
-        clone.valuedList = List.of(valued);
+        clone.valuedList = List.of(valuedArgs);
         return clone;
     }
 
@@ -136,9 +136,9 @@ public class Update implements Data {
         return clone;
     }
 
-    public Update uponFilterList(Filter... filters) {
+    public Update uponFilterList(Filter... filterArgs) {
         var clone = this.clone();
-        clone.filterList = List.of(filters);
+        clone.filterList = List.of(filterArgs);
         return clone;
     }
 
