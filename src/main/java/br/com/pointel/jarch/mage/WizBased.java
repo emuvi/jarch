@@ -1,25 +1,100 @@
 package br.com.pointel.jarch.mage;
 
 import java.io.PrintStream;
+import java.nio.file.DirectoryStream.Filter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import br.com.pointel.jarch.data.Delete;
+import br.com.pointel.jarch.data.Field;
+import br.com.pointel.jarch.data.Insert;
 import br.com.pointel.jarch.data.KeyForeign;
 import br.com.pointel.jarch.data.KeyPrimary;
 import br.com.pointel.jarch.data.Match;
 import br.com.pointel.jarch.data.Nature;
 import br.com.pointel.jarch.data.OrdName;
+import br.com.pointel.jarch.data.Select;
 import br.com.pointel.jarch.data.Table;
 import br.com.pointel.jarch.data.TableHead;
 import br.com.pointel.jarch.data.Typed;
+import br.com.pointel.jarch.data.Update;
 
 public class WizBased {
 
     private WizBased() {
     }
+
+	public static Insert makeInsert(Table fromTable) {
+	    var result = new Insert();
+	    if (fromTable != null) {
+	        if (fromTable.hasTableHead()) {
+	            result.tableHead = fromTable.tableHead;
+	        }
+	        if (fromTable.hasFieldList()) {
+	            result.valuedList = fromTable.fieldList.stream().map(Field::toValued).toList();
+	        }
+	    }
+	    return result;
+	}
+
+	public static Select makeSelect(Table fromTable) {
+	    var result = new Select();
+	    if (fromTable != null) {
+	        if (fromTable.hasTableHead()) {
+	            result.tableHead = fromTable.tableHead;
+	        }
+	        if (fromTable.hasFieldList()) {
+	            result.fieldList = fromTable.fieldList.stream().map(Field::toTyped).toList();
+				var keyFields = fromTable.fieldList.stream().filter(Field::isKeyPrimary).toList();
+				if (!keyFields.isEmpty()) {
+					result.filterList = keyFields.stream().map(Field::toFilter).toList();
+				}
+	        }
+	    }
+	    return result;
+	}
+
+	public static Update makeUpdate(Table fromTable) {
+	    var result = new Update();
+	    if (fromTable != null) {
+	        if (fromTable.hasTableHead()) {
+	            result.tableHead = fromTable.tableHead;
+	        }
+	        if (fromTable.hasFieldList()) {
+	            var normalFields = fromTable.fieldList.stream().filter(Field::isNotKeyPrimary).toList();
+				if (normalFields.isEmpty()) {
+					throw new IllegalArgumentException("Could not create an Update from Table because it has no non-primary key fields.");
+				}
+				result.valuedList = normalFields.stream().map(Field::toValued).toList();
+				var keyFields = fromTable.fieldList.stream().filter(Field::isKeyPrimary).toList();
+				if (keyFields.isEmpty()) {
+					throw new IllegalArgumentException("Could not create an Update from Table because it has no primary key fields.");
+				}
+				result.filterList = keyFields.stream().map(Field::toFilter).toList();
+	        }
+	    }
+	    return result;
+	}
+
+	public static Delete makeDelete(Table fromTable) {
+	    var result = new Delete();
+	    if (fromTable != null) {
+	        if (fromTable.hasTableHead()) {
+	            result.tableHead = fromTable.tableHead;
+	        }
+	        if (fromTable.hasFieldList()) {
+				var keyFields = fromTable.fieldList.stream().filter(Field::isKeyPrimary).toList();
+				if (keyFields.isEmpty()) {
+					throw new IllegalArgumentException("Could not create a Delete from Table because it has no primary key fields.");
+				}
+				result.filterList = keyFields.stream().map(Field::toFilter).toList();
+	        }
+	    }
+	    return result;
+	}
 
     public static <T> List<T> mapResults(ResultSet result, Class<T> onClass) throws Exception {
         return WizBased.mapResults(result, null, onClass);

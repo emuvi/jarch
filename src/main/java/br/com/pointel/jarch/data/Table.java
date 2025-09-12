@@ -1,6 +1,8 @@
 package br.com.pointel.jarch.data;
 
 import java.util.List;
+import java.util.Objects;
+import br.com.pointel.jarch.mage.WizBased;
 
 public class Table implements Data {
 
@@ -205,6 +207,33 @@ public class Table implements Data {
 
     public String getCatalogSchemaName() {
         return this.tableHead.getCatalogSchemaName();
+    }
+
+    public Field getFieldByName(String fieldName) {
+        if (this.hasFieldList()) {
+            for (Field field : this.fieldList) {
+                if (Objects.equals(field.name, fieldName)) {
+                    return field;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Insert toInsert() {
+        return WizBased.makeInsert(this);
+    }
+
+    public Select toSelect() {
+        return WizBased.makeSelect(this);
+    }
+
+    public Update toUpdate() {
+        return WizBased.makeUpdate(this);
+    }
+
+    public Delete toDelete() {
+        return WizBased.makeDelete(this);
     }
 
 }
