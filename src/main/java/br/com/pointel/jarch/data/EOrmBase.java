@@ -289,8 +289,8 @@ public class EOrmBase extends EOrm {
     }
 
     @Override
-    public String insert(Insert insert, Strain strain) throws Exception {
-        var ID = getID(getLink(), insert);
+    public Inserted insert(Insert insert, Strain strain) throws Exception {
+        var id = getID(getLink(), insert);
         var strained = new ArrayList<Pair<String, String>>();
         if (strain != null && strain.include != null && !strain.include.isEmpty()) {
             var includes = strain.include.split("\\|");
@@ -342,27 +342,27 @@ public class EOrmBase extends EOrm {
         var insertSQL = builder.toString();
         log.debug("Inserting with SQL: {}", insertSQL);
         var prepared = getLink().prepareStatement(insertSQL);
-        var param_index = 1;
+        var paramIndex = 1;
         for (var valued : insert.valuedList) {
             if (valued.value != null) {
-                setParameter(prepared, param_index, valued);
-                param_index++;
+                setParameter(prepared, paramIndex, valued);
+                paramIndex++;
             }
         }
         if (!strained.isEmpty()) {
             for (var toStrain : strained) {
                 if (!toStrain.getRight().isEmpty()) {
-                    setParameter(prepared, param_index, new Valued(toStrain.getLeft(), toStrain.getRight()));
-                    param_index++;
+                    setParameter(prepared, paramIndex, new Valued(toStrain.getLeft(), toStrain.getRight()));
+                    paramIndex++;
                 }
             }
         }
-        prepared.executeUpdate();
-        return ID;
+        var count = prepared.executeUpdate();
+        return new Inserted(insert, count, id);
     }
 
     @Override
-    public Integer update(Update update, Strain strain) throws Exception {
+    public Updated update(Update update, Strain strain) throws Exception {
         var builder = new StringBuilder("UPDATE ");
         var dataSource = update.tableHead.getCatalogSchemaName();
         builder.append(dataSource);
@@ -412,11 +412,12 @@ public class EOrmBase extends EOrm {
                 }
             }
         }
-        return prepared.executeUpdate();
+        var count = prepared.executeUpdate();
+        return new Updated(update, count);
     }
 
     @Override
-    public Integer delete(Delete delete, Strain strain) throws Exception {
+    public Deleted delete(Delete delete, Strain strain) throws Exception {
         var builder = new StringBuilder("DELETE FROM ");
         var dataSource = delete.tableHead.getCatalogSchemaName();
         builder.append(dataSource);
@@ -439,7 +440,8 @@ public class EOrmBase extends EOrm {
                 }
             }
         }
-        return prepared.executeUpdate();
+        var count = prepared.executeUpdate();
+        return new Deleted(delete, count);
     }
 
     @Override
@@ -464,15 +466,12 @@ public class EOrmBase extends EOrm {
     }
 
     protected String getID(Connection link, Insert insert) throws Exception {
-        if (insert.toGetID == null || insert.toGetID.name == null || insert.toGetID.name
-                        .isEmpty()) {
+        if (insert.toGetID == null || insert.toGetID.name == null || insert.toGetID.name.isEmpty()) {
             return "";
         }
         var format = getIDFormat(link, insert);
         if (format == null || format.isEmpty()) {
-            throw new Exception(
-                            "Could not get the ID because: format not found for the table "
-                                            + insert.tableHead.name);
+            throw new Exception("Could not get the ID because: format not found for the table " + insert.tableHead.name);
         }
         var formatParts = format.split(";");
         if (formatParts.length < 2) {
@@ -482,13 +481,13 @@ public class EOrmBase extends EOrm {
         var formatSize = Integer.parseInt(formatParts[1]);
         switch (formatType) {
             case "MX":
-                return getIDMX(link, insert, formatSize);
+                return getIDNumberMax(link, insert, formatSize);
             case "CX":
-                return getIDCX(link, insert, formatSize);
+                return getIDCharsMax(link, insert, formatSize);
             case "NS":
-                return getIDNS(link, insert, formatSize);
+                return getIDNumberSequential(link, insert, formatSize);
             case "CS":
-                return getIDCS(link, insert, formatSize);
+                return getIDCharsSequential(link, insert, formatSize);
             default:
                 throw new Exception(
                                 "Could not get the ID because: could not identify the format type");
@@ -505,7 +504,7 @@ public class EOrmBase extends EOrm {
         return null;
     }
 
-    protected String getIDMX(Connection link, Insert insert, int formatSize)
+    protected String getIDNumberMax(Connection link, Insert insert, int formatSize)
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
@@ -524,7 +523,7 @@ public class EOrmBase extends EOrm {
         return next;
     }
 
-    protected String getIDCX(Connection link, Insert insert, int formatSize)
+    protected String getIDCharsMax(Connection link, Insert insert, int formatSize)
                     throws Exception {
         var rst = link.createStatement()
                         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM "
@@ -543,7 +542,7 @@ public class EOrmBase extends EOrm {
         return next;
     }
 
-    protected String getIDNS(Connection link, Insert insert, int formatSize)
+    protected String getIDNumberSequential(Connection link, Insert insert, int formatSize)
                     throws Exception {
         String sequence = getIDSequence(link, insert);
         var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence
@@ -561,7 +560,7 @@ public class EOrmBase extends EOrm {
         return next;
     }
 
-    protected String getIDCS(Connection link, Insert insert, int formatSize)
+    protected String getIDCharsSequential(Connection link, Insert insert, int formatSize)
                     throws Exception {
         String sequence = getIDSequence(link, insert);
         var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence

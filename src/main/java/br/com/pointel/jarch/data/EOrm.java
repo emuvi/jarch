@@ -3,7 +3,6 @@ package br.com.pointel.jarch.data;
 import java.io.Closeable;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class EOrm implements Closeable {
@@ -46,21 +45,21 @@ public abstract class EOrm implements Closeable {
         return select(select, null);
     }
 
-    public abstract String insert(Insert insert, Strain strain) throws Exception;
+    public abstract Inserted insert(Insert insert, Strain strain) throws Exception;
 
-    public String insert(Insert insert) throws Exception {
+    public Inserted insert(Insert insert) throws Exception {
         return insert(insert, null);
     }
 
-    public abstract Integer update(Update update, Strain strain) throws Exception;
+    public abstract Updated update(Update update, Strain strain) throws Exception;
 
-    public Integer update(Update update) throws Exception {
+    public Updated update(Update update) throws Exception {
         return update(update, null);
     }
 
-    public abstract Integer delete(Delete delete, Strain strain) throws Exception;
+    public abstract Deleted delete(Delete delete, Strain strain) throws Exception;
 
-    public Integer delete(Delete delete) throws Exception {
+    public Deleted delete(Delete delete) throws Exception {
         return delete(delete, null);
     }
 
