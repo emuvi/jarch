@@ -107,9 +107,22 @@ public class WizString {
         return name.substring(0, begin) + newNameNumber + name.substring(end);
     }
 
-    public static Map<String, Integer> countWordsLike(String chars) {
+    public static int count(String inString, String theString) {
+        if (inString == null || theString == null || inString.isEmpty() || theString.isEmpty()) {
+            return 0;
+        }
+        int result = 0;
+        int index = 0;
+        while ((index = inString.indexOf(theString, index)) != -1) {
+            result++;
+            index += theString.length();
+        }
+        return result;
+    }
+
+    public static Map<String, Integer> countWordsLike(String inString) {
         var result = new HashMap<String, Integer>();
-        for (String word : getWordsLike(chars)) {
+        for (String word : getWordsLike(inString)) {
             result.put(word, result.getOrDefault(word, 0) + 1);
         }
         return result;
