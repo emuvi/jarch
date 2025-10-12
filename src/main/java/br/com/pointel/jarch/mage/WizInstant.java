@@ -306,24 +306,24 @@ public class WizInstant {
 
     public static final DateTimeFormatter formatDateUser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static final DateTimeFormatter formatTimeUser = DateTimeFormatter.ofPattern("HH:mm:ss");
-    public static final DateTimeFormatter formatMillisUser = DateTimeFormatter.ofPattern("HH:mm:ss ZZZ");
+    public static final DateTimeFormatter formatMillisUser = DateTimeFormatter.ofPattern("HH:mm:ss SSS");
     public static final DateTimeFormatter formatDateTimeUser = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-    public static final DateTimeFormatter formatTimestampUser = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss ZZZ");
-    public static final DateTimeFormatter formatInstantUser = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss ZZZ Z");
+    public static final DateTimeFormatter formatTimestampUser = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss SSS");
+    public static final DateTimeFormatter formatInstantUser = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss SSS Z");
 
     public static final DateTimeFormatter formatDateMach = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final DateTimeFormatter formatTimeMach = DateTimeFormatter.ofPattern("HH:mm:ss");
-    public static final DateTimeFormatter formatMillisMach = DateTimeFormatter.ofPattern("HH:mm:ss.ZZZ");
+    public static final DateTimeFormatter formatMillisMach = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
     public static final DateTimeFormatter formatDateTimeMach = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    public static final DateTimeFormatter formatTimestampMach = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ZZZ");
-    public static final DateTimeFormatter formatInstantMach = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.ZZZ Z");
+    public static final DateTimeFormatter formatTimestampMach = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    public static final DateTimeFormatter formatInstantMach = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS Z");
 
     public static final DateTimeFormatter formatDateFile = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final DateTimeFormatter formatTimeFile = DateTimeFormatter.ofPattern("HH-mm-ss");
-    public static final DateTimeFormatter formatMillisFile = DateTimeFormatter.ofPattern("HH-mm-ss-ZZZ");
+    public static final DateTimeFormatter formatMillisFile = DateTimeFormatter.ofPattern("HH-mm-ss-SSS");
     public static final DateTimeFormatter formatDateTimeFile = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-    public static final DateTimeFormatter formatTimestampFile = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss-ZZZ");
-    public static final DateTimeFormatter formatInstantFile = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss-ZZZ-Z");
+    public static final DateTimeFormatter formatTimestampFile = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss-SSS");
+    public static final DateTimeFormatter formatInstantFile = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss-SSS-Z");
 
     public static DateTimeFormatter[] getFormats() {
         return new DateTimeFormatter[] {

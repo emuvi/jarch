@@ -306,24 +306,24 @@ public class WizUtilDate {
 
     public static SimpleDateFormat formatDateUser = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat formatTimeUser = new SimpleDateFormat("HH:mm:ss");
-    public static SimpleDateFormat formatMillisUser = new SimpleDateFormat("HH:mm:ss ZZZ");
+    public static SimpleDateFormat formatMillisUser = new SimpleDateFormat("HH:mm:ss SSS");
     public static SimpleDateFormat formatDateTimeUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    public static SimpleDateFormat formatTimestampUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ZZZ");
-    public static SimpleDateFormat formatInstantUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss ZZZ Z");
+    public static SimpleDateFormat formatTimestampUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss SSS");
+    public static SimpleDateFormat formatInstantUser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss SSS Z");
 
     public static SimpleDateFormat formatDateMach = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat formatTimeMach = new SimpleDateFormat("HH:mm:ss");
-    public static SimpleDateFormat formatMillisMach = new SimpleDateFormat("HH:mm:ss.ZZZ");
+    public static SimpleDateFormat formatMillisMach = new SimpleDateFormat("HH:mm:ss.SSS");
     public static SimpleDateFormat formatDateTimeMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static SimpleDateFormat formatTimestampMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ZZZ");
-    public static SimpleDateFormat formatInstantMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ZZZ Z");
+    public static SimpleDateFormat formatTimestampMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    public static SimpleDateFormat formatInstantMach = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
 
     public static SimpleDateFormat formatDateFile = new SimpleDateFormat("yyyy-MM-dd");
     public static SimpleDateFormat formatTimeFile = new SimpleDateFormat("HH-mm-ss");
-    public static SimpleDateFormat formatMillisFile = new SimpleDateFormat("HH-mm-ss-ZZZ");
+    public static SimpleDateFormat formatMillisFile = new SimpleDateFormat("HH-mm-ss-SSS");
     public static SimpleDateFormat formatDateTimeFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-    public static SimpleDateFormat formatTimestampFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-ZZZ");
-    public static SimpleDateFormat formatInstantFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-ZZZ-Z");
+    public static SimpleDateFormat formatTimestampFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+    public static SimpleDateFormat formatInstantFile = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS-Z");
 
     public static SimpleDateFormat[] getFormats() {
         return new SimpleDateFormat[] {
