@@ -52,7 +52,7 @@ public class WizLocalTime {
             return java.time.Instant.class.cast(value).atZone(java.time.ZoneId.systemDefault()).toLocalTime();
         }
         if (WizLang.isChildOf(value.getClass(), java.util.Date.class)) {
-            return java.util.Date.class.cast(value).toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalTime();
+            return java.time.Instant.ofEpochMilli(java.util.Date.class.cast(value).getTime()).atZone(java.time.ZoneId.systemDefault()).toLocalTime();
         }
         if (WizLang.isChildOf(value.getClass(), java.sql.Date.class)) {
             return java.sql.Date.class.cast(value).toLocalDate().atStartOfDay().toLocalTime();

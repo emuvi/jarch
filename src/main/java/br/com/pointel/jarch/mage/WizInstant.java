@@ -51,7 +51,7 @@ public class WizInstant {
             return java.time.OffsetTime.class.cast(value).atDate(java.time.LocalDate.now()).atZoneSameInstant(java.time.ZoneId.systemDefault()).toInstant();
         }
         if (WizLang.isChildOf(value.getClass(), java.util.Date.class)) {
-            return java.util.Date.class.cast(value).toInstant();
+            return java.time.Instant.ofEpochMilli(java.util.Date.class.cast(value).getTime());
         }
         if (WizLang.isChildOf(value.getClass(), java.sql.Date.class)) {
             return java.sql.Date.class.cast(value).toInstant();
