@@ -132,7 +132,7 @@ public class WizDesk {
                     afterStart.run();
                 }
             } catch (Exception e) {
-                LOGGER.error("Could not start look and feel.", e);
+                LOGGER.error("Could not start desktop application: " + title, e);
             }
         });
     }
