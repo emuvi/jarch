@@ -45,7 +45,6 @@ public class WizArray {
         throw new IllegalArgumentException("Could not convert to Object[] the value of class: " + value.getClass().getName());
     }
 
-    @SuppressWarnings("all")
     public static <T> boolean has(T value, T... onArray) {
         if (onArray != null) {
             for (Object daMatriz : onArray) {
@@ -57,6 +56,39 @@ public class WizArray {
         return false;
     }
 
+    public static <T> boolean has(T[] values, T[] onArray) {
+        if (values == null || onArray == null) {
+            return false;
+        }
+        var founds = new boolean[values.length];
+        for (Object item : onArray) {
+            for (int i = 0; i < values.length; i++) {
+                if (Objects.equals(values[i], item)) {
+                    founds[i] = true;
+                }
+            }
+        }
+        for (var found : founds) {
+            if (!found) {
+                return false;
+            }
+        }
+        return true; 
+    }
+
+    public static <T> boolean hasAny(T[] values, T[] onArray) {
+        if (values == null || onArray == null) {
+            return false;
+        }
+        for (Object item : onArray) {
+            for (int i = 0; i < values.length; i++) {
+                if (Objects.equals(values[i], item)) {
+                    return true;
+                }
+            }
+        }
+        return false; 
+    }
 
     public static boolean has(boolean value, boolean... onArray) {
         if (onArray != null) {
