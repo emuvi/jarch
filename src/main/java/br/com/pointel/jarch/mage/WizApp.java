@@ -2,9 +2,12 @@ package br.com.pointel.jarch.mage;
 
 public class WizApp {
 
-    private static String title = WizLang.getMainClassSimpleName();
+    private static String title = null;
 
     public static String getTitle() {
+        if (title == null) {
+            title = WizLang.getPointelMainClassSimpleName();
+        }
         return title;
     }
 
@@ -12,9 +15,12 @@ public class WizApp {
         WizApp.title = title;
     }
 
-    private static String name = title.toLowerCase();
+    private static String name = null;
 
     public static String getName() {
+        if (name == null) {
+            name = getTitle().toLowerCase();
+        }
         return name;
     }
 

@@ -325,30 +325,40 @@ public class WizLang {
         }
     }
 
-    public static String getMainClassSimpleName() {
-        var name = getMainClassName();
-        if (name == null) {
-            return null;
+    public static String getPointelMainClassSimpleName() {
+        var result = getPointelMainClassName();
+        if (result == null) {
+            return "";
         }
-        return name.substring(name.lastIndexOf('.') + 1);
+        return result.substring(result.lastIndexOf('.') + 1);
     }
 
-    public static String getMainClassName() {
+    public static String getPointelMainClassName() {
         for (var entry : Thread.getAllStackTraces().entrySet()) {
-            if ("main".equals(entry.getKey().getName())) {
-                var stack = entry.getValue();
-                for (int i = stack.length - 1; i >= 0; i--) {
-                    if ("main".equals(stack[i].getMethodName())) {
-                        return stack[i].getClassName();
-                    }
+            var thread = entry.getKey();
+            var stack = thread.getStackTrace();
+            for (int i = stack.length - 1; i >= 0; i--) {
+                if ("main".equals(stack[i].getMethodName()) 
+                        && stack[i].getClassName().startsWith("br.com.pointel")) {
+                    return stack[i].getClassName();
                 }
             }
         }
-        return null;
+        for (var entry : Thread.getAllStackTraces().entrySet()) {
+            var thread = entry.getKey();
+            var stack = thread.getStackTrace();
+            for (int i = stack.length - 1; i >= 0; i--) {
+                if ("<clinit>".equals(stack[i].getMethodName()) 
+                        && stack[i].getClassName().startsWith("br.com.pointel")) {
+                    return stack[i].getClassName();
+                }
+            }
+        }
+        return "App";
     }
 
     public static File getUserDirectory() {
-        return new File(System.getProperty("user.dir"));
+        return new File(System.getProperty("user.home"));
     }
 
 }
