@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
 import java.util.Objects;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
@@ -357,8 +358,20 @@ public class WizLang {
         return "App";
     }
 
-    public static File getUserDirectory() {
+    public static File getUserDir() {
         return new File(System.getProperty("user.home"));
+    }
+
+    public static File getPointelAppDir() {
+        var result = new File(getUserDir(), ".pointel");
+        if (!result.exists()) {
+            result.mkdirs();
+        }
+        result = new File(result, WizApp.getName());
+        if (!result.exists()) {
+            result.mkdirs();
+        }
+        return result;
     }
 
 }

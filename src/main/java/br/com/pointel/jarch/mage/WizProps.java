@@ -31,7 +31,7 @@ public class WizProps {
     }
 
     public static void load(String name) throws Exception {
-        File file = new File(WizLang.getUserDirectory(), name + ".ini");
+        File file = new File(WizLang.getPointelAppDir(), name + ".ini");
         if (file.exists()) {
             try (FileReader input = new FileReader(file)) {
                 props.load(input);
@@ -52,7 +52,7 @@ public class WizProps {
     }
 
     public static void save(String name) throws Exception {
-        File file = new File(WizLang.getUserDirectory(), name + ".ini");
+        File file = new File(WizLang.getPointelAppDir(), name + ".ini");
         try (FileWriter output = new FileWriter(file)) {
             props.store(output, name + " properties");
         }
