@@ -1,5 +1,11 @@
 package br.com.pointel.jarch.mage;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Blob;
@@ -19,6 +25,20 @@ public class WizData {
     private static final Gson gson = new Gson();
 
     private WizData() {
+    }
+
+    public static void toFile(Serializable value, File file) throws Exception {
+        try (var fileOut = new FileOutputStream(file);
+                var objectOut = new ObjectOutputStream(fileOut)) {
+            objectOut.writeObject(value);
+        }
+    }
+
+    public static <T> T fromFile(Class<T> clazz, File file) throws Exception {
+        try (var fileIn = new FileInputStream(file);
+                var objectIn = new ObjectInputStream(fileIn)) {
+            return clazz.cast(objectIn.readObject());
+        }
     }
 
     public static String toChars(Object value) {
