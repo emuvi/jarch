@@ -1,5 +1,6 @@
 package br.com.pointel.jarch.mage;
 
+import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -29,8 +30,7 @@ public class WizLang {
 
     private static final Logger log = LoggerFactory.getLogger(WizLang.class);
 
-    private WizLang() {
-    }
+    private WizLang() {}
 
     public static <T extends Serializable> T deepClone(final T value) {
         try {
@@ -345,6 +345,10 @@ public class WizLang {
             }
         }
         return null;
+    }
+
+    public static File getUserDirectory() {
+        return new File(System.getProperty("user.dir"));
     }
 
 }

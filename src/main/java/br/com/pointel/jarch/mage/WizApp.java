@@ -12,4 +12,14 @@ public class WizApp {
         WizApp.title = title;
     }
 
+    private static String name = title.toLowerCase();
+
+    public static String getName() {
+        return name;
+    }
+
+    public static void setName(String name) {
+        WizApp.name = name;
+    }
+
 }

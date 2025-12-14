@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 
 public class WizProps {
 
-    private WizProps() {
-    }
+    private WizProps() {}
 
-    private static Logger log = LoggerFactory.getLogger(WizProps.class);
+    private static final Logger log = LoggerFactory.getLogger(WizProps.class);
     private static final Properties props = new Properties();
 
     static {
@@ -28,15 +27,34 @@ public class WizProps {
     }
 
     public static void load() throws Exception {
-        load("props");
+        load(WizApp.getName());
     }
 
     public static void load(String name) throws Exception {
-        File file = new File(name + ".ini");
+        File file = new File(WizLang.getUserDirectory(), name + ".ini");
         if (file.exists()) {
             try (FileReader input = new FileReader(file)) {
                 props.load(input);
             }
+        }
+    }
+
+    public static void trySave() {
+        try {
+            save();
+        } catch (Exception ex) {
+            log.error("Error saving properties", ex);
+        }
+    }
+
+    public static void save() throws Exception {
+        save(WizApp.getName());
+    }
+
+    public static void save(String name) throws Exception {
+        File file = new File(WizLang.getUserDirectory(), name + ".ini");
+        try (FileWriter output = new FileWriter(file)) {
+            props.store(output, name + " properties");
         }
     }
 
@@ -74,25 +92,6 @@ public class WizProps {
     public static void set(String key, String value) {
         props.setProperty(key, value);
         trySave();
-    }
-
-    public static void trySave() {
-        try {
-            save();
-        } catch (Exception ex) {
-            log.error("Error saving properties", ex);
-        }
-    }
-
-    public static void save() throws Exception {
-        save("props");
-    }
-
-    public static void save(String name) throws Exception {
-        File file = new File(name + ".ini");
-        try (FileWriter output = new FileWriter(file)) {
-            props.store(output, name + " properties");
-        }
     }
 
 }
