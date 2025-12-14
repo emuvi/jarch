@@ -4,7 +4,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class WizCharsTest {
+class WizCharsTest {
 
     @Test
     void testGetWords() {

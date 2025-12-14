@@ -111,10 +111,17 @@ public class WizDesk {
     }
 
     private static boolean started = false;
-    private static String title = null;
+
+    public static void start() {
+        start(WizApp.getTitle(), null);
+    }
 
     public static void start(String title) {
         start(title, null);
+    }
+
+    public static void start(Runnable afterStart) {
+        start(WizApp.getTitle(), afterStart);
     }
 
     public static void start(String title, Runnable afterStart) {
@@ -126,7 +133,7 @@ public class WizDesk {
                     case KEY_LOOK_AND_FEEL_DARCULA -> UIManager.setLookAndFeel(new FlatDarculaLaf());
                     default -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 }
-                WizDesk.title = title;
+                WizApp.setTitle(title);
                 WizDesk.started = true;
                 if (afterStart != null) {
                     afterStart.run();
@@ -150,8 +157,7 @@ public class WizDesk {
         if (!silent) {
             Runnable runner = () -> {
                 JOptionPane.showMessageDialog(WizDesk.getActiveWindow(), message,
-                                WizDesk.title,
-                                JOptionPane.INFORMATION_MESSAGE);
+                                WizApp.getTitle(),JOptionPane.INFORMATION_MESSAGE);
             };
             if (SwingUtilities.isEventDispatchThread()) {
                 runner.run();
@@ -163,14 +169,12 @@ public class WizDesk {
 
     public static boolean question(String question) {
         return JOptionPane.showConfirmDialog(WizDesk.getActiveWindow(), question,
-                        WizDesk.title,
-                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                        WizApp.getTitle(), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
     }
 
     public static String input(String question, String value) {
         return (String) JOptionPane.showInputDialog(WizDesk.getActiveWindow(), question,
-                        WizDesk.title,
-                        JOptionPane.QUESTION_MESSAGE, null, null, value);
+                        WizApp.getTitle(), JOptionPane.QUESTION_MESSAGE, null, null, value);
     }
 
     public static Window getActiveWindow() {

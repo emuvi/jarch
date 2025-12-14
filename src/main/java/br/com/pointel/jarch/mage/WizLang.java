@@ -325,4 +325,26 @@ public class WizLang {
         }
     }
 
+    public static String getMainClassSimpleName() {
+        var name = getMainClassName();
+        if (name == null) {
+            return null;
+        }
+        return name.substring(name.lastIndexOf('.') + 1);
+    }
+
+    public static String getMainClassName() {
+        for (var entry : Thread.getAllStackTraces().entrySet()) {
+            if ("main".equals(entry.getKey().getName())) {
+                var stack = entry.getValue();
+                for (int i = stack.length - 1; i >= 0; i--) {
+                    if ("main".equals(stack[i].getMethodName())) {
+                        return stack[i].getClassName();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 }
