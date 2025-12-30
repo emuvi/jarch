@@ -1,3 +1,3 @@
-# JArch
+# Jarch
 
-JArch is a chest full of utilities for the Java environment.
+Jarch is a chest full of utilities for the Java environment.

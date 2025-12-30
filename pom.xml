@@ -8,9 +8,9 @@
     <artifactId>jarch</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
-    <name>JArch</name>
+    <name>Jarch</name>
     <url>https://github.com/emuvi/jarch</url>
-    <description>JArch is a chest full of utilities for the Java environment.</description>
+    <description>Jarch is a chest full of utilities for the Java environment.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
