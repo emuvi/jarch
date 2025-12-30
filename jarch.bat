@@ -1,1 +1,0 @@
-jshell --class-path dist/jarch.jar
