@@ -12,30 +12,17 @@ public class Storage {
     private final Bases bases;
 
     public Storage(Bases bases) {
-        this.bases = bases;
         this.stores = new HashMap<>();
-        this.start();
+        this.bases = bases;
     }
 
     public Connection getLink(String ofBaseName) throws Exception {
-        if (this.stores == null) {
-            throw new Exception("No stores are served.");
-        }
-        var dataSource = this.stores.get(ofBaseName);
-        if (dataSource == null) {
-            throw new Exception("Base " + ofBaseName + " not found");
-        }
+        var dataSource = getSource(ofBaseName);
         return dataSource.getConnection();
     }
 
     public EOrm getEOrm(String onBaseName) throws Exception {
-        if (this.stores == null) {
-            throw new Exception("No stores are served.");
-        }
-        var dataSource = this.stores.get(onBaseName);
-        if (dataSource == null) {
-            throw new Exception("Base " + onBaseName + " not found");
-        }
+        var dataSource = getSource(onBaseName);
         var link = dataSource.getConnection();
         link.setAutoCommit(true);
         var dataWay = this.bases.getFromName(onBaseName);
@@ -44,41 +31,40 @@ public class Storage {
     }
 
     public ESql getESql(String onBaseName) throws Exception {
-        if (this.stores == null) {
-            throw new Exception("No stores are served.");
-        }
-        var dataSource = this.stores.get(onBaseName);
-        if (dataSource == null) {
-            throw new Exception("Base " + onBaseName + " not found");
-        }
+        var dataSource = getSource(onBaseName);
         var link = dataSource.getConnection();
         link.setAutoCommit(true);
         return new ESql(link);
     }
 
-    private void start() {
-        for (var dataWays : bases) {
-            newSourceOnStore(dataWays);
+    private BasicDataSource getSource(String onBaseName) throws Exception {
+        if (this.stores.containsKey(onBaseName)) {
+            return this.stores.get(onBaseName);
         }
+        var dataWay = this.bases.getFromName(onBaseName);
+        if (dataWay == null) {
+            throw new Exception("Base " + onBaseName + " not found");
+        }
+        return this.newSourceOnStore(dataWay);
     }
 
-    private void newSourceOnStore(BasedWays dataWays) {
+    private BasicDataSource newSourceOnStore(BasedWays dataWays) throws Exception {
         if (dataWays == null) {
-            throw new RuntimeException("DataWays cannot be null.");
+            throw new Exception("DataWays cannot be null.");
         }
         var name = dataWays.getName();
         if (WizString.isEmpty(name)) {
-            throw new RuntimeException("DataWays name cannot be empty.");
+            throw new Exception("DataWays name cannot be empty.");
         }
         var url = dataWays.getUrl();
         if (WizString.isEmpty(url)) {
-            throw new RuntimeException("DataWays URL cannot be empty.");
+            throw new Exception("DataWays URL cannot be empty.");
         }
         if (dataWays.dataJdbc == null && dataWays.dataLink == null) {
-            throw new RuntimeException("Either dataJdbc or dataLink must be provided in DataWays.");
+            throw new Exception("Either dataJdbc or dataLink must be provided in DataWays.");
         }
         if (dataWays.dataJdbc != null && dataWays.dataLink != null) {
-            throw new RuntimeException("Only one of dataJdbc or dataLink should be provided in DataWays.");
+            throw new Exception("Only one of dataJdbc or dataLink should be provided in DataWays.");
         }
         var newSource = new BasicDataSource();
         newSource.setUrl(url);
@@ -94,6 +80,7 @@ public class Storage {
         newSource.setMaxIdle(dataWays.poolMaxIdle);
         newSource.setMaxTotal(dataWays.poolMaxTotal);
         this.stores.put(name, newSource);
+        return newSource;
     }
 
 }
