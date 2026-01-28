@@ -1,4 +1,4 @@
-package br.com.pointel.jarch.gear;
+package br.com.pointel.jarch.desk;
 
 import java.awt.Component;
 import java.awt.Container;

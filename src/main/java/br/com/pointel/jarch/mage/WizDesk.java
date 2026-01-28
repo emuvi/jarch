@@ -54,7 +54,8 @@ import org.slf4j.LoggerFactory;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import br.com.pointel.jarch.gear.SwingFramer;
+
+import br.com.pointel.jarch.desk.SwingFramer;
 
 public class WizDesk {
 
