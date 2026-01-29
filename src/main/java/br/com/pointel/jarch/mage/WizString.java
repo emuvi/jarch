@@ -2,6 +2,7 @@ package br.com.pointel.jarch.mage;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -142,7 +143,7 @@ public class WizString {
     }
 
     public static Set<String> getWordsKeySetOrdered(String chars) {
-        return new LinkedHashSet<>(getWords(chars).stream()
+        return new LinkedHashSet<>(getWordsList(chars).stream()
                 .map(String::toLowerCase).toList());
     }
 
@@ -152,7 +153,7 @@ public class WizString {
     }
 
     public static Set<String> getWordsKeySet(String chars) {
-        return new HashSet<>(getWords(chars).stream()
+        return new HashSet<>(getWordsList(chars).stream()
                 .map(String::toLowerCase).toList());
     }
 
@@ -161,15 +162,23 @@ public class WizString {
     }
 
     public static Set<String> getWordsSet(String source) {
-        return new HashSet<>(getWords(source));
+        return new HashSet<>(getWordsList(source));
     }
 
     public static List<String> getWordsLike(String source) {
-        return getWords(source).stream()
+        return getWordsList(source).stream()
                 .map(WizString::removeAccents).toList();
     }
 
-    public static List<String> getWords(String chars) {
+    public static String[] getWords(String chars) {
+        return chars.split("\\s+");
+    }
+
+    public static List<String> getWordsList(String chars) {
+        return Arrays.asList(getWords(chars));
+    }
+
+    public static List<String> getWordsOnDiffers(String chars) {
         var result = new ArrayList<String>();
         var spaced = chars.split("\\s+");
         for (String word : spaced) {
@@ -207,8 +216,8 @@ public class WizString {
     public static String capitalizeWords(String chars, int minSize) {
         var words = getWords(chars);
         var builder = new StringBuilder();
-        for (int i = 0; i < words.size(); i++) {
-            var word = words.get(i).toLowerCase();
+        for (int i = 0; i < words.length; i++) {
+            var word = words[i].toLowerCase();
             if (i > 0) {
                 builder.append(" ");
             }

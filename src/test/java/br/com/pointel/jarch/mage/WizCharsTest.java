@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class WizCharsTest {
 
     @Test
-    void testGetWords() {
+    void testGetWordsOnDiffers() {
         var tests = List.of(
             new GetWordsTest("abc test123", List.of("abc", "test", "123")),
             new GetWordsTest("abc test123.45", List.of("abc", "test", "123.45")),
@@ -20,7 +20,7 @@ class WizCharsTest {
             new GetWordsTest("abc test123.45 abc.def", List.of("abc", "test", "123.45", "abc", ".", "def"))
         );
         for (var test : tests) {
-            var result = WizString.getWords(test.input);
+            var result = WizString.getWordsOnDiffers(test.input);
             Assertions.assertLinesMatch(test.expected, result);
         }
     }
