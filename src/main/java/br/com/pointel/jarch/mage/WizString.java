@@ -210,22 +210,44 @@ public class WizString {
     }
 
     public static String capitalizeWords(String chars) {
-        return capitalizeWords(chars, 3);
+        return capitalizeWords(chars, 4);
     }
 
     public static String capitalizeWords(String chars, int minSize) {
         var words = getWords(chars);
         var builder = new StringBuilder();
         for (int i = 0; i < words.length; i++) {
-            var word = words[i].toLowerCase();
             if (i > 0) {
                 builder.append(" ");
             }
-            if (word.length() >= minSize) {
-                builder.append(word.substring(0, 1).toUpperCase());
-                builder.append(word.substring(1));
+            var word = words[i].toLowerCase();
+            if (word.contains("-")) {
+                var parts = word.split("\\-");
+                for (int i2 = 0; i2 < parts.length; i2++) {
+                    var part = parts[i2];
+                    if (i2 > 0) {
+                        builder.append("-");
+                    }
+                    builder.append(part.substring(0, 1).toUpperCase());
+                    builder.append(part.substring(1));
+                }
+            } else if (word.contains("_")) {
+                var parts = word.split("\\_");
+                for (int i2 = 0; i2 < parts.length; i2++) {
+                    var part = parts[i2];
+                    if (i2 > 0) {
+                        builder.append("_");
+                    }
+                    builder.append(part.substring(0, 1).toUpperCase());
+                    builder.append(part.substring(1));
+                }
             } else {
-                builder.append(word);
+                if (word.length() >= minSize) {
+                    builder.append(word.substring(0, 1).toUpperCase());
+                    builder.append(word.substring(1));
+                } else {
+                    builder.append(word);
+                }
             }
         }
         return capitalizeFirstLetter(builder.toString());
