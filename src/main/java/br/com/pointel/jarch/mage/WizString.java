@@ -200,6 +200,28 @@ public class WizString {
         return chars.split("\\r?\\n");
     }
 
+    public static String capitalizeWords(String chars) {
+        return capitalizeWords(chars, 3);
+    }
+
+    public static String capitalizeWords(String chars, int minSize) {
+        var words = getWords(chars);
+        var result = new StringBuilder();
+        for (int i = 0; i < words.size(); i++) {
+            var word = words.get(i).toLowerCase();
+            if (i > 0) {
+                result.append(" ");
+            }
+            if (word.length() >= minSize) {
+                result.append(word.substring(0, 1).toUpperCase());
+                result.append(word.substring(1));
+            } else {
+                result.append(word);
+            }
+        }
+        return result.toString();
+    }
+
     public static String switchCase(String chars) {
         var result = new StringBuilder();
         for (char c : chars.toCharArray()) {
