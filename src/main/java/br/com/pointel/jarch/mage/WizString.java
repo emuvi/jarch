@@ -206,20 +206,26 @@ public class WizString {
 
     public static String capitalizeWords(String chars, int minSize) {
         var words = getWords(chars);
-        var result = new StringBuilder();
+        var builder = new StringBuilder();
         for (int i = 0; i < words.size(); i++) {
             var word = words.get(i).toLowerCase();
             if (i > 0) {
-                result.append(" ");
+                builder.append(" ");
             }
             if (word.length() >= minSize) {
-                result.append(word.substring(0, 1).toUpperCase());
-                result.append(word.substring(1));
+                builder.append(word.substring(0, 1).toUpperCase());
+                builder.append(word.substring(1));
             } else {
-                result.append(word);
+                builder.append(word);
             }
         }
-        return result.toString();
+        return capitalizeFirstLetter(builder.toString());
+    }
+
+    public static String capitalizeFirstLetter(String words) {
+        return words.length() > 1
+                ? words.substring(0, 1).toUpperCase() + words.substring(1) 
+                : words.toUpperCase();
     }
 
     public static String switchCase(String chars) {
