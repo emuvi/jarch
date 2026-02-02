@@ -3,6 +3,7 @@ package br.com.pointel.jarch.mage;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -533,6 +534,70 @@ public class WizString {
         chars = chars.replace("\\n", "\n");
         chars = chars.replace("\\r", "\r");
         return chars.replace("\\\\", "\\");
+    }
+
+    public static String replaceHolders(String chars) {
+        var result = chars;
+        var now = new Date();
+        if (result.contains("${date}")) {
+            result = result.replace("${date}", WizUtilDate.format(now));
+        }
+        if (result.contains("${dateUser}")) {
+            result = result.replace("${dateUser}", WizUtilDate.formatDateUser(now));
+        }
+        if (result.contains("${timeUser}")) {
+            result = result.replace("${timeUser}", WizUtilDate.formatTimeUser(now));
+        }
+        if (result.contains("${millisUser}")) {
+            result = result.replace("${millisUser}", WizUtilDate.formatMillisUser(now));
+        }
+        if (result.contains("${dateTimeUser}")) {
+            result = result.replace("${dateTimeUser}", WizUtilDate.formatDateTimeUser(now));
+        }
+        if (result.contains("${timestampUser}")) {
+            result = result.replace("${timestampUser}", WizUtilDate.formatTimestampUser(now));
+        }
+        if (result.contains("${instantUser}")) {
+            result = result.replace("${instantUser}", WizUtilDate.formatInstantUser(now));
+        }
+        if (result.contains("${dateMach}")) {
+            result = result.replace("${dateMach}", WizUtilDate.formatDateMach(now));
+        }
+        if (result.contains("${timeMach}")) {
+            result = result.replace("${timeMach}", WizUtilDate.formatTimeMach(now));
+        }
+        if (result.contains("${millisMach}")) {
+            result = result.replace("${millisMach}", WizUtilDate.formatMillisMach(now));
+        }
+        if (result.contains("${dateTimeMach}")) {
+            result = result.replace("${dateTimeMach}", WizUtilDate.formatDateTimeMach(now));
+        }
+        if (result.contains("${timestampMach}")) {
+            result = result.replace("${timestampMach}", WizUtilDate.formatTimestampMach(now));
+        }
+        if (result.contains("${instantMach}")) {
+            result = result.replace("${instantMach}", WizUtilDate.formatInstantMach(now));
+        }
+        if (result.contains("${dateFile}")) {
+            result = result.replace("${dateFile}", WizUtilDate.formatDateFile(now));
+        }
+        if (result.contains("${timeFile}")) {
+            result = result.replace("${timeFile}", WizUtilDate.formatTimeFile(now));
+        }
+        if (result.contains("${millisFile}")) {
+            result = result.replace("${millisFile}", WizUtilDate.formatMillisFile(now));
+        }
+        if (result.contains("${dateTimeFile}")) {
+            result = result.replace("${dateTimeFile}", WizUtilDate.formatDateTimeFile(now));
+        }
+        if (result.contains("${timestampFile}")) {
+            result = result.replace("${timestampFile}", WizUtilDate.formatTimestampFile(now));
+        }
+        if (result.contains("${instantFile}")) {
+            result = result.replace("${instantFile}", WizUtilDate.formatInstantFile(now));
+        }
+        result = replaceEnvVars(result);
+        return result;
     }
 
     public static String replaceEnvVars(String chars) {
