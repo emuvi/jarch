@@ -512,6 +512,19 @@ public class WizString {
         return chars;
     }
 
+    public static String stripFirstLines(String chars, int size) {
+        if (chars == null) {
+            return null;
+        }
+        var lines = getLines(chars);
+        var builder = new StringBuilder();
+        for (var i = size; i < lines.length; i++) {
+            builder.append(lines[i]);
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
     public static String replaceBreaks(String chars) {
         if (WizString.isEmpty(chars)) {
             return chars;
