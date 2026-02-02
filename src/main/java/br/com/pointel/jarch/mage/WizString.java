@@ -597,6 +597,7 @@ public class WizString {
             result = result.replace("${instantFile}", WizUtilDate.formatInstantFile(now));
         }
         result = replaceEnvVars(result);
+        result = remakeBreaks(result);
         return result;
     }
 
