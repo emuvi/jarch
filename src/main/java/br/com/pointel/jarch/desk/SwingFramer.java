@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizLang;
 import br.com.pointel.jarch.mage.WizProps;
 
 public class SwingFramer {
@@ -96,7 +97,9 @@ public class SwingFramer {
     }
 
     public void loadFramePropsComps(Component component) {
-        if (component instanceof Container container) {
+        if (component instanceof Container container &&
+                !WizLang.isChildOf(component.getClass(), JTextComponent.class, JComboBox.class, JSpinner.class, JCheckBox.class)
+            ) {
             for (Component inside : container.getComponents()) {
                 loadFramePropsComps(inside);
             }
@@ -147,7 +150,9 @@ public class SwingFramer {
                 }
             }
         }
-        if (component instanceof Container container) {
+        if (component instanceof Container container &&
+                !WizLang.isChildOf(component.getClass(), JTextComponent.class, JComboBox.class, JSpinner.class, JCheckBox.class)
+        ) {
             for (Component inside : container.getComponents()) {
                 saveFramePropsComps(inside);
             }

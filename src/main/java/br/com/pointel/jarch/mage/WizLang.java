@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
 import java.util.Objects;
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
@@ -163,6 +162,19 @@ public class WizLang {
         }
         return parent.isAssignableFrom(child);
     }
+
+    public static boolean isChildOf(Class<?> child, Class<?>... parents) {
+        if (child == null || parents == null || parents.length == 0) {
+            return false;
+        }
+        for (Class<?> parent : parents) {
+            if (isChildOf(child, parent)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public static Constructor<?> getBestConstructor(Class<?> fromClass, Nature[] valNatures, String[] valNames) {
         if (fromClass == null || valNatures == null || valNatures.length == 0) {
