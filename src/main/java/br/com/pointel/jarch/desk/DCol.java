@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 
-public class DCol extends DPane {
+public class DCol extends DPanel {
 
     private final GridBagConstraints layout = new GridBagConstraints();
 

@@ -5,16 +5,16 @@ import javax.swing.JPanel;
 
 import java.awt.LayoutManager;
 
-public class DPane extends JPanel {
+public class DPanel extends JPanel {
 
-    public DPane() {
+    public DPanel() {
     }
 
-    public DPane(LayoutManager layout) {
+    public DPanel(LayoutManager layout) {
         super(layout);
     }
 
-    public DPane borderEmpty(int size) {
+    public DPanel borderEmpty(int size) {
         setBorder(BorderFactory.createEmptyBorder(size, size, size, size));
         return this;
     }

@@ -6,7 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 
-public class DRow extends DPane {
+public class DRow extends DPanel {
 
     private final GridBagConstraints layout = new GridBagConstraints();
 
