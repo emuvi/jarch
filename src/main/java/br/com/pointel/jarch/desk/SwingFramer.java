@@ -34,7 +34,7 @@ public class SwingFramer {
     public SwingFramer(JFrame frame, Font font) {
         this.frame = frame;
         this.font = font;
-        this.rootName = "FRAME_" + WizString.makeParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
+        this.rootName = "FRAME_" + WizString.getParameterName(!frame.getName().isEmpty() ? frame.getName() : frame.getTitle());
         this.popMenu = new JPopupMenu();
     }
 
@@ -105,7 +105,7 @@ public class SwingFramer {
             }
         }
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
-            var paramName =  rootName + "_COMP_" + WizString.makeParameterName(component.getName());
+            var paramName =  rootName + "_COMP_" + WizString.getParameterName(component.getName());
             SwingUtilities.invokeLater(() -> {
                 switch (component) {
                     case JTextComponent textField ->
@@ -134,7 +134,7 @@ public class SwingFramer {
 
     public void saveFramePropsComps(Component component) {
         if (component != null && component.getName() != null && !component.getName().isEmpty()) {
-            var paramName = rootName + "_COMP_" + WizString.makeParameterName(component.getName());
+            var paramName = rootName + "_COMP_" + WizString.getParameterName(component.getName());
             switch (component) {
                 case JTextComponent textField ->
                     WizProps.set(paramName, textField.getText());

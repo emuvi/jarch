@@ -61,12 +61,30 @@ public class WizString {
         return randomNumberString.toString();
     }
 
-    public static String makeParameterName(String chars) {
-        return chars
-                .replace(" ", "_")
-                .replace("-", "_")
-                .replace("__", "_")
-                .toUpperCase();
+    public static String getParameterName(String ofChars) {
+        if (ofChars == null) {
+            return null;
+        }
+        if (ofChars.isEmpty()) {
+            return ofChars;
+        }
+        var builder = new StringBuilder();
+        var lastIsUpper = isFirstUpperCase(ofChars);
+        for (char ch : ofChars.toCharArray()){ 
+            if (Character.isUpperCase(ch) && !lastIsUpper) {
+                builder.append('_');
+            }
+            if (ch == ' ' || ch == '-') {
+                builder.append('_');
+            } else {
+                builder.append(Character.toUpperCase(ch));
+            }
+            lastIsUpper = Character.isUpperCase(ch);
+        }
+        return builder.toString()
+                .replaceAll("^_+", "")
+                .replaceAll("_+$", "")
+                .replaceAll("_+", "_");
     }
 
     public static String mountGrid(List<Pair<String, String>> grid) {
@@ -341,13 +359,12 @@ public class WizString {
         return result.toString();
     }
 
-    public static boolean isFirstUpper(String chars) {
+    public static boolean isFirstUpperCase(String chars) {
         if (chars == null) {
             return false;
         }
         if (!chars.isEmpty()) {
-            var first = chars.substring(0, 1);
-            return first.toUpperCase().equals(first);
+            return Character.isUpperCase(chars.charAt(0));
         }
         return false;
     }

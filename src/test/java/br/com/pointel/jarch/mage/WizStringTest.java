@@ -1,10 +1,30 @@
 package br.com.pointel.jarch.mage;
 
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class WizCharsTest {
+import java.util.List;
+
+class WizStringTest {
+
+    @Test
+    void testGetParameterName() {
+        assertEquals(null, WizString.getParameterName(null));
+        assertEquals("", WizString.getParameterName(""));
+        assertEquals("TEST", WizString.getParameterName("test"));
+        assertEquals("TEST", WizString.getParameterName("TEST"));
+        assertEquals("TEST_CASE", WizString.getParameterName("TestCase"));
+        assertEquals("TEST_CASE", WizString.getParameterName("testCase"));
+        assertEquals("TEST_CASE", WizString.getParameterName("test Case"));
+        assertEquals("TEST_CASE", WizString.getParameterName("test-Case"));
+        assertEquals("TEST_CASE", WizString.getParameterName("test-case"));
+        assertEquals("TEST_CASE", WizString.getParameterName("test--case"));
+        assertEquals("A_URL_VALUE", WizString.getParameterName("aURL_Value"));
+        assertEquals("MY_URL", WizString.getParameterName("myURL"));
+        assertEquals("TEST_CASE", WizString.getParameterName(" test case "));
+        assertEquals("FIRST_NAME", WizString.getParameterName("first_name"));
+    }
 
     @Test
     void testGetWordsOnDiffers() {
