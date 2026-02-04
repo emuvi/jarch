@@ -1,12 +1,11 @@
 package br.com.pointel.jarch.desk;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
-public class DListEdit<T> extends DEdit<List<T>> {
+public class DListEdit<T> extends DEdit<ArrayList<T>> {
 
     private final DefaultListModel<T> model = new DefaultListModel<>();
     
@@ -14,8 +13,8 @@ public class DListEdit<T> extends DEdit<List<T>> {
         this(null);
     }
 
-    public DListEdit(List<T> value) {
-        super(new JList<>());
+    public DListEdit(ArrayList<T> value) {
+        super(new JList<T>());
         comp().setModel(model);
         setValue(value);
     }
@@ -26,7 +25,7 @@ public class DListEdit<T> extends DEdit<List<T>> {
     }
 
     @Override
-    public List<T> getValue() {
+    public ArrayList<T> getValue() {
         var result = new ArrayList<T>(model.getSize());
         for (int i = 0; i < model.getSize(); i++) {
             result.add(model.getElementAt(i));
@@ -35,7 +34,7 @@ public class DListEdit<T> extends DEdit<List<T>> {
     }
 
     @Override
-    public void setValue(List<T> value) {
+    public void setValue(ArrayList<T> value) {
         model.clear();
         if (value != null) {
             for (T item : value) {

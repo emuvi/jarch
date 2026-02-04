@@ -1,6 +1,6 @@
 package br.com.pointel.jarch.desk;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import br.com.pointel.jarch.mage.WizDesk;
 
-public class DListEditor<T> extends DEdit<List<T>> {
+public class DListEditor<T> extends DEdit<ArrayList<T>> {
 
     private final JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
     private final JButton buttonAdd = new JButton("+");
@@ -42,12 +42,12 @@ public class DListEditor<T> extends DEdit<List<T>> {
     }
 
     @Override
-    public List<T> getValue() {
+    public ArrayList<T> getValue() {
         return list.getValue();
     }
 
     @Override
-    public void setValue(List<T> value) {
+    public void setValue(ArrayList<T> value) {
         list.setValue(value);
     }
 
