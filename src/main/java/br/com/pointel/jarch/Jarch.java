@@ -1,8 +1,5 @@
 package br.com.pointel.jarch;
 
-import br.com.pointel.jarch.mage.WizApp;
-import br.com.pointel.jarch.mage.WizLang;
-
 public class Jarch {
 
     public static void main(String[] args) {

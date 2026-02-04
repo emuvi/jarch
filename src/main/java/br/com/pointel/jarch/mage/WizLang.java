@@ -347,27 +347,20 @@ public class WizLang {
     }
 
     public static String getPointelMainClassName() {
-        for (var entry : Thread.getAllStackTraces().entrySet()) {
-            var thread = entry.getKey();
-            var stack = thread.getStackTrace();
-            for (int i = stack.length - 1; i >= 0; i--) {
-                if ("main".equals(stack[i].getMethodName()) 
-                        && stack[i].getClassName().startsWith("br.com.pointel")) {
-                    return stack[i].getClassName();
-                }
+        var mainThread = WizThread.getMainThread();
+        if (mainThread == null) {
+            return null;
+        }
+        var stack = mainThread.getStackTrace();
+        if (stack == null || stack.length == 0) {
+            return null;
+        }
+        for (int i = stack.length -1; i >= 0 ; i--) {
+            if (stack[i].getClassName().startsWith("br.com.pointel")) {
+                return stack[i].getClassName();
             }
         }
-        for (var entry : Thread.getAllStackTraces().entrySet()) {
-            var thread = entry.getKey();
-            var stack = thread.getStackTrace();
-            for (int i = stack.length - 1; i >= 0; i--) {
-                if ("<clinit>".equals(stack[i].getMethodName()) 
-                        && stack[i].getClassName().startsWith("br.com.pointel")) {
-                    return stack[i].getClassName();
-                }
-            }
-        }
-        return "App";
+        return null;
     }
 
     public static File getUserDir() {

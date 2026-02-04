@@ -11,10 +11,9 @@ import org.slf4j.LoggerFactory;
 
 public class WizThread {
 
-    private WizThread() {
-    }
-
     private static Logger log = LoggerFactory.getLogger(WizThread.class);
+
+    private WizThread() {}
 
     public static void sleep(long millis) {
         try {
@@ -22,6 +21,15 @@ public class WizThread {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Thread getMainThread() {
+        for (Thread thread : Thread.getAllStackTraces().keySet()) {
+            if ("main".equals(thread.getName())) {
+                return thread;
+            }
+        }
+        return null;
     }
 
     public static Thread startDaemon(Runnable task, String name) {
