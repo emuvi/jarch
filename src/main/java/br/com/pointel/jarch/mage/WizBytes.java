@@ -106,22 +106,5 @@ public class WizBytes {
     public static String getSHA256(byte[] bytes) throws Exception {
         return WizBytes.encodeToHex(MessageDigest.getInstance("SHA-256").digest(bytes));
     }
-    
-    public static <T> T read(File file, Class<T> clazz) throws Exception {
-        return clazz.cast(read(file));
-    }
-
-    public static Object read(File file) throws Exception {
-        try (var ois = new java.io.ObjectInputStream(Files.newInputStream(file.toPath()))) {
-            return ois.readObject();
-        }
-    }
-
-    public static void write(File file, Serializable object) throws Exception {
-        try (var oos = new ObjectOutputStream(Files.newOutputStream(file.toPath()))) {
-            oos.writeObject(object);
-            oos.flush();
-        }
-    }
 
 }

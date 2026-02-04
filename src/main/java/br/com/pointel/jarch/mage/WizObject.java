@@ -1,8 +1,12 @@
 package br.com.pointel.jarch.mage;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+
 import br.com.pointel.jarch.data.Base;
 import br.com.pointel.jarch.data.DataClazz;
 import br.com.pointel.jarch.flow.FixVals;
@@ -71,6 +75,23 @@ public class WizObject {
             return objectOnBase64Prefix + WizBytes.encodeToBase64(bos.toByteArray());
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize object of class: " + value.getClass().getName(), e);
+        }
+    }
+    
+    public static <T> T read(File file, Class<T> clazz) throws Exception {
+        return clazz.cast(read(file));
+    }
+
+    public static Object read(File file) throws Exception {
+        try (var ois = new java.io.ObjectInputStream(Files.newInputStream(file.toPath()))) {
+            return ois.readObject();
+        }
+    }
+
+    public static void write(File file, Serializable object) throws Exception {
+        try (var oos = new ObjectOutputStream(Files.newOutputStream(file.toPath()))) {
+            oos.writeObject(object);
+            oos.flush();
         }
     }
 
