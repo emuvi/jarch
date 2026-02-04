@@ -6,11 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 
-public class DCol extends DPanel {
+public class DColPane extends DPane {
 
     private final GridBagConstraints layout = new GridBagConstraints();
 
-    public DCol() {
+    public DColPane() {
         super(new GridBagLayout());
         layout.gridx = 0;
         layout.gridy = -1;
@@ -25,68 +25,68 @@ public class DCol extends DPanel {
         layout.fill = GridBagConstraints.NONE;
     }
 
-    public DCol anchorNorth() {
+    public DColPane anchorNorth() {
         layout.anchor = GridBagConstraints.NORTH;
         return this;
     }
 
-    public DCol anchorNorthEast() {
+    public DColPane anchorNorthEast() {
         layout.anchor = GridBagConstraints.NORTHEAST;
         return this;
     }
 
-    public DCol anchorNorthWest() {
+    public DColPane anchorNorthWest() {
         layout.anchor = GridBagConstraints.NORTHWEST;
         return this;
     }
 
-    public DCol anchorSouth() {
+    public DColPane anchorSouth() {
         layout.anchor = GridBagConstraints.SOUTH;
         return this;
     }
 
-    public DCol anchorSouthEast() {
+    public DColPane anchorSouthEast() {
         layout.anchor = GridBagConstraints.SOUTHEAST;
         return this;
     }
 
-    public DCol anchorSouthWest() {
+    public DColPane anchorSouthWest() {
         layout.anchor = GridBagConstraints.SOUTHWEST;
         return this;
     }
 
-    public DCol anchorEast() {
+    public DColPane anchorEast() {
         layout.anchor = GridBagConstraints.EAST;
         return this;
     }
 
-    public DCol anchorWest() {
+    public DColPane anchorWest() {
         layout.anchor = GridBagConstraints.WEST;
         return this;
     }
 
-    public DCol anchorCenter() {
+    public DColPane anchorCenter() {
         layout.anchor = GridBagConstraints.CENTER;
         return this;
     }
 
-    public DCol ipad(int size) {
+    public DColPane ipad(int size) {
         layout.ipadx = size;
         layout.ipady = size;
         return this;
     }
 
-    public DCol ipadx(int size) {
+    public DColPane ipadx(int size) {
         layout.ipadx = size;
         return this;
     }
 
-    public DCol ipady(int size) {
+    public DColPane ipady(int size) {
         layout.ipady = size;
         return this;
     }
 
-    public DCol insets(int size) {
+    public DColPane insets(int size) {
         layout.insets.top = size;
         layout.insets.left = size;
         layout.insets.bottom = size;
@@ -94,27 +94,27 @@ public class DCol extends DPanel {
         return this;
     }
 
-    public DCol insetsTop(int size) {
+    public DColPane insetsTop(int size) {
         layout.insets.top = size;
         return this;
     }
 
-    public DCol insetsLeft(int size) {
+    public DColPane insetsLeft(int size) {
         layout.insets.left = size;
         return this;
     }
 
-    public DCol insetsBottom(int size) {
+    public DColPane insetsBottom(int size) {
         layout.insets.bottom = size;
         return this;
     }
 
-    public DCol insetsRight(int size) {
+    public DColPane insetsRight(int size) {
         layout.insets.right = size;
         return this;
     }
 
-    public DCol insets(int topBottom, int leftRight) {
+    public DColPane insets(int topBottom, int leftRight) {
         layout.insets.top = topBottom;
         layout.insets.left = leftRight;
         layout.insets.bottom = topBottom;
@@ -122,7 +122,7 @@ public class DCol extends DPanel {
         return this;
     }
 
-    public DCol insets(int top, int left, int bottom, int right) {
+    public DColPane insets(int top, int left, int bottom, int right) {
         layout.insets.top = top;
         layout.insets.left = left;
         layout.insets.bottom = bottom;
@@ -130,61 +130,67 @@ public class DCol extends DPanel {
         return this;
     }
 
-    public DCol growNone() {
+    public DColPane growNone() {
         layout.weightx = 0;
         layout.weighty = 0;
         layout.fill = GridBagConstraints.NONE;
         return this;
     }
 
-    public DCol growBoth() {
+    public DColPane growBoth() {
         layout.weightx = 1;
         layout.weighty = 1;
         layout.fill = GridBagConstraints.BOTH;
         return this;
     }
 
-    public DCol growHorizontal() {
+    public DColPane growHorizontal() {
         layout.weightx = 1;
         layout.weighty = 0;
         layout.fill = GridBagConstraints.HORIZONTAL;
         return this;
     }
 
-    public DCol growVertical() {
+    public DColPane growVertical() {
         layout.weightx = 0;
         layout.weighty = 1;
         layout.fill = GridBagConstraints.VERTICAL;
         return this;
     }
 
-    public DCol weightBoth(double weight) {
+    public DColPane weightBoth(double weight) {
         layout.weightx = weight;
         layout.weighty = weight;
         return this;
     }
 
-    public DCol weightHorizontal(double weight) {
+    public DColPane weightHorizontal(double weight) {
         layout.weightx = weight;
         layout.weighty = 0;
         return this;
     }
 
-    public DCol weightVertical(double weight) {
+    public DColPane weightVertical(double weight) {
         layout.weightx = 0;
         layout.weighty = weight;
         return this;
     }
 
-    public DCol weightEach(double weightX, double weightY) {
+    public DColPane weightEach(double weightX, double weightY) {
         layout.weightx = weightX;
         layout.weighty = weightY;
         return this;
     }
 
-    public DCol put(Component component) {
+    public DColPane put(DEdit<?> edit) {
+        put(edit.comp());
+        return this;
+    }
+
+    @Override
+    public DColPane put(Component comp) {
         layout.gridy += 1;
-        add(component, layout);
+        add(comp, layout);
         return this;
     }
 
