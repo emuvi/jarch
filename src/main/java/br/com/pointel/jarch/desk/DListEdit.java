@@ -47,8 +47,16 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return comp().getSelectedIndex();
     }
 
+    public void setSelectedIndex(int index) {
+        comp().setSelectedIndex(index);
+    }
+
     public T getSelectedValue() {
         return comp().getSelectedValue();
+    }
+
+    public void setSelectedValue(T value) {
+        comp().setSelectedValue(value, true);
     }
 
     public void add(T value) {
@@ -60,7 +68,9 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
     }
 
     public void addAtSelection(T value) {
-        model.add(comp().getSelectedIndex() + 1, value);
+        var selected = getSelectedIndex();
+        model.add(selected + 1, value);
+        setSelectedIndex(selected + 1);
     }
 
     public void set(int index, T value) {
@@ -68,7 +78,9 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
     }
 
     public void setAtSelection(T item) {
-        model.set(comp().getSelectedIndex(), item);
+        var selected = getSelectedIndex();
+        model.set(selected, item);
+        setSelectedIndex(selected);
     }
 
     public void del(int index) {
@@ -80,13 +92,39 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
     }
 
     public void delAtSelection() {
-        if (comp().getSelectedIndex() >= 0) {
-            model.remove(comp().getSelectedIndex());
+        if (getSelectedIndex() >= 0) {
+            var selected = getSelectedIndex();
+            model.remove(selected);
+            setSelectedIndex(selected - 1);
         }
     }
 
     public void clear() {
         model.clear();
+    }
+         
+    public void moveUp(int index) {
+        if (index > 0 && index < model.getSize()) {
+            var item = model.remove(index);
+            model.add(index - 1, item);
+            setSelectedIndex(index - 1);
+        }
+    }
+
+    public void moveUpSelection() {
+        moveUp(getSelectedIndex());
+    }
+
+    public void moveDown(int index) {
+        if (index >= 0 && index < model.getSize() - 1) {
+            var item = model.remove(index);
+            model.add(index + 1, item);
+            setSelectedIndex(index + 1);
+        }
+    }
+
+    public void moveDownSelection() {
+        moveDown(getSelectedIndex());
     }
 
 }

@@ -17,6 +17,8 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
     private final JButton buttonAdd = new JButton("+");
     private final JButton buttonDel = new JButton("-");
     private final JButton buttonEdit = new JButton("&");
+    private final JButton buttonMoveUp = new JButton("↑");
+    private final JButton buttonMoveDown = new JButton("↓");
     
     private final DListEdit<T> list = new DListEdit<>();
     private final DScroll scroll = new DScroll(list);
@@ -29,9 +31,13 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         panelTop.add(buttonAdd);
         panelTop.add(buttonDel);
         panelTop.add(buttonEdit);
+        panelTop.add(buttonMoveUp);
+        panelTop.add(buttonMoveDown);
         buttonAdd.addActionListener(this::actAdd);
         buttonDel.addActionListener(this::actDel);
         buttonEdit.addActionListener(this::actEdit);
+        buttonMoveUp.addActionListener(this::actMoveUp);
+        buttonMoveDown.addActionListener(this::actMoveDown);
         comp().add(scroll, BorderLayout.CENTER);
         this.editFrameClass = editFrameClass;
     }
@@ -78,6 +84,22 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
                 editFrame.onConfirm(value -> list.set(index, value));
                 editFrame.setVisible(true);
             }
+        } catch (Exception e) {
+            WizDesk.showError(e);
+        }
+    }
+
+    private void actMoveUp(ActionEvent event) {
+        try {
+            list.moveUpSelection();
+        } catch (Exception e) {
+            WizDesk.showError(e);
+        }
+    }
+
+    private void actMoveDown(ActionEvent event) {
+        try {
+            list.moveDownSelection();
         } catch (Exception e) {
             WizDesk.showError(e);
         }
