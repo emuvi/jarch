@@ -19,7 +19,7 @@ public class WizApp {
 
     public static String getName() {
         if (name == null) {
-            name = getTitle().toLowerCase();
+            name = WizString.getParameterName(getTitle()).toLowerCase();
         }
         return name;
     }

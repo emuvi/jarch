@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -59,20 +60,20 @@ import br.com.pointel.jarch.desk.SwingFramer;
 
 public class WizDesk {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WizDesk.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WizDesk.class);
 
-    private static Image LOGO;
+    private static Image logo;
 
     static {
         try {
-            LOGO = ImageIO.read(WizDesk.class.getResourceAsStream("/img/logo.png"));
+            logo = ImageIO.read(WizDesk.class.getResourceAsStream("/desk/logo.png"));
         } catch (Exception e) {
-            LOGO = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+            logo = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
         }
     }
     
     public static Image getLogo() {
-        return LOGO;
+        return logo;
     }
 
     private static Font FONT;
@@ -85,12 +86,12 @@ public class WizDesk {
         return FONT;
     }
 
-    private static final String KEY_LOOK_AND_FEEL = "WizDesk_LookAndFeel";
+    private static final String KEY_LOOK_AND_FEEL = "WIZDESK_LOOK_AND_FEEL";
 
-    private static final String KEY_LOOK_AND_FEEL_SYSTEM = "System";
-    private static final String KEY_LOOK_AND_FEEL_LIGHT = "Light";
-    private static final String KEY_LOOK_AND_FEEL_DARK = "Dark";
-    private static final String KEY_LOOK_AND_FEEL_DARCULA = "Darcula";
+    private static final String KEY_LOOK_AND_FEEL_SYSTEM = "SYSTEM";
+    private static final String KEY_LOOK_AND_FEEL_LIGHT = "LIGHT";
+    private static final String KEY_LOOK_AND_FEEL_DARK = "DARK";
+    private static final String KEY_LOOK_AND_FEEL_DARCULA = "DARCULA";
 
     private static final String[] KEY_LOOK_AND_FEEL_OPTIONS = new String[] {
                     KEY_LOOK_AND_FEEL_SYSTEM, 
@@ -126,7 +127,9 @@ public class WizDesk {
     }
 
     public static void start(String title, Runnable afterStart) {
-        java.awt.EventQueue.invokeLater(() -> {
+        WizApp.setTitle(title);
+        LOG.info("Starting desk of {} application", WizApp.getName());
+        EventQueue.invokeLater(() -> {
             try {
                 switch (getLookAndFeelOption()) {
                     case KEY_LOOK_AND_FEEL_LIGHT -> UIManager.setLookAndFeel(new FlatLightLaf());
@@ -134,13 +137,13 @@ public class WizDesk {
                     case KEY_LOOK_AND_FEEL_DARCULA -> UIManager.setLookAndFeel(new FlatDarculaLaf());
                     default -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 }
-                WizApp.setTitle(title);
+                
                 WizDesk.started = true;
                 if (afterStart != null) {
                     afterStart.run();
                 }
             } catch (Exception e) {
-                LOGGER.error("Could not start desktop application: " + title, e);
+                LOG.error("Could not start desktop application: " + title, e);
             }
         });
     }
@@ -154,7 +157,7 @@ public class WizDesk {
     }
 
     public static void message(String message, boolean silent) {
-        LOGGER.info(message);
+        LOG.info(message);
         if (!silent) {
             Runnable runner = () -> {
                 JOptionPane.showMessageDialog(WizDesk.getActiveWindow(), message,
