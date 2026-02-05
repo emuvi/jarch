@@ -4,7 +4,11 @@ import javax.swing.JComponent;
 
 public abstract class DEdit<T> implements DValue<T> {
 
-    private final JComponent comp;
+    private JComponent comp;
+
+    public DEdit() {
+        this.comp = null;
+    }
 
     public DEdit(JComponent comp) {
         this.comp = comp;
@@ -12,6 +16,11 @@ public abstract class DEdit<T> implements DValue<T> {
 
     public JComponent comp() {
         return comp;
+    }
+
+    public DEdit<T> comp(JComponent comp) {
+        this.comp = comp;
+        return this;
     }
 
     public String name() {
