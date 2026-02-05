@@ -232,7 +232,16 @@ public class WizString {
         if (chars == null) {
             return null;
         }
-        int pos = Math.min(chars.indexOf("\r"), chars.indexOf("\n"));
+        int pos = -1;
+        int posR = chars.indexOf("\r");
+        int posN = chars.indexOf("\n");
+        if (posR > -1 && posN > -1) {
+            pos = Math.min(posR, posN);
+        } else if (posR > -1) {
+            pos = posR;
+        } else if (posN > -1) {
+            pos = posN;
+        }
         if (pos == -1) {
             return chars;
         }
