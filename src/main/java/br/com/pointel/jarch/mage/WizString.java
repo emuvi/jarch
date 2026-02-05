@@ -228,6 +228,17 @@ public class WizString {
         return chars.split("\\r?\\n");
     }
 
+    public static String getFirstLine(String chars) {
+        if (chars == null) {
+            return null;
+        }
+        int pos = Math.min(chars.indexOf("\r"), chars.indexOf("\n"));
+        if (pos == -1) {
+            return chars;
+        }
+        return chars.substring(0, pos);
+    }
+
     public static String capitalizeWords(String chars) {
         return capitalizeWords(chars, 4);
     }
