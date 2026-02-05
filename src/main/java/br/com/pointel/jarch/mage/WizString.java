@@ -577,7 +577,7 @@ public class WizString {
         return chars.replace("\\\\", "\\");
     }
 
-    public static String replaceHolders(String chars) {
+    public static String replaceVarsHolders(String chars) {
         var result = chars;
         var now = new Date();
         if (result.contains("${date}")) {
