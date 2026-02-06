@@ -67,7 +67,7 @@ public class WizGUI {
 
     static {
         try {
-            logo = ImageIO.read(WizGUI.class.getResourceAsStream("/desk/logo.png"));
+            logo = ImageIO.read(WizGUI.class.getResourceAsStream("/gui/logo.png"));
         } catch (Exception e) {
             logo = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
         }
