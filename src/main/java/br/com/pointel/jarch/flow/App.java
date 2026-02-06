@@ -1,5 +1,7 @@
 package br.com.pointel.jarch.flow;
 
+import javax.management.RuntimeErrorException;
+
 import br.com.pointel.jarch.mage.WizApp;
 import br.com.pointel.jarch.mage.WizArray;
 
@@ -35,8 +37,12 @@ public class App {
         WizApp.setTitle(title);
         if (WizArray.has("--gui", args)) {
             appGUI.start(title, args);
-        } else {
+        } else if (appCLI != null) {
             appCLI.start(title, args);
+        } else if (appGUI != null) {
+            appGUI.start(title, args);
+        } else {
+            throw new RuntimeException("No CLI or GUI defined for this application");
         }
     }
 
