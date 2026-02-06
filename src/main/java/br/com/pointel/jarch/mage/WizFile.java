@@ -1,6 +1,7 @@
 package br.com.pointel.jarch.mage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -206,7 +207,7 @@ public class WizFile {
 
     public static File open(File selected, String description, String... extensions) {
         File result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Select File or Directory");
             chooser.setMultiSelectionEnabled(false);
@@ -244,7 +245,7 @@ public class WizFile {
 
     public static File openFile(File selected, String description, String... extensions) {
         File result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Select File");
             chooser.setMultiSelectionEnabled(false);
@@ -282,7 +283,7 @@ public class WizFile {
 
     public static File openDir(File selected, String description, String... extensions) {
         File result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Select Directory");
             chooser.setMultiSelectionEnabled(false);
@@ -321,7 +322,7 @@ public class WizFile {
     public static File[] openMany(File[] selected, String description,
                     String... extensions) {
         File[] result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Select Many Files or Directories");
             chooser.setMultiSelectionEnabled(true);
@@ -359,7 +360,7 @@ public class WizFile {
     public static File[] openFileMany(File[] selected, String description,
                     String... extensions) {
         File[] result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Select Many Files");
             chooser.setMultiSelectionEnabled(true);
@@ -397,7 +398,7 @@ public class WizFile {
     public static File[] openDirMany(File[] selected, String description,
                     String... extensions) {
         File[] result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Select Many Directories");
             chooser.setMultiSelectionEnabled(true);
@@ -435,7 +436,7 @@ public class WizFile {
 
     public static File save(File selected, String description, String... extensions) {
         File result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Save File or Directory");
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -478,7 +479,7 @@ public class WizFile {
 
     public static File saveFile(File selected, String description, String... extensions) {
         File result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Save File");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -530,7 +531,7 @@ public class WizFile {
 
     public static File saveDir(File selected, String description, String... extensions) {
         File result = null;
-        if (WizDesk.isStarted()) {
+        if (WizGUI.isStarted()) {
             var chooser = new JFileChooser();
             chooser.setDialogTitle("Save Directory");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -578,8 +579,70 @@ public class WizFile {
     private static File[] selectFileTerminalMany(boolean askForMany,
                     FileTerminalAction action, FileTerminalNature nature, File[] selected,
                     String description, String... extensions) {
-        throw new UnsupportedOperationException(
-                        "Select file(s) from terminal is not yet implemented.");
+        System.out.println("--- File Selection (" + action + " - " + nature + ") ---");
+        if (description != null && !description.isEmpty()) {
+            System.out.println("Description: " + description);
+        }
+        if (extensions != null && extensions.length > 0) {
+            System.out.print("Extensions: ");
+            for (String ext : extensions) {
+                System.out.print(ext + " ");
+            }
+            System.out.println();
+        }
+        if (selected != null && selected.length > 0) {
+            System.out.println("Current selection:");
+            for (File f : selected) {
+                System.out.println(" - " + f.getAbsolutePath());
+            }
+        }
+        var resultList = new ArrayList<File>();
+        while (true) {
+            var prompt = "Enter path" + (askForMany ? " (one per line, empty to finish)" : "") + ": ";
+            var input = WizCLI.showInput(prompt);
+            if (input == null || input.trim().isEmpty()) {
+                if (askForMany && !resultList.isEmpty()) {
+                    break;
+                }
+                return null;
+            }
+            var file = new File(input);
+            if (action == FileTerminalAction.OPEN) {
+                if (!file.exists()) {
+                    System.out.println("Error: File does not exist.");
+                    continue;
+                }
+            }
+            if (nature == FileTerminalNature.FILE && file.isDirectory()) {
+                System.out.println("Error: Expected a file, got a directory.");
+                continue;
+            }
+            if (nature == FileTerminalNature.DIRECTORY && file.isFile()) {
+                System.out.println("Error: Expected a directory, got a file.");
+                continue;
+            }
+            if (nature == FileTerminalNature.FILE && extensions != null && extensions.length > 0) {
+                var extMatch = false;
+                var name = file.getName();
+                for (var ext : extensions) {
+                    if (name.toLowerCase().endsWith("." + ext.toLowerCase())) {
+                        extMatch = true;
+                        break;
+                    }
+                }
+                if (!extMatch) {
+                    System.out.println("Error: File extension does not match allowed extensions.");
+                    continue;
+                }
+            }
+            resultList.add(file);
+            if (!askForMany) {
+                break;
+            }
+        }
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        return resultList.toArray(new File[0]);
     }
-
 }

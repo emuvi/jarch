@@ -5,7 +5,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizGUI;
 import br.com.pointel.jarch.mage.WizString;
 
 public class DFrame extends JFrame {
@@ -18,13 +18,13 @@ public class DFrame extends JFrame {
         super(title);
         setName(WizString.getParameterName(title));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setIconImage(WizDesk.getLogo());
+        setIconImage(WizGUI.getLogo());
         setLocationRelativeTo(null);
         if (contentPane != null) {
             setContentPane(contentPane);
             pack();
         }
-        WizDesk.initFrame(this);
+        WizGUI.initFrame(this);
     }
 
     public DFrame exitOnClose() {

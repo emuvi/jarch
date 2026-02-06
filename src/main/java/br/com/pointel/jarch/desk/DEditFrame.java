@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizGUI;
 
 public class DEditFrame<T> extends DFrame implements DValue<T> {
 
@@ -84,11 +84,11 @@ public class DEditFrame<T> extends DFrame implements DValue<T> {
         if (onConfirm != null) {
             onConfirm.accept(edit.getValue());
         }
-        WizDesk.close(this);
+        WizGUI.close(this);
     }
 
     private void actCancel(ActionEvent event) {
-        WizDesk.close(this);
+        WizGUI.close(this);
     }
 
 }

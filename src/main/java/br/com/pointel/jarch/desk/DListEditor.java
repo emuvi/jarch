@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizGUI;
 
 public class DListEditor<T> extends DEdit<ArrayList<T>> {
 
@@ -63,7 +63,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
             editFrame.onConfirm(list::addAtSelection);
             editFrame.setVisible(true);
         } catch (Exception e) {
-            WizDesk.showError(e);
+            WizGUI.showError(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         try { 
             list.delAtSelection();
         } catch (Exception e) {
-            WizDesk.showError(e);
+            WizGUI.showError(e);
         }
     }
 
@@ -85,7 +85,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
                 editFrame.setVisible(true);
             }
         } catch (Exception e) {
-            WizDesk.showError(e);
+            WizGUI.showError(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         try {
             list.moveUpSelection();
         } catch (Exception e) {
-            WizDesk.showError(e);
+            WizGUI.showError(e);
         }
     }
 
@@ -101,7 +101,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         try {
             list.moveDownSelection();
         } catch (Exception e) {
-            WizDesk.showError(e);
+            WizGUI.showError(e);
         }
     }
 

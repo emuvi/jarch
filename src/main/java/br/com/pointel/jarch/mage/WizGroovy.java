@@ -16,7 +16,7 @@ public class WizGroovy {
     private static final File FOLDER_GROOVY = new File("groovy");
     
     public static void openFolder() throws Exception {
-        WizDesk.open(FOLDER_GROOVY);
+        WizGUI.open(FOLDER_GROOVY);
     }
  
     public static List<String> getNames() {

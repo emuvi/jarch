@@ -20,7 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 import br.com.pointel.jarch.mage.WizString;
-import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizGUI;
 import br.com.pointel.jarch.mage.WizLang;
 import br.com.pointel.jarch.mage.WizProps;
 
@@ -71,8 +71,8 @@ public class SwingFramer {
                 if (firstActivated) {
                     firstActivated = false;
                     loadFramePropsComps(frame);
-                    WizDesk.setAllComponentsFont(frame, font);
-                    WizDesk.setAllComponentsFont(frame.getContentPane(), font);
+                    WizGUI.setAllComponentsFont(frame, font);
+                    WizGUI.setAllComponentsFont(frame.getContentPane(), font);
                     SwingUtilities.updateComponentTreeUI(frame);
                     SwingUtilities.updateComponentTreeUI(frame.getContentPane());
                 }
@@ -91,7 +91,7 @@ public class SwingFramer {
         var top = WizProps.get(rootName + "_TOP", frame.getBounds().y);
         var width = WizProps.get(rootName + "_WIDTH", frame.getBounds().width);
         var height = WizProps.get(rootName + "_HEIGHT", frame.getBounds().height);
-        var bounds = WizDesk.getBoundsInsideScreen(new Rectangle(left, top, width, height));
+        var bounds = WizGUI.getBoundsInsideScreen(new Rectangle(left, top, width, height));
         frame.setBounds(bounds);
         frame.setAlwaysOnTop(WizProps.get(rootName + "_ON_TOP", frame.isAlwaysOnTop()));
     }
@@ -173,16 +173,16 @@ public class SwingFramer {
 
     private void createPopMenu() {
         createMenuSizes();
-        WizDesk.addButton(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
-        WizDesk.addButton(popMenu, new JMenuItem("Close"), (e) -> menuClose());
+        WizGUI.addButton(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
+        WizGUI.addButton(popMenu, new JMenuItem("Close"), (e) -> menuClose());
     }
 
     private void createMenuSizes() {
         var sizes = new JMenu("Sizes");
-        WizDesk.addButton(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
-        WizDesk.addButton(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
-        WizDesk.addButton(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
-        WizDesk.addButton(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
+        WizGUI.addButton(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
+        WizGUI.addButton(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
+        WizGUI.addButton(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
+        WizGUI.addButton(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
         popMenu.add(sizes);
     }
 
@@ -213,7 +213,7 @@ public class SwingFramer {
     }
 
     private void menuClose() {
-        WizDesk.close(frame);
+        WizGUI.close(frame);
     }
 
 }

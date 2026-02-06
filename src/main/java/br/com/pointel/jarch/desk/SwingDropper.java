@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.text.JTextComponent;
-import br.com.pointel.jarch.mage.WizDesk;
+import br.com.pointel.jarch.mage.WizGUI;
 
 /**
  *
@@ -22,15 +22,15 @@ import br.com.pointel.jarch.mage.WizDesk;
 public class SwingDropper {
     
     public static void initAllOn(JFrame frame) {
-        new SwingDropper(WizDesk.getAllComponentsOf(frame, JComponent.class)).init();
+        new SwingDropper(WizGUI.getAllComponentsOf(frame, JComponent.class)).init();
     }
 
     public static void initAllOn(Consumer<List<File>> fileConsumer, JFrame frame) {
-        new SwingDropper(fileConsumer, WizDesk.getAllComponentsOf(frame, JComponent.class)).init();
+        new SwingDropper(fileConsumer, WizGUI.getAllComponentsOf(frame, JComponent.class)).init();
     }
 
     public static void initAllOn(Consumer<String> stringConsumer, Consumer<List<File>> fileConsumer, JFrame frame) {
-        new SwingDropper(stringConsumer, fileConsumer, WizDesk.getAllComponentsOf(frame, JComponent.class)).init();
+        new SwingDropper(stringConsumer, fileConsumer, WizGUI.getAllComponentsOf(frame, JComponent.class)).init();
     }
 
     private final List<Component> components;
@@ -134,7 +134,7 @@ public class SwingDropper {
                         e.dropComplete(true);
                     } catch (Exception ex) {
                         e.dropComplete(false);
-                        WizDesk.showError(ex);
+                        WizGUI.showError(ex);
                     }
                 }
             });

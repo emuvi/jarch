@@ -58,15 +58,16 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import br.com.pointel.jarch.desk.SwingFramer;
 
-public class WizDesk {
+public class WizGUI {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WizDesk.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WizGUI.class);
 
-    private static Image logo;
+    private static Image logo = null;
+    private static boolean started = false;
 
     static {
         try {
-            logo = ImageIO.read(WizDesk.class.getResourceAsStream("/desk/logo.png"));
+            logo = ImageIO.read(WizGUI.class.getResourceAsStream("/desk/logo.png"));
         } catch (Exception e) {
             logo = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
         }
@@ -79,14 +80,14 @@ public class WizDesk {
     private static Font FONT;
 
     static {
-        FONT = WizDesk.fontMonospaced(12);
+        FONT = WizGUI.fontMonospaced(12);
     }
 
     public static Font getFont() {
         return FONT;
     }
 
-    private static final String KEY_LOOK_AND_FEEL = "WIZDESK_LOOK_AND_FEEL";
+    private static final String KEY_LOOK_AND_FEEL = "WIZGUI_LOOK_AND_FEEL";
 
     private static final String KEY_LOOK_AND_FEEL_SYSTEM = "SYSTEM";
     private static final String KEY_LOOK_AND_FEEL_LIGHT = "LIGHT";
@@ -112,8 +113,6 @@ public class WizDesk {
         WizProps.set(KEY_LOOK_AND_FEEL, option);
     }
 
-    private static boolean started = false;
-
     public static void start() {
         start(WizApp.getTitle(), null);
     }
@@ -127,7 +126,6 @@ public class WizDesk {
     }
 
     public static void start(String title, Runnable afterStart) {
-        WizApp.setTitle(title);
         LOG.info("Starting desk of {} application", WizApp.getName());
         EventQueue.invokeLater(() -> {
             try {
@@ -137,8 +135,7 @@ public class WizDesk {
                     case KEY_LOOK_AND_FEEL_DARCULA -> UIManager.setLookAndFeel(new FlatDarculaLaf());
                     default -> UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 }
-                
-                WizDesk.started = true;
+                started = true;
                 if (afterStart != null) {
                     afterStart.run();
                 }
@@ -149,37 +146,9 @@ public class WizDesk {
     }
 
     public static boolean isStarted() {
-        return WizDesk.started;
+        return started;
     }
 
-    public static void message(String message) {
-        WizDesk.message(message, false);
-    }
-
-    public static void message(String message, boolean silent) {
-        LOG.info(message);
-        if (!silent) {
-            Runnable runner = () -> {
-                JOptionPane.showMessageDialog(WizDesk.getActiveWindow(), message,
-                                WizApp.getTitle(),JOptionPane.INFORMATION_MESSAGE);
-            };
-            if (SwingUtilities.isEventDispatchThread()) {
-                runner.run();
-            } else {
-                SwingUtilities.invokeLater(runner);
-            }
-        }
-    }
-
-    public static boolean question(String question) {
-        return JOptionPane.showConfirmDialog(WizDesk.getActiveWindow(), question,
-                        WizApp.getTitle(), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-    }
-
-    public static String input(String question, String value) {
-        return (String) JOptionPane.showInputDialog(WizDesk.getActiveWindow(), question,
-                        WizApp.getTitle(), JOptionPane.QUESTION_MESSAGE, null, null, value);
-    }
 
     public static Window getActiveWindow() {
         for (Window old : Window.getWindows()) {
@@ -192,7 +161,7 @@ public class WizDesk {
 
     public static void setNextLocationFor(Window window) {
         Point result = null;
-        var active = WizDesk.getActiveWindow();
+        var active = WizGUI.getActiveWindow();
         if (active != null) {
             result = new Point(active.getX() + 45, active.getY() + 45);
         }
@@ -209,13 +178,6 @@ public class WizDesk {
             }
         }
         window.setLocation(result);
-    }
-
-    public static JPanel wrap(JComponent component, String title) {
-        var result = new JPanel(new BorderLayout(0, 0));
-        result.add(new JLabel(title), BorderLayout.NORTH);
-        result.add(component, BorderLayout.CENTER);
-        return result;
     }
 
     public static void setWidthMinAsPreferredMax(JComponent... ofComponents) {
@@ -238,7 +200,7 @@ public class WizDesk {
                         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         var actionMap = component.getActionMap();
         inputMap.put(KeyStroke.getKeyStroke(keyStroke), name);
-        actionMap.put(name, WizDesk.getAction(runnable));
+        actionMap.put(name, WizGUI.getAction(runnable));
     }
 
     public static Action getAction(Runnable runnable) {
@@ -270,7 +232,7 @@ public class WizDesk {
                         DataFlavor.imageFlavor)) {
             var pasted = (BufferedImage) transferable.getTransferData(
                             DataFlavor.imageFlavor);
-            return WizDesk.convertToRGB(pasted);
+            return WizGUI.convertToRGB(pasted);
         }
         return null;
     }
@@ -288,7 +250,7 @@ public class WizDesk {
         if (fromTitle == null) {
             return fromTitle;
         }
-        if (WizDesk.deskMnemonic.matcher(fromTitle).find()) {
+        if (WizGUI.deskMnemonic.matcher(fromTitle).find()) {
             return fromTitle.substring(0, fromTitle.length() - 8);
         }
         return fromTitle;
@@ -304,13 +266,13 @@ public class WizDesk {
                         var found = false;
                         for (Component comp : ((JMenu) result).getMenuComponents()) {
                             if (comp instanceof JMenu) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenu) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
                                                 .getText()))) {
                                     result = (JMenu) comp;
                                     found = true;
                                 }
                             } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenuItem) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
                                                 .getText()))) {
                                     result = (JMenuItem) comp;
                                     found = true;
@@ -324,13 +286,13 @@ public class WizDesk {
                         var found = false;
                         for (Component comp : result.getComponents()) {
                             if (comp instanceof JMenu) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenu) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
                                                 .getText()))) {
                                     result = (JMenu) comp;
                                     found = true;
                                 }
                             } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenuItem) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
                                                 .getText()))) {
                                     result = (JMenuItem) comp;
                                     found = true;
@@ -357,13 +319,13 @@ public class WizDesk {
                         var found = false;
                         for (Component comp : ((JMenu) result).getMenuComponents()) {
                             if (comp instanceof JMenu) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenu) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
                                                 .getText()))) {
                                     result = (JMenu) comp;
                                     found = true;
                                 }
                             } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenuItem) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
                                                 .getText()))) {
                                     result = (JMenuItem) comp;
                                     found = true;
@@ -377,13 +339,13 @@ public class WizDesk {
                         var found = false;
                         for (Component comp : result.getComponents()) {
                             if (comp instanceof JMenu) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenu) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
                                                 .getText()))) {
                                     result = (JMenu) comp;
                                     found = true;
                                 }
                             } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizDesk.delMnemonic(((JMenuItem) comp)
+                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
                                                 .getText()))) {
                                     result = (JMenuItem) comp;
                                     found = true;
@@ -407,7 +369,7 @@ public class WizDesk {
             if (parts.length > 0) {
                 for (Component comp : fromBar.getComponents()) {
                     if (comp instanceof JMenu) {
-                        if (parts[0].equals(WizDesk.delMnemonic(((JMenu) comp)
+                        if (parts[0].equals(WizGUI.delMnemonic(((JMenu) comp)
                                         .getText()))) {
                             result = (JMenu) comp;
                             break;
@@ -415,7 +377,7 @@ public class WizDesk {
                     }
                 }
                 for (var ip = 1; ip < parts.length; ip++) {
-                    result = WizDesk.getMenu(result, parts[ip]);
+                    result = WizGUI.getMenu(result, parts[ip]);
                     if (result == null) {
                         break;
                     }
@@ -432,7 +394,7 @@ public class WizDesk {
             if (parts.length > 0) {
                 for (Component comp : doPopup.getComponents()) {
                     if (comp instanceof JMenu) {
-                        if (parts[0].equals(WizDesk.delMnemonic(((JMenu) comp)
+                        if (parts[0].equals(WizGUI.delMnemonic(((JMenu) comp)
                                         .getText()))) {
                             result = (JMenu) comp;
                             break;
@@ -440,7 +402,7 @@ public class WizDesk {
                     }
                 }
                 for (var ip = 1; ip < parts.length; ip++) {
-                    result = WizDesk.getMenu(result, parts[ip]);
+                    result = WizGUI.getMenu(result, parts[ip]);
                     if (result == null) {
                         break;
                     }
@@ -455,7 +417,7 @@ public class WizDesk {
         if (withTitle != null) {
             for (Component comp : fromMenu.getMenuComponents()) {
                 if (comp instanceof JMenu) {
-                    if (withTitle.equals(WizDesk.delMnemonic(((JMenu) comp).getText()))) {
+                    if (withTitle.equals(WizGUI.delMnemonic(((JMenu) comp).getText()))) {
                         result = (JMenu) comp;
                         break;
                     }
@@ -472,13 +434,13 @@ public class WizDesk {
                 JMenu menu = null;
                 for (Component comp : doPopup.getComponents()) {
                     if (comp instanceof JMenu) {
-                        if (parts[0].equals(WizDesk.delMnemonic(((JMenu) comp)
+                        if (parts[0].equals(WizGUI.delMnemonic(((JMenu) comp)
                                         .getText()))) {
                             menu = (JMenu) comp;
                             break;
                         }
                     } else if (comp instanceof JMenuItem) {
-                        if (parts[0].equals(WizDesk.delMnemonic(((JMenuItem) comp)
+                        if (parts[0].equals(WizGUI.delMnemonic(((JMenuItem) comp)
                                         .getText()))) {
                             return (JMenuItem) comp;
                         }
@@ -488,12 +450,12 @@ public class WizDesk {
                     return null;
                 }
                 for (var ip = 1; ip < parts.length - 1; ip++) {
-                    menu = WizDesk.getMenu(menu, parts[ip]);
+                    menu = WizGUI.getMenu(menu, parts[ip]);
                     if (menu == null) {
                         return null;
                     }
                 }
-                return WizDesk.getMenuItem(menu, parts[parts.length - 1]);
+                return WizGUI.getMenuItem(menu, parts[parts.length - 1]);
             }
         }
         return null;
@@ -504,7 +466,7 @@ public class WizDesk {
         if (withTitle != null) {
             for (Component comp : fromMenu.getMenuComponents()) {
                 if (comp instanceof JMenuItem) {
-                    if (withTitle.equals(WizDesk.delMnemonic(((JMenuItem) comp)
+                    if (withTitle.equals(WizGUI.delMnemonic(((JMenuItem) comp)
                                     .getText()))) {
                         result = (JMenuItem) comp;
                         break;
@@ -540,11 +502,15 @@ public class WizDesk {
     }
 
     public static void showInfo(String message) {
+        LOG.info(message);
+        Runnable runner = () -> {
+            JOptionPane.showMessageDialog(WizGUI.getActiveWindow(), message,
+                            WizApp.getTitle(),JOptionPane.INFORMATION_MESSAGE);
+        };
         if (SwingUtilities.isEventDispatchThread()) {
-            JOptionPane.showMessageDialog(null, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+            runner.run();
         } else {
-            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "Info",
-                            JOptionPane.INFORMATION_MESSAGE));
+            SwingUtilities.invokeLater(runner);
         }
     }
 
@@ -553,26 +519,34 @@ public class WizDesk {
     }
 
     public static void showError(Throwable error, String detail) {
-        error.printStackTrace();
         String message = error.getMessage() + (detail != null ? " " + detail : "");
+        LOG.error(message, error);
+        Runnable runner = () -> {
+            JOptionPane.showMessageDialog(WizGUI.getActiveWindow(), message,
+                            WizApp.getTitle(),JOptionPane.ERROR_MESSAGE);
+        };
         if (SwingUtilities.isEventDispatchThread()) {
-            JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+            runner.run();
         } else {
-            SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null, message, "Error",
-                            JOptionPane.ERROR_MESSAGE));
+            SwingUtilities.invokeLater(runner);
         }
     }
 
     public static boolean showConfirm(String message) {
         return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
-                        null, message, "Confirm",
+                        WizGUI.getActiveWindow(), message, "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 
     public static String showInput(String message) {
         return JOptionPane.showInputDialog(
-                        null, message, "Input",
+                        WizGUI.getActiveWindow(), message, "Input",
                         JOptionPane.QUESTION_MESSAGE);
+    }
+
+    public static String showInput(String question, String value) {
+        return (String) JOptionPane.showInputDialog(WizGUI.getActiveWindow(), question,
+                        WizApp.getTitle(), JOptionPane.QUESTION_MESSAGE, null, null, value);
     }
 
     public static String getStringOnClipboard() throws Exception {

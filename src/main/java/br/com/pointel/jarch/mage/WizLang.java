@@ -360,6 +360,7 @@ public class WizLang {
                 return stack[i].getClassName();
             }
         }
+        // | TODO | If not found pointel in main look in other threads
         return null;
     }
 
