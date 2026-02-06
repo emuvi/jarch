@@ -1,7 +1,5 @@
 package br.com.pointel.jarch.desk;
 
-import javax.swing.JPanel;
-
 import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -176,12 +174,7 @@ public class DColPane extends DPane {
         return this;
     }
 
-    public DColPane weightEach(double weightX, double weightY) {
-        layout.weightx = weightX;
-        layout.weighty = weightY;
-        return this;
-    }
-
+    @Override
     public DColPane put(DEdit<?> edit) {
         put(edit.comp());
         return this;

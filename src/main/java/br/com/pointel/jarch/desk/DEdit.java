@@ -23,6 +23,15 @@ public abstract class DEdit<T> implements DValue<T> {
         return this;
     }
 
+    public T value() {
+        return getValue();
+    }
+
+    public DEdit<T> value(T value) {
+        setValue(value);
+        return this;
+    }
+
     public String name() {
         return comp().getName();
     }

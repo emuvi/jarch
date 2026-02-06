@@ -163,6 +163,15 @@ public class DPane extends JPanel {
         return this;
     }
 
+    public String name() {
+        return getName();
+    }
+
+    public DPane name(String name) {
+        setName(name);
+        return this;
+    }
+
     public DPane put(DEdit<?> edit) {
         return put(edit.comp());
     }

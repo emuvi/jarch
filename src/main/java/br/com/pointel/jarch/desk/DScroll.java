@@ -47,4 +47,13 @@ public class DScroll extends JScrollPane {
         return this;
     }
 
+    public String name() {
+        return getName();
+    }
+
+    public DScroll name(String name) {
+        setName(name);
+        return this;
+    }
+
 }

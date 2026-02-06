@@ -28,5 +28,14 @@ public class DButton extends JButton {
         setEnabled(enabled);
         return this;
     }
+
+    public String name() {
+        return getName();
+    }
+
+    public DButton name(String name) {
+        setName(name);
+        return this;
+    }
     
 }

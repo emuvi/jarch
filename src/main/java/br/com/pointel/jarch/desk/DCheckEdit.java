@@ -2,13 +2,13 @@ package br.com.pointel.jarch.desk;
 
 import javax.swing.JCheckBox;
 
-public class DBooleanEdit extends DEdit<Boolean> {
+public class DCheckEdit extends DEdit<Boolean> {
 
-    public DBooleanEdit() {
+    public DCheckEdit() {
         this(false);
     }
 
-    public DBooleanEdit(Boolean value) {
+    public DCheckEdit(Boolean value) {
         super(new JCheckBox());
         setValue(value);
     }
@@ -32,7 +32,7 @@ public class DBooleanEdit extends DEdit<Boolean> {
         return comp().getText();
     }
 
-    public DBooleanEdit text(String text) {
+    public DCheckEdit text(String text) {
         comp().setText(text);
         return this;
     }

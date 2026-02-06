@@ -9,6 +9,12 @@ public class DBordPane extends DPane {
         super(new BorderLayout(2, 2));
     }
 
+    public DBordPane gap(int hgap, int vgap) {
+        ((BorderLayout) getLayout()).setHgap(hgap);
+        ((BorderLayout) getLayout()).setVgap(vgap);
+        return this;
+    }
+    
     public DBordPane putNorth(DEdit<?> edit) {
         return putNorth(edit.comp());
     }

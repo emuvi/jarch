@@ -12,26 +12,17 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         super(new JTextField(text));
     }
 
-    public DFieldEdit(Integer columns) {
-        super(new JTextField(columns));
+    public DFieldEdit(int cols) {
+        super(new JTextField(cols));
     }
 
-    public DFieldEdit(String text, Integer columns) {
-        super(new JTextField(text, columns));
+    public DFieldEdit(String text, int cols) {
+        super(new JTextField(text, cols));
     }
 
     @Override
     public JTextField comp() {
         return (JTextField) super.comp();
-    }
-
-    public T value() {
-        return getValue();
-    }
-
-    public DFieldEdit<T> value(T value) {
-        setValue(value);
-        return this;
     }
 
     public int cols() {
