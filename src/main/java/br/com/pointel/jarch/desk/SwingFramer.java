@@ -9,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,6 +24,7 @@ import javax.swing.text.JTextComponent;
 import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.jarch.mage.WizGUI;
 import br.com.pointel.jarch.mage.WizLang;
+import br.com.pointel.jarch.mage.WizObject;
 import br.com.pointel.jarch.mage.WizProps;
 
 public class SwingFramer {
@@ -110,8 +113,18 @@ public class SwingFramer {
                 switch (component) {
                     case JTextComponent textField ->
                         textField.setText(WizProps.get(paramName, textField.getText()));
-                    case JComboBox comboField ->
-                        comboField.setSelectedIndex(WizProps.get(paramName, comboField.getSelectedIndex()));
+                    case JComboBox comboField -> {
+                        if (comboField.isEditable()) {
+                            comboField.setSelectedItem(WizProps.get(paramName, ""));
+                            var comboList = WizProps.get(paramName + "_LIST", "").split("\\-\\|\\-");
+                            comboField.removeAllItems();
+                            for (var listItem : comboList) {
+                                comboField.addItem(listItem);
+                            }
+                        } else {
+                            comboField.setSelectedIndex(WizProps.get(paramName, comboField.getSelectedIndex()));
+                        }
+                    }
                     case JSpinner spinnerField ->
                         spinnerField.setValue(WizProps.get(paramName, (Integer) spinnerField.getValue()));
                     case JCheckBox checkField ->
@@ -138,8 +151,18 @@ public class SwingFramer {
             switch (component) {
                 case JTextComponent textField ->
                     WizProps.set(paramName, textField.getText());
-                case JComboBox comboField ->
-                    WizProps.set(paramName, comboField.getSelectedIndex());
+                case JComboBox comboField -> {
+                    if (comboField.isEditable()) {
+                        WizProps.set(paramName, WizObject.getFirstNonNull(comboField.getSelectedItem(), "").toString());
+                        var comboList = new String[comboField.getModel().getSize()];
+                        for (int i = 0; i < comboField.getModel().getSize(); i++) {
+                            comboList[i] = WizObject.getFirstNonNull(comboField.getModel().getElementAt(i), "").toString();
+                        }
+                        WizProps.set(paramName + "_LIST", String.join("-|-", comboList));
+                    } else {
+                        WizProps.set(paramName, comboField.getSelectedIndex());
+                    }
+                }
                 case JSpinner spinnerField ->
                     WizProps.set(paramName, (Integer) spinnerField.getValue());
                 case JCheckBox checkField ->

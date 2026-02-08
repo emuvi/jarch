@@ -53,7 +53,7 @@ public class WizFile {
 
     public static String sum(String path, String child) {
         if (!WizString.isNotEmpty(path) || !WizString.isNotEmpty(child)) {
-            return WizString.firstNonEmpty(path, child);
+            return WizString.getFirstNonEmpty(path, child);
         }
         if (path.endsWith(File.separator) && child.startsWith(File.separator)) {
             return path + child.substring(File.separator.length());

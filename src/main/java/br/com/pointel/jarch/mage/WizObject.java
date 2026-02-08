@@ -95,4 +95,16 @@ public class WizObject {
         }
     }
 
+    public static Object getFirstNonNull(Object... objectList) {
+        if (objectList == null) {
+            return null;
+        }
+        for (Object object : objectList) {
+            if (object != null) {
+                return object;
+            }
+        }
+        return "";
+    }
+
 }

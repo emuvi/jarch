@@ -324,7 +324,19 @@ public class WizString {
         return chars != null && !chars.isEmpty();
     }
 
-    public static String firstNonEmpty(String... charsList) {
+    public static String getFirstNonNull(String... charsList) {
+        if (charsList == null) {
+            return "";
+        }
+        for (String chars : charsList) {
+            if (chars != null) {
+                return chars;
+            }
+        }
+        return "";
+    }
+
+    public static String getFirstNonEmpty(String... charsList) {
         if (charsList == null) {
             return "";
         }
