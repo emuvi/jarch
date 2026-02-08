@@ -115,12 +115,12 @@ public class SwingFramer {
                         textField.setText(WizProps.get(paramName, textField.getText()));
                     case JComboBox comboField -> {
                         if (comboField.isEditable()) {
-                            comboField.setSelectedItem(WizProps.get(paramName, ""));
                             var comboList = WizProps.get(paramName + "_LIST", "").split("\\-\\|\\-");
                             comboField.removeAllItems();
                             for (var listItem : comboList) {
                                 comboField.addItem(listItem);
                             }
+                            comboField.setSelectedItem(WizProps.get(paramName, ""));
                         } else {
                             comboField.setSelectedIndex(WizProps.get(paramName, comboField.getSelectedIndex()));
                         }
