@@ -5,10 +5,15 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import br.com.pointel.jarch.mage.WizApp;
 import br.com.pointel.jarch.mage.WizGUI;
 import br.com.pointel.jarch.mage.WizString;
 
 public class DFrame extends JFrame {
+
+    public DFrame() {
+        this(WizApp.getTitle());
+    }
 
     public DFrame(String title) {
         this(title, null);
