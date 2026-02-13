@@ -39,6 +39,10 @@ public class FTP implements AutoCloseable {
         this.client = new FTPClient();
     }
 
+    public boolean isConnected() {
+        return client.isConnected();
+    }
+
     public FTP connect() throws Exception {
         pace.info("Connecting to " + host + ":" + port);
         client.connect(host, port);
