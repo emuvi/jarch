@@ -91,6 +91,14 @@ public class WizBytes {
         return hexString.toString();
     }
 
+    public static String getMD5(File file) throws Exception {
+        return WizBytes.getMD5(Files.readAllBytes(file.toPath()));
+    }
+
+    public static String getMD5(byte[] bytes) throws Exception {
+        return WizBytes.encodeToHex(MessageDigest.getInstance("MD5").digest(bytes));
+    }
+
     public static String getSHA1(File file) throws Exception {
         return WizBytes.getSHA1(Files.readAllBytes(file.toPath()));
     }
