@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.slf4j.Logger;
@@ -102,7 +102,7 @@ public class WizProps {
     }
 
     public static Map<String, String> getOf(String chars, String separator) {
-        var result = new HashMap<String, String>();
+        var result = new LinkedHashMap<String, String>();
         if (WizString.isEmpty(chars)) {
             return result;
         }
