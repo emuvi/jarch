@@ -72,7 +72,7 @@ public class DatexNode {
     }
 
     public boolean isPresent() {
-        return value != null;
+        return value != null && !value.isBlank();
     }
 
 }
