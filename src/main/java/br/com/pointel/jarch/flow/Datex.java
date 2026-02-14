@@ -20,7 +20,7 @@ public class Datex {
         for (var node : nodes) {
             var startTokenMatchEnd = -1;
             for (var token : node.getStartsWith()) {
-                var matchEnd = matchToken(token, text, cursor);
+                var matchEnd = matchToken(token, text, cursor, true);
                 if (matchEnd != -1) {
                     startTokenMatchEnd = matchEnd;
                     break;
@@ -37,7 +37,7 @@ public class Datex {
             var endTokenMatchEnd = -1;
             for (var i = startTokenMatchEnd; i <= text.length(); i++) {
                 for (var token : node.getEndsWith()) {
-                    var matchEnd = matchToken(token, text, i);
+                    var matchEnd = matchToken(token, text, i, false);
                     if (matchEnd != -1) {
                         var index = skipWhitespace(text, i);
                         endTokenMatchStart = index;
@@ -86,7 +86,7 @@ public class Datex {
         return nodes;
     }
 
-    private int matchToken(DatexToken token, String text, int fromIndex) {
+    private int matchToken(DatexToken token, String text, int fromIndex, boolean isStartToken) {
         var index = skipWhitespace(text, fromIndex);
         switch (token.getKind()) {
             case TextBegin:
@@ -101,7 +101,8 @@ public class Datex {
                 var m = p.matcher(text);
                 m.region(index, text.length());
                 if (m.lookingAt()) {
-                    return m.end();
+                    // For start tokens, return end of match; for end tokens, return start of match
+                    return isStartToken ? m.end() : index;
                 }
                 return -1;
             case TextEnd:

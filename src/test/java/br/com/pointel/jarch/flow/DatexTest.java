@@ -96,7 +96,7 @@ public class DatexTest {
         DatexNode[] nodes = {
             new DatexNode("number", 
                 new DatexToken[]{DatexToken.literal("num:")}, 
-                new DatexToken[]{DatexToken.regex("\\D.*")}, // non-digit followed by anything
+                new DatexToken[]{DatexToken.regex("\\D")}, // non-digit followed by anything
                 true)
         };
         Datex datex = new Datex(nodes);
@@ -109,7 +109,7 @@ public class DatexTest {
         DatexNode[] nodes = {
             new DatexNode("code", 
                 new DatexToken[]{DatexToken.literal("ID:")}, 
-                new DatexToken[]{DatexToken.regex("\\D.*")}, // match until non-digit
+                new DatexToken[]{DatexToken.regex("\\D")}, // match until non-digit
                 true)
         };
         Datex datex = new Datex(nodes);
@@ -122,7 +122,7 @@ public class DatexTest {
         DatexNode[] nodes = {
             new DatexNode("digits", 
                 new DatexToken[]{DatexToken.literal("start ")}, 
-                new DatexToken[]{DatexToken.regex("^[0-9]+$")}, // This won't work with lookingAt
+                new DatexToken[]{DatexToken.regex("[0-9]+")}, // This won't work with lookingAt
                 true)
         };
         Datex datex = new Datex(nodes);
@@ -135,7 +135,7 @@ public class DatexTest {
         DatexNode[] nodes = {
             new DatexNode("content", 
                 new DatexToken[]{DatexToken.literal("start")}, 
-                new DatexToken[]{DatexToken.regex("end.*")}, 
+                new DatexToken[]{DatexToken.regex("end")}, 
                 true)
         };
         Datex datex = new Datex(nodes);
