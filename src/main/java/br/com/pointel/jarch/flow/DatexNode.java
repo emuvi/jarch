@@ -71,4 +71,8 @@ public class DatexNode {
         this.value = null;
     }
 
+    public boolean isPresent() {
+        return value != null;
+    }
+
 }
