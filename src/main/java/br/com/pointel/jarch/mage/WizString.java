@@ -689,28 +689,6 @@ public class WizString {
         return result;
     }
 
-    public static Map<String, String> getProps(String chars) {
-        return getProps(chars, "=");
-    }
-
-    public static Map<String, String> getProps(String chars, String separator) {
-        var result = new HashMap<String, String>();
-        if (WizString.isEmpty(chars)) {
-            return result;
-        }
-        var lines = getLines(chars);
-        for (var line : lines) {
-            if (line.isBlank() || line.startsWith("#")) {
-                continue;
-            }
-            int pos = line.indexOf(separator);
-            if (pos > -1) {
-                result.put(line.substring(0, pos).trim(), line.substring(pos + separator.length()).trim());
-            }
-        }
-        return result;
-    }
-
     public static Map<String, String> getAssigned(String chars) {
         var result = new HashMap<String, String>();
         if (WizString.isEmpty(chars)) {
