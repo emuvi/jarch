@@ -62,6 +62,15 @@ public class DText extends DEdit<String> {
         return this;
     }
 
+    public boolean editable() {
+        return comp().isEditable();
+    }
+
+    public DText editable(boolean editable) {
+        comp().setEditable(editable);
+        return this;
+    }
+
     @Override
     public String name() {
         return comp().getName();
