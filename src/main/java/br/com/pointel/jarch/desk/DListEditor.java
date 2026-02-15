@@ -57,6 +57,10 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         list.setValue(value);
     }
 
+    public DListEdit<T> list() {
+        return list;
+    }
+
     private void actAdd(ActionEvent event) {
         try {
             var editFrame = editFrameClass.getConstructor().newInstance();
