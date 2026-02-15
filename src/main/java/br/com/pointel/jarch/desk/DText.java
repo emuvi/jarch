@@ -71,6 +71,71 @@ public class DText extends DEdit<String> {
         return this;
     }
 
+    public DText text(String text) {
+        comp().setText(text);
+        return this;
+    }
+
+    public DText append(String text) {
+        comp().append(text);
+        return this;
+    }
+
+    public DText insert(String text, int pos) {
+        comp().insert(text, pos);
+        return this;
+    }
+
+    public DText replaceRange(String text, int start, int end) {
+        comp().replaceRange(text, start, end);
+        return this;
+    }
+
+    public boolean lineWrap() {
+        return comp().getLineWrap();
+    }
+
+    public DText lineWrap(boolean lineWrap) {
+        comp().setLineWrap(lineWrap);
+        return this;
+    }
+
+    public boolean wrapStyleWord() {
+        return comp().getWrapStyleWord();
+    }
+
+    public DText wrapStyleWord(boolean wrapStyleWord) {
+        comp().setWrapStyleWord(wrapStyleWord);
+        return this;
+    }
+
+    public int tabSize() {
+        return comp().getTabSize();
+    }
+
+    public DText tabSize(int size) {
+        comp().setTabSize(size);
+        return this;
+    }
+
+    public boolean enabled() {
+        return comp().isEnabled();
+    }
+
+    public DText enabled(boolean enabled) {
+        comp().setEnabled(enabled);
+        return this;
+    }
+
+    public boolean focusable() {
+        return comp().isFocusable();
+    }
+
+    public DText focusable(boolean focusable) {
+        comp().setFocusable(focusable);
+        return this;
+    }
+
     @Override
     public String name() {
         return comp().getName();
