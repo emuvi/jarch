@@ -62,7 +62,8 @@ public class SwingFramer {
 
     private void initWindow() {
         frame.addWindowListener(new WindowAdapter() {
-            Boolean firstActivated = true;
+            
+            boolean firstActivated = true;
             
             @Override
             public void windowOpened(WindowEvent e) {
@@ -129,8 +130,10 @@ public class SwingFramer {
                         spinnerField.setValue(WizProps.get(paramName, (Integer) spinnerField.getValue()));
                     case JCheckBox checkField ->
                         checkField.setSelected(WizProps.get(paramName, checkField.isSelected()));
-                    case JSplitPane splitPane ->
-                        splitPane.setDividerLocation(WizProps.get(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0));    
+                    case JSplitPane splitPane -> {
+                        var dividerLocation = WizProps.get(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0);
+                        SwingUtilities.invokeLater(() -> splitPane.setDividerLocation(dividerLocation));
+                    }
                     default -> {}
                 }
             });
@@ -167,7 +170,7 @@ public class SwingFramer {
                     WizProps.set(paramName, (Integer) spinnerField.getValue());
                 case JCheckBox checkField ->
                     WizProps.set(paramName, checkField.isSelected());
-                case JSplitPane splitPane ->
+                case JSplitPane splitPane -> 
                     WizProps.set(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0);
                 default -> {
                 }
