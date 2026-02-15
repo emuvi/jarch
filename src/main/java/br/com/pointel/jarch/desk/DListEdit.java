@@ -1,9 +1,11 @@
 package br.com.pointel.jarch.desk;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 public class DListEdit<T> extends DEdit<ArrayList<T>> {
 
@@ -43,88 +45,158 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         }
     }
 
+    public DListEdit<T> selectionSingle() {
+        comp().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        return this;
+    }
+
+    public DListEdit<T> selectionInterval() {
+        comp().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        return this;
+    }
+
+    public DListEdit<T> selectionMultiple() {
+        comp().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        return this;
+    }
+
     public int getSelectedIndex() {
         return comp().getSelectedIndex();
     }
 
-    public void setSelectedIndex(int index) {
+    public DListEdit<T> setSelectedIndex(int index) {
         comp().setSelectedIndex(index);
+        return this;
     }
 
     public T getSelectedValue() {
         return comp().getSelectedValue();
     }
 
-    public void setSelectedValue(T value) {
+    public DListEdit<T> setSelectedValue(T value) {
         comp().setSelectedValue(value, true);
+        return this;
     }
 
-    public void add(T value) {
+    public int[] getSelectedIndices() {
+        return comp().getSelectedIndices();
+    }
+
+    public DListEdit<T> setSelectedIndices(int[] indices) {
+        comp().setSelectedIndices(indices);
+        return this;
+    }
+
+    public List<T> getSelectedValuesList() {
+        return comp().getSelectedValuesList();
+    }
+
+    public DListEdit<T> add(T value) {
         model.addElement(value);
+        return this;
     }
 
-    public void add(int index, T value) {
+    public DListEdit<T> add(int index, T value) {
         model.add(index, value);
+        return this;
     }
 
-    public void addAtSelection(T value) {
+    public DListEdit<T> addAtSelection(T value) {
         var selected = getSelectedIndex();
         model.add(selected + 1, value);
         setSelectedIndex(selected + 1);
+        return this;
     }
 
-    public void set(int index, T value) {
+    public DListEdit<T> set(int index, T value) {
         model.set(index, value);
+        return this;
     }
 
-    public void setAtSelection(T item) {
+    public DListEdit<T> setAtSelection(T item) {
         var selected = getSelectedIndex();
         model.set(selected, item);
         setSelectedIndex(selected);
+        return this;
     }
 
-    public void del(int index) {
+    public DListEdit<T> del(int index) {
         model.remove(index);
+        return this;
     }
 
-    public void del(T value) {
+    public DListEdit<T> del(T value) {
         model.removeElement(value);
+        return this;
     }
 
-    public void delAtSelection() {
-        if (getSelectedIndex() >= 0) {
-            var selected = getSelectedIndex();
-            model.remove(selected);
-            setSelectedIndex(selected - 1);
+    public DListEdit<T> delAtSelection() {
+        var indices = getSelectedIndices();
+        if (indices.length > 0) {
+            for (int i = indices.length - 1; i >= 0; i--) {
+                model.remove(indices[i]);
+            }
+            if (model.getSize() > 0) {
+                var next = indices[0] - 1;
+                setSelectedIndex(next < 0 ? 0 : next);
+            }
         }
+        return this;
     }
 
-    public void clear() {
+    public DListEdit<T> clear() {
         model.clear();
+        return this;
+    }
+
+    public int size() {
+        return model.getSize();
     }
          
-    public void moveUp(int index) {
+    public DListEdit<T> moveUp(int index) {
         if (index > 0 && index < model.getSize()) {
             var item = model.remove(index);
             model.add(index - 1, item);
             setSelectedIndex(index - 1);
         }
+        return this;
     }
 
-    public void moveUpSelection() {
-        moveUp(getSelectedIndex());
+    public DListEdit<T> moveUpSelection() {
+        var indices = getSelectedIndices();
+        if (indices.length > 0 && indices[0] > 0) {
+            for (int i = 0; i < indices.length; i++) {
+                var index = indices[i];
+                var item = model.remove(index);
+                model.add(index - 1, item);
+                indices[i]--;
+            }
+            setSelectedIndices(indices);
+        }
+        return this;
     }
 
-    public void moveDown(int index) {
+    public DListEdit<T> moveDown(int index) {
         if (index >= 0 && index < model.getSize() - 1) {
             var item = model.remove(index);
             model.add(index + 1, item);
             setSelectedIndex(index + 1);
         }
+        return this;
     }
 
-    public void moveDownSelection() {
-        moveDown(getSelectedIndex());
+    public DListEdit<T> moveDownSelection() {
+        var indices = getSelectedIndices();
+        if (indices.length > 0 && indices[indices.length - 1] < model.getSize() - 1) {
+            for (int i = indices.length - 1; i >= 0; i--) {
+                var index = indices[i];
+                var item = model.remove(index);
+                model.add(index + 1, item);
+                indices[i]++;
+            }
+            setSelectedIndices(indices);
+        }
+        return this;
     }
 
 }
