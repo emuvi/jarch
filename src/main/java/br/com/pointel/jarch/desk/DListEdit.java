@@ -1,5 +1,11 @@
 package br.com.pointel.jarch.desk;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,6 +202,26 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
             }
             setSelectedIndices(indices);
         }
+        return this;
+    }
+
+    public DListEdit<T> onAction(ActionListener listener) {
+        comp().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    listener.actionPerformed(new ActionEvent(comp(), 0, null));
+                }
+            }
+        });
+        comp().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+                    listener.actionPerformed(new ActionEvent(comp(), 0, null));
+                }
+            }
+        });
         return this;
     }
 

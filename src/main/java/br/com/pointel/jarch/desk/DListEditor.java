@@ -36,6 +36,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         buttonAdd.addActionListener(this::actAdd);
         buttonDel.addActionListener(this::actDel);
         buttonEdit.addActionListener(this::actEdit);
+        list.onAction(this::actEdit);
         buttonMoveUp.addActionListener(this::actMoveUp);
         buttonMoveDown.addActionListener(this::actMoveDown);
         comp().add(scroll, BorderLayout.CENTER);
