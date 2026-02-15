@@ -131,7 +131,7 @@ public class SwingFramer {
                     case JCheckBox checkField ->
                         checkField.setSelected(WizProps.get(paramName, checkField.isSelected()));
                     case JSplitPane splitPane -> {
-                        var dividerLocation = WizProps.get(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0);
+                        var dividerLocation = WizProps.get(paramName, splitPane.getDividerLocation());
                         SwingUtilities.invokeLater(() -> splitPane.setDividerLocation(dividerLocation));
                     }
                     default -> {}
@@ -171,7 +171,7 @@ public class SwingFramer {
                 case JCheckBox checkField ->
                     WizProps.set(paramName, checkField.isSelected());
                 case JSplitPane splitPane -> 
-                    WizProps.set(paramName, ((double) splitPane.getDividerLocation() / (double) splitPane.getDividerSize()) / 100.0);
+                    WizProps.set(paramName, splitPane.getDividerLocation());
                 default -> {
                 }
             }
