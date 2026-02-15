@@ -1,5 +1,7 @@
 package br.com.pointel.jarch.desk;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -109,6 +111,11 @@ public class DComboEdit<T> extends DEdit<T> {
     @Override
     public DComboEdit<T> name(String name) {
         comp().setName(name);
+        return this;
+    }
+
+    public DComboEdit<T> onClick(ActionListener listener) {
+        comp().addActionListener(listener);
         return this;
     }
 
