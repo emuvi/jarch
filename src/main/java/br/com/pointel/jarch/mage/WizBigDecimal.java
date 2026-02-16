@@ -38,6 +38,14 @@ public class WizBigDecimal {
         throw new Exception("Could not convert to a BigDecimal value the value of class: " + value.getClass().getName());
     }
 
+    public static BigDecimal get(Object value, BigDecimal orDefault) {
+        try {
+            return get(value);
+        } catch (Exception e) {
+            return orDefault;
+        }
+    }
+
     public static String format(BigDecimal value) {
         return value == null ? "" : value.toString();
     }

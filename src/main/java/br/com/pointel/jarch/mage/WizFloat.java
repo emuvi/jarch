@@ -32,6 +32,14 @@ public class WizFloat {
         throw new Exception("Could not convert to an Float value the value of class: " + value.getClass().getName());
     }
 
+    public static Float get(Object value, Float orDefault) {
+        try {
+            return get(value);
+        } catch (Exception e) {
+            return orDefault;
+        }
+    }
+
     public static String format(Float value) {
         return value == null ? "" : value.toString();
     }

@@ -32,6 +32,14 @@ public class WizByte {
         throw new Exception("Could not convert to an Byte value the value of class: " + value.getClass().getName());
     }
 
+    public static Byte get(Object value, Byte orDefault) {
+        try {
+            return get(value);
+        } catch (Exception e) {
+            return orDefault;
+        }
+    }
+
     public static String format(Byte value) {
         return value == null ? "" : value.toString();
     }

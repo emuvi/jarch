@@ -39,6 +39,14 @@ public class WizBigInteger {
         throw new Exception("Could not convert to a BigInteger value the value of class: " + value.getClass().getName());
     }
 
+    public static BigInteger get(Object value, BigInteger orDefault) {
+        try {
+            return get(value);
+        } catch (Exception e) {
+            return orDefault;
+        }
+    }
+
     public static String format(BigInteger value) {
         return value == null ? "" : value.toString();
     }

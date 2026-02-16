@@ -32,6 +32,14 @@ public class WizInteger {
         throw new Exception("Could not convert to an Integer value the value of class: " + value.getClass().getName());
     }
 
+    public static Integer get(Object value, Integer orDefault) {
+        try {
+            return get(value);
+        } catch (Exception e) {
+            return orDefault;
+        }
+    }
+
     public static String format(Integer value) {
         return value == null ? "" : value.toString();
     }
