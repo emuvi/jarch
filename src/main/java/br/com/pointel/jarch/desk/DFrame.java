@@ -56,6 +56,22 @@ public class DFrame extends JFrame {
         return this;
     }
 
+    public DFrame onFirstOpened(Consumer<WindowEvent> consumer) {
+        addWindowListener(new WindowAdapter() {
+            boolean firstOpened = true;
+            @Override
+            public void windowOpened(WindowEvent e) {
+                if (firstOpened) {
+                    firstOpened = false;
+                } else {
+                    return;
+                }
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
     public DFrame onClosing(Consumer<WindowEvent> consumer) {
         addWindowListener(new WindowAdapter() {
             @Override
@@ -100,6 +116,22 @@ public class DFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFrame onFirstActivated(Consumer<WindowEvent> consumer) {
+        addWindowListener(new WindowAdapter() {
+            boolean firstActivated = true;
+            @Override
+            public void windowActivated(WindowEvent e) {
+                if (firstActivated) {
+                    firstActivated = false;
+                } else {
+                    return;
+                }
                 consumer.accept(e);
             }
         });
