@@ -1,6 +1,5 @@
 package br.com.pointel.jarch.mage;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -33,6 +32,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -40,18 +40,18 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -60,7 +60,7 @@ import br.com.pointel.jarch.desk.SwingFramer;
 
 public class WizGUI {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WizGUI.class);
+    private static final Logger logger = LoggerFactory.getLogger(WizGUI.class);
 
     private static Image logo = null;
     private static boolean started = false;
@@ -77,11 +77,27 @@ public class WizGUI {
         return logo;
     }
 
-    private static Font FONT;
+    private static final String KEY_FONT_NAME = "WIZGUI_FONT_NAME";
 
-    static {
-        FONT = WizGUI.fontMonospaced(12);
+    public static String getFontName() {
+        return WizProps.get(KEY_FONT_NAME, Font.MONOSPACED);
     }
+
+    public static void setFontName(String name) {
+        WizProps.set(KEY_FONT_NAME, name);
+    }
+
+    private static final String KEY_FONT_SIZE = "WIZGUI_FONT_SIZE";
+
+    public static int getFontSize() {
+        return WizProps.get(KEY_FONT_SIZE, 12);
+    }
+
+    public static void setFontSize(int size) {
+        WizProps.set(KEY_FONT_SIZE, size);
+    }
+
+    private static Font FONT = new Font(getFontName(), Font.PLAIN, getFontSize());
 
     public static Font getFont() {
         return FONT;
@@ -89,10 +105,10 @@ public class WizGUI {
 
     private static final String KEY_LOOK_AND_FEEL = "WIZGUI_LOOK_AND_FEEL";
 
-    private static final String KEY_LOOK_AND_FEEL_SYSTEM = "SYSTEM";
-    private static final String KEY_LOOK_AND_FEEL_LIGHT = "LIGHT";
-    private static final String KEY_LOOK_AND_FEEL_DARK = "DARK";
-    private static final String KEY_LOOK_AND_FEEL_DARCULA = "DARCULA";
+    private static final String KEY_LOOK_AND_FEEL_SYSTEM = "System";
+    private static final String KEY_LOOK_AND_FEEL_LIGHT = "Light";
+    private static final String KEY_LOOK_AND_FEEL_DARK = "Dark";
+    private static final String KEY_LOOK_AND_FEEL_DARCULA = "Darcula";
 
     private static final String[] KEY_LOOK_AND_FEEL_OPTIONS = new String[] {
                     KEY_LOOK_AND_FEEL_SYSTEM, 
@@ -105,11 +121,11 @@ public class WizGUI {
         return KEY_LOOK_AND_FEEL_OPTIONS;
     }
 
-    public static String getLookAndFeelOption() {
+    public static String getLookAndFeel() {
         return WizProps.get(KEY_LOOK_AND_FEEL, KEY_LOOK_AND_FEEL_SYSTEM);
     }
 
-    public static void setLookAndFeelOption(String option) {
+    public static void setLookAndFeel(String option) {
         WizProps.set(KEY_LOOK_AND_FEEL, option);
     }
 
@@ -126,10 +142,10 @@ public class WizGUI {
     }
 
     public static void start(String title, Runnable afterStart) {
-        LOG.info("Starting desk of {} application", WizApp.getName());
+        logger.info("Starting desk of {} application", WizApp.getName());
         EventQueue.invokeLater(() -> {
             try {
-                switch (getLookAndFeelOption()) {
+                switch (getLookAndFeel()) {
                     case KEY_LOOK_AND_FEEL_LIGHT -> UIManager.setLookAndFeel(new FlatLightLaf());
                     case KEY_LOOK_AND_FEEL_DARK -> UIManager.setLookAndFeel(new FlatDarkLaf());
                     case KEY_LOOK_AND_FEEL_DARCULA -> UIManager.setLookAndFeel(new FlatDarculaLaf());
@@ -140,7 +156,7 @@ public class WizGUI {
                     afterStart.run();
                 }
             } catch (Exception e) {
-                LOG.error("Could not start desktop application: " + title, e);
+                logger.error("Could not start desktop application: " + title, e);
             }
         });
     }
@@ -502,7 +518,7 @@ public class WizGUI {
     }
 
     public static void showInfo(String message) {
-        LOG.info(message);
+        logger.info(message);
         Runnable runner = () -> {
             JOptionPane.showMessageDialog(WizGUI.getActiveWindow(), message,
                             WizApp.getTitle(),JOptionPane.INFORMATION_MESSAGE);
@@ -520,7 +536,7 @@ public class WizGUI {
 
     public static void showError(Throwable error, String detail) {
         String message = error.getMessage() + (detail != null ? " " + detail : "");
-        LOG.error(message, error);
+        logger.error(message, error);
         Runnable runner = () -> {
             JOptionPane.showMessageDialog(WizGUI.getActiveWindow(), message,
                             WizApp.getTitle(),JOptionPane.ERROR_MESSAGE);

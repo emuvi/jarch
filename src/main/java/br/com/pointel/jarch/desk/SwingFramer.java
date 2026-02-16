@@ -201,14 +201,16 @@ public class SwingFramer {
         createMenuSizes();
         WizGUI.addButton(popMenu, new JMenuItem("OnTop"), (e) -> menuOnTop());
         WizGUI.addButton(popMenu, new JMenuItem("Close"), (e) -> menuClose());
+        popMenu.addSeparator();
+        createMenuStyles();
     }
 
     private void createMenuSizes() {
         var sizes = new JMenu("Sizes");
-        WizGUI.addButton(sizes, new JMenuItem("Tag as Size A"), (e) -> menuSizesTagAsSizeA());
-        WizGUI.addButton(sizes, new JMenuItem("Put on Size A"), (e) -> menuSizesPutOnSizeA());
-        WizGUI.addButton(sizes, new JMenuItem("Tag as Size B"), (e) -> menuSizesTagAsSizeB());
-        WizGUI.addButton(sizes, new JMenuItem("Put on Size B"), (e) -> menuSizesPutOnSizeB());
+        WizGUI.addButton(sizes, new JMenuItem("Tag as Size A"), e -> menuSizesTagAsSizeA());
+        WizGUI.addButton(sizes, new JMenuItem("Put on Size A"), e -> menuSizesPutOnSizeA());
+        WizGUI.addButton(sizes, new JMenuItem("Tag as Size B"), e -> menuSizesTagAsSizeB());
+        WizGUI.addButton(sizes, new JMenuItem("Put on Size B"), e -> menuSizesPutOnSizeB());
         popMenu.add(sizes);
     }
 
@@ -240,6 +242,14 @@ public class SwingFramer {
 
     private void menuClose() {
         WizGUI.close(frame);
+    }
+
+    private void createMenuStyles() {
+        var styles = new JMenu("Styles");
+        for (var styleOption : WizGUI.getLookAndFeelOptions()) {
+            WizGUI.addButton(styles, new JMenuItem(styleOption), e -> WizGUI.setLookAndFeel(styleOption));    
+        }
+        popMenu.add(styles);
     }
 
 }
