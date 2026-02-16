@@ -136,6 +136,57 @@ public class DText extends DEdit<String> {
         return this;
     }
 
+    public DText select(int selectionStart, int selectionEnd) {
+        comp().select(selectionStart, selectionEnd);
+        return this;
+    }
+
+    public DText selectAll() {
+        comp().selectAll();
+        return this;
+    }
+
+    public int selectionStart() {
+        return comp().getSelectionStart();
+    }
+
+    public DText selectionStart(int selectionStart) {
+        comp().setSelectionStart(selectionStart);
+        return this;
+    }
+
+    public int selectionEnd() {
+        return comp().getSelectionEnd();
+    }
+
+    public DText selectionEnd(int selectionEnd) {
+        comp().setSelectionEnd(selectionEnd);
+        return this;
+    }
+
+    public String selectedText() {
+        return comp().getSelectedText();
+    }
+
+    public DText replaceSelection(String content) {
+        comp().replaceSelection(content);
+        return this;
+    }
+
+    public int caretPosition() {
+        return comp().getCaretPosition();
+    }
+
+    public DText caretPosition(int position) {
+        comp().setCaretPosition(position);
+        return this;
+    }
+
+    public DText moveCaretPosition(int position) {
+        comp().moveCaretPosition(position);
+        return this;
+    }
+
     @Override
     public String name() {
         return comp().getName();
