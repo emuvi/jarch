@@ -37,5 +37,14 @@ public class DButton extends JButton {
         setName(name);
         return this;
     }
+
+    public DButton hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    public String hint() {
+        return getToolTipText();
+    }
     
 }

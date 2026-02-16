@@ -260,4 +260,13 @@ public class DSplitter extends JSplitPane {
         return this;
     }
 
+    public DSplitter hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    public String hint() {
+        return getToolTipText();
+    }
+
 }

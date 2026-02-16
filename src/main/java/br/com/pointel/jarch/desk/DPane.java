@@ -182,4 +182,13 @@ public class DPane extends JPanel {
         return this;
     }
 
+    public DPane hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    public String hint() {
+        return getToolTipText();
+    }
+
 }

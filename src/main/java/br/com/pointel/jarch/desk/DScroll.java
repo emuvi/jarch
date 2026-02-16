@@ -56,4 +56,13 @@ public class DScroll extends JScrollPane {
         return this;
     }
 
+    public DScroll hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    public String hint() {
+        return getToolTipText();
+    }
+
 }

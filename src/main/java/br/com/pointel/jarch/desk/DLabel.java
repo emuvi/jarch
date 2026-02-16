@@ -76,4 +76,13 @@ public class DLabel extends JLabel {
         return this;
     }
 
+    public DLabel hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    public String hint() {
+        return getToolTipText();
+    }
+
 }

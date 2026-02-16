@@ -119,4 +119,10 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
+    public DComboEdit<T> hint(String hint) {
+        comp().setToolTipText(hint);
+        return this;
+    }
+
 }

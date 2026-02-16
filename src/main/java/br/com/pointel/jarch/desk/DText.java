@@ -198,4 +198,10 @@ public class DText extends DEdit<String> {
         return this;
     }
 
+    @Override
+    public DText hint(String hint) {
+        comp().setToolTipText(hint);
+        return this;
+    }
+
 }

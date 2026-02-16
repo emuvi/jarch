@@ -41,4 +41,13 @@ public abstract class DEdit<T> implements DValue<T> {
         return this;
     }
 
+    public DEdit<T> hint(String hint) {
+        comp().setToolTipText(hint);
+        return this;
+    }
+
+    public String hint() {
+        return comp().getToolTipText();
+    }
+
 }
