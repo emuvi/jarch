@@ -1,5 +1,7 @@
 package br.com.pointel.jarch.flow;
 
+import org.apache.commons.io.FilenameUtils;
+
 public enum MimeType {
 
     PDF("application/pdf"),
@@ -49,14 +51,24 @@ public enum MimeType {
     M4A("audio/x-m4a"),
     AMR("audio/amr");
 
-    private final String mimeType;
+    private final String code;
 
-    private MimeType(String mimeType) {
-            this.mimeType = mimeType;
+    private MimeType(String code) {
+        this.code = code;
     }
 
-    public String asString() {
-            return mimeType;
+    public String code() {
+        return code;
+    }
+
+    public static MimeType of(String path) {
+        var extension = FilenameUtils.getExtension(path).toLowerCase();
+        for (MimeType mimeType : MimeType.values()) {
+            if (mimeType.toString().toLowerCase().equals(extension)) {
+                return mimeType;
+            }
+        }
+        return null;
     }
     
 }
