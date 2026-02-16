@@ -1,16 +1,21 @@
 package br.com.pointel.jarch.flow;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Datex {
 
-    private final DatexNode[] nodes;
+    private final List<DatexNode> nodes;
 
     public Datex(DatexNode node) {
         this(new DatexNode[] { node });
     }
 
     public Datex(DatexNode[] nodes) {
+        this.nodes = List.of(nodes);
+    }
+
+    public Datex(List<DatexNode> nodes) {
         this.nodes = nodes;
     }
 
@@ -82,7 +87,7 @@ public class Datex {
         return null;
     }
 
-    public DatexNode[] getNodes() {
+    public List<DatexNode> getNodes() {
         return nodes;
     }
 
