@@ -97,16 +97,16 @@ public class WizProps {
         trySave();
     }
 
-    public static Map<String, String> getOf(String chars) {
-        return getOf(chars, "=");
+    public static Map<String, String> fromSource(String source) {
+        return fromSource(source, "=");
     }
 
-    public static Map<String, String> getOf(String chars, String separator) {
+    public static Map<String, String> fromSource(String source, String separator) {
         var result = new LinkedHashMap<String, String>();
-        if (WizString.isEmpty(chars)) {
+        if (WizString.isEmpty(source)) {
             return result;
         }
-        var lines = WizString.getLines(chars);
+        var lines = WizString.getLines(source);
         for (var line : lines) {
             if (line.isBlank() || line.startsWith("#")) {
                 continue;
@@ -119,15 +119,15 @@ public class WizProps {
         return result;
     }
 
-    public static String getIn(Map<String, String> props) {
-        return getIn(props, "=");
+    public static String toSource(Map<String, String> props) {
+        return toSource(props, "=");
     }
 
-    public static String getIn(Map<String, String> props, String separator) {
-        return getIn(props, separator, getPropsDefaultComments());
+    public static String toSource(Map<String, String> props, String separator) {
+        return toSource(props, separator, getPropsDefaultComments());
     }
 
-    public static String getIn(Map<String, String> props, String separator, String[] comments) {
+    public static String toSource(Map<String, String> props, String separator, String[] comments) {
         var result = new StringBuilder();
         for (var comment : comments) {
             if (comment == null || comment.isBlank()) {
