@@ -57,6 +57,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import br.com.pointel.jarch.desk.SwingFramer;
+import br.com.pointel.jarch.desk.SwingNotify;
 
 public class WizGUI {
 
@@ -242,20 +243,16 @@ public class WizGUI {
     }
 
     public static BufferedImage getImageFromClipboard() throws Exception {
-        var transferable = Toolkit.getDefaultToolkit().getSystemClipboard()
-                        .getContents(null);
-        if (transferable != null && transferable.isDataFlavorSupported(
-                        DataFlavor.imageFlavor)) {
-            var pasted = (BufferedImage) transferable.getTransferData(
-                            DataFlavor.imageFlavor);
+        var transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+        if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.imageFlavor)) {
+            var pasted = (BufferedImage) transferable.getTransferData(DataFlavor.imageFlavor);
             return WizGUI.convertToRGB(pasted);
         }
         return null;
     }
 
     public static BufferedImage convertToRGB(BufferedImage image) {
-        var result = new BufferedImage(image.getWidth(), image.getHeight(),
-                        BufferedImage.TYPE_INT_RGB);
+        var result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         result.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
         return result;
     }
@@ -515,6 +512,14 @@ public class WizGUI {
         } else {
             SwingUtilities.invokeAndWait(runnable);
         }
+    }
+
+    public static void showNotify(String message) {
+        showNotify(message, 3);
+    }
+
+    public static void showNotify(String message, double seconds) {
+        SwingNotify.show(message, seconds);
     }
 
     public static void showInfo(String message) {

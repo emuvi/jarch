@@ -9,17 +9,23 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.pointel.jarch.mage.WizGUI;
 import br.com.pointel.jarch.mage.WizThread;
 
-/**
- *
- * @author emuvi
- */
 public class SwingNotify {
+
+    private static final Logger logger = LoggerFactory.getLogger(SwingNotify.class);
     
     public static void show(Object message, double seconds) {
         if (message == null) {
+            return;
+        }
+        var messageStr = message.toString();
+        if (messageStr.isBlank()) {
             return;
         }
         show(message.toString(), seconds);
@@ -29,7 +35,7 @@ public class SwingNotify {
         if (message == null) {
             return;
         }
-        System.out.println(message);
+        logger.info(message);
         var frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setUndecorated(true);
@@ -56,8 +62,8 @@ public class SwingNotify {
         var bounds = WizGUI.getScreenWithMouse().getDefaultConfiguration().getBounds();
         frame.setBounds(bounds.x + bounds.width - 400, bounds.y + 30, 360, 80);
         frame.setVisible(true);
-        WizGUI.setAllComponentsFont(frame, WizGUI.fontMonospaced());
-        new Thread("Notification Watcher") {
+        WizGUI.setAllComponentsFont(frame, WizGUI.getFont());
+        new Thread("SwingNotify Closer") {
             @Override
             public void run() {
                 while (frame.isVisible()) {
