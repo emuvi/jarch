@@ -99,30 +99,30 @@ public class DFrame extends JFrame {
         return this;
     }
 
-    public Point location() {
+    public Point position() {
         return super.getLocation();
     }
 
-    public DFrame location(int x, int y) {
+    public DFrame position(int x, int y) {
         super.setLocation(x, y);
         return this;
     }
 
-    public DFrame location(Point p) {
+    public DFrame position(Point p) {
         super.setLocation(p);
         return this;
     }
 
-    public Rectangle bounds() {
+    public Rectangle place() {
         return super.getBounds();
     }
 
-    public DFrame bounds(int x, int y, int width, int height) {
+    public DFrame place(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
         return this;
     }
 
-    public DFrame bounds(Rectangle r) {
+    public DFrame place(Rectangle r) {
         super.setBounds(r);
         return this;
     }
