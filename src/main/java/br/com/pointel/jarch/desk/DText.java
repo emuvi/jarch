@@ -1,5 +1,8 @@
 package br.com.pointel.jarch.desk;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.function.Consumer;
 import javax.swing.JTextArea;
 
 public class DText extends DEdit<String> {
@@ -133,6 +136,44 @@ public class DText extends DEdit<String> {
 
     public DText focusable(boolean focusable) {
         comp().setFocusable(focusable);
+        return this;
+    }
+
+    public DText onFocusGained(Consumer<FocusEvent> consumer) {
+        comp().addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                consumer.accept(e);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
+        return this;
+    }
+
+    public DText onFocusLost(Consumer<FocusEvent> consumer) {
+        comp().addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DText requestFocus() {
+        comp().requestFocus();
+        return this;
+    }
+
+    public DText requestFocusInWindow() {
+        comp().requestFocusInWindow();
         return this;
     }
 

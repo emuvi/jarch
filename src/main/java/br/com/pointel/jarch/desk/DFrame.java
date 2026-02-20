@@ -326,4 +326,9 @@ public class DFrame extends JFrame {
         return this;
     }
 
+    public DFrame view() {
+        setVisible(true);
+        return this;
+    }
+
 }

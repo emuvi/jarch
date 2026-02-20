@@ -166,4 +166,10 @@ public class DListDesk<T> extends DFrame {
         WizGUI.close(this);
     }
 
+    @Override
+    public DListDesk<T> view() {
+        setVisible(true);
+        return this;
+    }
+
 }
