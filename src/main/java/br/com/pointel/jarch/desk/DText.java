@@ -35,7 +35,11 @@ public class DText extends DEdit<String> {
 
     @Override
     public void setValue(String value) {
+        var start = comp().getSelectionStart();
+        var end = comp().getSelectionEnd();
         comp().setText(value);
+        comp().setSelectionStart(start);
+        comp().setSelectionEnd(end);
     }
 
     public String value() {
