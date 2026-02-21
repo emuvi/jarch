@@ -20,6 +20,13 @@ public class DComboEdit<T> extends DEdit<T> {
         add(items);
     }
 
+    public DComboEdit(Class<T> enumClass) {
+        this();
+        if (enumClass != null && enumClass.isEnum()) {
+            add(enumClass.getEnumConstants());
+        }
+    }
+    
     @Override
     public JComboBox<T> comp() {
         return (JComboBox<T>) super.comp();
@@ -46,6 +53,13 @@ public class DComboEdit<T> extends DEdit<T> {
             for (T item : items) {
                 model.addElement(item);
             }
+        }
+        return this;
+    }
+
+    public DComboEdit<T> add(Class<T> enumClass) {
+        if (enumClass != null && enumClass.isEnum()) {
+            add(enumClass.getEnumConstants());
         }
         return this;
     }

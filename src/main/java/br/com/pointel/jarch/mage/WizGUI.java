@@ -166,7 +166,6 @@ public class WizGUI {
         return started;
     }
 
-
     public static Window getActiveWindow() {
         for (Window window : Window.getWindows()) {
             if (window.isActive()) {
