@@ -168,9 +168,9 @@ public class WizGUI {
 
 
     public static Window getActiveWindow() {
-        for (Window old : Window.getWindows()) {
-            if (old.isActive()) {
-                return old;
+        for (Window window : Window.getWindows()) {
+            if (window.isActive()) {
+                return window;
             }
         }
         return null;
