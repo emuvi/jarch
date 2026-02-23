@@ -137,6 +137,11 @@ public class DListDesk<T> extends DFrame {
         return this;
     }
 
+    public DListDesk<T> delOptions() {
+        modelValues.clear();
+        return this;
+    }
+
     public DListDesk<T> onSelect(Consumer<T> onSelect) {
         this.onSelect = onSelect;
         return this;
