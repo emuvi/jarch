@@ -312,7 +312,7 @@ public class BasedLink implements Data {
         BasedLink result = new BasedLink();
         Map<String, String> assigned = WizString.getAssigned(chars);
         result.name = assigned.get("name");
-        result.base = WizData.fromChars(assigned.get("base"), Based.class);
+        result.base = WizData.fromJson(assigned.get("base"), Based.class);
         result.path = assigned.get("path");
         result.port = WizInteger.get(assigned.get("port"));
         result.data = assigned.get("data");

@@ -282,7 +282,7 @@ public class WizLang {
                 } else if (field.isAnnotationPresent(FixObject.class)) {
                     var valueStr = field.getAnnotation(FixObject.class).value();
                     var valueType = field.getAnnotation(FixObject.class).type();
-                    value = WizData.fromChars(valueStr, valueType);
+                    value = WizData.fromJson(valueStr, valueType);
                 } else {
                     try {
                         value = field.getType().getConstructor().newInstance();

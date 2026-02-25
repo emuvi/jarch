@@ -41,11 +41,11 @@ public class WizData {
         }
     }
 
-    public static String toChars(Object value) {
+    public static String toJson(Object value) {
         return gson.toJson(value);
     }
 
-    public static <T> T fromChars(String chars, Class<T> ofClass) {
+    public static <T> T fromJson(String chars, Class<T> ofClass) {
         return gson.fromJson(chars, ofClass);
     }
 

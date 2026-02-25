@@ -19,11 +19,11 @@ public interface Base extends Serializable {
     }
 
     public default String toChars() {
-        return WizData.toChars(this);
+        return WizData.toJson(this);
     }
 
     public static <T> T fromChars(String chars, Class<T> clazz) {
-        return WizData.fromChars(chars, clazz);
+        return WizData.fromJson(chars, clazz);
     }
 
 }

@@ -11,7 +11,7 @@ public class DataClazz implements Data {
     }
 
     public DataClazz(Object value) {
-        this.data = value == null ? null : WizData.toChars(value);
+        this.data = value == null ? null : WizData.toJson(value);
         this.clazz = value == null ? null : value.getClass().getCanonicalName();
     }
 
@@ -97,7 +97,7 @@ public class DataClazz implements Data {
     }
 
     public Object getValue() throws Exception {
-        return this.data == null ? null : WizData.fromChars(this.data, Class.forName( this.clazz));
+        return this.data == null ? null : WizData.fromJson(this.data, Class.forName( this.clazz));
     }
 
     public <T> T getValueOn(Class<T> clazz) throws Exception {
