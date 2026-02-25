@@ -224,6 +224,8 @@ public class WizString {
         return result;
     }
 
+    
+
     public static String[] getLines(String chars) {
         return chars.split("\\r?\\n");
     }
@@ -864,6 +866,195 @@ public class WizString {
 
     public static boolean isLastInOrd(char ch, boolean onlyNumbers) {
         return (ch == '9' && onlyNumbers) || (ch == 'Z' && !onlyNumbers);
+    }
+
+    public static double getSimilarity(String chars1, String chars2) {
+        return getSimilarityWords(chars1, chars2);
+    }
+
+    public static double getSimilarityWords(String chars1, String chars2) {
+        if (chars1 == null && chars2 == null) return 1.0;
+        if (chars1 == null || chars2 == null) return 0.0;
+        if (chars1.equals(chars2)) return 1.0;
+        return getSimilarityWords(getWords(chars1), getWords(chars2));
+    }
+
+    public static double getSimilarityWords(String[] words1, String[] words2) {
+        if (words1 == null || words2 == null) return 0.0;
+        if (words1.length == 0 && words2.length == 0) return 1.0;
+        if (words1.length == 0 || words2.length == 0) return 0.0;
+        
+        int i1 = 0;
+        int i2 = 0;
+        int matches = 0;
+        int total = Math.max(words1.length, words2.length);
+        
+        while (i1 < words1.length && i2 < words2.length) {
+            String w1 = words1[i1];
+            String w2 = words2[i2];
+            
+            if (w1.equals(w2)) {
+                matches++;
+                i1++;
+                i2++;
+            } else {
+                int nextI1 = -1;
+                int nextI2 = -1;
+                
+                for (int k = i2 + 1; k < words2.length; k++) {
+                    if (w1.equals(words2[k])) {
+                        nextI2 = k;
+                        break;
+                    }
+                }
+                
+                for (int k = i1 + 1; k < words1.length; k++) {
+                    if (w2.equals(words1[k])) {
+                        nextI1 = k;
+                        break;
+                    }
+                }
+                
+                if (nextI2 != -1 && nextI1 != -1) {
+                    if ((nextI2 - i2) < (nextI1 - i1)) {
+                        i2 = nextI2;
+                    } else {
+                        i1 = nextI1;
+                    }
+                } else if (nextI2 != -1) {
+                    i2 = nextI2;
+                } else if (nextI1 != -1) {
+                    i1 = nextI1;
+                } else {
+                    i1++;
+                    i2++;
+                }
+            }
+        }
+        
+        return (double) matches / total;
+    }
+
+    public static int getDistanceWords(String chars1, String chars2) {
+        if (chars1 == null && chars2 == null) return 0;
+        if (chars1 == null) return chars2.length();
+        if (chars2 == null) return chars1.length();
+        if (chars1.equals(chars2)) return 0;
+        return getDistanceWords(getWords(chars1), getWords(chars2));
+    }
+
+    public static int getDistanceWords(String[] words1, String[] words2) {
+        if (words1 == null && words2 == null) return 0;
+        if (words1 == null) {
+            int dist = 0;
+            for (String w : words2) dist += w.length();
+            return dist;
+        }
+        if (words2 == null) {
+            int dist = 0;
+            for (String w : words1) dist += w.length();
+            return dist;
+        }
+        
+        int i1 = 0;
+        int i2 = 0;
+        int distance = 0;
+        
+        while (i1 < words1.length && i2 < words2.length) {
+            String w1 = words1[i1];
+            String w2 = words2[i2];
+            
+            if (w1.equals(w2)) {
+                i1++;
+                i2++;
+            } else {
+                int nextI1 = -1;
+                int nextI2 = -1;
+                
+                for (int k = i2 + 1; k < words2.length; k++) {
+                    if (w1.equals(words2[k])) {
+                        nextI2 = k;
+                        break;
+                    }
+                }
+                
+                for (int k = i1 + 1; k < words1.length; k++) {
+                    if (w2.equals(words1[k])) {
+                        nextI1 = k;
+                        break;
+                    }
+                }
+                
+                if (nextI2 != -1 && nextI1 != -1) {
+                    if ((nextI2 - i2) < (nextI1 - i1)) {
+                        for (int k = i2; k < nextI2; k++) distance += words2[k].length();
+                        i2 = nextI2;
+                    } else {
+                        for (int k = i1; k < nextI1; k++) distance += words1[k].length();
+                        i1 = nextI1;
+                    }
+                } else if (nextI2 != -1) {
+                    for (int k = i2; k < nextI2; k++) distance += words2[k].length();
+                    i2 = nextI2;
+                } else if (nextI1 != -1) {
+                    for (int k = i1; k < nextI1; k++) distance += words1[k].length();
+                    i1 = nextI1;
+                } else {
+                    distance += getLevenshteinDistance(w1, w2);
+                    i1++;
+                    i2++;
+                }
+            }
+        }
+        
+        while (i1 < words1.length) {
+            distance += words1[i1].length();
+            i1++;
+        }
+        
+        while (i2 < words2.length) {
+            distance += words2[i2].length();
+            i2++;
+        }
+        
+        return distance;
+    }
+
+    public static int getLevenshteinDistance(String chars1, String chars2) {
+        if (chars1 == null && chars2 == null) return 0;
+        if (chars1 == null) return chars2.length();
+        if (chars2 == null) return chars1.length();
+        if (chars1.equals(chars2)) return 0;
+        
+        int n = chars1.length();
+        int m = chars2.length();
+        
+        if (n == 0) return m;
+        if (m == 0) return n;
+        
+        int[] p = new int[n + 1];
+        int[] d = new int[n + 1];
+        int[] swap;
+        
+        for (int i = 0; i <= n; i++) {
+            p[i] = i;
+        }
+        
+        for (int j = 1; j <= m; j++) {
+            char t_j = chars2.charAt(j - 1);
+            d[0] = j;
+            
+            for (int i = 1; i <= n; i++) {
+                int cost = chars1.charAt(i - 1) == t_j ? 0 : 1;
+                d[i] = Math.min(Math.min(d[i - 1] + 1, p[i] + 1), p[i - 1] + cost);
+            }
+            
+            swap = p;
+            p = d;
+            d = swap;
+        }
+        
+        return p[n];
     }
     
 }
