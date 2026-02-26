@@ -93,8 +93,17 @@ public class DComboEdit<T> extends DEdit<T> {
         return comp().getSelectedIndex();
     }
 
-    public DComboEdit<T> selectedIndex(int index) {
+    public T selectedItem() {
+        return (T) comp().getSelectedItem();
+    }
+
+    public DComboEdit<T> select(int index) {
         comp().setSelectedIndex(index);
+        return this;
+    }
+
+    public DComboEdit<T> select(T element) {
+        comp().setSelectedItem(element);
         return this;
     }
 
