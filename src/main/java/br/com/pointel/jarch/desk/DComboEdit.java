@@ -124,15 +124,6 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public boolean enabled() {
-        return comp().isEnabled();
-    }
-
-    public DComboEdit<T> enabled(boolean enabled) {
-        comp().setEnabled(enabled);
-        return this;
-    }
-
     @Override
     public T value() {
         return getValue();
@@ -145,21 +136,12 @@ public class DComboEdit<T> extends DEdit<T> {
     }
 
     @Override
-    public String name() {
-        return comp().getName();
-    }
-
-    @Override
-    public DComboEdit<T> name(String name) {
-        comp().setName(name);
-        return this;
-    }
-
     public DComboEdit<T> onAction(Consumer<ActionEvent> consumer) {
         comp().addActionListener(e -> consumer.accept(e));
         return this;
     }
 
+    @Override
     public DComboEdit<T> onMouseClicked(Consumer<MouseEvent> consumer) {
         var listener = new MouseAdapter() {
             @Override
@@ -172,6 +154,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onMousePressed(Consumer<MouseEvent> consumer) {
         var listener = new MouseAdapter() {
             @Override
@@ -184,6 +167,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onMouseReleased(Consumer<MouseEvent> consumer) {
         var listener = new MouseAdapter() {
             @Override
@@ -196,6 +180,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onMouseEntered(Consumer<MouseEvent> consumer) {
         var listener = new MouseAdapter() {
             @Override
@@ -208,6 +193,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onMouseExited(Consumer<MouseEvent> consumer) {
         var listener = new MouseAdapter() {
             @Override
@@ -220,6 +206,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onKeyTyped(Consumer<KeyEvent> consumer) {
         var listener = new KeyAdapter() {
             @Override
@@ -232,6 +219,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onKeyPressed(Consumer<KeyEvent> consumer) {
         var listener = new KeyAdapter() {
             @Override
@@ -244,6 +232,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    @Override
     public DComboEdit<T> onKeyReleased(Consumer<KeyEvent> consumer) {
         var listener = new KeyAdapter() {
             @Override
@@ -253,12 +242,6 @@ public class DComboEdit<T> extends DEdit<T> {
         };
         comp().addKeyListener(listener);
         comp().getEditor().getEditorComponent().addKeyListener(listener);
-        return this;
-    }
-
-    @Override
-    public DComboEdit<T> hint(String hint) {
-        comp().setToolTipText(hint);
         return this;
     }
 

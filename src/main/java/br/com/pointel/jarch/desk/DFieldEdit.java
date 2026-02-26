@@ -49,15 +49,6 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public boolean enabled() {
-        return comp().isEnabled();
-    }
-
-    public DFieldEdit<T> enabled(boolean enabled) {
-        comp().setEnabled(enabled);
-        return this;
-    }
-
     @Override
     public T value() {
         return getValue();
@@ -88,15 +79,6 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
     @Override
     public DFieldEdit<T> hint(String hint) {
         comp().setToolTipText(hint);
-        return this;
-    }
-
-    public boolean focusable() {
-        return comp().isFocusable();
-    }
-
-    public DFieldEdit<T> focusable(boolean focusable) {
-        comp().setFocusable(focusable);
         return this;
     }
 
