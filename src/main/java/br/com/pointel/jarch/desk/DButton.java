@@ -14,7 +14,7 @@ public class DButton extends JButton {
         super(text);
     }
 
-    public DButton onClick(ActionListener listener) {
+    public DButton onAction(ActionListener listener) {
         addActionListener(listener);
         return this;
     }

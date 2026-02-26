@@ -11,9 +11,9 @@ public class DTextDesk extends DFrame {
     private final DScroll scrollText = new DScroll(textValue);
 
     private final DButton buttonConfirm = new DButton("Confirm")
-            .onClick(this::confirm);
+            .onAction(this::confirm);
     private final DButton buttonCancel = new DButton("Cancel")
-            .onClick(this::cancel);
+            .onAction(this::cancel);
 
     private final DPane actsBody = new DRowPane().insets(2)
             .growHorizontal().put(Box.createHorizontalGlue())

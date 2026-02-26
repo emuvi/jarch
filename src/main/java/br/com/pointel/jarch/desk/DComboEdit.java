@@ -128,7 +128,7 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DComboEdit<T> onClick(ActionListener listener) {
+    public DComboEdit<T> onAction(ActionListener listener) {
         comp().addActionListener(listener);
         return this;
     }

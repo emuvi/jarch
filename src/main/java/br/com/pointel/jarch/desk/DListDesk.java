@@ -24,9 +24,9 @@ public class DListDesk<T> extends DFrame {
     private final JScrollPane scrollList = new JScrollPane(listValues);
 
     private final DButton buttonSelect = new DButton("Select")
-            .onClick(this::select);
+            .onAction(this::select);
     private final DButton buttonCancel = new DButton("Cancel")
-            .onClick(this::cancel);
+            .onAction(this::cancel);
 
     private final DPane actsBody = new DRowPane().insets(2)
             .growHorizontal().put(Box.createHorizontalGlue())
