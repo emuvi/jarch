@@ -1,5 +1,11 @@
 package br.com.pointel.jarch.desk;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
+
 import javax.swing.JTextField;
 
 public abstract class DFieldEdit<T> extends DEdit<T> {
@@ -176,6 +182,86 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
 
     public DFieldEdit<T> horizontalAlignmentTrailing() {
         comp().setHorizontalAlignment(JTextField.TRAILING);
+        return this;
+    }
+
+    public DFieldEdit<T> onMouseClicked(Consumer<MouseEvent> consumer) {
+        comp().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onMousePressed(Consumer<MouseEvent> consumer) {
+        comp().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onMouseReleased(Consumer<MouseEvent> consumer) {
+        comp().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onMouseEntered(Consumer<MouseEvent> consumer) {
+        comp().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onMouseExited(Consumer<MouseEvent> consumer) {
+        comp().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onKeyTyped(Consumer<KeyEvent> consumer) {
+        comp().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onKeyPressed(Consumer<KeyEvent> consumer) {
+        comp().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
+    }
+
+    public DFieldEdit<T> onKeyReleased(Consumer<KeyEvent> consumer) {
+        comp().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                consumer.accept(e);
+            }
+        });
         return this;
     }
 

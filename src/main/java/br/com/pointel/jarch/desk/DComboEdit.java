@@ -1,6 +1,11 @@
 package br.com.pointel.jarch.desk;
 
-import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -128,8 +133,104 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DComboEdit<T> onAction(ActionListener listener) {
-        comp().addActionListener(listener);
+    public DComboEdit<T> onAction(Consumer<ActionEvent> consumer) {
+        comp().addActionListener(e -> consumer.accept(e));
+        return this;
+    }
+
+    public DComboEdit<T> onMouseClicked(Consumer<MouseEvent> consumer) {
+        var listener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addMouseListener(listener);
+        comp().getEditor().getEditorComponent().addMouseListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onMousePressed(Consumer<MouseEvent> consumer) {
+        var listener = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addMouseListener(listener);
+        comp().getEditor().getEditorComponent().addMouseListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onMouseReleased(Consumer<MouseEvent> consumer) {
+        var listener = new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addMouseListener(listener);
+        comp().getEditor().getEditorComponent().addMouseListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onMouseEntered(Consumer<MouseEvent> consumer) {
+        var listener = new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addMouseListener(listener);
+        comp().getEditor().getEditorComponent().addMouseListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onMouseExited(Consumer<MouseEvent> consumer) {
+        var listener = new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addMouseListener(listener);
+        comp().getEditor().getEditorComponent().addMouseListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onKeyTyped(Consumer<KeyEvent> consumer) {
+        var listener = new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addKeyListener(listener);
+        comp().getEditor().getEditorComponent().addKeyListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onKeyPressed(Consumer<KeyEvent> consumer) {
+        var listener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addKeyListener(listener);
+        comp().getEditor().getEditorComponent().addKeyListener(listener);
+        return this;
+    }
+
+    public DComboEdit<T> onKeyReleased(Consumer<KeyEvent> consumer) {
+        var listener = new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                consumer.accept(e);
+            }
+        };
+        comp().addKeyListener(listener);
+        comp().getEditor().getEditorComponent().addKeyListener(listener);
         return this;
     }
 
