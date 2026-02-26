@@ -62,6 +62,11 @@ public class DComboEdit<T> extends DEdit<T> {
         return this;
     }
 
+    public DComboEdit<T> add(int atIndex, T item) {
+        model.insertElementAt(item, atIndex);
+        return this;
+    }
+
     public DComboEdit<T> add(Class<T> enumClass) {
         if (enumClass != null && enumClass.isEnum()) {
             add(enumClass.getEnumConstants());
@@ -91,6 +96,14 @@ public class DComboEdit<T> extends DEdit<T> {
     public DComboEdit<T> selectedIndex(int index) {
         comp().setSelectedIndex(index);
         return this;
+    }
+
+    public int itemsCount() {
+        return model.getSize();
+    }
+
+    public T itemAt(int index) {
+        return model.getElementAt(index);
     }
 
     public boolean editable() {
