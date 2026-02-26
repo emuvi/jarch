@@ -28,6 +28,15 @@ public class DCheckEdit extends DEdit<Boolean> {
         comp().setSelected(value != null && value);
     }
 
+    public boolean isSelected() {
+        return comp().isSelected();
+    }
+
+    public DCheckEdit setSelected(boolean selected) {
+        comp().setSelected(selected);
+        return this;
+    }
+
     public String text() {
         return comp().getText();
     }
