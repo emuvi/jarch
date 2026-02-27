@@ -42,6 +42,11 @@ public abstract class DEdit<T> implements DValue<T> {
         return this;
     }
 
+    public DEdit<T> clear() {
+        setValue(null);
+        return this;
+    }
+
     public boolean enabled() {
         return comp.isEnabled();
     }
