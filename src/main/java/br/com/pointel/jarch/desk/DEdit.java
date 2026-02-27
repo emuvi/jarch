@@ -1,6 +1,7 @@
 package br.com.pointel.jarch.desk;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -198,25 +199,17 @@ public abstract class DEdit<T> implements DValue<T> {
     }
 
     public DEdit<T> onFocusGained(Consumer<FocusEvent> consumer) {
-        comp().addFocusListener(new FocusListener() {
+        comp().addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 consumer.accept(e);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
             }
         });
         return this;
     }
 
     public DEdit<T> onFocusLost(Consumer<FocusEvent> consumer) {
-        comp().addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-            }
-
+        comp().addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 consumer.accept(e);
