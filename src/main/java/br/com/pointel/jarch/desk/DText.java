@@ -95,6 +95,21 @@ public class DText extends DEdit<String> {
         return this;
     }
 
+    public DText cut() {
+        comp().cut();
+        return this;
+    }
+
+    public DText copy() {
+        comp().copy();
+        return this;
+    }
+
+    public DText paste() {
+        comp().paste();
+        return this;
+    }
+
     public boolean lineWrap() {
         return comp().getLineWrap();
     }

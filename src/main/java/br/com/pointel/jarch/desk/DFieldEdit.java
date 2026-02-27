@@ -60,25 +60,18 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    @Override
-    public String name() {
-        return comp().getName();
-    }
-
-    @Override
-    public DFieldEdit<T> name(String name) {
-        comp().setName(name);
+    public DFieldEdit<T> cut() {
+        comp().cut();
         return this;
     }
 
-    @Override
-    public String hint() {
-        return comp().getToolTipText();
+    public DFieldEdit<T> copy() {
+        comp().copy();
+        return this;
     }
 
-    @Override
-    public DFieldEdit<T> hint(String hint) {
-        comp().setToolTipText(hint);
+    public DFieldEdit<T> paste() {
+        comp().paste();
         return this;
     }
 
