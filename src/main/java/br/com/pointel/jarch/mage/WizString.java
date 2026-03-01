@@ -34,32 +34,12 @@ public class WizString {
         return String.valueOf(value);
     }
 
-    public static final String simpleUpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXZY";
-
-    public static String newRandomString(int length) {
-        var random = new Random();
-        var randomNumberString = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            if (random.nextBoolean()) {
-                int randomDigit = random.nextInt(10);
-                randomNumberString.append(randomDigit);
-            } else {
-                char randomChar = simpleUpperChars.charAt(random.nextInt(simpleUpperChars.length()));
-                randomNumberString.append(randomChar);
-            }
-        }
-        return randomNumberString.toString();
+    public static String[] getFromEnum(Class<? extends Enum<?>> enumClass) {
+        return Arrays.stream(enumClass.getEnumConstants())
+                .map(Enum::name)
+                .toArray(String[]::new);
     }
 
-    public static String newRandomStringOnlyNumbers(int length) {
-        var random = new Random();
-        var randomNumberString = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int randomDigit = random.nextInt(10);
-            randomNumberString.append(randomDigit);
-        }
-        return randomNumberString.toString();
-    }
 
     public static String getParameterName(String ofChars) {
         if (ofChars == null) {

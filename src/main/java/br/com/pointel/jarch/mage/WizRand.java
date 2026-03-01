@@ -39,8 +39,10 @@ public class WizRand {
         }
     }
 
+    public static final String simpleUpperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     public static char getChar() {
-        return WizString.simpleUpperChars.charAt(WizRand.getInt(0, WizString.simpleUpperChars.length()));
+        return simpleUpperChars.charAt(WizRand.getInt(0, simpleUpperChars.length()));
     }
 
     public static String getChars(int size) {
