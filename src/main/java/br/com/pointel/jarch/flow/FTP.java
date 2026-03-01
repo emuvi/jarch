@@ -113,12 +113,23 @@ public class FTP implements AutoCloseable {
     public void openWithMakeDir(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Checking/Creating directory " + path);
-        if (!client.changeWorkingDirectory(path)) {
-            if (!client.makeDirectory(path)) {
-                throw new Exception("Could not create directory.");
+        if (client.changeWorkingDirectory(path)) {
+            return;
+        }
+        if (path.startsWith("/")) {
+            client.changeWorkingDirectory("/");
+        }
+        for (String part : path.split("/")) {
+            if (part.isEmpty()) {
+                continue;
             }
-            if (!client.changeWorkingDirectory(path)) {
-                throw new Exception("Could not open or create directory.");
+            if (!client.changeWorkingDirectory(part)) {
+                if (!client.makeDirectory(part)) {
+                    throw new Exception("Could not create directory: " + part);
+                }
+                if (!client.changeWorkingDirectory(part)) {
+                    throw new Exception("Could not open directory: " + part);
+                }
             }
         }
     }
