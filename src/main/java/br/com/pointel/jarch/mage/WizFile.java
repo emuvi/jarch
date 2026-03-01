@@ -151,6 +151,24 @@ public class WizFile {
         return "";
     }
 
+    public static String changeExtension(String path, String newExtension) {
+        if (path == null) {
+            return null;
+        }
+        if (newExtension == null) {
+            newExtension = "";
+        }
+        if (!newExtension.isEmpty() && !newExtension.startsWith(".")) {
+            newExtension = "." + newExtension;
+        }
+        final var dot = path.lastIndexOf(".");
+        if (dot > -1) {
+            return path.substring(0, dot) + newExtension;
+        }
+        return path + newExtension;
+
+    }
+
     public static String addOnBaseName(String path, String chars) {
         if (path == null) {
             return chars;
