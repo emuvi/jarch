@@ -24,12 +24,13 @@ public class WizThread {
     }
 
     public static Thread getMainThread() {
-        for (Thread thread : Thread.getAllStackTraces().keySet()) {
+        var threads = Thread.getAllStackTraces().keySet();
+        for (Thread thread : threads) {
             if ("main".equals(thread.getName())) {
                 return thread;
             }
         }
-        return null;
+        return threads.stream().findFirst().orElse(null);
     }
 
     public static Thread startDaemon(Runnable task, String name) {

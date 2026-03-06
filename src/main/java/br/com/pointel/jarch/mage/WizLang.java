@@ -6,9 +6,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.reflect.ClassPath;
+
 import br.com.pointel.jarch.data.Nature;
 import br.com.pointel.jarch.flow.FixBool;
 import br.com.pointel.jarch.flow.FixByte;
@@ -31,6 +37,8 @@ public class WizLang {
     private static final Logger log = LoggerFactory.getLogger(WizLang.class);
 
     private WizLang() {}
+
+    
 
     public static <T extends Serializable> T deepClone(final T value) {
         try {
@@ -71,6 +79,25 @@ public class WizLang {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static Set<String> getAllClasses() {
+        return getAllClasses(WizLang.class.getClassLoader());
+    }
+
+    public static Set<String> getAllClasses(ClassLoader classLoader) {
+        try {
+            var classPath = ClassPath.from(classLoader);
+            var classes = classPath.getAllClasses();
+            var result = new TreeSet<String>();
+            for (var info : classes) {
+                result.add(info.getName());
+            }
+            return result;
+        } catch (Exception e) {
+            log.error("Error getting all classes", e);
+            return java.util.Collections.emptySet();
         }
     }
 
@@ -348,19 +375,29 @@ public class WizLang {
 
     public static String getPointelMainClassName() {
         var mainThread = WizThread.getMainThread();
-        if (mainThread == null) {
-            return null;
-        }
-        var stack = mainThread.getStackTrace();
-        if (stack == null || stack.length == 0) {
-            return null;
-        }
-        for (int i = stack.length -1; i >= 0 ; i--) {
-            if (stack[i].getClassName().startsWith("br.com.pointel")) {
-                return stack[i].getClassName();
+        if (mainThread != null) {
+            var stack = mainThread.getStackTrace();
+            if (stack != null && stack.length > 0) {
+                for (int i = stack.length - 1; i >= 0; i--) {
+                    if (stack[i].getClassName().startsWith("br.com.pointel")) {
+                        return stack[i].getClassName();
+                    }
+                }
             }
         }
-        // | TODO | If not found pointel in main look in other threads
+        for (var entry : Thread.getAllStackTraces().entrySet()) {
+            if (mainThread != null && entry.getKey().getId() == mainThread.getId()) {
+                continue;
+            }
+            var stack = entry.getValue();
+            if (stack != null && stack.length > 0) {
+                for (int i = stack.length - 1; i >= 0; i--) {
+                    if (stack[i].getClassName().startsWith("br.com.pointel")) {
+                        return stack[i].getClassName();
+                    }
+                }
+            }
+        }
         return null;
     }
 
