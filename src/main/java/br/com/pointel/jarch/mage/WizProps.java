@@ -15,7 +15,18 @@ public class WizProps {
     private WizProps() {}
 
     private static final Logger logger = LoggerFactory.getLogger(WizProps.class);
+    
     private static final Properties props = new Properties();
+
+    private static File folder = new File(".");
+
+    public static File getFolder() {
+        return folder;
+    }
+
+    public static void setFolder(File folder) {
+        WizProps.folder = folder;
+    }
 
     static {
         tryLoad();
@@ -34,7 +45,7 @@ public class WizProps {
     }
 
     public static void load(String name) throws Exception {
-        File file = new File(name + ".ini");
+        File file = new File(folder, name + ".ini");
         if (file.exists()) {
             try (FileReader input = new FileReader(file)) {
                 props.load(input);
@@ -55,7 +66,7 @@ public class WizProps {
     }
 
     public static void save(String name) throws Exception {
-        File file = new File(name + ".ini");
+        File file = new File(folder, name + ".ini");
         try (FileWriter output = new FileWriter(file)) {
             props.store(output, name + " properties");
         }
