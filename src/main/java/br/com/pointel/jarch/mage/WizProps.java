@@ -18,7 +18,7 @@ public class WizProps {
     
     private static final Properties props = new Properties();
 
-    private static File folder = new File(".");
+    private static volatile File folder = new File(".");
 
     public static File getFolder() {
         return folder;
