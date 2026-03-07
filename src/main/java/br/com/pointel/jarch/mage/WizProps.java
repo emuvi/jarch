@@ -26,6 +26,12 @@ public class WizProps {
 
     public static void setFolder(File folder) {
         WizProps.folder = folder;
+        tryLoad();
+    }
+
+    public static void setFolder(File folder, String name) {
+        WizProps.folder = folder;
+        tryLoad(name);
     }
 
     static {
@@ -35,6 +41,14 @@ public class WizProps {
     public static void tryLoad() {
         try {
             load();
+        } catch (Exception ex) {
+            logger.error("Error loading properties", ex);
+        }
+    }
+
+    public static void tryLoad(String name) {
+        try {
+            load(name);
         } catch (Exception ex) {
             logger.error("Error loading properties", ex);
         }
