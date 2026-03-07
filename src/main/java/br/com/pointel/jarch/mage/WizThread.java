@@ -99,5 +99,15 @@ public class WizThread {
     public static <T> Future<T> submit(Callable<T> callable) {
         return getExecutor().submit(callable);
     }
+    
+    public static void closeAside(AutoCloseable closeable) {
+        new Thread(() -> {
+            try {
+                closeable.close();
+            } catch (Exception ex) {
+                log.error("Error closing resource", ex);
+            }
+        }).start();
+    }
 
 }

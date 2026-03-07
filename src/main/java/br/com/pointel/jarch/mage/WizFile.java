@@ -7,12 +7,27 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * Utility class for file and path manipulation, including file dialogs.
+ */
 public class WizFile {
 
+    /**
+     * Cleans a file path by fixing separators and resolving it to an absolute path.
+     *
+     * @param path The path to clean.
+     * @return The cleaned absolute path.
+     */
     public static String clean(String path) {
         return WizFile.getAbsolute(WizFile.fixSeparators(path));
     }
 
+    /**
+     * Resolves a path to its absolute form, handling relative prefixes like ".", "..", and "~".
+     *
+     * @param path The path to resolve.
+     * @return The absolute path.
+     */
     public static String getAbsolute(String path) {
         if (path == null || path.isEmpty()) {
             return path;
@@ -39,6 +54,12 @@ public class WizFile {
         return path;
     }
 
+    /**
+     * Fixes file separators in a path string to match the system's separator.
+     *
+     * @param path The path to fix.
+     * @return The path with fixed separators.
+     */
     public static String fixSeparators(String path) {
         if (WizString.isEmpty(path)) {
             return path;
@@ -51,6 +72,13 @@ public class WizFile {
         return path;
     }
 
+    /**
+     * Joins a parent path and a child path, handling separators.
+     *
+     * @param path The parent path.
+     * @param child The child path.
+     * @return The joined path.
+     */
     public static String sum(String path, String child) {
         if (!WizString.isNotEmpty(path) || !WizString.isNotEmpty(child)) {
             return WizString.getFirstNonEmpty(path, child);
@@ -64,6 +92,13 @@ public class WizFile {
         }
     }
 
+    /**
+     * Joins a parent path and multiple child path segments.
+     *
+     * @param path The parent path.
+     * @param children The child path segments.
+     * @return The joined path.
+     */
     public static String sum(String path, String... children) {
         var result = path;
         if (children != null) {
@@ -74,6 +109,13 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Joins a parent File and multiple child path segments.
+     *
+     * @param path The parent File.
+     * @param children The child path segments.
+     * @return The resulting File.
+     */
     public static File sum(File path, String... children) {
         var result = path;
         if (result != null && children != null) {
@@ -84,6 +126,13 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Finds a parent directory of a file that matches a specific name.
+     *
+     * @param path The starting file.
+     * @param withName The name of the parent directory to find.
+     * @return The matching parent File, or null if not found.
+     */
     public static File getParent(File path, String withName) {
         File result = null;
         if (path != null) {
@@ -99,6 +148,12 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Gets the parent path string of a given path.
+     *
+     * @param path The path string.
+     * @return The parent path string, or the original path if no separator is found.
+     */
     public static String getParent(String path) {
         if (path.contains(File.separator)) {
             return path.substring(0, path.lastIndexOf(File.separator));
@@ -106,6 +161,13 @@ public class WizFile {
         return path;
     }
 
+    /**
+     * Finds a root directory (parent) with a specific name starting from a given path.
+     *
+     * @param withName The name of the root to find.
+     * @param fromPath The starting path.
+     * @return The matching parent File, or null if not found.
+     */
     public static File getRoot(String withName, File fromPath) {
         if (fromPath == null) {
             return null;
@@ -117,6 +179,12 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Extracts the file name from a path string.
+     *
+     * @param path The path string.
+     * @return The file name.
+     */
     public static String getName(String path) {
         if (path == null) {
             return null;
@@ -128,6 +196,12 @@ public class WizFile {
         return path.substring(sep + 1);
     }
 
+    /**
+     * Extracts the base name (file name without extension) from a path string.
+     *
+     * @param path The path string.
+     * @return The base name.
+     */
     public static String getBaseName(String path) {
         if (path == null) {
             return null;
@@ -140,6 +214,12 @@ public class WizFile {
         return path;
     }
 
+    /**
+     * Extracts the extension from a path string.
+     *
+     * @param path The path string.
+     * @return The extension (including the dot), or an empty string if none.
+     */
     public static String getExtension(String path) {
         if (path == null) {
             return null;
@@ -151,6 +231,13 @@ public class WizFile {
         return "";
     }
 
+    /**
+     * Changes the extension of a path string.
+     *
+     * @param path The path string.
+     * @param newExtension The new extension (with or without dot).
+     * @return The path with the new extension.
+     */
     public static String changeExtension(String path, String newExtension) {
         if (path == null) {
             return null;
@@ -166,9 +253,15 @@ public class WizFile {
             return path.substring(0, dot) + newExtension;
         }
         return path + newExtension;
-
     }
 
+    /**
+     * Appends characters to the base name of a path (before the extension).
+     *
+     * @param path The path string.
+     * @param chars The characters to append.
+     * @return The modified path.
+     */
     public static String addOnBaseName(String path, String chars) {
         if (path == null) {
             return chars;
@@ -183,10 +276,24 @@ public class WizFile {
         return path + chars;
     }
 
+    /**
+     * Appends characters to the base name of a File (before the extension).
+     *
+     * @param file The File.
+     * @param chars The characters to append.
+     * @return The modified File.
+     */
     public static File addOnBaseName(File file, String chars) {
         return new File(WizFile.addOnBaseName(file.getAbsolutePath(), chars));
     }
 
+    /**
+     * Returns a File object that does not point to an existing file.
+     * If the given path exists, it appends a counter to the base name until a unique path is found.
+     *
+     * @param path The desired File path.
+     * @return A unique File path.
+     */
     public static File notOverride(File path) {
         if ((path == null) || !path.exists()) {
             return path;
@@ -194,13 +301,19 @@ public class WizFile {
         File result = null;
         var attempt = 2;
         do {
-            result = new File(WizFile.addOnBaseName(path.getAbsolutePath(), " (" + attempt
-                            + ")"));
+            result = new File(WizFile.addOnBaseName(path.getAbsolutePath(), " (" + attempt + ")"));
             attempt++;
         } while (result.exists());
         return result;
     }
 
+    /**
+     * Creates a JFileChooser with a specific description and extensions filter.
+     *
+     * @param description The description of the file type.
+     * @param extensions The allowed extensions.
+     * @return The configured JFileChooser.
+     */
     public static JFileChooser chooser(String description, String... extensions) {
         var chooser = new JFileChooser();
         chooser.setDialogTitle("Select");
@@ -211,18 +324,44 @@ public class WizFile {
         return chooser;
     }
 
+    /**
+     * Opens a dialog to select a file or directory.
+     *
+     * @return The selected File, or null if canceled.
+     */
     public static File open() {
         return WizFile.open(null);
     }
 
+    /**
+     * Opens a dialog to select a file or directory, starting from a selected file.
+     *
+     * @param selected The initially selected file.
+     * @return The selected File, or null if canceled.
+     */
     public static File open(File selected) {
         return WizFile.open(selected, null);
     }
 
+    /**
+     * Opens a dialog to select a file or directory with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File open(String description, String... extensions) {
         return WizFile.open(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to select a file or directory with a filter and initial selection.
+     *
+     * @param selected The initially selected file.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File open(File selected, String description, String... extensions) {
         File result = null;
         if (WizGUI.isStarted()) {
@@ -249,18 +388,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to select a file.
+     *
+     * @return The selected File, or null if canceled.
+     */
     public static File openFile() {
         return WizFile.openFile(null);
     }
 
+    /**
+     * Opens a dialog to select a file, starting from a selected file.
+     *
+     * @param selected The initially selected file.
+     * @return The selected File, or null if canceled.
+     */
     public static File openFile(File selected) {
         return WizFile.openFile(selected, null);
     }
 
+    /**
+     * Opens a dialog to select a file with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File openFile(String description, String... extensions) {
         return WizFile.openFile(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to select a file with a filter and initial selection.
+     *
+     * @param selected The initially selected file.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File openFile(File selected, String description, String... extensions) {
         File result = null;
         if (WizGUI.isStarted()) {
@@ -287,18 +452,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to select a directory.
+     *
+     * @return The selected directory, or null if canceled.
+     */
     public static File openDir() {
         return WizFile.openDir(null);
     }
 
+    /**
+     * Opens a dialog to select a directory, starting from a selected file.
+     *
+     * @param selected The initially selected file.
+     * @return The selected directory, or null if canceled.
+     */
     public static File openDir(File selected) {
         return WizFile.openDir(selected, null);
     }
 
+    /**
+     * Opens a dialog to select a directory with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected directory, or null if canceled.
+     */
     public static File openDir(String description, String... extensions) {
         return WizFile.openDir(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to select a directory with a filter and initial selection.
+     *
+     * @param selected The initially selected file.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected directory, or null if canceled.
+     */
     public static File openDir(File selected, String description, String... extensions) {
         File result = null;
         if (WizGUI.isStarted()) {
@@ -325,18 +516,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to select multiple files or directories.
+     *
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openMany() {
         return WizFile.openMany(null);
     }
 
+    /**
+     * Opens a dialog to select multiple files or directories, starting from selected files.
+     *
+     * @param selected The initially selected files.
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openMany(File[] selected) {
         return WizFile.openMany(selected, null);
     }
 
+    /**
+     * Opens a dialog to select multiple files or directories with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openMany(String description, String... extensions) {
         return WizFile.openMany(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to select multiple files or directories with a filter and initial selection.
+     *
+     * @param selected The initially selected files.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openMany(File[] selected, String description,
                     String... extensions) {
         File[] result = null;
@@ -363,18 +580,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to select multiple files.
+     *
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openFileMany() {
         return WizFile.openFileMany(null);
     }
 
+    /**
+     * Opens a dialog to select multiple files, starting from selected files.
+     *
+     * @param selected The initially selected files.
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openFileMany(File[] selected) {
         return WizFile.openFileMany(selected, null);
     }
 
+    /**
+     * Opens a dialog to select multiple files with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openFileMany(String description, String... extensions) {
         return WizFile.openFileMany(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to select multiple files with a filter and initial selection.
+     *
+     * @param selected The initially selected files.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected Files, or null if canceled.
+     */
     public static File[] openFileMany(File[] selected, String description,
                     String... extensions) {
         File[] result = null;
@@ -401,18 +644,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to select multiple directories.
+     *
+     * @return The selected directories, or null if canceled.
+     */
     public static File[] openDirMany() {
         return WizFile.openDirMany(null);
     }
 
+    /**
+     * Opens a dialog to select multiple directories, starting from selected files.
+     *
+     * @param selected The initially selected files.
+     * @return The selected directories, or null if canceled.
+     */
     public static File[] openDirMany(File[] selected) {
         return WizFile.openDirMany(selected, null);
     }
 
+    /**
+     * Opens a dialog to select multiple directories with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected directories, or null if canceled.
+     */
     public static File[] openDirMany(String description, String... extensions) {
         return WizFile.openDirMany(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to select multiple directories with a filter and initial selection.
+     *
+     * @param selected The initially selected files.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected directories, or null if canceled.
+     */
     public static File[] openDirMany(File[] selected, String description,
                     String... extensions) {
         File[] result = null;
@@ -440,18 +709,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to save a file or directory.
+     *
+     * @return The selected File, or null if canceled.
+     */
     public static File save() {
         return WizFile.save(null);
     }
 
+    /**
+     * Opens a dialog to save a file or directory, starting from a selected file.
+     *
+     * @param selected The initially selected file.
+     * @return The selected File, or null if canceled.
+     */
     public static File save(File selected) {
         return WizFile.save(selected, null);
     }
 
+    /**
+     * Opens a dialog to save a file or directory with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File save(String description, String... extensions) {
         return WizFile.save(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to save a file or directory with a filter and initial selection.
+     *
+     * @param selected The initially selected file.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File save(File selected, String description, String... extensions) {
         File result = null;
         if (WizGUI.isStarted()) {
@@ -483,18 +778,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to save a file.
+     *
+     * @return The selected File, or null if canceled.
+     */
     public static File saveFile() {
         return WizFile.saveFile(null);
     }
 
+    /**
+     * Opens a dialog to save a file, starting from a selected file.
+     *
+     * @param selected The initially selected file.
+     * @return The selected File, or null if canceled.
+     */
     public static File saveFile(File selected) {
         return WizFile.saveFile(selected, null);
     }
 
+    /**
+     * Opens a dialog to save a file with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File saveFile(String description, String... extensions) {
         return WizFile.saveFile(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to save a file with a filter and initial selection.
+     *
+     * @param selected The initially selected file.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected File, or null if canceled.
+     */
     public static File saveFile(File selected, String description, String... extensions) {
         File result = null;
         if (WizGUI.isStarted()) {
@@ -535,18 +856,44 @@ public class WizFile {
         return result;
     }
 
+    /**
+     * Opens a dialog to save a directory.
+     *
+     * @return The selected directory, or null if canceled.
+     */
     public static File saveDir() {
         return WizFile.saveDir(null);
     }
 
+    /**
+     * Opens a dialog to save a directory, starting from a selected file.
+     *
+     * @param selected The initially selected file.
+     * @return The selected directory, or null if canceled.
+     */
     public static File saveDir(File selected) {
         return WizFile.saveDir(selected, null);
     }
 
+    /**
+     * Opens a dialog to save a directory with a filter.
+     *
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected directory, or null if canceled.
+     */
     public static File saveDir(String description, String... extensions) {
         return WizFile.saveDir(null, description, extensions);
     }
 
+    /**
+     * Opens a dialog to save a directory with a filter and initial selection.
+     *
+     * @param selected The initially selected file.
+     * @param description The filter description.
+     * @param extensions The allowed extensions.
+     * @return The selected directory, or null if canceled.
+     */
     public static File saveDir(File selected, String description, String... extensions) {
         File result = null;
         if (WizGUI.isStarted()) {
