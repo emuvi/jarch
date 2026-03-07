@@ -34,10 +34,10 @@ public class WizFiles {
      */
     public static void moveAll(File from, File to) throws Exception {
         if (from == null || !from.exists() || !from.isDirectory()) {
-            return;
+            throw new IllegalArgumentException("Source must be an existing directory.");
         }
         if (to == null) {
-            return;
+            throw new IllegalArgumentException("Destination cannot be null.");
         }
         if (!to.exists()) {
             to.mkdirs();
