@@ -39,6 +39,7 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -651,6 +652,17 @@ public class WizGUI {
                 }
             }
         });
+    }
+
+    /**
+     * Attaches a JPopupMenu to a JButton, triggering on action performed.
+     * The popup is shown directly under the button.
+     *
+     * @param onButton The button to attach the popup to.
+     * @param popup    The popup menu to display.
+     */
+    public static void putPopup(JButton onButton, JPopupMenu popup) {
+        onButton.addActionListener(e -> popup.show(onButton, 0, onButton.getHeight()));
     }
 
     /**
