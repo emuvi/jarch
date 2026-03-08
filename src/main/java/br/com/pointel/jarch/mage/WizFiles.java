@@ -82,6 +82,27 @@ public class WizFiles {
     }
 
     /**
+     * Recursively deletes a file or directory.
+     *
+     * @param file The file or directory to delete.
+     * @return true if the file or directory was successfully deleted, false otherwise.
+     */
+    public static boolean delete(File file) {
+        if (file == null || !file.exists()) {
+            return false;
+        }
+        if (file.isDirectory()) {
+            var files = file.listFiles();
+            if (files != null) {
+                for (var child : files) {
+                    delete(child);
+                }
+            }
+        }
+        return file.delete();
+    }
+
+    /**
      * A record to hold a file system root and its display name.
      *
      * @param root The root directory.
