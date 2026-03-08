@@ -37,14 +37,16 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -268,231 +270,14 @@ public class WizGUI {
         return fromTitle;
     }
 
-    public static JComponent getItem(JMenuBar fromBar, String onPath) {
-        JComponent result = fromBar;
-        if (onPath != null) {
-            var parts = onPath.split("\\.");
-            if (parts.length > 0) {
-                for (String part : parts) {
-                    if (result instanceof JMenu) {
-                        var found = false;
-                        for (Component comp : ((JMenu) result).getMenuComponents()) {
-                            if (comp instanceof JMenu) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
-                                                .getText()))) {
-                                    result = (JMenu) comp;
-                                    found = true;
-                                }
-                            } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
-                                                .getText()))) {
-                                    result = (JMenuItem) comp;
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            return null;
-                        }
-                    } else {
-                        var found = false;
-                        for (Component comp : result.getComponents()) {
-                            if (comp instanceof JMenu) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
-                                                .getText()))) {
-                                    result = (JMenu) comp;
-                                    found = true;
-                                }
-                            } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
-                                                .getText()))) {
-                                    result = (JMenuItem) comp;
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public static JComponent getItem(JPopupMenu doPopup, String onPath) {
-        JComponent result = doPopup;
-        if (onPath != null) {
-            var parts = onPath.split("\\.");
-            if (parts.length > 0) {
-                for (String part : parts) {
-                    if (result instanceof JMenu) {
-                        var found = false;
-                        for (Component comp : ((JMenu) result).getMenuComponents()) {
-                            if (comp instanceof JMenu) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
-                                                .getText()))) {
-                                    result = (JMenu) comp;
-                                    found = true;
-                                }
-                            } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
-                                                .getText()))) {
-                                    result = (JMenuItem) comp;
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            return null;
-                        }
-                    } else {
-                        var found = false;
-                        for (Component comp : result.getComponents()) {
-                            if (comp instanceof JMenu) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenu) comp)
-                                                .getText()))) {
-                                    result = (JMenu) comp;
-                                    found = true;
-                                }
-                            } else if (comp instanceof JMenuItem) {
-                                if (part.equals(WizGUI.delMnemonic(((JMenuItem) comp)
-                                                .getText()))) {
-                                    result = (JMenuItem) comp;
-                                    found = true;
-                                }
-                            }
-                        }
-                        if (!found) {
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public static JMenu getMenu(JMenuBar fromBar, String onPath) {
-        JMenu result = null;
-        if (onPath != null) {
-            var parts = onPath.split("\\.");
-            if (parts.length > 0) {
-                for (Component comp : fromBar.getComponents()) {
-                    if (comp instanceof JMenu) {
-                        if (parts[0].equals(WizGUI.delMnemonic(((JMenu) comp)
-                                        .getText()))) {
-                            result = (JMenu) comp;
-                            break;
-                        }
-                    }
-                }
-                for (var ip = 1; ip < parts.length; ip++) {
-                    result = WizGUI.getMenu(result, parts[ip]);
-                    if (result == null) {
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public static JMenu getMenu(JPopupMenu doPopup, String onPath) {
-        JMenu result = null;
-        if (onPath != null) {
-            var parts = onPath.split("\\.");
-            if (parts.length > 0) {
-                for (Component comp : doPopup.getComponents()) {
-                    if (comp instanceof JMenu) {
-                        if (parts[0].equals(WizGUI.delMnemonic(((JMenu) comp)
-                                        .getText()))) {
-                            result = (JMenu) comp;
-                            break;
-                        }
-                    }
-                }
-                for (var ip = 1; ip < parts.length; ip++) {
-                    result = WizGUI.getMenu(result, parts[ip]);
-                    if (result == null) {
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public static JMenu getMenu(JMenu fromMenu, String withTitle) {
-        JMenu result = null;
-        if (withTitle != null) {
-            for (Component comp : fromMenu.getMenuComponents()) {
-                if (comp instanceof JMenu) {
-                    if (withTitle.equals(WizGUI.delMnemonic(((JMenu) comp).getText()))) {
-                        result = (JMenu) comp;
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public static JMenuItem getMenuItem(JPopupMenu doPopup, String onPath) {
-        if (onPath != null) {
-            var parts = onPath.split("\\.");
-            if (parts.length > 0) {
-                JMenu menu = null;
-                for (Component comp : doPopup.getComponents()) {
-                    if (comp instanceof JMenu) {
-                        if (parts[0].equals(WizGUI.delMnemonic(((JMenu) comp)
-                                        .getText()))) {
-                            menu = (JMenu) comp;
-                            break;
-                        }
-                    } else if (comp instanceof JMenuItem) {
-                        if (parts[0].equals(WizGUI.delMnemonic(((JMenuItem) comp)
-                                        .getText()))) {
-                            return (JMenuItem) comp;
-                        }
-                    }
-                }
-                if (menu == null) {
-                    return null;
-                }
-                for (var ip = 1; ip < parts.length - 1; ip++) {
-                    menu = WizGUI.getMenu(menu, parts[ip]);
-                    if (menu == null) {
-                        return null;
-                    }
-                }
-                return WizGUI.getMenuItem(menu, parts[parts.length - 1]);
-            }
-        }
-        return null;
-    }
-
-    public static JMenuItem getMenuItem(JMenu fromMenu, String withTitle) {
-        JMenuItem result = null;
-        if (withTitle != null) {
-            for (Component comp : fromMenu.getMenuComponents()) {
-                if (comp instanceof JMenuItem) {
-                    if (withTitle.equals(WizGUI.delMnemonic(((JMenuItem) comp)
-                                    .getText()))) {
-                        result = (JMenuItem) comp;
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     public static void execute(ActionListener[] actions) {
+        execute(actions, null);
+    }
+
+    public static void execute(ActionListener[] actions, ActionEvent event) {
         if (actions != null) {
             for (ActionListener act : actions) {
-                act.actionPerformed(null);
+                act.actionPerformed(event);
             }
         }
     }
@@ -747,25 +532,6 @@ public class WizGUI {
         }
     }
 
-    public static void addPopup(JComponent component, JPopupMenu popup) {
-        component.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3 && e.getClickCount() == 1) {
-                    popup.show(component, e.getX(), e.getY());
-                }
-            }
-        });
-        component.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_SPACE) {
-                    popup.show(component, 0, 0);
-                }
-            }
-        });
-    }
-
     public static void addButton(JComponent component, AbstractButton button) {
         addButton(component, button, null);
     }
@@ -860,6 +626,812 @@ public class WizGUI {
             bounds.y = screenBounds.y;
         }
         return bounds;
+    }
+
+    /**
+     * Attaches a JPopupMenu to a JComponent, triggering on right-click or Ctrl+Space.
+     *
+     * @param onComponent The component to attach the popup to.
+     * @param popup       The popup menu to display.
+     */
+    public static void putPopup(JComponent onComponent, JPopupMenu popup) {
+        onComponent.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3 && e.getClickCount() == 1) {
+                    popup.show(onComponent, e.getX(), e.getY());
+                }
+            }
+        });
+        onComponent.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    popup.show(onComponent, 0, 0);
+                }
+            }
+        });
+    }
+
+    /**
+     * Adds a separator to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     */
+    public static void putSeparator(JPopupMenu onPopup) {
+        onPopup.addSeparator();
+    }
+
+    /**
+     * Adds a menu item to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text) {
+        return putMenuItem(onPopup, text, null, null, null, null);
+    }
+
+    /**
+     * Adds a menu item with an action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, ActionListener action) {
+        return putMenuItem(onPopup, text, null, null, null, action);
+    }
+
+    /**
+     * Adds a menu item with an icon and action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param icon    The icon for the menu item.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, ActionListener action) {
+        return putMenuItem(onPopup, text, icon, null, null, action);
+    }
+
+    /**
+     * Adds a menu item with a keyboard accelerator and action listener to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param action      The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, ActionListener action) {
+        return putMenuItem(onPopup, text, null, accelerator, null, action);
+    }
+
+    /**
+     * Adds a menu item with a tooltip and action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param tooltip The tooltip text.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, String tooltip, ActionListener action) {
+        return putMenuItem(onPopup, text, null, null, tooltip, action);
+    }
+
+    /**
+     * Adds a menu item with an icon, tooltip, and action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param icon    The icon for the menu item.
+     * @param tooltip The tooltip text.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, String tooltip, ActionListener action) {
+        return putMenuItem(onPopup, text, icon, null, tooltip, action);
+    }
+
+    /**
+     * Adds a menu item with a keyboard accelerator, tooltip, and action listener to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param tooltip     The tooltip text.
+     * @param action      The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, String tooltip, ActionListener action) {
+        return putMenuItem(onPopup, text, null, accelerator, tooltip, action);
+    }
+
+    /**
+     * Adds a menu item with an icon, keyboard accelerator, and action listener to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param icon        The icon for the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param action      The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, ActionListener action) {
+        return putMenuItem(onPopup, text, icon, accelerator, null, action);
+    }
+
+    /**
+     * Adds a menu item with an Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param action  The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Action action) {
+        return putMenuItem(onPopup, text, null, null, null, action);
+    }
+
+    /**
+     * Adds a menu item with an icon and Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param icon    The icon for the menu item.
+     * @param action  The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, Action action) {
+        return putMenuItem(onPopup, text, icon, null, null, action);
+    }
+
+    /**
+     * Adds a menu item with a keyboard accelerator and Action to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param action      The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, Action action) {
+        return putMenuItem(onPopup, text, null, accelerator, null, action);
+    }
+
+    /**
+     * Adds a menu item with a tooltip and Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param tooltip The tooltip text.
+     * @param action  The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, String tooltip, Action action) {
+        return putMenuItem(onPopup, text, null, null, tooltip, action);
+    }
+
+    /**
+     * Adds a menu item with an icon, tooltip, and Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @param icon    The icon for the menu item.
+     * @param tooltip The tooltip text.
+     * @param action  The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, String tooltip, Action action) {
+        return putMenuItem(onPopup, text, icon, null, tooltip, action);
+    }
+
+    /**
+     * Adds a menu item with a keyboard accelerator, tooltip, and Action to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param tooltip     The tooltip text.
+     * @param action      The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, String tooltip, Action action) {
+        return putMenuItem(onPopup, text, null, accelerator, tooltip, action);
+    }
+
+    /**
+     * Adds a menu item with an icon, keyboard accelerator, and Action to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param icon        The icon for the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param action      The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, Action action) {
+        return putMenuItem(onPopup, text, icon, accelerator, null, action);
+    }
+
+    /**
+     * Adds a fully customized menu item to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param icon        The icon for the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param tooltip     The tooltip text.
+     * @param action      The ActionListener to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, String tooltip, ActionListener action) {
+        var item = new JMenuItem(text);
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (accelerator != null) {
+            item.setAccelerator(accelerator);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        if (action != null) {
+            item.addActionListener(action);
+        }
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a fully customized menu item with an Action to the popup menu.
+     *
+     * @param onPopup     The popup menu.
+     * @param text        The text of the menu item.
+     * @param icon        The icon for the menu item.
+     * @param accelerator The KeyStroke accelerator.
+     * @param tooltip     The tooltip text.
+     * @param action      The Action to attach.
+     * @return The created JMenuItem.
+     */
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, String tooltip, Action action) {
+        var item = new JMenuItem();
+        if (action != null) {
+            item.setAction(action);
+        }
+        if (text != null) {
+            item.setText(text);
+        }
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (accelerator != null) {
+            item.setAccelerator(accelerator);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a checkbox menu item to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text) {
+        return putCheckItem(onPopup, text, null, false, null, null);
+    }
+
+    /**
+     * Adds a checkbox menu item with selection state to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param selected The initial selection state.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, boolean selected) {
+        return putCheckItem(onPopup, text, null, selected, null, null);
+    }
+
+    /**
+     * Adds a checkbox menu item with selection state and action listener to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param selected The initial selection state.
+     * @param action   The ActionListener to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, boolean selected, ActionListener action) {
+        return putCheckItem(onPopup, text, null, selected, null, action);
+    }
+
+    /**
+     * Adds a checkbox menu item with icon, selection state, and action listener to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param action   The ActionListener to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, ActionListener action) {
+        return putCheckItem(onPopup, text, icon, selected, null, action);
+    }
+
+    /**
+     * Adds a checkbox menu item with tooltip, selection state, and action listener to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param tooltip  The tooltip text.
+     * @param selected The initial selection state.
+     * @param action   The ActionListener to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, String tooltip, boolean selected, ActionListener action) {
+        return putCheckItem(onPopup, text, null, selected, tooltip, action);
+    }
+
+    /**
+     * Adds a checkbox menu item with selection state and Action to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param selected The initial selection state.
+     * @param action   The Action to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, boolean selected, Action action) {
+        return putCheckItem(onPopup, text, null, selected, null, action);
+    }
+
+    /**
+     * Adds a checkbox menu item with icon, selection state, and Action to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param action   The Action to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, Action action) {
+        return putCheckItem(onPopup, text, icon, selected, null, action);
+    }
+
+    /**
+     * Adds a checkbox menu item with tooltip, selection state, and Action to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param tooltip  The tooltip text.
+     * @param selected The initial selection state.
+     * @param action   The Action to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, String tooltip, boolean selected, Action action) {
+        return putCheckItem(onPopup, text, null, selected, tooltip, action);
+    }
+
+    /**
+     * Adds a fully customized checkbox menu item to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param tooltip  The tooltip text.
+     * @param action   The ActionListener to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, String tooltip, ActionListener action) {
+        var item = new JCheckBoxMenuItem(text, selected);
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        if (action != null) {
+            item.addActionListener(action);
+        }
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a fully customized checkbox menu item with an Action to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param tooltip  The tooltip text.
+     * @param action   The Action to attach.
+     * @return The created JCheckBoxMenuItem.
+     */
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, String tooltip, Action action) {
+        var item = new JCheckBoxMenuItem();
+        if (action != null) {
+            item.setAction(action);
+        }
+        if (text != null) {
+            item.setText(text);
+        }
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        item.setSelected(selected);
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a radio button menu item to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the menu item.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, String text) {
+        return putRadioItem(onPopup, null, text, null, false, null, null);
+    }
+
+    /**
+     * Adds a radio button menu item to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup The popup menu.
+     * @param group   The ButtonGroup to add the item to.
+     * @param text    The text of the menu item.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text) {
+        return putRadioItem(onPopup, group, text, null, false, null, null);
+    }
+
+    /**
+     * Adds a radio button menu item with selection state to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param selected The initial selection state.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, boolean selected) {
+        return putRadioItem(onPopup, group, text, null, selected, null, null);
+    }
+
+    /**
+     * Adds a radio button menu item with selection state and action listener to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param selected The initial selection state.
+     * @param action   The ActionListener to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, boolean selected, ActionListener action) {
+        return putRadioItem(onPopup, group, text, null, selected, null, action);
+    }
+
+    /**
+     * Adds a radio button menu item with icon, selection state, and action listener to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param action   The ActionListener to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, ActionListener action) {
+        return putRadioItem(onPopup, group, text, icon, selected, null, action);
+    }
+
+    /**
+     * Adds a radio button menu item with tooltip, selection state, and action listener to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param tooltip  The tooltip text.
+     * @param selected The initial selection state.
+     * @param action   The ActionListener to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, String tooltip, boolean selected, ActionListener action) {
+        return putRadioItem(onPopup, group, text, null, selected, tooltip, action);
+    }
+
+    /**
+     * Adds a radio button menu item with selection state and Action to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param selected The initial selection state.
+     * @param action   The Action to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, boolean selected, Action action) {
+        return putRadioItem(onPopup, group, text, null, selected, null, action);
+    }
+
+    /**
+     * Adds a radio button menu item with icon, selection state, and Action to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param action   The Action to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, Action action) {
+        return putRadioItem(onPopup, group, text, icon, selected, null, action);
+    }
+
+    /**
+     * Adds a radio button menu item with tooltip, selection state, and Action to the popup menu, associated with a ButtonGroup.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param tooltip  The tooltip text.
+     * @param selected The initial selection state.
+     * @param action   The Action to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, String tooltip, boolean selected, Action action) {
+        return putRadioItem(onPopup, group, text, null, selected, tooltip, action);
+    }
+
+    /**
+     * Adds a fully customized radio button menu item to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param tooltip  The tooltip text.
+     * @param action   The ActionListener to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, String tooltip, ActionListener action) {
+        var item = new JRadioButtonMenuItem(text, selected);
+        if (group != null) {
+            group.add(item);
+        }
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        if (action != null) {
+            item.addActionListener(action);
+        }
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a fully customized radio button menu item with an Action to the popup menu.
+     *
+     * @param onPopup  The popup menu.
+     * @param group    The ButtonGroup to add the item to.
+     * @param text     The text of the menu item.
+     * @param icon     The icon for the menu item.
+     * @param selected The initial selection state.
+     * @param tooltip  The tooltip text.
+     * @param action   The Action to attach.
+     * @return The created JRadioButtonMenuItem.
+     */
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, String tooltip, Action action) {
+        var item = new JRadioButtonMenuItem();
+        if (action != null) {
+            item.setAction(action);
+        }
+        if (text != null) {
+            item.setText(text);
+        }
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        item.setSelected(selected);
+        if (group != null) {
+            group.add(item);
+        }
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a submenu to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text) {
+        return putMenu(onPopup, text, null, null, (ActionListener) null);
+    }
+
+    /**
+     * Adds a submenu with an icon to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param icon    The icon for the submenu.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Icon icon) {
+        return putMenu(onPopup, text, icon, null, (ActionListener) null);
+    }
+
+    /**
+     * Adds a submenu with an icon and tooltip to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param icon    The icon for the submenu.
+     * @param tooltip The tooltip text.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Icon icon, String tooltip) {
+        return putMenu(onPopup, text, icon, tooltip, (ActionListener) null);
+    }
+
+    /**
+     * Adds a submenu with an action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, ActionListener action) {
+        return putMenu(onPopup, text, null, null, action);
+    }
+
+    /**
+     * Adds a submenu with an icon and action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param icon    The icon for the submenu.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Icon icon, ActionListener action) {
+        return putMenu(onPopup, text, icon, null, action);
+    }
+
+    /**
+     * Adds a submenu with a tooltip and action listener to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param tooltip The tooltip text.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, String tooltip, ActionListener action) {
+        return putMenu(onPopup, text, null, tooltip, action);
+    }
+
+    /**
+     * Adds a fully customized submenu to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param icon    The icon for the submenu.
+     * @param tooltip The tooltip text.
+     * @param action  The ActionListener to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Icon icon, String tooltip, ActionListener action) {
+        var item = new JMenu(text);
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        if (action != null) {
+            item.addActionListener(action);
+        }
+        onPopup.add(item);
+        return item;
+    }
+
+    /**
+     * Adds a submenu with an Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param action  The Action to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Action action) {
+        return putMenu(onPopup, text, null, null, action);
+    }
+
+    /**
+     * Adds a submenu with an icon and Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param icon    The icon for the submenu.
+     * @param action  The Action to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Icon icon, Action action) {
+        return putMenu(onPopup, text, icon, null, action);
+    }
+
+    /**
+     * Adds a submenu with a tooltip and Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param tooltip The tooltip text.
+     * @param action  The Action to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, String tooltip, Action action) {
+        return putMenu(onPopup, text, null, tooltip, action);
+    }
+
+    /**
+     * Adds a fully customized submenu with an Action to the popup menu.
+     *
+     * @param onPopup The popup menu.
+     * @param text    The text of the submenu.
+     * @param icon    The icon for the submenu.
+     * @param tooltip The tooltip text.
+     * @param action  The Action to attach.
+     * @return The created JMenu.
+     */
+    public static JMenu putMenu(JPopupMenu onPopup, String text, Icon icon, String tooltip, Action action) {
+        var item = new JMenu();
+        if (action != null) {
+            item.setAction(action);
+        }
+        if (text != null) {
+            item.setText(text);
+        }
+        if (icon != null) {
+            item.setIcon(icon);
+        }
+        if (tooltip != null) {
+            item.setToolTipText(tooltip);
+        }
+        onPopup.add(item);
+        return item;
     }
 
 }
