@@ -2,8 +2,8 @@ package br.com.pointel.jarch.data;
 
 public class Pair<K, V> implements Data {
     
-    public K key;
-    public V val;
+    private K key;
+    private V val;
 
     public Pair() {
     }
@@ -13,32 +13,46 @@ public class Pair<K, V> implements Data {
         this.val = val;
     }
 
+    public K getKey() {
+        return key;
+    }
+
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public V getVal() {
+        return val;
+    }
+
+    public void setVal(V val) {
+        this.val = val;
+    }
+
+    public K key() {
+        return key;
+    }
+
+    public Pair<K, V> key(K key) {
+        this.key = key;
+        return this;
+    }
+
+    public V val() {
+        return val;
+    }
+
+    public Pair<K, V> val(V val) {
+        this.val = val;
+        return this;
+    }
+
     public boolean hasKey() {
         return this.key != null;
     }
 
     public boolean hasVal() {
         return this.val != null;
-    }
-
-    public Pair<K, V> withKey(K key) {
-        this.key = key;
-        return this;
-    }
-
-    public Pair<K, V> withNoKey() {
-        this.key = null;
-        return this;
-    }
-
-    public Pair<K, V> withVal(V val) {
-        this.val = val;
-        return this;
-    }
-
-    public Pair<K, V> withNoVal() {
-        this.val = null;
-        return this;
     }
 
     public Pair<K, V> uponKey(K key) {
