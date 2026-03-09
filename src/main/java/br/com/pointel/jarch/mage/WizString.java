@@ -71,12 +71,12 @@ public class WizString {
         var result = new StringBuilder();
         var max = 0;
         for (var line : grid) {
-            max = Math.max(max, line.key.length());
+            max = Math.max(max, line.key().length());
         }
         for (var line : grid) {
-            result.append(StringUtils.rightPad(line.key, max, '.'));
+            result.append(StringUtils.rightPad(line.key(), max, '.'));
             result.append("...: ");
-            result.append(line.val);
+            result.append(line.val());
             result.append("\n");
         }
         return result.toString();
