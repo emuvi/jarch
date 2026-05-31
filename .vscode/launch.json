@@ -10,7 +10,7 @@
     },
     {
       "type": "java",
-      "name": "Jarch",
+      "name": "Jarch GUI",
       "request": "launch",
       "mainClass": "com.vidlus.jarch.Jarch",
       "projectName": "jarch",
