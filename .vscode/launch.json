@@ -5,7 +5,14 @@
       "type": "java",
       "name": "Jarch",
       "request": "launch",
-      "mainClass": "br.com.pointel.jarch.Jarch",
+      "mainClass": "com.vidlus.jarch.Jarch",
+      "projectName": "jarch"
+    },
+    {
+      "type": "java",
+      "name": "Jarch",
+      "request": "launch",
+      "mainClass": "com.vidlus.jarch.Jarch",
       "projectName": "jarch",
       "args": "--gui"
     }

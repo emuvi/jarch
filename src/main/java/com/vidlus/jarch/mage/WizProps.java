@@ -1,0 +1,183 @@
+package com.vidlus.jarch.mage;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class WizProps {
+
+    private WizProps() {}
+
+    private static final Logger logger = LoggerFactory.getLogger(WizProps.class);
+    
+    private static final Properties props = new Properties();
+
+    private static volatile File folder = new File(".");
+
+    public static File getFolder() {
+        return folder;
+    }
+
+    public static void setFolder(File folder) {
+        WizProps.folder = folder;
+        tryLoad();
+    }
+
+    public static void setFolder(File folder, String name) {
+        WizProps.folder = folder;
+        tryLoad(name);
+    }
+
+    static {
+        tryLoad();
+    }
+
+    public static void tryLoad() {
+        try {
+            load();
+        } catch (Exception ex) {
+            logger.error("Error loading properties", ex);
+        }
+    }
+
+    public static void tryLoad(String name) {
+        try {
+            load(name);
+        } catch (Exception ex) {
+            logger.error("Error loading properties", ex);
+        }
+    }
+
+    public static void load() throws Exception {
+        load(WizApp.getName());
+    }
+
+    public static void load(String name) throws Exception {
+        File file = new File(folder, name + ".ini");
+        if (file.exists()) {
+            try (FileReader input = new FileReader(file)) {
+                props.load(input);
+            }
+        }
+    }
+
+    public static void trySave() {
+        try {
+            save();
+        } catch (Exception ex) {
+            logger.error("Error saving properties", ex);
+        }
+    }
+
+    public static void save() throws Exception {
+        save(WizApp.getName());
+    }
+
+    public static void save(String name) throws Exception {
+        File file = new File(folder, name + ".ini");
+        try (FileWriter output = new FileWriter(file)) {
+            props.store(output, name + " properties");
+        }
+    }
+
+    public static Boolean get(String key, Boolean defaultValue) {
+        return Boolean.valueOf(get(key, defaultValue.toString()));
+    }
+
+    public static void set(String key, Boolean value) {
+        set(key, value.toString());
+        trySave();
+    }
+
+    public static Integer get(String key, Integer defaultValue) {
+        return Integer.valueOf(get(key, defaultValue.toString()));
+    }
+
+    public static void set(String key, Integer value) {
+        set(key, value.toString());
+        trySave();
+    }
+
+    public static Double get(String key, Double defaultValue) {
+        return Double.valueOf(get(key, defaultValue.toString()));
+    }
+
+    public static void set(String key, Double value) {
+        set(key, value.toString());
+        trySave();
+    }
+
+    public static String get(String key, String defaultValue) {
+        return props.getProperty(key, defaultValue);
+    }
+
+    public static void set(String key, String value) {
+        props.setProperty(key, value);
+        trySave();
+    }
+
+    public static Map<String, String> fromSource(String source) {
+        return fromSource(source, "=");
+    }
+
+    public static Map<String, String> fromSource(String source, String separator) {
+        var result = new LinkedHashMap<String, String>();
+        if (WizString.isEmpty(source)) {
+            return result;
+        }
+        var lines = WizString.getLines(source);
+        for (var line : lines) {
+            if (line.isBlank() || line.startsWith("#")) {
+                continue;
+            }
+            int pos = line.indexOf(separator);
+            if (pos > -1) {
+                result.put(line.substring(0, pos).trim(), line.substring(pos + separator.length()).trim());
+            }
+        }
+        return result;
+    }
+
+    public static String toSource(Map<String, String> props) {
+        return toSource(props, "=");
+    }
+
+    public static String toSource(Map<String, String> props, String separator) {
+        return toSource(props, separator, getPropsDefaultComments());
+    }
+
+    public static String toSource(Map<String, String> props, String separator, String[] comments) {
+        var result = new StringBuilder();
+        for (var comment : comments) {
+            if (comment == null || comment.isBlank()) {
+                continue;
+            }
+            if (!comment.startsWith("#")) {
+                result.append("# ");
+            }
+            result.append(comment);
+            result.append("\n");
+        }
+        for (var key : props.keySet()) {
+            result.append(key);
+            result.append(separator);
+            result.append(props.get(key));
+            result.append("\n");
+        }
+        return result.toString();
+    }
+
+    public static String[] getPropsDefaultComments() {
+        return new String[] {
+            "# Generated by: " + WizApp.getName(),
+            "# Created on: " + WizUtilDate.formatDateFile(new Date())
+        };
+    }
+
+}

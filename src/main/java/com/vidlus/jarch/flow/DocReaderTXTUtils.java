@@ -1,0 +1,20 @@
+package com.vidlus.jarch.flow;
+
+import java.io.File;
+import org.apache.commons.io.FilenameUtils;
+
+import com.vidlus.jarch.mage.WizArray;
+
+public class DocReaderTXTUtils {
+
+    public static String[] TXT_EXTENSIONS = new String[]{ "txt", "md", "htm", "html", "php", "phtml", "java", "py", "log" };
+
+    public static boolean isTXTFile(File file) {
+        return isTXTFile(file.getName());
+    }
+
+    public static boolean isTXTFile(String fileName) {
+        return WizArray.has(FilenameUtils.getExtension(fileName).toLowerCase(), TXT_EXTENSIONS);
+    }
+    
+}
