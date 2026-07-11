@@ -7,15 +7,15 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
-public class DListEdit<T> extends DEdit<ArrayList<T>> {
+public class DEditList<T> extends DEdit<ArrayList<T>> {
 
     private final DefaultListModel<T> model = new DefaultListModel<>();
     
-    public DListEdit() {
+    public DEditList() {
         this(null);
     }
 
-    public DListEdit(ArrayList<T> value) {
+    public DEditList(ArrayList<T> value) {
         super(new JList<T>());
         comp().setModel(model);
         setValue(value);
@@ -45,17 +45,17 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         }
     }
 
-    public DListEdit<T> selectionSingle() {
+    public DEditList<T> selectionSingle() {
         comp().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return this;
     }
 
-    public DListEdit<T> selectionInterval() {
+    public DEditList<T> selectionInterval() {
         comp().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         return this;
     }
 
-    public DListEdit<T> selectionMultiple() {
+    public DEditList<T> selectionMultiple() {
         comp().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         return this;
     }
@@ -64,7 +64,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return comp().getSelectedIndex();
     }
 
-    public DListEdit<T> setSelectedIndex(int index) {
+    public DEditList<T> setSelectedIndex(int index) {
         comp().setSelectedIndex(index);
         return this;
     }
@@ -73,7 +73,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return comp().getSelectedValue();
     }
 
-    public DListEdit<T> setSelectedValue(T value) {
+    public DEditList<T> setSelectedValue(T value) {
         comp().setSelectedValue(value, true);
         return this;
     }
@@ -82,7 +82,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return comp().getSelectedIndices();
     }
 
-    public DListEdit<T> setSelectedIndices(int[] indices) {
+    public DEditList<T> setSelectedIndices(int[] indices) {
         comp().setSelectedIndices(indices);
         return this;
     }
@@ -91,46 +91,46 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return comp().getSelectedValuesList();
     }
 
-    public DListEdit<T> add(T value) {
+    public DEditList<T> add(T value) {
         model.addElement(value);
         return this;
     }
 
-    public DListEdit<T> add(int index, T value) {
+    public DEditList<T> add(int index, T value) {
         model.add(index, value);
         return this;
     }
 
-    public DListEdit<T> addAtSelection(T value) {
+    public DEditList<T> addAtSelection(T value) {
         var selected = getSelectedIndex();
         model.add(selected + 1, value);
         setSelectedIndex(selected + 1);
         return this;
     }
 
-    public DListEdit<T> set(int index, T value) {
+    public DEditList<T> set(int index, T value) {
         model.set(index, value);
         return this;
     }
 
-    public DListEdit<T> setAtSelection(T item) {
+    public DEditList<T> setAtSelection(T item) {
         var selected = getSelectedIndex();
         model.set(selected, item);
         setSelectedIndex(selected);
         return this;
     }
 
-    public DListEdit<T> del(int index) {
+    public DEditList<T> del(int index) {
         model.remove(index);
         return this;
     }
 
-    public DListEdit<T> del(T value) {
+    public DEditList<T> del(T value) {
         model.removeElement(value);
         return this;
     }
 
-    public DListEdit<T> delAtSelection() {
+    public DEditList<T> delAtSelection() {
         var indices = getSelectedIndices();
         if (indices.length > 0) {
             for (int i = indices.length - 1; i >= 0; i--) {
@@ -144,7 +144,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return this;
     }
 
-    public DListEdit<T> clear() {
+    public DEditList<T> clear() {
         model.clear();
         return this;
     }
@@ -153,7 +153,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return model.getSize();
     }
          
-    public DListEdit<T> moveUp(int index) {
+    public DEditList<T> moveUp(int index) {
         if (index > 0 && index < model.getSize()) {
             var item = model.remove(index);
             model.add(index - 1, item);
@@ -162,7 +162,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return this;
     }
 
-    public DListEdit<T> moveUpSelection() {
+    public DEditList<T> moveUpSelection() {
         var indices = getSelectedIndices();
         if (indices.length > 0 && indices[0] > 0) {
             for (int i = 0; i < indices.length; i++) {
@@ -176,7 +176,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return this;
     }
 
-    public DListEdit<T> moveDown(int index) {
+    public DEditList<T> moveDown(int index) {
         if (index >= 0 && index < model.getSize() - 1) {
             var item = model.remove(index);
             model.add(index + 1, item);
@@ -185,7 +185,7 @@ public class DListEdit<T> extends DEdit<ArrayList<T>> {
         return this;
     }
 
-    public DListEdit<T> moveDownSelection() {
+    public DEditList<T> moveDownSelection() {
         var indices = getSelectedIndices();
         if (indices.length > 0 && indices[indices.length - 1] < model.getSize() - 1) {
             for (int i = indices.length - 1; i >= 0; i--) {

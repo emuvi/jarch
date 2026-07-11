@@ -20,7 +20,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
     private final JButton buttonMoveUp = new JButton("↑");
     private final JButton buttonMoveDown = new JButton("↓");
     
-    private final DListEdit<T> list = new DListEdit<>();
+    private final DEditList<T> list = new DEditList<>();
     private final DScroll scroll = new DScroll(list);
 
     private final Class<? extends DEditFrame<T>> editFrameClass;
@@ -58,7 +58,7 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
         list.setValue(value);
     }
 
-    public DListEdit<T> list() {
+    public DEditList<T> list() {
         return list;
     }
 
