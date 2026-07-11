@@ -1,4 +1,4 @@
-package com.vidlus.jarch.desk;
+package com.vidlus.jarch.flow;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vidlus.jarch.desk.TextHistory;
 import com.vidlus.jarch.mage.WizString;
 
 /**

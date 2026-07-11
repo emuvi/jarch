@@ -1,4 +1,4 @@
-package com.vidlus.jarch.desk;
+package com.vidlus.jarch.flow;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
