@@ -37,7 +37,31 @@ public class WizLang {
 
     private WizLang() {}
 
-    
+    private static String title = null;
+
+    public static String getTitle() {
+        if (title == null) {
+            title = WizLang.getVidlusMainClassSimpleName();
+        }
+        return title;
+    }
+
+    public static void setTitle(String title) {
+        WizLang.title = title;
+    }
+
+    private static String name = null;
+
+    public static String getName() {
+        if (name == null) {
+            name = WizString.getParameterName(getTitle()).toLowerCase();
+        }
+        return name;
+    }
+
+    public static void setName(String name) {
+        WizLang.name = name;
+    }
 
     public static <T extends Serializable> T deepClone(final T value) {
         try {
@@ -373,29 +397,39 @@ public class WizLang {
     }
 
     public static String getVidlusMainClassName() {
-        var mainThread = WizThread.getMainThread();
-        if (mainThread != null) {
-            var stack = mainThread.getStackTrace();
-            if (stack != null && stack.length > 0) {
-                for (int i = stack.length - 1; i >= 0; i--) {
-                    if (stack[i].getClassName().startsWith("com.vidlus")) {
-                        return stack[i].getClassName();
+        try {
+            var mainThread = WizThread.getMainThread();
+            if (mainThread != null) {
+                var stack = mainThread.getStackTrace();
+                if (stack != null && stack.length > 0) {
+                    for (int i = stack.length - 1; i >= 0; i--) {
+                        var elem = stack[i];
+                        if (elem != null && elem.getClassName() != null && elem.getClassName().startsWith("com.vidlus")) {
+                            return elem.getClassName();
+                        }
                     }
                 }
             }
-        }
-        for (var entry : Thread.getAllStackTraces().entrySet()) {
-            if (mainThread != null && entry.getKey().getId() == mainThread.getId()) {
-                continue;
-            }
-            var stack = entry.getValue();
-            if (stack != null && stack.length > 0) {
-                for (int i = stack.length - 1; i >= 0; i--) {
-                    if (stack[i].getClassName().startsWith("com.vidlus")) {
-                        return stack[i].getClassName();
+            var allStackTraces = Thread.getAllStackTraces();
+            if (allStackTraces != null) {
+                for (var entry : allStackTraces.entrySet()) {
+                    var thread = entry.getKey();
+                    if (mainThread != null && thread != null && thread.getId() == mainThread.getId()) {
+                        continue;
+                    }
+                    var stack = entry.getValue();
+                    if (stack != null && stack.length > 0) {
+                        for (int i = stack.length - 1; i >= 0; i--) {
+                            var elem = stack[i];
+                            if (elem != null && elem.getClassName() != null && elem.getClassName().startsWith("com.vidlus")) {
+                                return elem.getClassName();
+                            }
+                        }
                     }
                 }
             }
+        } catch (Throwable t) {
+            // ignore exceptions
         }
         return null;
     }
@@ -409,7 +443,7 @@ public class WizLang {
         if (!result.exists()) {
             result.mkdirs();
         }
-        result = new File(result, WizApp.getName());
+        result = new File(result, WizLang.getName());
         if (!result.exists()) {
             result.mkdirs();
         }

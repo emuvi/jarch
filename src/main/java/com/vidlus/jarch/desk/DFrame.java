@@ -19,7 +19,7 @@ import com.vidlus.jarch.mage.WizString;
 public class DFrame extends JFrame {
 
     public DFrame() {
-        this(WizApp.getTitle());
+        this(WizLang.getTitle());
     }
 
     public DFrame(String title) {
@@ -207,6 +207,7 @@ public class DFrame extends JFrame {
     public DFrame onFirstOpened(Consumer<WindowEvent> consumer) {
         addWindowListener(new WindowAdapter() {
             boolean firstOpened = true;
+
             @Override
             public void windowOpened(WindowEvent e) {
                 if (firstOpened) {
@@ -273,6 +274,7 @@ public class DFrame extends JFrame {
     public DFrame onFirstActivated(Consumer<WindowEvent> consumer) {
         addWindowListener(new WindowAdapter() {
             boolean firstActivated = true;
+
             @Override
             public void windowActivated(WindowEvent e) {
                 if (firstActivated) {

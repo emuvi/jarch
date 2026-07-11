@@ -75,7 +75,7 @@ public class WizGUI {
             logo = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
         }
     }
-    
+
     public static Image getLogo() {
         return logo;
     }
@@ -114,10 +114,10 @@ public class WizGUI {
     private static final String KEY_LOOK_AND_FEEL_DARCULA = "Darcula";
 
     private static final String[] KEY_LOOK_AND_FEEL_OPTIONS = new String[] {
-                    KEY_LOOK_AND_FEEL_SYSTEM, 
-                    KEY_LOOK_AND_FEEL_LIGHT, 
-                    KEY_LOOK_AND_FEEL_DARK,
-                    KEY_LOOK_AND_FEEL_DARCULA
+            KEY_LOOK_AND_FEEL_SYSTEM,
+            KEY_LOOK_AND_FEEL_LIGHT,
+            KEY_LOOK_AND_FEEL_DARK,
+            KEY_LOOK_AND_FEEL_DARCULA
     };
 
     public static String[] getLookAndFeelOptions() {
@@ -133,7 +133,7 @@ public class WizGUI {
     }
 
     public static void start() {
-        start(WizApp.getTitle(), null);
+        start(WizLang.getTitle(), null);
     }
 
     public static void start(String title) {
@@ -141,11 +141,11 @@ public class WizGUI {
     }
 
     public static void start(Runnable afterStart) {
-        start(WizApp.getTitle(), afterStart);
+        start(WizLang.getTitle(), afterStart);
     }
 
     public static void start(String title, Runnable afterStart) {
-        logger.info("Starting desk of {} application", WizApp.getName());
+        logger.info("Starting desk of {} application", WizLang.getName());
         EventQueue.invokeLater(() -> {
             try {
                 switch (getLookAndFeel()) {
@@ -186,7 +186,7 @@ public class WizGUI {
         var screen = Toolkit.getDefaultToolkit().getScreenSize();
         if (result == null) {
             result = new Point(WizRand.getInt(screen.width - window.getWidth()),
-                            WizRand.getInt(screen.height - window.getHeight()));
+                    WizRand.getInt(screen.height - window.getHeight()));
         } else {
             if (result.x + window.getWidth() > screen.width) {
                 result.x = screen.width - window.getWidth();
@@ -213,9 +213,9 @@ public class WizGUI {
     }
 
     public static void putShortCut(JComponent component, String name, String keyStroke,
-                    Runnable runnable) {
+            Runnable runnable) {
         var inputMap = component.getInputMap(
-                        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         var actionMap = component.getActionMap();
         inputMap.put(KeyStroke.getKeyStroke(keyStroke), name);
         actionMap.put(name, WizGUI.getAction(runnable));
@@ -234,7 +234,7 @@ public class WizGUI {
 
     public static String getStringFromClipboard() throws Exception {
         return (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(
-                        DataFlavor.stringFlavor);
+                DataFlavor.stringFlavor);
     }
 
     public static void copyToClipboard(String theString) {
@@ -310,7 +310,7 @@ public class WizGUI {
         logger.info(message);
         Runnable runner = () -> {
             JOptionPane.showMessageDialog(WizGUI.getActiveWindow(), message,
-                            WizApp.getTitle(),JOptionPane.INFORMATION_MESSAGE);
+                    WizLang.getTitle(), JOptionPane.INFORMATION_MESSAGE);
         };
         if (SwingUtilities.isEventDispatchThread()) {
             runner.run();
@@ -328,7 +328,7 @@ public class WizGUI {
         logger.error(message, error);
         Runnable runner = () -> {
             JOptionPane.showMessageDialog(WizGUI.getActiveWindow(), message,
-                            WizApp.getTitle(),JOptionPane.ERROR_MESSAGE);
+                    WizLang.getTitle(), JOptionPane.ERROR_MESSAGE);
         };
         if (SwingUtilities.isEventDispatchThread()) {
             runner.run();
@@ -339,19 +339,19 @@ public class WizGUI {
 
     public static boolean showConfirm(String message) {
         return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
-                        WizGUI.getActiveWindow(), message, "Confirm",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                WizGUI.getActiveWindow(), message, "Confirm",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
     }
 
     public static String showInput(String message) {
         return JOptionPane.showInputDialog(
-                        WizGUI.getActiveWindow(), message, "Input",
-                        JOptionPane.QUESTION_MESSAGE);
+                WizGUI.getActiveWindow(), message, "Input",
+                JOptionPane.QUESTION_MESSAGE);
     }
 
     public static String showInput(String question, String value) {
         return (String) JOptionPane.showInputDialog(WizGUI.getActiveWindow(), question,
-                        WizApp.getTitle(), JOptionPane.QUESTION_MESSAGE, null, null, value);
+                WizLang.getTitle(), JOptionPane.QUESTION_MESSAGE, null, null, value);
     }
 
     public static String getStringOnClipboard() throws Exception {
@@ -394,16 +394,16 @@ public class WizGUI {
         }
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
-            Runtime.getRuntime().exec(new String[] {"explorer.exe", "/select,", filePath.getAbsolutePath()});
+            Runtime.getRuntime().exec(new String[] { "explorer.exe", "/select,", filePath.getAbsolutePath() });
         } else if (os.contains("mac")) {
-            Runtime.getRuntime().exec(new String[] {"open", "-R", filePath.getAbsolutePath()});
+            Runtime.getRuntime().exec(new String[] { "open", "-R", filePath.getAbsolutePath() });
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             File parentDir = filePath.getParentFile();
             if (parentDir != null && parentDir.isDirectory()) {
                 if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
                     Desktop.getDesktop().open(parentDir);
                 } else {
-                    Runtime.getRuntime().exec(new String[] {"xdg-open", parentDir.getAbsolutePath()});
+                    Runtime.getRuntime().exec(new String[] { "xdg-open", parentDir.getAbsolutePath() });
                 }
             } else {
                 throw new Exception("Could not determine parent directory for: " + filePath);
@@ -458,13 +458,15 @@ public class WizGUI {
         }
     }
 
-    public static <T extends Class<? extends Component>> List<Component> getAllComponentsOf(Component root, T... clazz) {
+    public static <T extends Class<? extends Component>> List<Component> getAllComponentsOf(Component root,
+            T... clazz) {
         var results = new ArrayList<Component>();
         getAllComponentsOf(results, root, clazz);
         return results;
     }
 
-    public static <T extends Class<? extends Component>> void getAllComponentsOf(List<Component> results, Component root, T... clazz) {
+    public static <T extends Class<? extends Component>> void getAllComponentsOf(List<Component> results,
+            Component root, T... clazz) {
         for (var kind : clazz) {
             if (kind.isInstance(root)) {
                 results.add(root);
@@ -503,8 +505,8 @@ public class WizGUI {
             }
         });
         frame.getRootPane().getInputMap().put(
-                        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-                        ESCAPER_KEY);
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                ESCAPER_KEY);
     }
 
     public static void close(JFrame frame) {
@@ -523,8 +525,8 @@ public class WizGUI {
             if (frame instanceof JFrame jFrame) {
                 if (jFrame.isVisible()) {
                     if ((closeExitOnClose && jFrame.getDefaultCloseOperation() == JFrame.EXIT_ON_CLOSE)
-                                    || (!closeExitOnClose && jFrame
-                                                    .getDefaultCloseOperation() != JFrame.EXIT_ON_CLOSE)) {
+                            || (!closeExitOnClose && jFrame
+                                    .getDefaultCloseOperation() != JFrame.EXIT_ON_CLOSE)) {
                         close(jFrame);
                     }
                 }
@@ -629,7 +631,8 @@ public class WizGUI {
     }
 
     /**
-     * Attaches a JPopupMenu to a JComponent, triggering on right-click or Ctrl+Space.
+     * Attaches a JPopupMenu to a JComponent, triggering on right-click or
+     * Ctrl+Space.
      *
      * @param onComponent The component to attach the popup to.
      * @param popup       The popup menu to display.
@@ -710,7 +713,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a menu item with a keyboard accelerator and action listener to the popup menu.
+     * Adds a menu item with a keyboard accelerator and action listener to the popup
+     * menu.
      *
      * @param onPopup     The popup menu.
      * @param text        The text of the menu item.
@@ -736,7 +740,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a menu item with an icon, tooltip, and action listener to the popup menu.
+     * Adds a menu item with an icon, tooltip, and action listener to the popup
+     * menu.
      *
      * @param onPopup The popup menu.
      * @param text    The text of the menu item.
@@ -745,12 +750,14 @@ public class WizGUI {
      * @param action  The ActionListener to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, String tooltip, ActionListener action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, String tooltip,
+            ActionListener action) {
         return putMenuItem(onPopup, text, icon, null, tooltip, action);
     }
 
     /**
-     * Adds a menu item with a keyboard accelerator, tooltip, and action listener to the popup menu.
+     * Adds a menu item with a keyboard accelerator, tooltip, and action listener to
+     * the popup menu.
      *
      * @param onPopup     The popup menu.
      * @param text        The text of the menu item.
@@ -759,12 +766,14 @@ public class WizGUI {
      * @param action      The ActionListener to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, String tooltip, ActionListener action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, String tooltip,
+            ActionListener action) {
         return putMenuItem(onPopup, text, null, accelerator, tooltip, action);
     }
 
     /**
-     * Adds a menu item with an icon, keyboard accelerator, and action listener to the popup menu.
+     * Adds a menu item with an icon, keyboard accelerator, and action listener to
+     * the popup menu.
      *
      * @param onPopup     The popup menu.
      * @param text        The text of the menu item.
@@ -773,7 +782,8 @@ public class WizGUI {
      * @param action      The ActionListener to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, ActionListener action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator,
+            ActionListener action) {
         return putMenuItem(onPopup, text, icon, accelerator, null, action);
     }
 
@@ -843,7 +853,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a menu item with a keyboard accelerator, tooltip, and Action to the popup menu.
+     * Adds a menu item with a keyboard accelerator, tooltip, and Action to the
+     * popup menu.
      *
      * @param onPopup     The popup menu.
      * @param text        The text of the menu item.
@@ -852,12 +863,14 @@ public class WizGUI {
      * @param action      The Action to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, String tooltip, Action action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, KeyStroke accelerator, String tooltip,
+            Action action) {
         return putMenuItem(onPopup, text, null, accelerator, tooltip, action);
     }
 
     /**
-     * Adds a menu item with an icon, keyboard accelerator, and Action to the popup menu.
+     * Adds a menu item with an icon, keyboard accelerator, and Action to the popup
+     * menu.
      *
      * @param onPopup     The popup menu.
      * @param text        The text of the menu item.
@@ -866,7 +879,8 @@ public class WizGUI {
      * @param action      The Action to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, Action action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator,
+            Action action) {
         return putMenuItem(onPopup, text, icon, accelerator, null, action);
     }
 
@@ -881,7 +895,8 @@ public class WizGUI {
      * @param action      The ActionListener to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, String tooltip, ActionListener action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator,
+            String tooltip, ActionListener action) {
         var item = new JMenuItem(text);
         if (icon != null) {
             item.setIcon(icon);
@@ -910,7 +925,8 @@ public class WizGUI {
      * @param action      The Action to attach.
      * @return The created JMenuItem.
      */
-    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator, String tooltip, Action action) {
+    public static JMenuItem putMenuItem(JPopupMenu onPopup, String text, Icon icon, KeyStroke accelerator,
+            String tooltip, Action action) {
         var item = new JMenuItem();
         if (action != null) {
             item.setAction(action);
@@ -955,7 +971,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a checkbox menu item with selection state and action listener to the popup menu.
+     * Adds a checkbox menu item with selection state and action listener to the
+     * popup menu.
      *
      * @param onPopup  The popup menu.
      * @param text     The text of the menu item.
@@ -963,12 +980,14 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, boolean selected, ActionListener action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, boolean selected,
+            ActionListener action) {
         return putCheckItem(onPopup, text, null, selected, null, action);
     }
 
     /**
-     * Adds a checkbox menu item with icon, selection state, and action listener to the popup menu.
+     * Adds a checkbox menu item with icon, selection state, and action listener to
+     * the popup menu.
      *
      * @param onPopup  The popup menu.
      * @param text     The text of the menu item.
@@ -977,12 +996,14 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, ActionListener action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected,
+            ActionListener action) {
         return putCheckItem(onPopup, text, icon, selected, null, action);
     }
 
     /**
-     * Adds a checkbox menu item with tooltip, selection state, and action listener to the popup menu.
+     * Adds a checkbox menu item with tooltip, selection state, and action listener
+     * to the popup menu.
      *
      * @param onPopup  The popup menu.
      * @param text     The text of the menu item.
@@ -991,7 +1012,8 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, String tooltip, boolean selected, ActionListener action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, String tooltip, boolean selected,
+            ActionListener action) {
         return putCheckItem(onPopup, text, null, selected, tooltip, action);
     }
 
@@ -1009,7 +1031,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a checkbox menu item with icon, selection state, and Action to the popup menu.
+     * Adds a checkbox menu item with icon, selection state, and Action to the popup
+     * menu.
      *
      * @param onPopup  The popup menu.
      * @param text     The text of the menu item.
@@ -1018,12 +1041,14 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, Action action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected,
+            Action action) {
         return putCheckItem(onPopup, text, icon, selected, null, action);
     }
 
     /**
-     * Adds a checkbox menu item with tooltip, selection state, and Action to the popup menu.
+     * Adds a checkbox menu item with tooltip, selection state, and Action to the
+     * popup menu.
      *
      * @param onPopup  The popup menu.
      * @param text     The text of the menu item.
@@ -1032,7 +1057,8 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, String tooltip, boolean selected, Action action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, String tooltip, boolean selected,
+            Action action) {
         return putCheckItem(onPopup, text, null, selected, tooltip, action);
     }
 
@@ -1047,7 +1073,8 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, String tooltip, ActionListener action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected,
+            String tooltip, ActionListener action) {
         var item = new JCheckBoxMenuItem(text, selected);
         if (icon != null) {
             item.setIcon(icon);
@@ -1073,7 +1100,8 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JCheckBoxMenuItem.
      */
-    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected, String tooltip, Action action) {
+    public static JCheckBoxMenuItem putCheckItem(JPopupMenu onPopup, String text, Icon icon, boolean selected,
+            String tooltip, Action action) {
         var item = new JCheckBoxMenuItem();
         if (action != null) {
             item.setAction(action);
@@ -1104,7 +1132,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a radio button menu item to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item to the popup menu, associated with a
+     * ButtonGroup.
      *
      * @param onPopup The popup menu.
      * @param group   The ButtonGroup to add the item to.
@@ -1116,7 +1145,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a radio button menu item with selection state to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with selection state to the popup menu,
+     * associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1124,12 +1154,14 @@ public class WizGUI {
      * @param selected The initial selection state.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, boolean selected) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text,
+            boolean selected) {
         return putRadioItem(onPopup, group, text, null, selected, null, null);
     }
 
     /**
-     * Adds a radio button menu item with selection state and action listener to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with selection state and action listener to the
+     * popup menu, associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1138,12 +1170,14 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, boolean selected, ActionListener action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text,
+            boolean selected, ActionListener action) {
         return putRadioItem(onPopup, group, text, null, selected, null, action);
     }
 
     /**
-     * Adds a radio button menu item with icon, selection state, and action listener to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with icon, selection state, and action listener
+     * to the popup menu, associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1153,12 +1187,14 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, ActionListener action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon,
+            boolean selected, ActionListener action) {
         return putRadioItem(onPopup, group, text, icon, selected, null, action);
     }
 
     /**
-     * Adds a radio button menu item with tooltip, selection state, and action listener to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with tooltip, selection state, and action
+     * listener to the popup menu, associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1168,12 +1204,14 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, String tooltip, boolean selected, ActionListener action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, String tooltip,
+            boolean selected, ActionListener action) {
         return putRadioItem(onPopup, group, text, null, selected, tooltip, action);
     }
 
     /**
-     * Adds a radio button menu item with selection state and Action to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with selection state and Action to the popup
+     * menu, associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1182,12 +1220,14 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, boolean selected, Action action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text,
+            boolean selected, Action action) {
         return putRadioItem(onPopup, group, text, null, selected, null, action);
     }
 
     /**
-     * Adds a radio button menu item with icon, selection state, and Action to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with icon, selection state, and Action to the
+     * popup menu, associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1197,12 +1237,14 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, Action action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon,
+            boolean selected, Action action) {
         return putRadioItem(onPopup, group, text, icon, selected, null, action);
     }
 
     /**
-     * Adds a radio button menu item with tooltip, selection state, and Action to the popup menu, associated with a ButtonGroup.
+     * Adds a radio button menu item with tooltip, selection state, and Action to
+     * the popup menu, associated with a ButtonGroup.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1212,7 +1254,8 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, String tooltip, boolean selected, Action action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, String tooltip,
+            boolean selected, Action action) {
         return putRadioItem(onPopup, group, text, null, selected, tooltip, action);
     }
 
@@ -1228,7 +1271,8 @@ public class WizGUI {
      * @param action   The ActionListener to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, String tooltip, ActionListener action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon,
+            boolean selected, String tooltip, ActionListener action) {
         var item = new JRadioButtonMenuItem(text, selected);
         if (group != null) {
             group.add(item);
@@ -1247,7 +1291,8 @@ public class WizGUI {
     }
 
     /**
-     * Adds a fully customized radio button menu item with an Action to the popup menu.
+     * Adds a fully customized radio button menu item with an Action to the popup
+     * menu.
      *
      * @param onPopup  The popup menu.
      * @param group    The ButtonGroup to add the item to.
@@ -1258,7 +1303,8 @@ public class WizGUI {
      * @param action   The Action to attach.
      * @return The created JRadioButtonMenuItem.
      */
-    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon, boolean selected, String tooltip, Action action) {
+    public static JRadioButtonMenuItem putRadioItem(JPopupMenu onPopup, ButtonGroup group, String text, Icon icon,
+            boolean selected, String tooltip, Action action) {
         var item = new JRadioButtonMenuItem();
         if (action != null) {
             item.setAction(action);
