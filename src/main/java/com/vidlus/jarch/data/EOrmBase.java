@@ -43,11 +43,22 @@ public class EOrmBase extends EOrm {
 
     @Override
     public void create(Table table, boolean ifNotExists) throws Exception {
+        if (ifNotExists) {
+            var meta = getLink().getMetaData();
+            var rs = meta.getTables(null, null, table.tableHead.name.toUpperCase(), null);
+            if (!rs.next()) {
+                rs = meta.getTables(null, null, table.tableHead.name.toLowerCase(), null);
+            }
+            if (!rs.next()) {
+                rs = meta.getTables(null, null, table.tableHead.name, null);
+            }
+            if (rs.next()) {
+                log.info("Table already exists: {}", table.tableHead.getCatalogSchemaName());
+                return;
+            }
+        }
         var builder = new StringBuilder();
         builder.append("CREATE TABLE ");
-        if (ifNotExists) {
-            builder.append("IF NOT EXISTS ");
-        }
         builder.append(table.getCatalogSchemaName());
         builder.append(" (");
         var primaryKeyFromFields = new ArrayList<String>();
@@ -144,19 +155,47 @@ public class EOrmBase extends EOrm {
         if (index.fieldList == null || index.fieldList.isEmpty()) {
             throw new Exception("Could not create index because: fieldList not defined");
         }
-        var builder = new StringBuilder();
-        builder.append("CREATE INDEX ");
-        if (ifNotExists) {
-            builder.append("IF NOT EXISTS ");
-        }
-        if (index.name != null && !index.name.isEmpty()) {
-            builder.append(index.name);
-        } else {
-            builder.append("idx_").append(index.tableHead.name);
+        String indexName = index.name;
+        if (indexName == null || indexName.isEmpty()) {
+            var nameBuilder = new StringBuilder("idx_").append(index.tableHead.name);
             for (var field : index.fieldList) {
-                builder.append("_").append(field.name);
+                nameBuilder.append("_").append(field.name);
+            }
+            indexName = nameBuilder.toString();
+        }
+        if (ifNotExists) {
+            var meta = getLink().getMetaData();
+            var rs = meta.getIndexInfo(null, null, index.tableHead.name.toUpperCase(), false, false);
+            boolean exists = false;
+            while (rs.next()) {
+                if (indexName.equalsIgnoreCase(rs.getString("INDEX_NAME"))) {
+                    exists = true; break;
+                }
+            }
+            if (!exists) {
+                rs = meta.getIndexInfo(null, null, index.tableHead.name.toLowerCase(), false, false);
+                while (rs.next()) {
+                    if (indexName.equalsIgnoreCase(rs.getString("INDEX_NAME"))) {
+                        exists = true; break;
+                    }
+                }
+            }
+            if (!exists) {
+                rs = meta.getIndexInfo(null, null, index.tableHead.name, false, false);
+                while (rs.next()) {
+                    if (indexName.equalsIgnoreCase(rs.getString("INDEX_NAME"))) {
+                        exists = true; break;
+                    }
+                }
+            }
+            if (exists) {
+                log.info("Index already exists: {}", indexName);
+                return;
             }
         }
+        var builder = new StringBuilder();
+        builder.append("CREATE INDEX ");
+        builder.append(indexName);
         builder.append(" ON ");
         builder.append(index.tableHead.getCatalogSchemaName());
         builder.append(" (");
@@ -253,14 +292,7 @@ public class EOrmBase extends EOrm {
                 }
             }
         }
-        if (select.limit != null) {
-            builder.append(" LIMIT ");
-            builder.append(select.limit);
-        }
-        if (select.offset != null) {
-            builder.append(" OFFSET ");
-            builder.append(select.offset);
-        }
+        appendPagination(builder, select);
         var selectSQL = builder.toString();
         log.debug("Selecting with SQL: {}", selectSQL);
         var prepared = getLink().prepareStatement(selectSQL);
@@ -289,9 +321,27 @@ public class EOrmBase extends EOrm {
         return new Selected(select, resultSet);
     }
 
+    protected void appendPagination(StringBuilder builder, Select select) {
+        if (select.offset != null) {
+            builder.append(" OFFSET ");
+            builder.append(select.offset);
+            builder.append(" ROWS");
+        }
+        if (select.limit != null) {
+            builder.append(" FETCH NEXT ");
+            builder.append(select.limit);
+            builder.append(" ROWS ONLY");
+        }
+    }
+
     @Override
     public Inserted insert(Insert insert, Strain strain) throws Exception {
-        var id = getID(getLink(), insert);
+        String id = "";
+        try {
+            id = getID(getLink(), insert);
+        } catch (Exception e) {
+            log.trace("Fallback to native generated keys due to: {}", e.getMessage());
+        }
         var strained = new ArrayList<Pair<String, String>>();
         if (strain != null && strain.include != null && !strain.include.isEmpty()) {
             var includes = strain.include.split("\\|");
@@ -342,7 +392,7 @@ public class EOrmBase extends EOrm {
         builder.append(")");
         var insertSQL = builder.toString();
         log.debug("Inserting with SQL: {}", insertSQL);
-        var prepared = getLink().prepareStatement(insertSQL);
+        var prepared = getLink().prepareStatement(insertSQL, java.sql.Statement.RETURN_GENERATED_KEYS);
         var paramIndex = 1;
         for (var valued : insert.valuedList) {
             if (valued.value != null) {
@@ -359,6 +409,19 @@ public class EOrmBase extends EOrm {
             }
         }
         var count = prepared.executeUpdate();
+        if (insert.toGetID != null && insert.toGetID.name != null && !insert.toGetID.name.isEmpty()) {
+            if (id == null || id.isEmpty()) {
+                try {
+                    var rs = prepared.getGeneratedKeys();
+                    if (rs.next()) {
+                        id = rs.getString(1);
+                        putID(insert, id);
+                    }
+                } catch (Exception e) {
+                    log.warn("Could not retrieve generated keys: {}", e.getMessage());
+                }
+            }
+        }
         return new Inserted(insert, count, id);
     }
 
@@ -386,10 +449,6 @@ public class EOrmBase extends EOrm {
         }
         builder.append(" WHERE ");
         builder.append(makeClauses(update.filterList, null, null));
-        if (update.limit != null) {
-            builder.append(" LIMIT ");
-            builder.append(update.limit);
-        }
         if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
             builder.append(" AND ");
             var restricted = replaceVariables(strain.restrict, dataSource);
@@ -447,7 +506,18 @@ public class EOrmBase extends EOrm {
 
     @Override
     public boolean isPrimaryKeyError(Exception error) {
-        return error.getMessage().contains("unique constraint");
+        if (error == null) return false;
+        if (error instanceof java.sql.SQLException sqlEx) {
+            String state = sqlEx.getSQLState();
+            if (state != null && state.startsWith("23")) {
+                return true;
+            }
+        }
+        if (error.getMessage() != null) {
+            String msg = error.getMessage().toLowerCase();
+            return msg.contains("unique constraint") || msg.contains("duplicate key");
+        }
+        return false;
     }
 
     protected String replaceVariables(String onSource, String dataSource) {
@@ -599,10 +669,10 @@ public class EOrmBase extends EOrm {
                 builder.append(" BIT");
                 break;
             case Byte:
-                builder.append(" BYTE");
+                builder.append(" SMALLINT");
                 break;
             case Tiny:
-                builder.append(" TINY");
+                builder.append(" SMALLINT");
                 break;
             case Small:
                 builder.append(" SMALLINT");
@@ -611,13 +681,13 @@ public class EOrmBase extends EOrm {
                 builder.append(" INTEGER");
                 break;
             case Serial:
-                builder.append(" SERIAL");
+                builder.append(" INTEGER GENERATED BY DEFAULT AS IDENTITY");
                 break;
             case Long:
                 builder.append(" LONG");
                 break;
             case BigSerial:
-                builder.append(" BIG_SERIAL");
+                builder.append(" BIGINT GENERATED BY DEFAULT AS IDENTITY");
                 break;
             case Float:
                 builder.append(" FLOAT");
@@ -626,7 +696,7 @@ public class EOrmBase extends EOrm {
                 builder.append(" REAL");
                 break;
             case Double:
-                builder.append(" DOUBLE");
+                builder.append(" DOUBLE PRECISION");
                 break;
             case Numeric:
                 builder.append(" NUMERIC");
@@ -670,7 +740,7 @@ public class EOrmBase extends EOrm {
                 builder.append(" TIME");
                 break;
             case DateTime:
-                builder.append(" DATETIME");
+                builder.append(" TIMESTAMP");
                 break;
             case Timestamp:
                 builder.append(" TIMESTAMP");
@@ -766,9 +836,9 @@ public class EOrmBase extends EOrm {
             case Lesser: return " < " + upon + " ";
             case BiggerOrEquals: return " >= " + upon + " ";
             case LesserOrEquals: return " <= " + upon + " ";
-            case StartsWith: return " STARTS WITH " + upon + " ";
-            case EndsWith: return " ENDS WITH " + upon + " ";
-            case Contains: return " CONTAINS " + upon + " ";
+            case StartsWith: return " LIKE " + upon + " || '%' ";
+            case EndsWith: return " LIKE '%' || " + upon + " ";
+            case Contains: return " LIKE '%' || " + upon + " || '%' ";
             default: throw new UnsupportedOperationException();
         }
     }

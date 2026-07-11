@@ -28,7 +28,7 @@ public class EOrmPostgre extends EOrmBase {
                 if (field.size != null) {
                     builder.append("(").append(field.size);
                     if (field.precision != null) {
-                    builder.append(",").append(field.precision);
+                        builder.append(",").append(field.precision);
                     }
                     builder.append(")");
                 }
@@ -57,18 +57,14 @@ public class EOrmPostgre extends EOrmBase {
     }
 
     @Override
-    public String makeCondition(FilterLikes likes, String with) {
-        switch (likes) {
-            case Equals: return " = " + with + " ";
-            case Bigger: return " > " + with + " ";
-            case Lesser: return " < " + with + " ";
-            case BiggerOrEquals: return " >= " + with + " ";
-            case LesserOrEquals: return " <= " + with + " ";
-            case StartsWith: return " LIKE " + with + " || '%' ";
-            case EndsWith: return " LIKE '%' || " + with + " ";
-            case Contains: return " LIKE '%' || " + with + " || '%' ";
-            default: throw new UnsupportedOperationException();
+    protected void appendPagination(StringBuilder builder, Select select) {
+        if (select.limit != null) {
+            builder.append(" LIMIT ");
+            builder.append(select.limit);
+        }
+        if (select.offset != null) {
+            builder.append(" OFFSET ");
+            builder.append(select.offset);
         }
     }
-
 }

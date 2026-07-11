@@ -6,6 +6,7 @@ public class Delete implements Data {
 
     public TableHead tableHead;
     public List<Filter> filterList;
+    public Integer limit;
 
     public Delete() {
     }
@@ -19,12 +20,22 @@ public class Delete implements Data {
         this.filterList = filterList;
     }
 
+    public Delete(TableHead tableHead, List<Filter> filterList, Integer limit) {
+        this.tableHead = tableHead;
+        this.filterList = filterList;
+        this.limit = limit;
+    }
+
     public boolean hasTableHead() {
         return this.tableHead != null;
     }
 
     public boolean hasFilterList() {
         return this.filterList != null && !this.filterList.isEmpty();
+    }
+
+    public boolean hasLimit() {
+        return this.limit != null;
     }
 
     public Delete withTableHead(TableHead tableHead) {
@@ -49,6 +60,16 @@ public class Delete implements Data {
 
     public Delete withNoFilterList() {
         this.filterList = null;
+        return this;
+    }
+
+    public Delete withLimit(Integer limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public Delete withNoLimit() {
+        this.limit = null;
         return this;
     }
 
@@ -79,6 +100,18 @@ public class Delete implements Data {
     public Delete uponNoFilterList() {
         var clone = this.clone();
         clone.filterList = null;
+        return clone;
+    }
+
+    public Delete uponLimit(Integer limit) {
+        var clone = this.clone();
+        clone.limit = limit;
+        return clone;
+    }
+
+    public Delete uponNoLimit() {
+        var clone = this.clone();
+        clone.limit = null;
         return clone;
     }
 

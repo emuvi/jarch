@@ -8,6 +8,7 @@ public class EOrmSQLite extends EOrmBase {
         super(link);
     }
 
+    @Override
     protected String makeNature(Field field) {
         var builder = new StringBuilder(field.name);
         switch (field.nature) {
@@ -34,20 +35,28 @@ public class EOrmSQLite extends EOrmBase {
         }
         return builder.toString();
     }
-    
+
     @Override
-    public String makeCondition(FilterLikes likes, String with) {
-        switch (likes) {
-            case Equals: return " = " + with + " ";
-            case Bigger: return " > " + with + " ";
-            case Lesser: return " < " + with + " ";
-            case BiggerOrEquals: return " >= " + with + " ";
-            case LesserOrEquals: return " <= " + with + " ";
-            case StartsWith: return " LIKE " + with + " || '%' ";
-            case EndsWith: return " LIKE '%' || " + with + " ";
-            case Contains: return " LIKE '%' || " + with + " || '%' ";
-            default: throw new UnsupportedOperationException();
+    protected void appendPagination(StringBuilder builder, Select select) {
+        if (select.limit != null) {
+            builder.append(" LIMIT ");
+            builder.append(select.limit);
+        }
+        if (select.offset != null) {
+            builder.append(" OFFSET ");
+            builder.append(select.offset);
         }
     }
 
+    @Override
+    public boolean isPrimaryKeyError(Exception error) {
+        if (error == null || error.getMessage() == null) {
+            return false;
+        }
+        String msg = error.getMessage().toLowerCase();
+        return msg.contains("unique constraint failed") 
+            || msg.contains("primary key constraint failed") 
+            || msg.contains("sqlite_constraint_primarykey") 
+            || msg.contains("sqlite_constraint_unique");
+    }
 }
