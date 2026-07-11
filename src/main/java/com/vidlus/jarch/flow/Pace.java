@@ -91,6 +91,94 @@ public class Pace {
     }
 
     /**
+     * A shorter alias for {@link #waitIfPausedAndThrowIfStopped()}.
+     *
+     * @throws Exception if the user has triggered a stop signal
+     */
+    public void check() throws Exception {
+        waitIfPausedAndThrowIfStopped();
+    }
+
+    /**
+     * A blocking checkpoint. If the tracker is paused, the calling thread will sleep
+     * in a loop until resumed.
+     *
+     * @throws InterruptedException if the thread is interrupted while waiting
+     */
+    public void waitIfPaused() throws InterruptedException {
+        while (paused) {
+            Thread.sleep(100);
+        }
+    }
+
+    /**
+     * Forcefully throws an exception if the tracker is stopped.
+     *
+     * @throws Exception if the user has triggered a stop signal
+     */
+    public void throwIfStopped() throws Exception {
+        if (stopped) {
+            throw new Exception("Pace was stopped by the user.");
+        }
+    }
+
+    /**
+     * Forcefully throws an exception if the tracker is closed.
+     *
+     * @throws Exception if the tracker has been closed
+     */
+    public void throwIfClosed() throws Exception {
+        if (closed) {
+            throw new Exception("Pace was closed.");
+        }
+    }
+
+    /**
+     * Sleeps for the specified duration, periodically checking for pause/stop signals.
+     * This ensures the sleep can be interrupted by a stop signal or paused.
+     *
+     * @param millis the duration to sleep in milliseconds
+     * @throws Exception if stopped during sleep
+     */
+    public void sleep(long millis) throws Exception {
+        if (millis <= 0) {
+            waitIfPausedAndThrowIfStopped();
+            return;
+        }
+        long end = System.currentTimeMillis() + millis;
+        while (System.currentTimeMillis() < end) {
+            waitIfPausedAndThrowIfStopped();
+            long remaining = end - System.currentTimeMillis();
+            if (remaining > 0) {
+                Thread.sleep(Math.min(100, remaining));
+            }
+        }
+    }
+
+    /**
+     * Resets the paused, stopped, and closed states to false.
+     */
+    public void reset() {
+        paused = false;
+        stopped = false;
+        closed = false;
+    }
+
+    /**
+     * Toggles the paused state.
+     */
+    public void togglePause() {
+        paused = !paused;
+    }
+
+    /**
+     * @return the underlying SLF4J logger instance
+     */
+    public Logger getLogger() {
+        return logger;
+    }
+
+    /**
      * @return the name of the underlying logger
      */
     public String getName() {
