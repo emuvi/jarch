@@ -12,7 +12,7 @@ public class DChangeImage extends DEditChange<Image> {
     private File sourceFile;
 
     public DChangeImage() {
-        super("...");
+        super("*");
         getField().setEditable(false);
     }
 
@@ -27,7 +27,8 @@ public class DChangeImage extends DEditChange<Image> {
         if (value != null && sourceFile != null) {
             getField().setText(sourceFile.getName() + " (" + value.getWidth(null) + "x" + value.getHeight(null) + ")");
         } else {
-            getField().setText(value != null ? "Image (" + value.getWidth(null) + "x" + value.getHeight(null) + ")" : "");
+            getField()
+                    .setText(value != null ? "Image (" + value.getWidth(null) + "x" + value.getHeight(null) + ")" : "");
         }
     }
 
@@ -35,11 +36,11 @@ public class DChangeImage extends DEditChange<Image> {
     protected void onActionPressed() {
         DFile fileDialog = new DFile();
         fileDialog.filter(new FileNameExtensionFilter("Images (png, jpg, gif)", "png", "jpg", "jpeg", "gif"));
-        
+
         if (sourceFile != null && sourceFile.exists()) {
             fileDialog.directory(sourceFile.getParentFile());
         }
-        
+
         if (fileDialog.showOpen(comp()) == JFileChooser.APPROVE_OPTION) {
             File selected = fileDialog.file();
             try {

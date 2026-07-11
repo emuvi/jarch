@@ -6,7 +6,7 @@ import javax.swing.JFileChooser;
 public class DChangeDir extends DEditChange<File> {
 
     public DChangeDir() {
-        super("...");
+        super("*");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DChangeDir extends DEditChange<File> {
     protected void onActionPressed() {
         DFile fileDialog = new DFile();
         fileDialog.selectionMode(JFileChooser.DIRECTORIES_ONLY);
-        
+
         File current = getValue();
         if (current != null && current.exists()) {
             if (current.isDirectory()) {
@@ -33,7 +33,7 @@ public class DChangeDir extends DEditChange<File> {
                 fileDialog.directory(current.getParentFile());
             }
         }
-        
+
         if (fileDialog.showOpen(comp()) == JFileChooser.APPROVE_OPTION) {
             setValue(fileDialog.file());
         }
