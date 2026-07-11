@@ -1,7 +1,5 @@
 package com.vidlus.jarch.desk;
 
-import javax.swing.JPanel;
-
 import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
