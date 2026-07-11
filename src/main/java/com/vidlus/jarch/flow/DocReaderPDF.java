@@ -24,6 +24,7 @@ public class DocReaderPDF {
         return DocReaderPDFUtils.isPDFFile(file);
     }
     
+    /** The underlying PDF file. */
     private final File file;
 
     /**
@@ -147,6 +148,146 @@ public class DocReaderPDF {
             BufferedImage bufferedImage = pdfRenderer.renderImageWithDPI(pageNumber, dpi);
             return bufferedImage;
         }
+    }
+    /**
+     * Reads all lines from the document text.
+     *
+     * @return a list containing all lines
+     * @throws Exception if an error occurs
+     */
+    public java.util.List<String> readLines() throws Exception {
+        return java.util.Arrays.asList(read().split("\\r?\\n"));
+    }
+
+    /**
+     * Reads a preview of the document contents up to the given length.
+     *
+     * @param length the maximum number of characters to return
+     * @return a substring of the text
+     * @throws Exception if an error occurs
+     */
+    public String readPreview(int length) throws Exception {
+        String full = read();
+        if (full.length() <= length) {
+            return full;
+        }
+        return full.substring(0, length);
+    }
+
+    /**
+     * Calculates the total number of words in the extracted text.
+     *
+     * @return the word count
+     * @throws Exception if an error occurs
+     */
+    public int getWordCount() throws Exception {
+        String full = read();
+        if (full == null || full.trim().isEmpty()) return 0;
+        return full.trim().split("\\s+").length;
+    }
+
+    /**
+     * Calculates the total number of characters in the extracted text.
+     *
+     * @return the character count
+     * @throws Exception if an error occurs
+     */
+    public int getCharCount() throws Exception {
+        return read().length();
+    }
+
+    /**
+     * Retrieves the author of the document.
+     *
+     * @return the author, or null if unavailable
+     * @throws Exception if an error occurs
+     */
+    public String getAuthor() throws Exception {
+        try (var doc = PDDocument.load(file)) {
+            var info = doc.getDocumentInformation();
+            return info != null ? info.getAuthor() : null;
+        }
+    }
+
+    /**
+     * Retrieves the title of the document.
+     *
+     * @return the title, or null if unavailable
+     * @throws Exception if an error occurs
+     */
+    public String getTitle() throws Exception {
+        try (var doc = PDDocument.load(file)) {
+            var info = doc.getDocumentInformation();
+            return info != null ? info.getTitle() : null;
+        }
+    }
+
+    /**
+     * Retrieves the subject of the document.
+     *
+     * @return the subject, or null if unavailable
+     * @throws Exception if an error occurs
+     */
+    public String getSubject() throws Exception {
+        try (var doc = PDDocument.load(file)) {
+            var info = doc.getDocumentInformation();
+            return info != null ? info.getSubject() : null;
+        }
+    }
+
+    /**
+     * Retrieves the creator of the document.
+     *
+     * @return the creator, or null if unavailable
+     * @throws Exception if an error occurs
+     */
+    public String getCreator() throws Exception {
+        try (var doc = PDDocument.load(file)) {
+            var info = doc.getDocumentInformation();
+            return info != null ? info.getCreator() : null;
+        }
+    }
+
+    /**
+     * Retrieves the document creation date.
+     *
+     * @return the creation date, or null if unavailable
+     * @throws Exception if an error occurs
+     */
+    public java.util.Date getCreationDate() throws Exception {
+        try (var doc = PDDocument.load(file)) {
+            var info = doc.getDocumentInformation();
+            if (info != null && info.getCreationDate() != null) {
+                return info.getCreationDate().getTime();
+            }
+        }
+        var attr = java.nio.file.Files.readAttributes(file.toPath(), java.nio.file.attribute.BasicFileAttributes.class);
+        return new java.util.Date(attr.creationTime().toMillis());
+    }
+
+    /**
+     * Extracts all raw embedded images from a specific page.
+     *
+     * @param pageNumber the zero-based index of the page
+     * @return a list of BufferedImages found on the page
+     * @throws Exception if an error occurs rendering the page
+     */
+    public java.util.List<BufferedImage> getImages(int pageNumber) throws Exception {
+        var images = new java.util.ArrayList<BufferedImage>();
+        try (var doc = PDDocument.load(file)) {
+            if (pageNumber < 0 || pageNumber >= doc.getNumberOfPages()) {
+                throw new IllegalArgumentException("Page number " + pageNumber + " is out of bounds.");
+            }
+            var page = doc.getPage(pageNumber);
+            var resources = page.getResources();
+            for (org.apache.pdfbox.cos.COSName c : resources.getXObjectNames()) {
+                var o = resources.getXObject(c);
+                if (o instanceof org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject) {
+                    images.add(((org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject) o).getImage());
+                }
+            }
+        }
+        return images;
     }
 
 }
