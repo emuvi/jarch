@@ -5,6 +5,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.vidlus.jarch.mage.WizString;
 
@@ -65,6 +66,36 @@ public class CSVRead implements Closeable {
         }
         result.add(WizString.remakeBreaks(builder.toString()));
         return result.toArray(new String[result.size()]);
+    }
+
+    /**
+     * Reads all remaining lines from the character stream.
+     *
+     * @return a list of string arrays representing the rows
+     * @throws Exception if an I/O error occurs during reading
+     */
+    public List<String[]> readAllLines() throws Exception {
+        var lines = new LinkedList<String[]>();
+        String[] line;
+        while ((line = readLine()) != null) {
+            lines.add(line);
+        }
+        return lines;
+    }
+
+    /**
+     * Skips a specified number of lines from the character stream.
+     * Useful for skipping headers.
+     *
+     * @param count the number of lines to skip
+     * @throws Exception if an I/O error occurs during reading
+     */
+    public void skipLines(int count) throws Exception {
+        for (int i = 0; i < count; i++) {
+            if (readLine() == null) {
+                break;
+            }
+        }
     }
 
     /**

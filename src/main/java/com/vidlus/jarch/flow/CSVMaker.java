@@ -1,6 +1,7 @@
 package com.vidlus.jarch.flow;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vidlus.jarch.data.Nature;
@@ -71,5 +72,20 @@ public class CSVMaker {
                             .getObject(i));
         }
         return result;
+    }
+
+    /**
+     * Advances the ResultSet cursor through all remaining rows and extracts them into a list of string arrays.
+     *
+     * @return a list of string arrays representing the remaining rows
+     * @throws Exception if a database access error occurs or formatting fails
+     */
+    public List<String[]> makeAllLines() throws Exception {
+        var lines = new ArrayList<String[]>();
+        String[] line;
+        while ((line = makeLine()) != null) {
+            lines.add(line);
+        }
+        return lines;
     }
 }

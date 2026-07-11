@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.List;
 import org.slf4j.LoggerFactory;
 
 import com.vidlus.jarch.data.BasedLink;
@@ -20,6 +21,7 @@ public class CSVExport implements Runnable {
     private final BasedLink origin;
     private final File destiny;
     private final Pace pace;
+    private final List<TableHead> targetTables;
 
     /**
      * Constructs a CSVExport task with a default progress Pace logger.
@@ -28,7 +30,7 @@ public class CSVExport implements Runnable {
      * @param destiny the destination directory where CSV/TAB files will be generated
      */
     public CSVExport(BasedLink origin, File destiny) {
-        this(origin, destiny, null);
+        this(origin, destiny, null, null);
     }
 
     /**
@@ -39,10 +41,23 @@ public class CSVExport implements Runnable {
      * @param pace    the Pace instance to track extraction progress and logging
      */
     public CSVExport(BasedLink origin, File destiny, Pace pace) {
+        this(origin, destiny, pace, null);
+    }
+
+    /**
+     * Constructs a CSVExport task targeting specific tables.
+     *
+     * @param origin       the source database connection configuration
+     * @param destiny      the destination directory where CSV/TAB files will be generated
+     * @param pace         the Pace instance to track extraction progress and logging
+     * @param targetTables specific tables to export (if null or empty, exports all tables)
+     */
+    public CSVExport(BasedLink origin, File destiny, Pace pace, List<TableHead> targetTables) {
         this.origin = origin;
         this.destiny = destiny;
         this.pace = pace != null ? pace
             : new Pace(LoggerFactory.getLogger(CSVExport.class));
+        this.targetTables = targetTables;
     }
 
     /**
@@ -71,7 +86,8 @@ public class CSVExport implements Runnable {
                 pace.waitIfPausedAndThrowIfStopped();
                 pace.info("Getting tables...");
                 var eOrmOrigin = origin.getEOrm(originConn);
-                var tableHeads = eOrmOrigin.getHeads();
+                var tableHeads = this.targetTables != null && !this.targetTables.isEmpty() ? 
+                                 this.targetTables : eOrmOrigin.getHeads();
                 for (TableHead tableHead : tableHeads) {
                     pace.info("Processing: %s...", tableHead);
                     var table = tableHead.getTable(originConn);

@@ -52,6 +52,39 @@ public class CSVWrite implements Closeable {
     }
 
     /**
+     * Writes multiple rows to the output stream.
+     *
+     * @param lines an iterable collection of string arrays to write
+     */
+    public void writeLines(Iterable<String[]> lines) {
+        if (lines != null) {
+            for (String[] line : lines) {
+                writeLine(line);
+            }
+        }
+    }
+
+    /**
+     * Writes multiple rows to the output stream.
+     *
+     * @param lines an array of string arrays to write
+     */
+    public void writeLines(String[][] lines) {
+        if (lines != null) {
+            for (String[] line : lines) {
+                writeLine(line);
+            }
+        }
+    }
+
+    /**
+     * Flushes the underlying PrintWriter.
+     */
+    public void flush() {
+        this.writer.flush();
+    }
+
+    /**
      * Closes the underlying PrintWriter.
      *
      * @throws IOException if closing the stream fails

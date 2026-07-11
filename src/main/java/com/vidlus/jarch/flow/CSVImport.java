@@ -84,8 +84,8 @@ public class CSVImport implements Runnable {
      * @param file the file to test
      * @return true if the file is a CSV
      */
-    private boolean isCSVFile(File file) {
-        return file.isFile() && file.getName().toLowerCase().endsWith(".csv");
+    public static boolean isCSVFile(File file) {
+        return file != null && file.isFile() && file.getName().toLowerCase().endsWith(".csv");
     }
 
     /**

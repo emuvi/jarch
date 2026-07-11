@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * A high-level abstraction for handling CSV files safely. 
@@ -75,6 +76,57 @@ public class CSVFile implements Closeable {
      */
     public void writeLine(String... columns) {
         this.writer.writeLine(columns);
+    }
+
+    /**
+     * Reads all remaining lines from the CSV file.
+     * Only valid if the file was opened in READ mode.
+     *
+     * @return a list of string arrays representing the rows
+     * @throws Exception if an I/O error occurs or the mode is incorrect
+     */
+    public List<String[]> readAllLines() throws Exception {
+        return this.reader.readAllLines();
+    }
+
+    /**
+     * Skips a specified number of lines from the CSV file.
+     * Only valid if the file was opened in READ mode.
+     *
+     * @param count the number of lines to skip
+     * @throws Exception if an I/O error occurs or the mode is incorrect
+     */
+    public void skipLines(int count) throws Exception {
+        this.reader.skipLines(count);
+    }
+
+    /**
+     * Writes multiple rows to the CSV file.
+     * Only valid if the file was opened in WRITE or APPEND mode.
+     *
+     * @param lines an iterable collection of string arrays to write
+     */
+    public void writeLines(Iterable<String[]> lines) {
+        this.writer.writeLines(lines);
+    }
+
+    /**
+     * Writes multiple rows to the CSV file.
+     * Only valid if the file was opened in WRITE or APPEND mode.
+     *
+     * @param lines an array of string arrays to write
+     */
+    public void writeLines(String[][] lines) {
+        this.writer.writeLines(lines);
+    }
+
+    /**
+     * Flushes the underlying writers.
+     */
+    public void flush() {
+        if (this.writer != null) {
+            this.writer.flush();
+        }
     }
 
     /**
