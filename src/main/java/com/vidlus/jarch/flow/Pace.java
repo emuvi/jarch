@@ -3,6 +3,11 @@ package com.vidlus.jarch.flow;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
+/**
+ * A highly capable logging wrapper around SLF4J that also embeds runtime flow control signals.
+ * Components utilizing Pace can be externally paused or stopped mid-execution. 
+ * Heavy tasks periodically call {@link #waitIfPausedAndThrowIfStopped()} to hook into this lifecycle.
+ */
 public class Pace {
 
     private final Logger logger;
@@ -11,38 +16,71 @@ public class Pace {
     private volatile boolean stopped = false;
     private volatile boolean closed = false;
 
+    /**
+     * Constructs a Pace tracker bound to an SLF4J Logger.
+     *
+     * @param logger the underlying SLF4J logger implementation
+     */
     public Pace(Logger logger) {
         this.logger = logger;
     }
 
+    /**
+     * Signals the background process to suspend execution.
+     */
     public void pause() {
         paused = true;
     }
 
+    /**
+     * Signals the background process to resume execution.
+     */
     public void resume() {
         paused = false;
     }
 
+    /**
+     * Signals the background process to permanently stop execution.
+     */
     public void stop() {
         stopped = true;
     }
 
+    /**
+     * Marks the logger/tracker as closed.
+     */
     public void close() {
         closed = true;
     }
 
+    /**
+     * @return true if the tracker is currently paused
+     */
     public boolean isPaused() {
         return paused;
     }
 
+    /**
+     * @return true if the tracker has been permanently stopped
+     */
     public boolean isStopped() {
         return stopped;
     }
 
+    /**
+     * @return true if the tracker has been closed
+     */
     public boolean isClosed() {
         return closed;
     }
 
+    /**
+     * A blocking checkpoint. If the tracker is paused, the calling thread will sleep
+     * in a loop until resumed. If the tracker is stopped, it forcefully throws an exception
+     * to abort the current flow.
+     *
+     * @throws Exception if the user has triggered a stop signal
+     */
     public void waitIfPausedAndThrowIfStopped() throws Exception {
         while (paused) {
             Thread.sleep(100);
@@ -52,6 +90,9 @@ public class Pace {
         }
     }
 
+    /**
+     * @return the name of the underlying logger
+     */
     public String getName() {
         return logger.getName();
     }

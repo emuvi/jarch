@@ -7,18 +7,36 @@ import java.io.Writer;
 
 import com.vidlus.jarch.mage.WizString;
 
+/**
+ * A low-level CSV writer that safely formats string arrays into valid CSV rows.
+ * Automatically handles wrapping strings in quotes if they contain commas, spaces, or quotes,
+ * and escapes internal double-quotes according to CSV standards.
+ */
 public class CSVWrite implements Closeable {
 
     private final PrintWriter writer;
 
+    /**
+     * Wraps a generic character writer for CSV output.
+     *
+     * @param writer the underlying character stream writer
+     * @throws Exception if wrapping fails
+     */
     public CSVWrite(Writer writer) throws Exception {
         this.writer = new PrintWriter(writer);
     }
 
+    /**
+     * Takes an array of strings, formats them according to CSV rules, and writes a single line
+     * to the output stream. Appends a platform-specific line separator at the end.
+     *
+     * @param columns varargs representing the data to write as columns
+     */
     public void writeLine(String... columns) {
         if (columns != null) {
             for (var i = 0; i < columns.length; i++) {
                 var column = WizString.replaceBreaks(columns[i]);
+                // Enclose in quotes if the data contains special CSV formatting characters
                 if (WizString.contains(column, '"', ' ', ',', ';')) {
                     column = '"' + column.replace("\"", "\"\"") + '"';
                 }
@@ -33,6 +51,11 @@ public class CSVWrite implements Closeable {
         this.writer.write(System.lineSeparator());
     }
 
+    /**
+     * Closes the underlying PrintWriter.
+     *
+     * @throws IOException if closing the stream fails
+     */
     @Override
     public void close() throws IOException {
         this.writer.close();

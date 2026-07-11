@@ -15,21 +15,42 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+/**
+ * A specialized document reader that extracts text from Microsoft Office documents.
+ * It leverages Apache POI to parse both legacy OLE2 formats (.doc, .xls, .ppt) 
+ * and modern OOXML formats (.docx, .xlsx, .pptx).
+ */
 public class DocReaderMSO {
 
+    /**
+     * Checks if the file is a supported Microsoft Office format.
+     *
+     * @param file the file to check
+     * @return true if the file is an Office document
+     */
     public static boolean canRead(File file) {
         return DocReaderMSOUtils.isMSWordFile(file)
                         || DocReaderMSOUtils.isMSExcelFile(file)
                         || DocReaderMSOUtils.isMSPowerPointFile(file);
     }
 
-
     private final File path;
 
+    /**
+     * Constructs a reader for an Office document.
+     *
+     * @param path the file to read
+     */
     public DocReaderMSO(File path) {
         this.path = path;
     }
 
+    /**
+     * Automatically identifies the specific Office format and delegates to the appropriate extractor.
+     *
+     * @return the extracted raw text
+     * @throws Exception if the file cannot be read or the format is unknown
+     */
     public String read() throws Exception {
         if (DocReaderMSOUtils.isMSWordFile(path)) {
             return extractTextFromWord();

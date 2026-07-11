@@ -15,16 +15,33 @@ import com.vidlus.jarch.data.TableHead;
 import com.vidlus.jarch.data.Valued;
 import com.vidlus.jarch.mage.WizFile;
 
+/**
+ * A background task (Runnable) that imports CSV and structure (.tab) files into a live database.
+ * Capable of importing single files or scraping an entire directory.
+ */
 public class CSVImport implements Runnable {
 
     private final File origin;
     private final BasedLink destiny;
     private final Pace pace;
 
+    /**
+     * Constructs a CSVImport task with a default progress Pace logger.
+     *
+     * @param origin  the source CSV file or directory containing CSVs
+     * @param destiny the destination database connection configuration
+     */
     public CSVImport(File origin, BasedLink destiny) {
         this(origin, destiny, null);
     }
 
+    /**
+     * Constructs a CSVImport task with a custom progress Pace logger.
+     *
+     * @param origin  the source CSV file or directory containing CSVs
+     * @param destiny the destination database connection configuration
+     * @param pace    the Pace instance to track insertion progress and logging
+     */
     public CSVImport(File origin, BasedLink destiny, Pace pace) {
         this.origin = origin;
         this.destiny = destiny;
@@ -32,6 +49,12 @@ public class CSVImport implements Runnable {
             : new Pace(LoggerFactory.getLogger(CSVImport.class));
     }
 
+    /**
+     * Executes the import workflow. Connects to the target database and processes
+     * the requested files. It automatically handles matching CSVs with their corresponding
+     * metadata definitions (.tab) if present.
+     */
+    @Override
     public void run() {
         try {
             if (!origin.exists()) {
@@ -55,10 +78,25 @@ public class CSVImport implements Runnable {
         }
     }
 
+    /**
+     * Tests if a given file matches the CSV signature.
+     *
+     * @param file the file to test
+     * @return true if the file is a CSV
+     */
     private boolean isCSVFile(File file) {
         return file.isFile() && file.getName().toLowerCase().endsWith(".csv");
     }
 
+    /**
+     * Handles the complex logic of parsing a single CSV file, reconciling its column headers
+     * against a database table or a local .tab metadata file, creating the table if needed,
+     * and performing batch inserts of all row records.
+     *
+     * @param csvFile the CSV data payload
+     * @param link    the active database connection
+     * @throws Exception if an I/O or SQL error occurs
+     */
     private void importCSVFile(File csvFile, Connection link) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Importing CSV File: " + csvFile.getName());
@@ -66,6 +104,8 @@ public class CSVImport implements Runnable {
         var tableName = WizFile.getBaseName(csvFile.getName());
         var tableFile = new File(csvFile.getParent(), tableName + ".tab");
         Table table;
+        
+        // Ensure table metadata is synchronized
         if (tableFile.exists()) {
             pace.info("Loading table metadata from file.");
             table = Table.fromChars(Files.readString(tableFile.toPath()));
@@ -80,6 +120,8 @@ public class CSVImport implements Runnable {
             }
             table = new TableHead(null, schema, name).getTable(link);
         }
+        
+        // Parse CSV and Insert
         try (var reader = new CSVFile(csvFile, CSVFile.Mode.READ)) {
             pace.info("CSV File: " + csvFile.getName() + " opened.");
             var firstLine = true;
@@ -131,6 +173,13 @@ public class CSVImport implements Runnable {
         }
     }
 
+    /**
+     * Translates parsed util.Dates into native sql.Date/Time/Timestamp objects prior to JDBC insertion.
+     *
+     * @param values the array containing the row data
+     * @param i      the index of the specific value being fixed
+     * @param field  the field schema dictating the target nature
+     */
     private void fixValuesForSQLTypes(Object[] values, int i, Field field) {
         if (values[i] == null) {
             return;

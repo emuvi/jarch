@@ -2,6 +2,9 @@ package com.vidlus.jarch.flow;
 
 import org.apache.commons.io.FilenameUtils;
 
+/**
+ * An enumeration of commonly encountered MIME types used in file transfers and web requests.
+ */
 public enum MimeType {
 
     PDF("application/pdf"),
@@ -53,14 +56,28 @@ public enum MimeType {
 
     private final String code;
 
+    /**
+     * Private constructor for attaching the HTTP MIME string.
+     *
+     * @param code the exact HTTP MIME type string
+     */
     private MimeType(String code) {
         this.code = code;
     }
 
+    /**
+     * @return the HTTP Content-Type compliant MIME string
+     */
     public String code() {
         return code;
     }
 
+    /**
+     * Resolves the correct MimeType enum by analyzing the file extension of a path.
+     *
+     * @param path the filename or full path
+     * @return the matched MimeType, or null if no match was found
+     */
     public static MimeType of(String path) {
         var extension = FilenameUtils.getExtension(path).toLowerCase();
         for (MimeType mimeType : MimeType.values()) {

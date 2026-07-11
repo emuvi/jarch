@@ -13,6 +13,11 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A robust File Transfer Protocol (FTP) client abstraction that utilizes Apache Commons Net.
+ * Simplifies connecting, logging in, uploading, downloading, and managing directories
+ * over an FTP connection. Automatically supports Pace logging and execution halting.
+ */
 public class FTP implements AutoCloseable {
 
     private final String host;
@@ -22,14 +27,38 @@ public class FTP implements AutoCloseable {
     private final Pace pace;
     private final FTPClient client;
 
+    /**
+     * Constructs an FTP client for the default port 21.
+     *
+     * @param host the FTP server hostname or IP
+     * @param user the login username
+     * @param pass the login password
+     */
     public FTP(String host, String user, String pass) {
         this(host, 21, user, pass, null);
     }
 
+    /**
+     * Constructs an FTP client for a specific port.
+     *
+     * @param host the FTP server hostname or IP
+     * @param port the FTP server port
+     * @param user the login username
+     * @param pass the login password
+     */
     public FTP(String host, int port, String user, String pass) {
         this(host, port, user, pass, null);
     }
 
+    /**
+     * Constructs an FTP client with a custom Pace logger.
+     *
+     * @param host the FTP server hostname or IP
+     * @param port the FTP server port
+     * @param user the login username
+     * @param pass the login password
+     * @param pace the Pace progress and lifecycle tracker
+     */
     public FTP(String host, int port, String user, String pass, Pace pace) {
         this.host = host;
         this.port = port;
@@ -39,10 +68,19 @@ public class FTP implements AutoCloseable {
         this.client = new FTPClient();
     }
 
+    /**
+     * @return true if the underlying Apache FTPClient is actively connected
+     */
     public boolean isConnected() {
         return client.isConnected();
     }
 
+    /**
+     * Initiates the connection, logs in, sets Passive Mode, and configures BINARY transfer mode.
+     *
+     * @return this FTP instance for method chaining
+     * @throws Exception if the connection is refused or login fails
+     */
     public FTP connect() throws Exception {
         pace.info("Connecting to " + host + ":" + port);
         client.connect(host, port);
@@ -60,6 +98,9 @@ public class FTP implements AutoCloseable {
         return this;
     }
 
+    /**
+     * Gracefully logs out and disconnects the active session.
+     */
     public void disconnect() {
         if (client.isConnected()) {
             try {
@@ -71,11 +112,21 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Allows this class to be used in try-with-resources blocks.
+     */
     @Override
     public void close() {
         disconnect();
     }
 
+    /**
+     * Lists all file and folder names at the given remote path.
+     *
+     * @param path the remote directory path
+     * @return a list of names
+     * @throws Exception if an I/O error occurs
+     */
     public List<String> listNames(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Listing names in " + path);
@@ -83,6 +134,13 @@ public class FTP implements AutoCloseable {
         return names != null ? Arrays.asList(names) : List.of();
     }
 
+    /**
+     * Lists detailed file objects (metadata) at the given remote path.
+     *
+     * @param path the remote directory path
+     * @return a list of FTPFiles
+     * @throws Exception if an I/O error occurs
+     */
     public List<FTPFile> listFiles(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Listing files in " + path);
@@ -90,6 +148,13 @@ public class FTP implements AutoCloseable {
         return files != null ? Arrays.asList(files) : List.of();
     }
 
+    /**
+     * Streams a local file up to a remote path.
+     *
+     * @param local  the physical file to upload
+     * @param remote the target filename on the FTP server
+     * @throws Exception if an I/O error occurs
+     */
     public void upload(File local, String remote) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Uploading " + local.getName() + " to " + remote);
@@ -100,6 +165,13 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Downloads a remote file down to a local physical file.
+     *
+     * @param remote the source filename on the FTP server
+     * @param local  the target physical file to save into
+     * @throws Exception if an I/O error occurs
+     */
     public void download(String remote, File local) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Downloading " + remote + " to " + local.getName());
@@ -110,6 +182,13 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Safely changes the working directory to a given path, creating any missing 
+     * parent directories sequentially along the way.
+     *
+     * @param path the target directory path
+     * @throws Exception if folder creation or traversal fails
+     */
     public void openWithMakeDir(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Checking/Creating directory " + path);
@@ -134,6 +213,12 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Creates a new directory at the specified path.
+     *
+     * @param path the directory name
+     * @throws Exception if an I/O error occurs
+     */
     public void makeDir(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Making directory " + path);
@@ -142,6 +227,12 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Removes an empty directory at the specified path.
+     *
+     * @param path the directory to remove
+     * @throws Exception if the directory does not exist or isn't empty
+     */
     public void removeDir(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Removing directory " + path);
@@ -150,6 +241,12 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Deletes a remote file.
+     *
+     * @param path the file to delete
+     * @throws Exception if an I/O error occurs
+     */
     public void removeFile(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Removing file " + path);
@@ -158,6 +255,13 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Renames a remote file or folder.
+     *
+     * @param from the existing name
+     * @param to   the new name
+     * @throws Exception if an I/O error occurs
+     */
     public void rename(String from, String to) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Renaming " + from + " to " + to);
@@ -166,6 +270,12 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Changes the current working directory to the specified path.
+     *
+     * @param path the new working directory
+     * @throws Exception if the directory doesn't exist
+     */
     public void changeDir(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Changing directory to " + path);
@@ -174,6 +284,11 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * Moves the working directory up one level to its parent.
+     *
+     * @throws Exception if the operation fails
+     */
     public void changeToParentDir() throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         pace.info("Changing to parent directory");
@@ -182,11 +297,22 @@ public class FTP implements AutoCloseable {
         }
     }
 
+    /**
+     * @return the absolute path of the current working directory on the server
+     * @throws Exception if an I/O error occurs
+     */
     public String printWorkingDirectory() throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         return client.printWorkingDirectory();
     }
 
+    /**
+     * Checks if a file or directory exists on the server.
+     *
+     * @param path the path to check
+     * @return true if the resource exists
+     * @throws Exception if an I/O error occurs
+     */
     public boolean exists(String path) throws Exception {
         pace.waitIfPausedAndThrowIfStopped();
         var names = client.listNames(path);
@@ -205,6 +331,11 @@ public class FTP implements AutoCloseable {
         return false;
     }
 
+    /**
+     * Provides access to the raw Apache Commons FTPClient instance.
+     *
+     * @return the underlying FTPClient
+     */
     public FTPClient getClient() {
         return client;
     }

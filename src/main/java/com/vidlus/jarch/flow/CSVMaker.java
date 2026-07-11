@@ -8,10 +8,23 @@ import com.vidlus.jarch.data.Typed;
 import com.vidlus.jarch.mage.WizBased;
 import com.vidlus.jarch.mage.WizData;
 
+/**
+ * Translates active SQL Database {@link ResultSet} records into standard string arrays 
+ * suitable for CSV exporting. Leverages field Natures to ensure date/time and numeric 
+ * fields are formatted appropriately.
+ */
 public class CSVMaker {
     private final ResultSet results;
     private final Nature[] natures;
 
+    /**
+     * Constructs a CSVMaker initialized with a specific list of typed fields.
+     * If typeds is null, it attempts to dynamically resolve the natures from the ResultSet metadata.
+     *
+     * @param results the active database ResultSet
+     * @param typeds  a list of Typed field definitions describing the result set
+     * @throws Exception if resolving natures from the ResultSet fails
+     */
     public CSVMaker(ResultSet results, List<Typed> typeds) throws Exception {
         this.results = results;
         if (typeds != null) {
@@ -24,6 +37,14 @@ public class CSVMaker {
         }
     }
 
+    /**
+     * Constructs a CSVMaker initialized with an array of specific natures.
+     * If natures is null, it attempts to dynamically resolve the natures from the ResultSet metadata.
+     *
+     * @param results the active database ResultSet
+     * @param natures an array of Nature enumerations describing the result set columns
+     * @throws Exception if resolving natures from the ResultSet fails
+     */
     public CSVMaker(ResultSet results, Nature[] natures) throws Exception {
         this.results = results;
         if (natures != null) {
@@ -33,6 +54,13 @@ public class CSVMaker {
         }
     }
 
+    /**
+     * Advances the ResultSet cursor to the next row and extracts its columns into a string array.
+     * Values are formatted into strings based on their data type's Nature.
+     *
+     * @return an array of formatted strings representing the row data, or null if the ResultSet is exhausted
+     * @throws Exception if a database access error occurs or formatting fails
+     */
     public String[] makeLine() throws Exception {
         if (!this.results.next()) {
             return null;
