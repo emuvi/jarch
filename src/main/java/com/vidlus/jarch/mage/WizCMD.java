@@ -60,6 +60,30 @@ public class WizCMD {
     }
 
     /**
+     * Executes a command silently, discarding all output.
+     *
+     * @param command the command and its arguments
+     * @return the exit code of the process
+     * @throws Exception if an error occurs during execution
+     */
+    public static int runSilent(String... command) throws Exception {
+        return make(command).onOutput(line -> {}).onError(line -> {}).run();
+    }
+
+    /**
+     * Executes a command with a timeout, returning the exit code.
+     *
+     * @param timeout the timeout value
+     * @param unit the time unit
+     * @param command the command and its arguments
+     * @return the exit code of the process
+     * @throws Exception if an error occurs or it times out
+     */
+    public static int runWithTimeout(long timeout, TimeUnit unit, String... command) throws Exception {
+        return make(command).timeout(timeout, unit).run();
+    }
+
+    /**
      * Executes a command and returns the standard output as a String.
      *
      * @param command the command and its arguments
@@ -115,6 +139,18 @@ public class WizCMD {
     }
 
     /**
+     * Starts a command asynchronously in a fully detached/background mode without tracking output.
+     *
+     * @param command the command and its arguments
+     * @return the started Process
+     * @throws Exception if an error occurs during execution
+     */
+    public static Process runBackground(String... command) throws Exception {
+        var pb = new ProcessBuilder(command);
+        return pb.start();
+    }
+
+    /**
      * Starts a command asynchronously and consumes the standard output.
      *
      * @param onOutput the consumer for standard output lines
@@ -149,6 +185,113 @@ public class WizCMD {
      */
     public static Process runAsyncWithErrors(Consumer<String> onOutput, String... command) throws Exception {
         return make(command).redirectError().onOutput(onOutput).runAsync();
+    }
+    
+    /**
+     * Checks if a process is still alive.
+     *
+     * @param process the Process to check
+     * @return true if running, false otherwise
+     */
+    public static boolean isAlive(Process process) {
+        return process != null && process.isAlive();
+    }
+    
+    /**
+     * Kills a process forcefully.
+     *
+     * @param process the Process to kill
+     * @return true if successfully killed, false if it was already terminated or null
+     */
+    public static boolean kill(Process process) {
+        if (process != null && process.isAlive()) {
+            process.destroyForcibly();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Safely retrieves the Process ID (PID).
+     *
+     * @param process the Process to query
+     * @return the PID, or -1 if unavailable
+     */
+    public static long getPid(Process process) {
+        if (process == null) return -1;
+        try {
+            return process.pid();
+        } catch (UnsupportedOperationException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * Determines if the current operating system is Windows.
+     *
+     * @return true if Windows, false otherwise
+     */
+    public static boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
+    }
+
+    /**
+     * Determines if the current operating system is macOS.
+     *
+     * @return true if Mac, false otherwise
+     */
+    public static boolean isMac() {
+        return System.getProperty("os.name").toLowerCase().contains("mac");
+    }
+
+    /**
+     * Determines if the current operating system is Linux/Unix.
+     *
+     * @return true if Linux/Unix, false otherwise
+     */
+    public static boolean isLinux() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return os.contains("nix") || os.contains("nux") || os.contains("aix");
+    }
+
+    /**
+     * Opens a URL or file in the default system browser/viewer.
+     *
+     * @param target the URL or absolute file path to open
+     * @return true if successfully launched, false otherwise
+     */
+    public static boolean open(String target) {
+        try {
+            if (isWindows()) {
+                runBackground("cmd.exe", "/c", "start", "\"\"", target);
+            } else if (isMac()) {
+                runBackground("open", target);
+            } else {
+                runBackground("xdg-open", target);
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("Failed to open target: " + target, e);
+            return false;
+        }
+    }
+
+    /**
+     * Checks if a command is available in the system PATH.
+     *
+     * @param command the command name (e.g. "git", "java")
+     * @return true if the command exists, false otherwise
+     */
+    public static boolean isCommandAvailable(String command) {
+        try {
+            if (isWindows()) {
+                return runSilent("where", command) == 0;
+            } else {
+                return runSilent("which", command) == 0;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     /**

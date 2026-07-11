@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import com.vidlus.jarch.mage.WizApp;
+import com.vidlus.jarch.mage.WizLang;
 import com.vidlus.jarch.mage.WizGUI;
 import com.vidlus.jarch.mage.WizString;
 

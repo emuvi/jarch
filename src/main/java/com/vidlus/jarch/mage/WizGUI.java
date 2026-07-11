@@ -1491,4 +1491,79 @@ public class WizGUI {
         return item;
     }
 
+    // =========================================================================
+    // WINDOW AND COMPONENT UTILITIES
+    // =========================================================================
+
+    /**
+     * Centers a window on the screen.
+     *
+     * @param window The window to center.
+     */
+    public static void center(Window window) {
+        if (window != null) {
+            window.setLocationRelativeTo(null);
+        }
+    }
+
+    /**
+     * Packs and centers a window on the screen.
+     *
+     * @param window The window to pack and center.
+     */
+    public static void packAndCenter(Window window) {
+        if (window != null) {
+            window.pack();
+            window.setLocationRelativeTo(null);
+        }
+    }
+
+    /**
+     * Sets the icon image for a window.
+     *
+     * @param window The window.
+     * @param icon The image icon.
+     */
+    public static void setIcon(Window window, Image icon) {
+        if (window != null && icon != null) {
+            window.setIconImage(icon);
+        }
+    }
+
+    /**
+     * Checks if a dark theme is currently active.
+     *
+     * @return true if a dark theme is active, false otherwise.
+     */
+    public static boolean isDarkTheme() {
+        String laf = getLookAndFeel();
+        return KEY_LOOK_AND_FEEL_DARK.equals(laf) || KEY_LOOK_AND_FEEL_DARCULA.equals(laf);
+    }
+
+    /**
+     * Adds a simple hover effect to a component by changing its background color.
+     *
+     * @param component The component.
+     * @param hoverColor The background color on hover.
+     * @param defaultColor The default background color.
+     */
+    public static void addHoverEffect(JComponent component, Color hoverColor, Color defaultColor) {
+        if (component == null) return;
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (component.isEnabled()) {
+                    component.setBackground(hoverColor);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (component.isEnabled()) {
+                    component.setBackground(defaultColor);
+                }
+            }
+        });
+    }
+
 }

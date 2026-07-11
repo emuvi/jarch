@@ -1,6 +1,12 @@
 package com.vidlus.jarch.mage;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 import javax.swing.JFileChooser;
@@ -306,6 +312,140 @@ public class WizFile {
         } while (result.exists());
         return result;
     }
+
+    // =========================================================================
+    // I/O AND FILE SYSTEM MANIPULATION
+    // =========================================================================
+
+    /**
+     * Reads all text from a file using UTF-8 encoding.
+     *
+     * @param file The file to read.
+     * @return The file contents as a String.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static String readString(File file) throws IOException {
+        if (file == null) return null;
+        return Files.readString(file.toPath(), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Reads all lines from a file using UTF-8 encoding.
+     *
+     * @param file The file to read.
+     * @return A list of strings, one per line.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static List<String> readLines(File file) throws IOException {
+        if (file == null) return null;
+        return Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Writes a string to a file using UTF-8 encoding, creating or truncating the file.
+     *
+     * @param file The target file.
+     * @param content The string content to write.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static void writeString(File file, String content) throws IOException {
+        if (file != null) {
+            Files.writeString(file.toPath(), content != null ? content : "", StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Writes lines of text to a file using UTF-8 encoding.
+     *
+     * @param file The target file.
+     * @param lines The lines to write.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static void writeLines(File file, Iterable<? extends CharSequence> lines) throws IOException {
+        if (file != null && lines != null) {
+            Files.write(file.toPath(), lines, StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Copies a file or directory.
+     *
+     * @param source The source file or directory.
+     * @param target The target file or directory.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static void copy(File source, File target) throws IOException {
+        if (source != null && target != null) {
+            Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /**
+     * Moves or renames a file or directory.
+     *
+     * @param source The source file or directory.
+     * @param target The target file or directory.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static void move(File source, File target) throws IOException {
+        if (source != null && target != null) {
+            Files.move(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /**
+     * Recursively deletes a file or directory.
+     *
+     * @param file The file or directory to delete.
+     * @return true if successfully deleted.
+     */
+    public static boolean delete(File file) {
+        if (file == null || !file.exists()) {
+            return false;
+        }
+        if (file.isDirectory()) {
+            File[] children = file.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    delete(child);
+                }
+            }
+        }
+        return file.delete();
+    }
+    
+    /**
+     * Creates a directory and any necessary parent directories.
+     *
+     * @param dir The directory to create.
+     * @return true if successfully created, false if it already exists or failed.
+     */
+    public static boolean createDir(File dir) {
+        if (dir != null && !dir.exists()) {
+            return dir.mkdirs();
+        }
+        return false;
+    }
+    
+    /**
+     * Safely returns a human-readable file size (e.g. "1.2 MB").
+     *
+     * @param file The file.
+     * @return The formatted size string.
+     */
+    public static String getReadableSize(File file) {
+        if (file == null || !file.exists() || !file.isFile()) {
+            return "0 B";
+        }
+        long length = file.length();
+        if (length < 1024) return length + " B";
+        int z = (63 - Long.numberOfLeadingZeros(length)) / 10;
+        return String.format("%.1f %sB", (double)length / (1L << (z * 10)), " KMGTPE".charAt(z));
+    }
+
+    // =========================================================================
+    // FILE SELECTION DIALOGS
+    // =========================================================================
 
     /**
      * Creates a JFileChooser with a specific description and extensions filter.

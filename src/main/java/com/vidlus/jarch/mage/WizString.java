@@ -21,12 +21,25 @@ public class WizString {
     private WizString() {
     }
 
+    /**
+     * Checks if the given object is a String or convertible to a String.
+     *
+     * @param value the object to check
+     * @return true if it is a String or Object
+     */
     public static boolean is(Object value) {
         if (value == null) return false;
         return WizLang.isChildOf(value.getClass(), String.class)
             || WizLang.isChildOf(value.getClass(), Object.class);
     }
 
+    /**
+     * Converts an object to its String representation safely.
+     *
+     * @param value the object to convert
+     * @return the string value, or null if the object is null
+     * @throws Exception if an error occurs during conversion
+     */
     public static String get(Object value) throws Exception {
         if (value == null) return null;
         if (value instanceof String string) {
@@ -35,6 +48,12 @@ public class WizString {
         return String.valueOf(value);
     }
 
+    /**
+     * Extracts an array of string names from an Enum class.
+     *
+     * @param enumClass the Enum class
+     * @return an array of the enum constant names
+     */
     public static String[] getFromEnum(Class<? extends Enum<?>> enumClass) {
         return Arrays.stream(enumClass.getEnumConstants())
                 .map(Enum::name)
@@ -42,6 +61,12 @@ public class WizString {
     }
 
 
+    /**
+     * Converts a camelCase or space-separated string into a CONSTANT_CASE style parameter name.
+     *
+     * @param ofChars the input string
+     * @return the formatted parameter name
+     */
     public static String getParameterName(String ofChars) {
         if (ofChars == null) {
             return null;
@@ -68,6 +93,12 @@ public class WizString {
                 .replaceAll("_+", "_");
     }
 
+    /**
+     * Formats a list of key-value pairs into a neatly aligned text grid using dots for padding.
+     *
+     * @param grid the list of pairs to format
+     * @return the formatted grid string
+     */
     public static String mountGrid(List<Pair<String, String>> grid) {
         var result = new StringBuilder();
         var max = 0;
@@ -83,6 +114,14 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Increments the embedded numerical index within a string name by a specified amount.
+     * For example, "item001" with addIndex 5 becomes "item006".
+     *
+     * @param name     the original string
+     * @param addIndex the amount to add to the embedded number
+     * @return the new string with the incremented number
+     */
     public static String getNameWithNewIndex(String name, int addIndex) {
         int begin = -1;
         int end = name.length();
@@ -108,6 +147,13 @@ public class WizString {
         return name.substring(0, begin) + newNameNumber + name.substring(end);
     }
 
+    /**
+     * Counts the number of occurrences of a substring within a larger string.
+     *
+     * @param inString  the text to search within
+     * @param theString the substring to count
+     * @return the number of occurrences
+     */
     public static int count(String inString, String theString) {
         if (inString == null || theString == null || inString.isEmpty() || theString.isEmpty()) {
             return 0;
@@ -121,6 +167,12 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Counts the occurrences of each word in a string, ignoring accents.
+     *
+     * @param inString the string to analyze
+     * @return a map of words to their respective frequencies
+     */
     public static Map<String, Integer> countWordsLike(String inString) {
         var result = new HashMap<String, Integer>();
         for (String word : getWordsLike(inString)) {
@@ -129,6 +181,12 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Counts the exact occurrences of each word in a string.
+     *
+     * @param chars the string to analyze
+     * @return a map of exact words to their respective frequencies
+     */
     public static Map<String, Integer> countWords(String chars) {
         var result = new HashMap<String, Integer>();
         for (String word : getWords(chars)) {
@@ -137,47 +195,107 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Extracts all unique words from a string (ignoring accents), converted to lowercase, maintaining insertion order.
+     *
+     * @param chars the string to parse
+     * @return an ordered set of unique, lowercased words
+     */
     public static Set<String> getWordsLikeKeySetOrdered(String chars) {
         return new LinkedHashSet<>(getWordsLike(chars).stream()
                 .map(String::toLowerCase).toList());
     }
 
+    /**
+     * Extracts all exact unique words from a string, converted to lowercase, maintaining insertion order.
+     *
+     * @param chars the string to parse
+     * @return an ordered set of unique, lowercased exact words
+     */
     public static Set<String> getWordsKeySetOrdered(String chars) {
         return new LinkedHashSet<>(getWordsList(chars).stream()
                 .map(String::toLowerCase).toList());
     }
 
+    /**
+     * Extracts all unique words from a string (ignoring accents), converted to lowercase, without guaranteed order.
+     *
+     * @param chars the string to parse
+     * @return a set of unique, lowercased words
+     */
     public static Set<String> getWordsLikeKeySet(String chars) {
         return new HashSet<>(getWordsLike(chars).stream()
                 .map(String::toLowerCase).toList());
     }
 
+    /**
+     * Extracts all exact unique words from a string, converted to lowercase, without guaranteed order.
+     *
+     * @param chars the string to parse
+     * @return a set of unique, lowercased exact words
+     */
     public static Set<String> getWordsKeySet(String chars) {
         return new HashSet<>(getWordsList(chars).stream()
                 .map(String::toLowerCase).toList());
     }
 
+    /**
+     * Extracts all unique words from a string (ignoring accents) in their original case.
+     *
+     * @param source the string to parse
+     * @return a set of unique words
+     */
     public static Set<String> getWordsLikeSet(String source) {
         return new HashSet<>(getWordsLike(source));
     }
 
+    /**
+     * Extracts all exact unique words from a string in their original case.
+     *
+     * @param source the string to parse
+     * @return a set of unique exact words
+     */
     public static Set<String> getWordsSet(String source) {
         return new HashSet<>(getWordsList(source));
     }
 
+    /**
+     * Extracts all words from a string, stripping away all accents.
+     *
+     * @param source the string to parse
+     * @return a list of unaccented words
+     */
     public static List<String> getWordsLike(String source) {
         return getWordsList(source).stream()
                 .map(WizString::removeAccents).toList();
     }
 
+    /**
+     * Splits a string into an array of words based on whitespace.
+     *
+     * @param chars the string to split
+     * @return an array of words
+     */
     public static String[] getWords(String chars) {
         return chars.split("\\s+");
     }
 
+    /**
+     * Splits a string into a list of words based on whitespace.
+     *
+     * @param chars the string to split
+     * @return a list of words
+     */
     public static List<String> getWordsList(String chars) {
         return Arrays.asList(getWords(chars));
     }
 
+    /**
+     * Splits a string into words, further breaking words apart when character types switch (e.g., letters to digits).
+     *
+     * @param chars the string to parse
+     * @return a list of segmented words
+     */
     public static List<String> getWordsOnDiffers(String chars) {
         var result = new ArrayList<String>();
         var spaced = chars.split("\\s+");
@@ -207,10 +325,22 @@ public class WizString {
 
     
 
+    /**
+     * Splits a string into an array of individual lines, handling both \r\n and \n correctly.
+     *
+     * @param chars the multiline string
+     * @return an array of lines
+     */
     public static String[] getLines(String chars) {
         return chars.split("\\r?\\n");
     }
 
+    /**
+     * Extracts only the first line of a multiline string.
+     *
+     * @param chars the multiline string
+     * @return the first line, or the original string if no breaks exist
+     */
     public static String getFirstLine(String chars) {
         if (chars == null) {
             return null;
@@ -231,10 +361,24 @@ public class WizString {
         return chars.substring(0, pos);
     }
 
+    /**
+     * Capitalizes all words in a string that are at least 4 characters long.
+     * Hyphenated and underscored words are also capitalized per segment.
+     *
+     * @param chars the string to capitalize
+     * @return the capitalized string
+     */
     public static String capitalizeWords(String chars) {
         return capitalizeWords(chars, 4);
     }
 
+    /**
+     * Capitalizes all words in a string that meet a minimum size requirement.
+     *
+     * @param chars   the string to capitalize
+     * @param minSize the minimum word length required to trigger capitalization
+     * @return the capitalized string
+     */
     public static String capitalizeWords(String chars, int minSize) {
         var words = getWords(chars);
         var builder = new StringBuilder();
@@ -275,12 +419,24 @@ public class WizString {
         return capitalizeFirstLetter(builder.toString());
     }
 
+    /**
+     * Capitalizes only the very first letter of a string.
+     *
+     * @param words the string to modify
+     * @return the string with its first letter capitalized
+     */
     public static String capitalizeFirstLetter(String words) {
         return words.length() > 1
                 ? words.substring(0, 1).toUpperCase() + words.substring(1) 
                 : words.toUpperCase();
     }
 
+    /**
+     * Inverts the case of every character in a string (uppercase becomes lowercase, and vice versa).
+     *
+     * @param chars the string to switch
+     * @return the case-inverted string
+     */
     public static String switchCase(String chars) {
         var result = new StringBuilder();
         for (char c : chars.toCharArray()) {
@@ -293,6 +449,12 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Strips all diacritical marks (accents) from a string.
+     *
+     * @param chars the string to process
+     * @return the unaccented string
+     */
     public static String removeAccents(String chars) {
         String decomposed = Normalizer.normalize(chars, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
@@ -1036,6 +1198,86 @@ public class WizString {
         }
         
         return p[n];
+    }
+
+    // =========================================================================
+    // ADDITIONAL UTILITIES
+    // =========================================================================
+
+    public static String reverse(String chars) {
+        if (chars == null) return null;
+        return new StringBuilder(chars).reverse().toString();
+    }
+
+    public static String left(String chars, int len) {
+        if (chars == null) return null;
+        if (len < 0) return "";
+        if (chars.length() <= len) return chars;
+        return chars.substring(0, len);
+    }
+
+    public static String right(String chars, int len) {
+        if (chars == null) return null;
+        if (len < 0) return "";
+        if (chars.length() <= len) return chars;
+        return chars.substring(chars.length() - len);
+    }
+
+    public static String trim(String chars) {
+        if (chars == null) return null;
+        return chars.trim();
+    }
+
+    public static String trimToNull(String chars) {
+        String trimmed = trim(chars);
+        return isEmpty(trimmed) ? null : trimmed;
+    }
+
+    public static String trimToEmpty(String chars) {
+        String trimmed = trim(chars);
+        return trimmed == null ? "" : trimmed;
+    }
+
+    public static String toLowerCase(String chars) {
+        if (chars == null) return null;
+        return chars.toLowerCase();
+    }
+
+    public static String toUpperCase(String chars) {
+        if (chars == null) return null;
+        return chars.toUpperCase();
+    }
+
+    public static String repeat(String chars, int count) {
+        if (chars == null) return null;
+        if (count <= 0) return "";
+        var builder = new StringBuilder(chars.length() * count);
+        for (int i = 0; i < count; i++) {
+            builder.append(chars);
+        }
+        return builder.toString();
+    }
+
+    public static String join(String separator, Object... parts) {
+        if (parts == null) return null;
+        var builder = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            if (i > 0 && separator != null) builder.append(separator);
+            if (parts[i] != null) builder.append(parts[i]);
+        }
+        return builder.toString();
+    }
+
+    public static String join(String separator, Iterable<?> parts) {
+        if (parts == null) return null;
+        var builder = new StringBuilder();
+        var iterator = parts.iterator();
+        while (iterator.hasNext()) {
+            var part = iterator.next();
+            if (part != null) builder.append(part);
+            if (iterator.hasNext() && separator != null) builder.append(separator);
+        }
+        return builder.toString();
     }
     
 }

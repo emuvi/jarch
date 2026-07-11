@@ -2,7 +2,7 @@ package com.vidlus.jarch.flow;
 
 import javax.management.RuntimeErrorException;
 
-import com.vidlus.jarch.mage.WizApp;
+import com.vidlus.jarch.mage.WizLang;
 import com.vidlus.jarch.mage.WizArray;
 
 public class App {
@@ -34,7 +34,7 @@ public class App {
     }
 
     public void start(String title, String[] args) {
-        WizApp.setTitle(title);
+        WizLang.setTitle(title);
         if (WizArray.has("--gui", args)) {
             appGUI.start(title, args);
         } else if (appCLI != null) {
