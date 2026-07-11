@@ -22,6 +22,7 @@ public class DChangeDir extends DEditChange<File> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         DFile fileDialog = new DFile();
         fileDialog.selectionMode(JFileChooser.DIRECTORIES_ONLY);
 

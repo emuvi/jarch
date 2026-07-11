@@ -103,6 +103,8 @@ public abstract class DEditChange<T> extends DEdit<T> {
         return field.getColumns();
     }
 
+    protected boolean isEditable = true;
+
     /**
      * Sets whether this field is editable.
      * 
@@ -110,7 +112,9 @@ public abstract class DEditChange<T> extends DEdit<T> {
      * @return This DEditFieldAction instance.
      */
     public DEditChange<T> editable(boolean editable) {
+        this.isEditable = editable;
         field.setEditable(editable);
+        actionButton.setEnabled(editable);
         Color bg = editable ? UIManager.getColor("TextField.background") 
                             : UIManager.getColor("TextField.inactiveBackground");
         panel.setBackground(bg);
@@ -123,7 +127,7 @@ public abstract class DEditChange<T> extends DEdit<T> {
      * @return true if the field is editable
      */
     public boolean editable() {
-        return field.isEditable();
+        return isEditable;
     }
 
     /**

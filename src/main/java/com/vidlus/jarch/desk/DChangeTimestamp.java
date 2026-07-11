@@ -38,6 +38,7 @@ public class DChangeTimestamp extends DEditChange<LocalDateTime> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         LocalDateTime current = getValue();
         if (current == null) {
             current = LocalDateTime.now();

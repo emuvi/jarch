@@ -34,6 +34,7 @@ public class DChangeFont extends DEditChange<Font> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         JList<String> fontList = new JList<>(fonts);
         fontList.setSelectedValue(currentFont.getFamily(), true);

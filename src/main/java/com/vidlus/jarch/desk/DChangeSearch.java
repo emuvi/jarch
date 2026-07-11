@@ -36,7 +36,15 @@ public class DChangeSearch<E> extends DEditChange<E> {
     }
 
     @Override
+    public DChangeSearch<E> editable(boolean editable) {
+        super.editable(editable);
+        getField().setEditable(false);
+        return this;
+    }
+
+    @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         if (options == null || options.isEmpty()) {
             new DAlert().parent(comp()).title("Empty").message("No options available.").show();
             return;

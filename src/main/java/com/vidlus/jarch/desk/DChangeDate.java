@@ -35,6 +35,7 @@ public class DChangeDate extends DEditChange<LocalDate> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         LocalDate current = getValue();
         if (current == null) {
             current = LocalDate.now();

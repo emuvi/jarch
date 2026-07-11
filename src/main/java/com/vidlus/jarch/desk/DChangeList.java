@@ -34,6 +34,7 @@ public class DChangeList extends DEditChange<List<String>> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         JTextArea textArea = new JTextArea(10, 30);
         List<String> current = getValue();
         if (current != null) {

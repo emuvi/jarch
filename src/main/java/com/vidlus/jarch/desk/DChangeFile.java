@@ -22,6 +22,7 @@ public class DChangeFile extends DEditChange<File> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         DFile fileDialog = new DFile();
         File current = getValue();
         if (current != null && current.exists()) {

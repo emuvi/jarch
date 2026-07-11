@@ -50,6 +50,7 @@ public class DChangeMap extends DEditChange<Map<String, String>> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         JTextArea textArea = new JTextArea(10, 30);
         Map<String, String> current = getValue();
         if (current != null) {

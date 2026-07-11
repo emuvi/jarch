@@ -30,6 +30,7 @@ public class DChangePass extends DEditChange<String> {
             
             @Override
             public void mousePressed(MouseEvent e) {
+                if (!editable()) return;
                 passField.setEchoChar((char) 0);
             }
             

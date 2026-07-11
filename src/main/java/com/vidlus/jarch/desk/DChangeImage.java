@@ -33,7 +33,15 @@ public class DChangeImage extends DEditChange<Image> {
     }
 
     @Override
+    public DChangeImage editable(boolean editable) {
+        super.editable(editable);
+        getField().setEditable(false);
+        return this;
+    }
+
+    @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         DFile fileDialog = new DFile();
         fileDialog.filter(new FileNameExtensionFilter("Images (png, jpg, gif)", "png", "jpg", "jpeg", "gif"));
 

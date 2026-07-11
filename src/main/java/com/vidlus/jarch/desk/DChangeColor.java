@@ -29,7 +29,15 @@ public class DChangeColor extends DEditChange<Color> {
     }
 
     @Override
+    public DChangeColor editable(boolean editable) {
+        super.editable(editable);
+        getField().setEditable(false);
+        return this;
+    }
+
+    @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         DColor colorDialog = new DColor();
         colorDialog.parent(comp());
         if (currentColor != null) {

@@ -35,6 +35,7 @@ public class DChangeTime extends DEditChange<LocalTime> {
 
     @Override
     protected void onActionPressed() {
+        if (!editable()) return;
         LocalTime current = getValue();
         if (current == null) {
             current = LocalTime.now();
