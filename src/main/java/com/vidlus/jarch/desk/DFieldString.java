@@ -1,12 +1,12 @@
 package com.vidlus.jarch.desk;
 
-public class DStringField extends DFieldEdit<String> {
+public class DFieldString extends DEditField<String> {
 
-    public DStringField() {
+    public DFieldString() {
         this("");
     }
 
-    public DStringField(String value) {
+    public DFieldString(String value) {
         super(value);
     }
 

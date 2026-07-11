@@ -16,12 +16,12 @@ public class DTextDesk extends DFrame {
     private final DButton buttonCancel = new DButton("Cancel")
             .onAction(this::cancel);
 
-    private final DPane actsBody = new DRowPane().insets(2)
+    private final DPane actsBody = new DPaneRow().insets(2)
             .growHorizontal().put(Box.createHorizontalGlue())
             .growNone().put(buttonConfirm)
             .growNone().put(buttonCancel);
 
-    private final DPane paneBody = new DColPane().insets(2)
+    private final DPane paneBody = new DPaneColumn().insets(2)
             .growBoth().put(scrollText)
             .growHorizontal().put(actsBody)
             .borderEmpty(7);

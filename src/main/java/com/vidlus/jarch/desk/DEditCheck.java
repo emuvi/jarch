@@ -2,13 +2,13 @@ package com.vidlus.jarch.desk;
 
 import javax.swing.JCheckBox;
 
-public class DCheckEdit extends DEdit<Boolean> {
+public class DEditCheck extends DEdit<Boolean> {
 
-    public DCheckEdit() {
+    public DEditCheck() {
         this(false);
     }
 
-    public DCheckEdit(Boolean value) {
+    public DEditCheck(Boolean value) {
         super(new JCheckBox());
         setValue(value);
     }
@@ -32,7 +32,7 @@ public class DCheckEdit extends DEdit<Boolean> {
         return comp().isSelected();
     }
 
-    public DCheckEdit setSelected(boolean selected) {
+    public DEditCheck setSelected(boolean selected) {
         comp().setSelected(selected);
         return this;
     }
@@ -41,7 +41,7 @@ public class DCheckEdit extends DEdit<Boolean> {
         return comp().getText();
     }
 
-    public DCheckEdit text(String text) {
+    public DEditCheck text(String text) {
         comp().setText(text);
         return this;
     }

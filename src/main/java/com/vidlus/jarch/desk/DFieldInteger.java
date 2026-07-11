@@ -5,13 +5,13 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
-public class DIntegerField extends DFieldEdit<Integer> {
+public class DFieldInteger extends DEditField<Integer> {
 
-    public DIntegerField() {
+    public DFieldInteger() {
         this(0);
     }
 
-    public DIntegerField(Integer value) {
+    public DFieldInteger(Integer value) {
         super(value == null ? "" : value.toString());
         ((AbstractDocument) comp().getDocument()).setDocumentFilter(new IntegerFilter());
     }

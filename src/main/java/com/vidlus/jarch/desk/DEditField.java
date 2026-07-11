@@ -8,21 +8,21 @@ import java.util.function.Consumer;
 
 import javax.swing.JTextField;
 
-public abstract class DFieldEdit<T> extends DEdit<T> {
+public abstract class DEditField<T> extends DEdit<T> {
 
-    public DFieldEdit() {
+    public DEditField() {
         super(new JTextField());
     }
 
-    public DFieldEdit(String text) {
+    public DEditField(String text) {
         super(new JTextField(text));
     }
 
-    public DFieldEdit(int cols) {
+    public DEditField(int cols) {
         super(new JTextField(cols));
     }
 
-    public DFieldEdit(String text, int cols) {
+    public DEditField(String text, int cols) {
         super(new JTextField(text, cols));
     }
 
@@ -35,7 +35,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().getColumns();
     }
 
-    public DFieldEdit<T> cols(int cols) {
+    public DEditField<T> cols(int cols) {
         comp().setColumns(cols);
         return this;
     }
@@ -44,7 +44,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().isEditable();
     }
 
-    public DFieldEdit<T> editable(boolean editable) {
+    public DEditField<T> editable(boolean editable) {
         comp().setEditable(editable);
         return this;
     }
@@ -55,32 +55,32 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
     }
 
     @Override
-    public DFieldEdit<T> value(T value) {
+    public DEditField<T> value(T value) {
         setValue(value);
         return this;
     }
 
-    public DFieldEdit<T> cut() {
+    public DEditField<T> cut() {
         comp().cut();
         return this;
     }
 
-    public DFieldEdit<T> copy() {
+    public DEditField<T> copy() {
         comp().copy();
         return this;
     }
 
-    public DFieldEdit<T> paste() {
+    public DEditField<T> paste() {
         comp().paste();
         return this;
     }
 
-    public DFieldEdit<T> select(int selectionStart, int selectionEnd) {
+    public DEditField<T> select(int selectionStart, int selectionEnd) {
         comp().select(selectionStart, selectionEnd);
         return this;
     }
 
-    public DFieldEdit<T> selectAll() {
+    public DEditField<T> selectAll() {
         comp().selectAll();
         return this;
     }
@@ -89,7 +89,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().getSelectionStart();
     }
 
-    public DFieldEdit<T> selectionStart(int selectionStart) {
+    public DEditField<T> selectionStart(int selectionStart) {
         comp().setSelectionStart(selectionStart);
         return this;
     }
@@ -98,7 +98,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().getSelectionEnd();
     }
 
-    public DFieldEdit<T> selectionEnd(int selectionEnd) {
+    public DEditField<T> selectionEnd(int selectionEnd) {
         comp().setSelectionEnd(selectionEnd);
         return this;
     }
@@ -107,7 +107,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().getSelectedText();
     }
 
-    public DFieldEdit<T> replaceSelection(String content) {
+    public DEditField<T> replaceSelection(String content) {
         comp().replaceSelection(content);
         return this;
     }
@@ -116,12 +116,12 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().getCaretPosition();
     }
 
-    public DFieldEdit<T> caretPosition(int position) {
+    public DEditField<T> caretPosition(int position) {
         comp().setCaretPosition(position);
         return this;
     }
 
-    public DFieldEdit<T> moveCaretPosition(int position) {
+    public DEditField<T> moveCaretPosition(int position) {
         comp().moveCaretPosition(position);
         return this;
     }
@@ -130,37 +130,37 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return comp().getHorizontalAlignment();
     }
 
-    public DFieldEdit<T> horizontalAlignment(int alignment) {
+    public DEditField<T> horizontalAlignment(int alignment) {
         comp().setHorizontalAlignment(alignment);
         return this;
     }
 
-    public DFieldEdit<T> horizontalAlignmentLeft() {
+    public DEditField<T> horizontalAlignmentLeft() {
         comp().setHorizontalAlignment(JTextField.LEFT);
         return this;
     }
 
-    public DFieldEdit<T> horizontalAlignmentCenter() {
+    public DEditField<T> horizontalAlignmentCenter() {
         comp().setHorizontalAlignment(JTextField.CENTER);
         return this;
     }
 
-    public DFieldEdit<T> horizontalAlignmentRight() {
+    public DEditField<T> horizontalAlignmentRight() {
         comp().setHorizontalAlignment(JTextField.RIGHT);
         return this;
     }
 
-    public DFieldEdit<T> horizontalAlignmentLeading() {
+    public DEditField<T> horizontalAlignmentLeading() {
         comp().setHorizontalAlignment(JTextField.LEADING);
         return this;
     }
 
-    public DFieldEdit<T> horizontalAlignmentTrailing() {
+    public DEditField<T> horizontalAlignmentTrailing() {
         comp().setHorizontalAlignment(JTextField.TRAILING);
         return this;
     }
 
-    public DFieldEdit<T> onMouseClicked(Consumer<MouseEvent> consumer) {
+    public DEditField<T> onMouseClicked(Consumer<MouseEvent> consumer) {
         comp().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -170,7 +170,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onMousePressed(Consumer<MouseEvent> consumer) {
+    public DEditField<T> onMousePressed(Consumer<MouseEvent> consumer) {
         comp().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -180,7 +180,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onMouseReleased(Consumer<MouseEvent> consumer) {
+    public DEditField<T> onMouseReleased(Consumer<MouseEvent> consumer) {
         comp().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -190,7 +190,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onMouseEntered(Consumer<MouseEvent> consumer) {
+    public DEditField<T> onMouseEntered(Consumer<MouseEvent> consumer) {
         comp().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -200,7 +200,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onMouseExited(Consumer<MouseEvent> consumer) {
+    public DEditField<T> onMouseExited(Consumer<MouseEvent> consumer) {
         comp().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
@@ -210,7 +210,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onKeyTyped(Consumer<KeyEvent> consumer) {
+    public DEditField<T> onKeyTyped(Consumer<KeyEvent> consumer) {
         comp().addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -220,7 +220,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onKeyPressed(Consumer<KeyEvent> consumer) {
+    public DEditField<T> onKeyPressed(Consumer<KeyEvent> consumer) {
         comp().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -230,7 +230,7 @@ public abstract class DFieldEdit<T> extends DEdit<T> {
         return this;
     }
 
-    public DFieldEdit<T> onKeyReleased(Consumer<KeyEvent> consumer) {
+    public DEditField<T> onKeyReleased(Consumer<KeyEvent> consumer) {
         comp().addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {

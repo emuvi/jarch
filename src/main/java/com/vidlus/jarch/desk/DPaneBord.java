@@ -3,59 +3,59 @@ package com.vidlus.jarch.desk;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
-public class DBordPane extends DPane {
+public class DPaneBord extends DPane {
 
-    public DBordPane() {
+    public DPaneBord() {
         super(new BorderLayout(2, 2));
     }
 
-    public DBordPane gap(int hgap, int vgap) {
+    public DPaneBord gap(int hgap, int vgap) {
         ((BorderLayout) getLayout()).setHgap(hgap);
         ((BorderLayout) getLayout()).setVgap(vgap);
         return this;
     }
     
-    public DBordPane putNorth(DEdit<?> edit) {
+    public DPaneBord putNorth(DEdit<?> edit) {
         return putNorth(edit.comp());
     }
 
-    public DBordPane putSouth(DEdit<?> edit) {
+    public DPaneBord putSouth(DEdit<?> edit) {
         return putSouth(edit.comp());
     }
 
-    public DBordPane putEast(DEdit<?> edit) {
+    public DPaneBord putEast(DEdit<?> edit) {
         return putEast(edit.comp());
     }
 
-    public DBordPane putWest(DEdit<?> edit) {
+    public DPaneBord putWest(DEdit<?> edit) {
         return putWest(edit.comp());
     }
 
-    public DBordPane putCenter(DEdit<?> edit) {
+    public DPaneBord putCenter(DEdit<?> edit) {
         return putCenter(edit.comp());
     }
 
-    public DBordPane putNorth(Component comp) {
+    public DPaneBord putNorth(Component comp) {
         add(comp, BorderLayout.NORTH);
         return this;
     }
 
-    public DBordPane putSouth(Component comp) {
+    public DPaneBord putSouth(Component comp) {
         add(comp, BorderLayout.SOUTH);
         return this;
     }
 
-    public DBordPane putEast(Component comp) {
+    public DPaneBord putEast(Component comp) {
         add(comp, BorderLayout.EAST);
         return this;
     }
 
-    public DBordPane putWest(Component comp) {
+    public DPaneBord putWest(Component comp) {
         add(comp, BorderLayout.WEST);
         return this;
     }
 
-    public DBordPane putCenter(Component comp) {
+    public DPaneBord putCenter(Component comp) {
         add(comp, BorderLayout.CENTER);
         return this;
     }

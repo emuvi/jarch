@@ -6,11 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 
-public class DRowPane extends DPane {
+public class DPaneRow extends DPane {
 
     private final GridBagConstraints layout = new GridBagConstraints();
 
-    public DRowPane() {
+    public DPaneRow() {
         super(new GridBagLayout());
         layout.gridx = -1;
         layout.gridy = 0;
@@ -25,68 +25,68 @@ public class DRowPane extends DPane {
         layout.fill = GridBagConstraints.NONE;
     }
 
-    public DRowPane anchorNorth() {
+    public DPaneRow anchorNorth() {
         layout.anchor = GridBagConstraints.NORTH;
         return this;
     }
 
-    public DRowPane anchorNorthEast() {
+    public DPaneRow anchorNorthEast() {
         layout.anchor = GridBagConstraints.NORTHEAST;
         return this;
     }
 
-    public DRowPane anchorNorthWest() {
+    public DPaneRow anchorNorthWest() {
         layout.anchor = GridBagConstraints.NORTHWEST;
         return this;
     }
 
-    public DRowPane anchorSouth() {
+    public DPaneRow anchorSouth() {
         layout.anchor = GridBagConstraints.SOUTH;
         return this;
     }
 
-    public DRowPane anchorSouthEast() {
+    public DPaneRow anchorSouthEast() {
         layout.anchor = GridBagConstraints.SOUTHEAST;
         return this;
     }
 
-    public DRowPane anchorSouthWest() {
+    public DPaneRow anchorSouthWest() {
         layout.anchor = GridBagConstraints.SOUTHWEST;
         return this;
     }
 
-    public DRowPane anchorEast() {
+    public DPaneRow anchorEast() {
         layout.anchor = GridBagConstraints.EAST;
         return this;
     }
 
-    public DRowPane anchorWest() {
+    public DPaneRow anchorWest() {
         layout.anchor = GridBagConstraints.WEST;
         return this;
     }
 
-    public DRowPane anchorCenter() {
+    public DPaneRow anchorCenter() {
         layout.anchor = GridBagConstraints.CENTER;
         return this;
     }
 
-    public DRowPane ipad(int size) {
+    public DPaneRow ipad(int size) {
         layout.ipadx = size;
         layout.ipady = size;
         return this;
     }
 
-    public DRowPane ipadx(int size) {
+    public DPaneRow ipadx(int size) {
         layout.ipadx = size;
         return this;
     }
 
-    public DRowPane ipady(int size) {
+    public DPaneRow ipady(int size) {
         layout.ipady = size;
         return this;
     }
 
-    public DRowPane insets(int size) {
+    public DPaneRow insets(int size) {
         layout.insets.top = size;
         layout.insets.left = size;
         layout.insets.bottom = size;
@@ -94,27 +94,27 @@ public class DRowPane extends DPane {
         return this;
     }
 
-    public DRowPane insetsTop(int size) {
+    public DPaneRow insetsTop(int size) {
         layout.insets.top = size;
         return this;
     }
 
-    public DRowPane insetsLeft(int size) {
+    public DPaneRow insetsLeft(int size) {
         layout.insets.left = size;
         return this;
     }
 
-    public DRowPane insetsBottom(int size) {
+    public DPaneRow insetsBottom(int size) {
         layout.insets.bottom = size;
         return this;
     }
 
-    public DRowPane insetsRight(int size) {
+    public DPaneRow insetsRight(int size) {
         layout.insets.right = size;
         return this;
     }
 
-    public DRowPane insets(int topBottom, int leftRight) {
+    public DPaneRow insets(int topBottom, int leftRight) {
         layout.insets.top = topBottom;
         layout.insets.left = leftRight;
         layout.insets.bottom = topBottom;
@@ -122,7 +122,7 @@ public class DRowPane extends DPane {
         return this;
     }
 
-    public DRowPane insets(int top, int left, int bottom, int right) {
+    public DPaneRow insets(int top, int left, int bottom, int right) {
         layout.insets.top = top;
         layout.insets.left = left;
         layout.insets.bottom = bottom;
@@ -130,65 +130,65 @@ public class DRowPane extends DPane {
         return this;
     }
 
-    public DRowPane growNone() {
+    public DPaneRow growNone() {
         layout.weightx = 0;
         layout.weighty = 0;
         layout.fill = GridBagConstraints.NONE;
         return this;
     }
 
-    public DRowPane growBoth() {
+    public DPaneRow growBoth() {
         layout.weightx = 1;
         layout.weighty = 1;
         layout.fill = GridBagConstraints.BOTH;
         return this;
     }
 
-    public DRowPane growHorizontal() {
+    public DPaneRow growHorizontal() {
         layout.weightx = 1;
         layout.weighty = 0;
         layout.fill = GridBagConstraints.HORIZONTAL;
         return this;
     }
 
-    public DRowPane growVertical() {
+    public DPaneRow growVertical() {
         layout.weightx = 0;
         layout.weighty = 1;
         layout.fill = GridBagConstraints.VERTICAL;
         return this;
     }
 
-    public DRowPane weightBoth(double weight) {
+    public DPaneRow weightBoth(double weight) {
         layout.weightx = weight;
         layout.weighty = weight;
         return this;
     }
 
-    public DRowPane weightHorizontal(double weight) {
+    public DPaneRow weightHorizontal(double weight) {
         layout.weightx = weight;
         layout.weighty = 0;
         return this;
     }
 
-    public DRowPane weightVertical(double weight) {
+    public DPaneRow weightVertical(double weight) {
         layout.weightx = 0;
         layout.weighty = weight;
         return this;
     }
 
-    public DRowPane weightEach(double weightX, double weightY) {
+    public DPaneRow weightEach(double weightX, double weightY) {
         layout.weightx = weightX;
         layout.weighty = weightY;
         return this;
     }
 
-    public DRowPane put(DEdit<?> edit) {
+    public DPaneRow put(DEdit<?> edit) {
         put(edit.comp());
         return this;
     }
 
     @Override
-    public DRowPane put(Component comp) {
+    public DPaneRow put(Component comp) {
         layout.gridx += 1;
         add(comp, layout);
         return this;
