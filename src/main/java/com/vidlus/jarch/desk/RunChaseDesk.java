@@ -4,37 +4,68 @@ import javax.swing.SwingUtilities;
 
 import com.vidlus.jarch.mage.WizGUI;
 
+/**
+ * The graphical user interface (GUI) component for the RunChase process.
+ * Provides a window with a progress bar, status text area, and control buttons
+ * to pause, resume, or stop the background task.
+ */
 public class RunChaseDesk extends javax.swing.JFrame {
 
     private RunChase chase;
     
+    /**
+     * Creates a new RunChaseDesk with the specified title.
+     * Initializes components and applies standard GUI configurations.
+     *
+     * @param title the title to be displayed on the window frame
+     */
     RunChaseDesk(String title) {
         initComponents();
         setTitle(title + " - RunChase");
         initFrame();
     }
     
+    /**
+     * Initializes the frame settings such as position and escaper behavior.
+     */
     private void initFrame() {
         WizGUI.initFrame(this);
         WizGUI.initEscaper(this);
     }
     
+    /**
+     * Sets the underlying RunChase controller logic instance.
+     *
+     * @param chase the RunChase controller instance
+     */
     void setChase(RunChase chase) {
         this.chase = chase;
     }
     
+    /**
+     * Updates the UI state to reflect a paused process.
+     * Changes the pause/resume button text to "Resume".
+     */
     void setPaused() {
         SwingUtilities.invokeLater(() -> {
             buttonPauseResume.setText("Resume");
         });
     }
     
+    /**
+     * Updates the UI state to reflect a resumed (running) process.
+     * Changes the pause/resume button text to "Pause".
+     */
     void setResumed() {
         SwingUtilities.invokeLater(() -> {
             buttonPauseResume.setText("Pause");
         });
     }
     
+    /**
+     * Updates the UI state to reflect a stopped process.
+     * Disables the control buttons and sets the stop button text to "Stopped".
+     */
     void setStopped() {
         SwingUtilities.invokeLater(() -> {
             buttonPauseResume.setEnabled(false);
@@ -43,6 +74,11 @@ public class RunChaseDesk extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Updates the UI state to reflect a finished process.
+     * Disables the control buttons, sets the pause/resume button to "Done",
+     * and fills the progress bar.
+     */
     void setFinished() {
         SwingUtilities.invokeLater(() -> {
             buttonPauseResume.setEnabled(false);
@@ -52,27 +88,161 @@ public class RunChaseDesk extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Sets the maximum size (total work) of the progress bar.
+     *
+     * @param size the maximum progress value
+     */
     void setProgressSize(int size) {
         SwingUtilities.invokeLater(() -> {
             viewProgress.setMaximum(size);
         });
     }
     
+    /**
+     * Sets the current completed amount on the progress bar.
+     *
+     * @param done the current progress value
+     */
     void setProgressDone(int done) {
         SwingUtilities.invokeLater(() -> {
             viewProgress.setValue(done);
         });
     }
     
+    /**
+     * Appends an informational message to the status text area and scrolls to the bottom.
+     *
+     * @param info the message to append
+     */
     void putInfo(String info) {
         SwingUtilities.invokeLater(() -> {
             fieldStatus.append(info);
             fieldStatus.append("\n");
+            fieldStatus.setCaretPosition(fieldStatus.getDocument().getLength());
         });    
     }
+    
+    /**
+     * Clears all text currently displayed in the status text area.
+     */
+    void clearInfo() {
+        SwingUtilities.invokeLater(() -> {
+            fieldStatus.setText("");
+        });
+    }
+    
+    /**
+     * Sets whether the progress bar is in indeterminate mode.
+     *
+     * @param indeterminate true to set indeterminate mode, false otherwise
+     */
+    void setProgressIndeterminate(boolean indeterminate) {
+        SwingUtilities.invokeLater(() -> {
+            viewProgress.setIndeterminate(indeterminate);
+        });
+    }
+    
+    /**
+     * Sets whether the progress bar should render a string over the bar.
+     *
+     * @param painted true to paint the string, false otherwise
+     */
+    void setProgressStringPainted(boolean painted) {
+        SwingUtilities.invokeLater(() -> {
+            viewProgress.setStringPainted(painted);
+        });
+    }
+    
+    /**
+     * Sets the custom text string to display on the progress bar.
+     *
+     * @param string the custom text string
+     */
+    void setProgressString(String string) {
+        SwingUtilities.invokeLater(() -> {
+            viewProgress.setString(string);
+        });
+    }
+    
+    /**
+     * Updates the main title text of the desk window.
+     *
+     * @param title the new title text
+     */
+    void setTitleText(String title) {
+        SwingUtilities.invokeLater(() -> {
+            setTitle(title);
+        });
+    }
+    
+    /**
+     * Makes the desk window visible.
+     */
+    void showDesk() {
+        SwingUtilities.invokeLater(() -> {
+            setVisible(true);
+        });
+    }
+    
+    /**
+     * Hides the desk window from the screen.
+     */
+    void hideDesk() {
+        SwingUtilities.invokeLater(() -> {
+            setVisible(false);
+        });
+    }
+    
+    /**
+     * Disposes the desk window, freeing its resources.
+     */
+    void closeDesk() {
+        SwingUtilities.invokeLater(() -> {
+            dispose();
+        });
+    }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    /**
+     * Retrieves the entire text currently displayed in the status area.
+     *
+     * @return the status text content
+     */
+    String getInfo() {
+        return fieldStatus.getText();
+    }
+
+    /**
+     * Sets the enabled state of the Stop button.
+     *
+     * @param enabled true to enable, false to disable
+     */
+    void setStopEnabled(boolean enabled) {
+        SwingUtilities.invokeLater(() -> {
+            buttonStop.setEnabled(enabled);
+        });
+    }
+
+    /**
+     * Sets the enabled state of the Pause/Resume button.
+     *
+     * @param enabled true to enable, false to disable
+     */
+    void setPauseResumeEnabled(boolean enabled) {
+        SwingUtilities.invokeLater(() -> {
+            buttonPauseResume.setEnabled(enabled);
+        });
+    }
+
+    private javax.swing.JButton buttonPauseResume;
+    private javax.swing.JButton buttonStop;
+    private javax.swing.JTextArea fieldStatus;
+    private javax.swing.JScrollPane scrollStatus;
+    private javax.swing.JProgressBar viewProgress;
+
+    /**
+     * Initializes the GUI components of the frame including layout and event bindings.
+     */
     private void initComponents() {
 
         buttonPauseResume = new javax.swing.JButton();
@@ -85,18 +255,10 @@ public class RunChaseDesk extends javax.swing.JFrame {
         setTitle("RunChase");
 
         buttonPauseResume.setText("Pause");
-        buttonPauseResume.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonPauseResumeActionPerformed(evt);
-            }
-        });
+        buttonPauseResume.addActionListener(evt -> chase.toggle());
 
         buttonStop.setText("Stop");
-        buttonStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonStopActionPerformed(evt);
-            }
-        });
+        buttonStop.addActionListener(evt -> chase.stop());
 
         fieldStatus.setEditable(false);
         fieldStatus.setColumns(20);
@@ -134,21 +296,5 @@ public class RunChaseDesk extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonPauseResumeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPauseResumeActionPerformed
-        chase.toggle();
-    }//GEN-LAST:event_buttonPauseResumeActionPerformed
-
-    private void buttonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStopActionPerformed
-        chase.stop();
-    }//GEN-LAST:event_buttonStopActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonPauseResume;
-    private javax.swing.JButton buttonStop;
-    private javax.swing.JTextArea fieldStatus;
-    private javax.swing.JScrollPane scrollStatus;
-    private javax.swing.JProgressBar viewProgress;
-    // End of variables declaration//GEN-END:variables
+    }
 }
