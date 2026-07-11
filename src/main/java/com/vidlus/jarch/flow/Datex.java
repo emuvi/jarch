@@ -1,5 +1,6 @@
 package com.vidlus.jarch.flow;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,7 @@ public class Datex {
      * @param nodes the array of DatexNodes to extract
      */
     public Datex(DatexNode[] nodes) {
-        this.nodes = List.of(nodes);
+        this.nodes = new ArrayList<>(List.of(nodes));
     }
 
     /**
@@ -36,7 +37,7 @@ public class Datex {
      * @param nodes the list of DatexNodes to extract
      */
     public Datex(List<DatexNode> nodes) {
-        this.nodes = nodes;
+        this.nodes = new ArrayList<>(nodes);
     }
 
     /**
@@ -134,6 +135,98 @@ public class Datex {
      */
     public List<DatexNode> getNodes() {
         return nodes;
+    }
+
+    /**
+     * Adds a new node to the end of the parser configuration.
+     *
+     * @param node the node to add
+     * @return this parser instance
+     */
+    public Datex addNode(DatexNode node) {
+        this.nodes.add(node);
+        return this;
+    }
+
+    /**
+     * Checks if a node with the given name exists in this parser.
+     *
+     * @param name the name of the node
+     * @return true if the node is found
+     */
+    public boolean hasNode(String name) {
+        return getNode(name) != null;
+    }
+
+    /**
+     * Checks if a node with the given name has successfully extracted a value.
+     *
+     * @param name the name of the node
+     * @return true if the node exists and has a value
+     */
+    public boolean hasValue(String name) {
+        var node = getNode(name);
+        return node != null && node.isPresent();
+    }
+
+    /**
+     * Retrieves the parsed value of a specific node by its name, or a default value if not present.
+     *
+     * @param name the name of the node
+     * @param defaultValue the value to return if the node is missing or empty
+     * @return the extracted string value, or the default value
+     */
+    public String getValueOrDefault(String name, String defaultValue) {
+        var node = getNode(name);
+        return node != null ? node.getValueOrDefault(defaultValue) : defaultValue;
+    }
+
+    /**
+     * Retrieves the parsed value as an integer.
+     *
+     * @param name the name of the node
+     * @param defaultValue the value to return if the node is missing, empty, or parsing fails
+     * @return the parsed integer, or the default value
+     */
+    public int getAsInt(String name, int defaultValue) {
+        var node = getNode(name);
+        return node != null ? node.getAsInt(defaultValue) : defaultValue;
+    }
+
+    /**
+     * Retrieves the parsed value as a long.
+     *
+     * @param name the name of the node
+     * @param defaultValue the value to return if the node is missing, empty, or parsing fails
+     * @return the parsed long, or the default value
+     */
+    public long getAsLong(String name, long defaultValue) {
+        var node = getNode(name);
+        return node != null ? node.getAsLong(defaultValue) : defaultValue;
+    }
+
+    /**
+     * Retrieves the parsed value as a double.
+     *
+     * @param name the name of the node
+     * @param defaultValue the value to return if the node is missing, empty, or parsing fails
+     * @return the parsed double, or the default value
+     */
+    public double getAsDouble(String name, double defaultValue) {
+        var node = getNode(name);
+        return node != null ? node.getAsDouble(defaultValue) : defaultValue;
+    }
+
+    /**
+     * Retrieves the parsed value as a boolean.
+     *
+     * @param name the name of the node
+     * @param defaultValue the value to return if the node is missing, empty, or parsing fails
+     * @return the parsed boolean, or the default value
+     */
+    public boolean getAsBoolean(String name, boolean defaultValue) {
+        var node = getNode(name);
+        return node != null ? node.getAsBoolean(defaultValue) : defaultValue;
     }
 
     /**
