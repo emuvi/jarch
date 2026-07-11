@@ -10,6 +10,8 @@ import java.util.Objects;
  * CLI (Command Line Interface) parser for parsing command-line arguments.
  * Works in association with CLIOption and CLIApp classes to provide
  * a complete command-line argument parsing framework.
+ * This class handles parsing the raw string arguments array into typed values
+ * and matching them against the registered options.
  */
 public class CLI {
 
@@ -54,6 +56,18 @@ public class CLI {
             for (CLIOption option : options) {
                 addOption(option);
             }
+        }
+        return this;
+    }
+
+    /**
+     * Loads all options registered in the associated CLIApp.
+     *
+     * @return this CLI instance for method chaining
+     */
+    public CLI loadAppOptions() {
+        if (app != null) {
+            addOptions(app.getOptions().toArray(new CLIOption[0]));
         }
         return this;
     }
@@ -150,6 +164,98 @@ public class CLI {
     }
 
     /**
+     * Gets the value of a parsed option as an integer.
+     *
+     * @param optionName the name of the option
+     * @param defaultValue the default value if the option is not provided or not an integer
+     * @return the integer value of the option
+     */
+    public int getInt(String optionName, int defaultValue) {
+        String val = getValue(optionName);
+        if (val == null || val.isEmpty()) return defaultValue;
+        try {
+            return Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of a parsed option as a long.
+     *
+     * @param optionName the name of the option
+     * @param defaultValue the default value if the option is not provided or not a long
+     * @return the long value of the option
+     */
+    public long getLong(String optionName, long defaultValue) {
+        String val = getValue(optionName);
+        if (val == null || val.isEmpty()) return defaultValue;
+        try {
+            return Long.parseLong(val);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of a parsed option as a double.
+     *
+     * @param optionName the name of the option
+     * @param defaultValue the default value if the option is not provided or not a double
+     * @return the double value of the option
+     */
+    public double getDouble(String optionName, double defaultValue) {
+        String val = getValue(optionName);
+        if (val == null || val.isEmpty()) return defaultValue;
+        try {
+            return Double.parseDouble(val);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of a parsed option as a float.
+     *
+     * @param optionName the name of the option
+     * @param defaultValue the default value if the option is not provided or not a float
+     * @return the float value of the option
+     */
+    public float getFloat(String optionName, float defaultValue) {
+        String val = getValue(optionName);
+        if (val == null || val.isEmpty()) return defaultValue;
+        try {
+            return Float.parseFloat(val);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Gets the value of a parsed option as a boolean.
+     *
+     * @param optionName the name of the option
+     * @return true if the option is present and is true/empty, false otherwise
+     */
+    public boolean getBoolean(String optionName) {
+        return getBoolean(optionName, false);
+    }
+
+    /**
+     * Gets the value of a parsed option as a boolean.
+     *
+     * @param optionName the name of the option
+     * @param defaultValue the default value if not provided
+     * @return true if the option is present and is true/empty, false otherwise
+     */
+    public boolean getBoolean(String optionName, boolean defaultValue) {
+        String val = getValue(optionName);
+        if (val == null) return defaultValue;
+        if (val.isEmpty()) return true;
+        return Boolean.parseBoolean(val);
+    }
+
+    /**
      * Checks if an option was provided in the parsed arguments.
      *
      * @param optionName the name of the option
@@ -166,6 +272,37 @@ public class CLI {
      */
     public List<String> getRemaining() {
         return new ArrayList<>(remainingArgs);
+    }
+
+    /**
+     * Checks if there are any remaining arguments.
+     *
+     * @return true if there are remaining arguments, false otherwise
+     */
+    public boolean hasRemaining() {
+        return !remainingArgs.isEmpty();
+    }
+
+    /**
+     * Gets a remaining argument at the specified index.
+     *
+     * @param index the index of the remaining argument
+     * @return the argument at the index, or null if out of bounds
+     */
+    public String getRemaining(int index) {
+        if (index >= 0 && index < remainingArgs.size()) {
+            return remainingArgs.get(index);
+        }
+        return null;
+    }
+
+    /**
+     * Checks if there are any parsed values.
+     *
+     * @return true if there are parsed values, false otherwise
+     */
+    public boolean hasParsedValues() {
+        return !parsedValues.isEmpty();
     }
 
     /**
@@ -206,6 +343,11 @@ public class CLI {
         return this;
     }
 
+    /**
+     * Returns a string representation of this CLI parser.
+     *
+     * @return the string representation
+     */
     @Override
     public String toString() {
         return "CLI{" +

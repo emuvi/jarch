@@ -5,6 +5,8 @@ import java.util.Objects;
 /**
  * CLIOption represents a command-line option with short and long forms,
  * description, and whether it requires a value.
+ * This class is used to define flags or parameters that can be passed
+ * to the application via the command line.
  */
 public class CLIOption {
 
@@ -111,6 +113,40 @@ public class CLIOption {
         return requiresValue;
     }
 
+    /**
+     * Checks if this option has a short form.
+     *
+     * @return true if the option has a short form, false otherwise
+     */
+    public boolean hasShortForm() {
+        return shortForm != null && !shortForm.isEmpty();
+    }
+
+    /**
+     * Checks if this option has a long form.
+     *
+     * @return true if the option has a long form, false otherwise
+     */
+    public boolean hasLongForm() {
+        return longForm != null && !longForm.isEmpty();
+    }
+
+    /**
+     * Checks if this option has a description.
+     *
+     * @return true if the option has a description, false otherwise
+     */
+    public boolean hasDescription() {
+        return description != null && !description.isEmpty();
+    }
+
+    /**
+     * Compares this CLIOption to another object for equality.
+     * Options are considered equal if they have the same internal name.
+     *
+     * @param o the object to compare to
+     * @return true if the objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -119,11 +155,21 @@ public class CLIOption {
         return Objects.equals(name, that.name);
     }
 
+    /**
+     * Generates a hash code for this CLIOption based on its name.
+     *
+     * @return the hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(name);
     }
 
+    /**
+     * Returns a string representation of this CLIOption.
+     *
+     * @return the string representation
+     */
     @Override
     public String toString() {
         return "CLIOption{" +

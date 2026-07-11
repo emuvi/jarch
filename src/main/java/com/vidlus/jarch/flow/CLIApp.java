@@ -9,6 +9,8 @@ import com.vidlus.jarch.mage.WizCLI;
 /**
  * CLIApp represents a command-line application with options and commands.
  * It provides the framework for managing CLI options and their execution.
+ * It encapsulates the metadata about the application such as name, version,
+ * and description, along with the supported commands and options.
  */
 public class CLIApp {
 
@@ -144,6 +146,94 @@ public class CLIApp {
     }
 
     /**
+     * Checks if an option with the given name exists.
+     *
+     * @param name the internal name of the option
+     * @return true if the option exists, false otherwise
+     */
+    public boolean hasOption(String name) {
+        if (name == null) return false;
+        for (CLIOption option : options) {
+            if (name.equals(option.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gets an option by its internal name.
+     *
+     * @param name the internal name of the option
+     * @return the CLIOption, or null if not found
+     */
+    public CLIOption getOption(String name) {
+        if (name == null) return null;
+        for (CLIOption option : options) {
+            if (name.equals(option.getName())) {
+                return option;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if a command exists.
+     *
+     * @param command the command to check
+     * @return true if the command exists, false otherwise
+     */
+    public boolean hasCommand(String command) {
+        return commands.contains(command);
+    }
+
+    /**
+     * Removes an option by its internal name.
+     *
+     * @param name the internal name of the option
+     * @return this CLIApp instance for method chaining
+     */
+    public CLIApp removeOption(String name) {
+        if (name != null) {
+            options.removeIf(option -> name.equals(option.getName()));
+        }
+        return this;
+    }
+
+    /**
+     * Removes a command.
+     *
+     * @param command the command to remove
+     * @return this CLIApp instance for method chaining
+     */
+    public CLIApp removeCommand(String command) {
+        if (command != null) {
+            commands.remove(command);
+        }
+        return this;
+    }
+
+    /**
+     * Clears all options.
+     *
+     * @return this CLIApp instance for method chaining
+     */
+    public CLIApp clearOptions() {
+        options.clear();
+        return this;
+    }
+
+    /**
+     * Clears all commands.
+     *
+     * @return this CLIApp instance for method chaining
+     */
+    public CLIApp clearCommands() {
+        commands.clear();
+        return this;
+    }
+
+    /**
      * Prints the help message for this application.
      */
     public void showHelp() {
@@ -201,6 +291,11 @@ public class CLIApp {
         return commands.size();
     }
 
+    /**
+     * Returns a string representation of this CLIApp.
+     *
+     * @return the string representation
+     */
     @Override
     public String toString() {
         return "CLIApp{" +
