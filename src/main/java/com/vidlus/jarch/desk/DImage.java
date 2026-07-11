@@ -1,7 +1,9 @@
 package com.vidlus.jarch.desk;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -19,6 +21,7 @@ public class DImage extends JComponent {
 
     private Image image;
     private ScaleType scaleType = ScaleType.FIT;
+    private boolean highQuality = true;
 
     public DImage() {
     }
@@ -37,6 +40,19 @@ public class DImage extends JComponent {
 
     public DImage(File file) {
         this(new ImageIcon(file.getAbsolutePath()).getImage());
+    }
+
+    /**
+     * Enables or disables high-quality rendering (bilinear interpolation and anti-aliasing) when scaling the image.
+     * Enabled by default.
+     * 
+     * @param highQuality true to enable high-quality rendering
+     * @return This DImage instance.
+     */
+    public DImage highQuality(boolean highQuality) {
+        this.highQuality = highQuality;
+        repaint();
+        return this;
     }
 
     /**
@@ -159,6 +175,14 @@ public class DImage extends JComponent {
                 break;
         }
 
-        g.drawImage(image, drawX, drawY, drawWidth, drawHeight, this);
+        Graphics2D g2d = (Graphics2D) g.create();
+        if (highQuality) {
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+        
+        g2d.drawImage(image, drawX, drawY, drawWidth, drawHeight, this);
+        g2d.dispose();
     }
 }
