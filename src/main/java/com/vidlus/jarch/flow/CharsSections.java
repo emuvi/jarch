@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vidlus.jarch.desk.TextHistory;
 import com.vidlus.jarch.mage.WizString;
 
 /**
