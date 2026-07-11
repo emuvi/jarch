@@ -4,8 +4,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * A runtime annotation used to inject or enforce a fixed short value
- * on a field or parameter during mapping or configuration.
+ * A runtime annotation used to inject or enforce a fixed {@code short} value
+ * on a field during mapping or configuration.
+ *
+ * <p>This annotation works heavily in conjunction with the {@link FixVals} interface.
+ * When a class implements {@link FixVals}, fields annotated with {@code @FixShort}
+ * will have this fixed value automatically resolved and injected during the
+ * null-resolution phase, invoked via {@link FixVals#fixNulls()} or {@link FixVals#fixNullsAndEnvs()}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FixShort {

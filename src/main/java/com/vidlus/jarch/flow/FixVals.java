@@ -9,7 +9,9 @@ import com.vidlus.jarch.mage.WizLang;
  * An interface that grants classes the ability to automatically resolve
  * null values and evaluate environment variables across all their member fields.
  * Works heavily in conjunction with {@link WizLang} reflection utilities and
- * the {@code @Fix} family of annotations.
+ * the {@code @Fix} family of annotations (such as {@link FixBool}, {@link FixInt},
+ * {@link FixChars}, {@link FixObject}, etc.) to inject configured fixed values
+ * or evaluate environmental overrides.
  */
 public interface FixVals extends Serializable {
 
