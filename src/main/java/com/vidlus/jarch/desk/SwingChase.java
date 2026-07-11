@@ -9,13 +9,13 @@ import com.vidlus.jarch.mage.WizThread;
 
 /**
  * A controller class that manages the execution flow of a background task
- * and its associated progress UI window ({@link RunChaseDesk}).
+ * and its associated progress UI window ({@link SwingChaseDesk}).
  * It provides methods to track progress, handle pause/resume logic, stop gracefully,
  * and report status information or errors.
  *
  * @author emuvi
  */
-public class RunChase {
+public class SwingChase {
     
     /**
      * Initializes a new RunChase progress window and its controller.
@@ -23,17 +23,17 @@ public class RunChase {
      * @param title the title for the progress window
      * @return a configured instance of RunChase bound to the new window
      */
-    public static RunChase init(String title) {
-        var desk = new RunChaseDesk(title);
-        var chase = new RunChase(desk);
+    public static SwingChase init(String title) {
+        var desk = new SwingChaseDesk(title);
+        var chase = new SwingChase(desk);
         desk.setChase(chase);
         desk.setVisible(true);
         return chase;
     }
     
-    private final RunChaseDesk desk;
+    private final SwingChaseDesk desk;
     
-    private RunChase(RunChaseDesk desk) {
+    private SwingChase(SwingChaseDesk desk) {
         this.desk = desk;
     }
     

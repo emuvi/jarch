@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
  * minimum sizes based on the wrapped components, making it suitable for use inside
  * components like {@link javax.swing.JScrollPane}.
  */
-public class WrapLayout extends FlowLayout {
+public class LayoutWrap extends FlowLayout {
     
     private Dimension preferredLayoutSize;
 
@@ -23,7 +23,7 @@ public class WrapLayout extends FlowLayout {
      * Constructs a new {@code WrapLayout} with a centered alignment and a default
      * 5-unit horizontal and vertical gap.
      */
-    public WrapLayout() {
+    public LayoutWrap() {
         super();
     }
 
@@ -33,7 +33,7 @@ public class WrapLayout extends FlowLayout {
      *
      * @param align the alignment value
      */
-    public WrapLayout(int align) {
+    public LayoutWrap(int align) {
         super(align);
     }
 
@@ -45,7 +45,7 @@ public class WrapLayout extends FlowLayout {
      * @param hgap  the horizontal gap between components and between the components and the borders of the {@code Container}
      * @param vgap  the vertical gap between components and between the components and the borders of the {@code Container}
      */
-    public WrapLayout(int align, int hgap, int vgap) {
+    public LayoutWrap(int align, int hgap, int vgap) {
         super(align, hgap, vgap);
     }
 

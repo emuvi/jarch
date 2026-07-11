@@ -9,9 +9,9 @@ import com.vidlus.jarch.mage.WizGUI;
  * Provides a window with a progress bar, status text area, and control buttons
  * to pause, resume, or stop the background task.
  */
-public class RunChaseDesk extends javax.swing.JFrame {
+public class SwingChaseDesk extends javax.swing.JFrame {
 
-    private RunChase chase;
+    private SwingChase chase;
     
     /**
      * Creates a new RunChaseDesk with the specified title.
@@ -19,7 +19,7 @@ public class RunChaseDesk extends javax.swing.JFrame {
      *
      * @param title the title to be displayed on the window frame
      */
-    RunChaseDesk(String title) {
+    SwingChaseDesk(String title) {
         initComponents();
         setTitle(title + " - RunChase");
         initFrame();
@@ -38,7 +38,7 @@ public class RunChaseDesk extends javax.swing.JFrame {
      *
      * @param chase the RunChase controller instance
      */
-    void setChase(RunChase chase) {
+    void setChase(SwingChase chase) {
         this.chase = chase;
     }
     
