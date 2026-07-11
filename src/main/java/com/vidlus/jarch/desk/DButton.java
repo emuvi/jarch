@@ -557,5 +557,241 @@ public class DButton extends JButton {
     public String hint() {
         return getToolTipText();
     }
-    
+
+    /**
+     * Sets the hideActionText property, which determines whether the button displays text from the Action.
+     * 
+     * @param hide if true, the button's text is not updated from the Action
+     * @return This DButton instance.
+     */
+    public DButton hideActionText(boolean hide) {
+        setHideActionText(hide);
+        return this;
+    }
+
+    // --- Advanced Formatting & Border Helpers ---
+
+    /**
+     * Sets an empty border around the button, effectively acting as padding.
+     * 
+     * @param size the padding size for all four sides
+     * @return This DButton instance.
+     */
+    public DButton borderEmpty(int size) {
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(size, size, size, size));
+        return this;
+    }
+
+    /**
+     * Sets an empty border around the button with specific sizes for each side.
+     * 
+     * @param top    the top padding
+     * @param left   the left padding
+     * @param bottom the bottom padding
+     * @param right  the right padding
+     * @return This DButton instance.
+     */
+    public DButton borderEmpty(int top, int left, int bottom, int right) {
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(top, left, bottom, right));
+        return this;
+    }
+
+    /**
+     * Sets a simple 1px solid line border around the button.
+     * 
+     * @param color the color of the line border
+     * @return This DButton instance.
+     */
+    public DButton borderLine(java.awt.Color color) {
+        setBorder(javax.swing.BorderFactory.createLineBorder(color));
+        return this;
+    }
+
+    /**
+     * Sets a solid line border around the button with a specific thickness.
+     * 
+     * @param color     the color of the line border
+     * @param thickness the thickness of the border in pixels
+     * @return This DButton instance.
+     */
+    public DButton borderLine(java.awt.Color color, int thickness) {
+        setBorder(javax.swing.BorderFactory.createLineBorder(color, thickness));
+        return this;
+    }
+
+    /**
+     * Sets the mouse cursor that displays when hovering over this button.
+     * 
+     * @param cursorType the integer constant from java.awt.Cursor
+     * @return This DButton instance.
+     */
+    public DButton cursor(int cursorType) {
+        setCursor(new java.awt.Cursor(cursorType));
+        return this;
+    }
+
+    /**
+     * Instantly sets the cursor to a Hand cursor when hovering over the button.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton cursorHand() {
+        return cursor(java.awt.Cursor.HAND_CURSOR);
+    }
+
+    // --- Font Styling Helpers ---
+
+    /**
+     * Derives and applies a bold version of the current font.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton fontBold() {
+        if (getFont() != null) setFont(getFont().deriveFont(java.awt.Font.BOLD));
+        return this;
+    }
+
+    /**
+     * Derives and applies an italic version of the current font.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton fontItalic() {
+        if (getFont() != null) setFont(getFont().deriveFont(java.awt.Font.ITALIC));
+        return this;
+    }
+
+    /**
+     * Derives and applies a specific size to the current font.
+     * 
+     * @param size the new font size as a float
+     * @return This DButton instance.
+     */
+    public DButton fontSize(float size) {
+        if (getFont() != null) setFont(getFont().deriveFont(size));
+        return this;
+    }
+
+    // --- Alignment Semantic Helpers ---
+
+    /**
+     * Aligns the content of the button to the left.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton alignLeft() {
+        return horizontalAlignment(javax.swing.SwingConstants.LEFT);
+    }
+
+    /**
+     * Aligns the content of the button to the right.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton alignRight() {
+        return horizontalAlignment(javax.swing.SwingConstants.RIGHT);
+    }
+
+    /**
+     * Aligns the content of the button to the center.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton alignCenter() {
+        return horizontalAlignment(javax.swing.SwingConstants.CENTER);
+    }
+
+    /**
+     * Automatically positions the text directly beneath the icon.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton textUnderIcon() {
+        verticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        horizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        return this;
+    }
+
+    /**
+     * Automatically positions the text directly to the right of the icon.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton textRightOfIcon() {
+        verticalTextPosition(javax.swing.SwingConstants.CENTER);
+        horizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        return this;
+    }
+
+    /**
+     * Automatically positions the text directly to the left of the icon.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton textLeftOfIcon() {
+        verticalTextPosition(javax.swing.SwingConstants.CENTER);
+        horizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        return this;
+    }
+
+    /**
+     * Automatically positions the text directly above the icon.
+     * 
+     * @return This DButton instance.
+     */
+    public DButton textAboveIcon() {
+        verticalTextPosition(javax.swing.SwingConstants.TOP);
+        horizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        return this;
+    }
+
+    // --- Event Listener Helpers ---
+
+    /**
+     * Injects a functional action that is triggered when the mouse enters the button area.
+     * 
+     * @param action the Consumer accepting the MouseEvent
+     * @return This DButton instance.
+     */
+    public DButton onMouseEnter(java.util.function.Consumer<java.awt.event.MouseEvent> action) {
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                action.accept(e);
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Injects a functional action that is triggered when the mouse exits the button area.
+     * 
+     * @param action the Consumer accepting the MouseEvent
+     * @return This DButton instance.
+     */
+    public DButton onMouseExit(java.util.function.Consumer<java.awt.event.MouseEvent> action) {
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                action.accept(e);
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Injects a functional action that is triggered when the mouse clicks the button.
+     * 
+     * @param action the Consumer accepting the MouseEvent
+     * @return This DButton instance.
+     */
+    public DButton onMouseClick(java.util.function.Consumer<java.awt.event.MouseEvent> action) {
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                action.accept(e);
+            }
+        });
+        return this;
+    }
 }
