@@ -6,9 +6,9 @@ import java.awt.Component;
  * A fluent wrapper for absolute positioning (null layout).
  * Ideal for UIs where you need exact pixel-perfect control over every component's location and size.
  */
-public class DPaneAbsolute extends DPane {
+public class DPaneAt extends DPane {
 
-    public DPaneAbsolute() {
+    public DPaneAt() {
         super.layout(null);
     }
 
@@ -21,7 +21,7 @@ public class DPaneAbsolute extends DPane {
      * @param y    the exact Y coordinate in pixels
      * @return This DPaneAbsolute instance.
      */
-    public DPaneAbsolute putAt(Component comp, int x, int y) {
+    public DPaneAt putAt(Component comp, int x, int y) {
         comp.setLocation(x, y);
         // In absolute layouts, components without bounds are invisible.
         // We automatically give it its preferred size if no size was set.
@@ -32,7 +32,7 @@ public class DPaneAbsolute extends DPane {
         return this;
     }
 
-    public DPaneAbsolute putAt(DEdit<?> edit, int x, int y) {
+    public DPaneAt putAt(DEdit<?> edit, int x, int y) {
         return putAt(edit.comp(), x, y);
     }
 
@@ -46,13 +46,13 @@ public class DPaneAbsolute extends DPane {
      * @param height the exact height in pixels
      * @return This DPaneAbsolute instance.
      */
-    public DPaneAbsolute putBounds(Component comp, int x, int y, int width, int height) {
+    public DPaneAt putBounds(Component comp, int x, int y, int width, int height) {
         comp.setBounds(x, y, width, height);
         add(comp);
         return this;
     }
 
-    public DPaneAbsolute putBounds(DEdit<?> edit, int x, int y, int width, int height) {
+    public DPaneAt putBounds(DEdit<?> edit, int x, int y, int width, int height) {
         return putBounds(edit.comp(), x, y, width, height);
     }
 
@@ -65,13 +65,13 @@ public class DPaneAbsolute extends DPane {
      * @param height the exact height in pixels
      * @return This DPaneAbsolute instance.
      */
-    public DPaneAbsolute putSize(Component comp, int width, int height) {
+    public DPaneAt putSize(Component comp, int width, int height) {
         comp.setSize(width, height);
         add(comp);
         return this;
     }
 
-    public DPaneAbsolute putSize(DEdit<?> edit, int width, int height) {
+    public DPaneAt putSize(DEdit<?> edit, int width, int height) {
         return putSize(edit.comp(), width, height);
     }
 }
