@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 import java.util.function.Consumer;
 
-import javax.swing.Action;
+
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import java.awt.event.ActionListener;
@@ -54,7 +54,7 @@ public class DButtonRadio extends JRadioButton {
      * 
      * @param a the {@link Action} used to specify the new button
      */
-    public DButtonRadio(Action a) { super(a); }
+    public DButtonRadio(DAction a) { super(a); }
     
     /**
      * Adds an {@link ActionListener} to the radio button.

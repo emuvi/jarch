@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
+
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
@@ -26,7 +26,7 @@ public class DMenuItem extends JMenuItem {
         super(text);
     }
 
-    public DMenuItem(Action a) {
+    public DMenuItem(DAction a) {
         super(a);
     }
 
@@ -55,7 +55,7 @@ public class DMenuItem extends JMenuItem {
      * @param a the Action for the menu item
      * @return This DMenuItem instance.
      */
-    public DMenuItem action(Action a) {
+    public DMenuItem action(DAction a) {
         setAction(a);
         return this;
     }

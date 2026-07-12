@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
+
 import javax.swing.JButton;
 
 /**
@@ -43,7 +43,7 @@ public class DButton extends JButton {
      * 
      * @param a the {@link Action} used to specify the new button
      */
-    public DButton(Action a) {
+    public DButton(DAction a) {
         super(a);
     }
 
@@ -85,7 +85,7 @@ public class DButton extends JButton {
      * @param a the {@link Action} for the button
      * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton action(Action a) {
+    public DButton action(DAction a) {
         setAction(a);
         return this;
     }

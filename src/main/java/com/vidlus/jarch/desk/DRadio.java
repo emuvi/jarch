@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
+
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JRadioButton;
@@ -66,7 +66,7 @@ public class DRadio extends JRadioButton {
      * 
      * @param a the Action used to specify the new button
      */
-    public DRadio(Action a) {
+    public DRadio(DAction a) {
         super(a);
     }
 
@@ -119,7 +119,7 @@ public class DRadio extends JRadioButton {
      * @param a the Action for the button
      * @return This DRadio instance.
      */
-    public DRadio action(Action a) {
+    public DRadio action(DAction a) {
         setAction(a);
         return this;
     }

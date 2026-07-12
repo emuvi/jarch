@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.Action;
+
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -176,7 +176,7 @@ public class DPopup extends JPopupMenu {
      * @param action The action defining the item.
      * @return This DPopup instance.
      */
-    public DPopup item(Action action) {
+    public DPopup item(DAction action) {
         return item(new JMenuItem(action));
     }
 
@@ -247,7 +247,7 @@ public class DPopup extends JPopupMenu {
      * @param action The action defining the item.
      * @return This DPopup instance.
      */
-    public DPopup check(Action action) {
+    public DPopup check(DAction action) {
         var item = new JCheckBoxMenuItem(action);
         return check(item);
     }
@@ -319,7 +319,7 @@ public class DPopup extends JPopupMenu {
      * @param action The action defining the item.
      * @return This DPopup instance.
      */
-    public DPopup radio(Action action) {
+    public DPopup radio(DAction action) {
         var item = new JRadioButtonMenuItem(action);
         return radio(item);
     }
@@ -381,7 +381,7 @@ public class DPopup extends JPopupMenu {
      * @param action The action defining the submenu.
      * @return This DPopup instance.
      */
-    public DPopup menu(String text, Action action) {
+    public DPopup menu(String text, DAction action) {
         var menu = new JMenu(text);
         menu.setAction(action);
         return menu(menu);

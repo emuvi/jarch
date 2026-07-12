@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 import java.util.function.Consumer;
 
-import javax.swing.Action;
+
 import javax.swing.JToggleButton;
 import java.awt.event.ActionListener;
 
@@ -53,7 +53,7 @@ public class DButtonToggle extends JToggleButton {
      * 
      * @param a the {@link Action} used to specify the new button
      */
-    public DButtonToggle(Action a) { super(a); }
+    public DButtonToggle(DAction a) { super(a); }
     
     /**
      * Adds an {@link ActionListener} to the toggle button.

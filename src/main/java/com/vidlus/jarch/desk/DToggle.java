@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
+
 import javax.swing.Icon;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeListener;
@@ -65,7 +65,7 @@ public class DToggle extends JToggleButton {
      * 
      * @param a the Action used to specify the new button
      */
-    public DToggle(Action a) {
+    public DToggle(DAction a) {
         super(a);
     }
 
@@ -107,7 +107,7 @@ public class DToggle extends JToggleButton {
      * @param a the Action for the button
      * @return This DToggle instance.
      */
-    public DToggle action(Action a) {
+    public DToggle action(DAction a) {
         setAction(a);
         return this;
     }

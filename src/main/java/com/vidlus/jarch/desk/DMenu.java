@@ -3,7 +3,7 @@ package com.vidlus.jarch.desk;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.Action;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -20,7 +20,7 @@ public class DMenu extends JMenu {
         super(s);
     }
 
-    public DMenu(Action a) {
+    public DMenu(DAction a) {
         super(a);
     }
 
@@ -45,7 +45,7 @@ public class DMenu extends JMenu {
      * @param a the Action for the menu item to be added
      * @return This DMenu instance.
      */
-    public DMenu item(Action a) {
+    public DMenu item(DAction a) {
         add(a);
         return this;
     }

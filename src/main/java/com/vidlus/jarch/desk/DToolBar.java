@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 
-import javax.swing.Action;
+
 import javax.swing.JToolBar;
 
 /**
@@ -66,7 +66,7 @@ public class DToolBar extends JToolBar {
      * @param a the Action object to add as a new menu item
      * @return This DToolBar instance.
      */
-    public DToolBar action(Action a) {
+    public DToolBar action(DAction a) {
         add(a);
         return this;
     }

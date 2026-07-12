@@ -11,7 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 import java.util.function.Consumer;
 
-import javax.swing.Action;
+
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -63,7 +63,7 @@ public class DCheckBox extends JCheckBox {
      * 
      * @param a the {@link Action} used to specify the new check box
      */
-    public DCheckBox(Action a) {
+    public DCheckBox(DAction a) {
         super(a);
     }
 
