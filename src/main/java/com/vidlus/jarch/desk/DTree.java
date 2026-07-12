@@ -212,6 +212,214 @@ public class DTree extends JTree {
     }
 
     /**
+     * Sets the TreeCellEditor that will be used to edit each cell.
+     * 
+     * @param editor the TreeCellEditor that is to edit each cell
+     * @return This DTree instance.
+     */
+    public DTree cellEditor(javax.swing.tree.TreeCellEditor editor) {
+        setCellEditor(editor);
+        return this;
+    }
+
+    /**
+     * Sets the cell editor dynamically using any custom DEdit component.
+     * This automatically bridges the DEdit's value flow and action events into the JTree.
+     * 
+     * @param editor the DEdit component to adapt and use as the cell editor
+     * @return this DTree instance for fluent method chaining.
+     */
+    public DTree cellEditor(DEdit<?> editor) {
+        return cellEditor(new DEditTreeCellEditorAdapter(editor));
+    }
+
+    /**
+     * Determines what happens when editing is interrupted by selecting another node in the tree, a change in the tree's data, or by some other means.
+     * 
+     * @param newValue true if the cell should automatically save when stopped
+     * @return This DTree instance.
+     */
+    public DTree invokesStopCellEditing(boolean newValue) {
+        setInvokesStopCellEditing(newValue);
+        return this;
+    }
+
+    /**
+     * Sets the scrollsOnExpand property, which determines whether the tree might scroll to show previously hidden children.
+     * 
+     * @param newValue false to disable scrolling on expand
+     * @return This DTree instance.
+     */
+    public DTree scrollsOnExpand(boolean newValue) {
+        setScrollsOnExpand(newValue);
+        return this;
+    }
+
+    /**
+     * Sets the number of mouse clicks before a node will expand or close.
+     * 
+     * @param clickCount the number of clicks required to expand/collapse
+     * @return This DTree instance.
+     */
+    public DTree toggleClickCount(int clickCount) {
+        setToggleClickCount(clickCount);
+        return this;
+    }
+
+    /**
+     * Sets the number of rows that are to be displayed.
+     * 
+     * @param newCount the number of rows to display
+     * @return This DTree instance.
+     */
+    public DTree visibleRowCount(int newCount) {
+        setVisibleRowCount(newCount);
+        return this;
+    }
+
+    /**
+     * Specifies whether the UI should use a large model.
+     * 
+     * @param newValue true to suggest a large model to the UI
+     * @return This DTree instance.
+     */
+    public DTree largeModel(boolean newValue) {
+        setLargeModel(newValue);
+        return this;
+    }
+
+    /**
+     * Sets the dragEnabled property, which must be true to enable automatic drag handling.
+     * 
+     * @param b whether or not to enable automatic drag handling
+     * @return this DTree instance for fluent method chaining.
+     */
+    public DTree dragEnabled(boolean b) {
+        setDragEnabled(b);
+        return this;
+    }
+
+    /**
+     * Sets the drop mode for this component.
+     * 
+     * @param dropMode the drop mode to use
+     * @return this DTree instance for fluent method chaining.
+     */
+    public DTree dropMode(javax.swing.DropMode dropMode) {
+        setDropMode(dropMode);
+        return this;
+    }
+
+    /**
+     * Sets the tree's selection mode (e.g., SINGLE_TREE_SELECTION).
+     * 
+     * @param mode the selection mode (from TreeSelectionModel)
+     * @return This DTree instance.
+     */
+    public DTree selectionMode(int mode) {
+        getSelectionModel().setSelectionMode(mode);
+        return this;
+    }
+
+    /**
+     * Clears the selection.
+     * 
+     * @return This DTree instance.
+     */
+    public DTree clearTreeSelection() {
+        clearSelection();
+        return this;
+    }
+
+    /**
+     * Adds the node at the specified row to the current selection.
+     * 
+     * @param row the row to select
+     * @return This DTree instance.
+     */
+    public DTree appendSelectionRow(int row) {
+        super.addSelectionRow(row);
+        return this;
+    }
+
+    /**
+     * Adds the nodes at the specified rows to the current selection.
+     * 
+     * @param rows an array of ints specifying the rows to add
+     * @return This DTree instance.
+     */
+    public DTree appendSelectionRows(int[] rows) {
+        super.addSelectionRows(rows);
+        return this;
+    }
+
+    /**
+     * Adds the node identified by the specified TreePath to the current selection.
+     * 
+     * @param path the path to select
+     * @return This DTree instance.
+     */
+    public DTree appendSelectionPath(TreePath path) {
+        super.addSelectionPath(path);
+        return this;
+    }
+
+    /**
+     * Adds the paths in the array of TreePaths to the current selection.
+     * 
+     * @param paths an array of TreePath objects that specifies the nodes to add
+     * @return This DTree instance.
+     */
+    public DTree appendSelectionPaths(TreePath[] paths) {
+        super.addSelectionPaths(paths);
+        return this;
+    }
+
+    /**
+     * Selects the nodes at the specified rows.
+     * 
+     * @param rows an array of ints specifying the rows to select
+     * @return This DTree instance.
+     */
+    public DTree selectionRows(int[] rows) {
+        setSelectionRows(rows);
+        return this;
+    }
+
+    /**
+     * Selects the nodes identified by the specified array of paths.
+     * 
+     * @param paths an array of TreePath objects that specifies the nodes to select
+     * @return This DTree instance.
+     */
+    public DTree selectionPaths(TreePath[] paths) {
+        setSelectionPaths(paths);
+        return this;
+    }
+
+    /**
+     * Configures the expandsSelectedPaths property.
+     * 
+     * @param newValue true to expand paths automatically when selected
+     * @return This DTree instance.
+     */
+    public DTree expandsSelectedPaths(boolean newValue) {
+        setExpandsSelectedPaths(newValue);
+        return this;
+    }
+
+    /**
+     * Adds a listener for TreeSelection events.
+     * 
+     * @param tsl the TreeSelectionListener that will be notified when a node is selected or deselected
+     * @return This DTree instance.
+     */
+    public DTree onSelection(javax.swing.event.TreeSelectionListener tsl) {
+        super.addTreeSelectionListener(tsl);
+        return this;
+    }
+
+    /**
      * Expands all nodes in the tree.
      * 
      * @return This DTree instance.
@@ -233,5 +441,66 @@ public class DTree extends JTree {
             collapseRow(i);
         }
         return this;
+    }
+
+    /**
+     * An adapter that allows any DEdit component to function as a native JTree TreeCellEditor.
+     * This class bridges the Swing JTree cell editing lifecycle with the custom event and data 
+     * flow of the desk package's DEdit components.
+     */
+    public static class DEditTreeCellEditorAdapter extends javax.swing.AbstractCellEditor implements javax.swing.tree.TreeCellEditor {
+        
+        /** The underlying DEdit component doing the actual editing. */
+        protected final DEdit<?> editor;
+
+        /**
+         * Constructs a new tree cell editor adapter wrapping the given DEdit component.
+         * 
+         * @param editor the DEdit component to use for editing
+         */
+        public DEditTreeCellEditorAdapter(DEdit<?> editor) {
+            this.editor = editor;
+            // Hook into DEdit's custom action pipeline to gracefully stop editing
+            editor.onAction(e -> stopCellEditing());
+        }
+
+        /**
+         * Returns the value contained in the editor.
+         * 
+         * @return the current value from the DEdit component
+         */
+        @Override
+        public Object getCellEditorValue() {
+            return editor.value();
+        }
+
+        /**
+         * Sets an initial value for the editor and returns the component that should be added to the client's Component hierarchy.
+         * 
+         * @param tree the JTree that is asking the editor to edit
+         * @param value the value of the cell to be edited
+         * @param isSelected true if the cell is to be rendered with highlighting
+         * @param expanded true if the node is expanded
+         * @param leaf true if the node is a leaf node
+         * @param row the row index of the node being edited
+         * @return the component for editing
+         */
+        @SuppressWarnings("unchecked")
+        @Override
+        public java.awt.Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row) {
+            try {
+                // In JTree, the value is often a DefaultMutableTreeNode containing the user object.
+                // It's safer to extract the user object if possible to feed the correct data to DEdit.
+                Object actualValue = value;
+                if (value instanceof javax.swing.tree.DefaultMutableTreeNode) {
+                    actualValue = ((javax.swing.tree.DefaultMutableTreeNode) value).getUserObject();
+                }
+                ((DEdit<Object>) editor).value(actualValue);
+            } catch (Exception ex) {
+                // Ignore class cast or mismatch exceptions during initial value set.
+            }
+            
+            return editor.comp();
+        }
     }
 }
