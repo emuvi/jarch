@@ -3,7 +3,7 @@ package com.vidlus.jarch.desk;
 /**
  * Defines the types of interaction events that can occur on a DAnimatable actor inside a DMovie.
  */
-public enum DEventType {
+public enum DInteractType {
     /**
      * Fired when the mouse is clicked (pressed and released) on the actor.
      */

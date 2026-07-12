@@ -21,7 +21,7 @@ public class DMovie extends DCanvas {
     private final DAnime engine;
     private final List<DAnimator> actors = new ArrayList<>();
 
-    private final Map<DExcited, Map<DEventType, List<Consumer<DEvent>>>> eventRegistry = new HashMap<>();
+    private final Map<DExcited, Map<DInteractType, List<Consumer<DInteract>>>> eventRegistry = new HashMap<>();
     private DExcited hoveredActor = null;
     private DExcited focusedActor = null;
 
@@ -39,39 +39,39 @@ public class DMovie extends DCanvas {
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                handleMouseEvent(e, DEventType.MOUSE_CLICK);
+                handleMouseEvent(e, DInteractType.MOUSE_CLICK);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                handleMouseEvent(e, DEventType.MOUSE_PRESS);
+                handleMouseEvent(e, DInteractType.MOUSE_PRESS);
                 requestFocusInWindow();
                 focusedActor = getActorAt(e.getX(), e.getY());
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                handleMouseEvent(e, DEventType.MOUSE_RELEASE);
+                handleMouseEvent(e, DInteractType.MOUSE_RELEASE);
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                handleMouseEvent(e, DEventType.MOUSE_MOVE);
+                handleMouseEvent(e, DInteractType.MOUSE_MOVE);
                 DExcited actor = getActorAt(e.getX(), e.getY());
                 if (actor != hoveredActor) {
                     if (hoveredActor != null) {
-                        fireEvent(hoveredActor, DEventType.MOUSE_EXIT, e);
+                        fireEvent(hoveredActor, DInteractType.MOUSE_EXIT, e);
                     }
                     hoveredActor = actor;
                     if (hoveredActor != null) {
-                        fireEvent(hoveredActor, DEventType.MOUSE_ENTER, e);
+                        fireEvent(hoveredActor, DInteractType.MOUSE_ENTER, e);
                     }
                 }
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                handleMouseEvent(e, DEventType.MOUSE_DRAG);
+                handleMouseEvent(e, DInteractType.MOUSE_DRAG);
             }
         };
         this.addMouseListener(mouseAdapter);
@@ -80,41 +80,41 @@ public class DMovie extends DCanvas {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                handleKeyEvent(e, DEventType.KEY_PRESS);
+                handleKeyEvent(e, DInteractType.KEY_PRESS);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                handleKeyEvent(e, DEventType.KEY_RELEASE);
+                handleKeyEvent(e, DInteractType.KEY_RELEASE);
             }
 
             @Override
             public void keyTyped(KeyEvent e) {
-                handleKeyEvent(e, DEventType.KEY_TYPE);
+                handleKeyEvent(e, DInteractType.KEY_TYPE);
             }
         });
     }
 
-    private void handleMouseEvent(MouseEvent e, DEventType type) {
+    private void handleMouseEvent(MouseEvent e, DInteractType type) {
         DExcited actor = getActorAt(e.getX(), e.getY());
         if (actor != null) {
             fireEvent(actor, type, e);
         }
     }
 
-    private void handleKeyEvent(KeyEvent e, DEventType type) {
+    private void handleKeyEvent(KeyEvent e, DInteractType type) {
         if (focusedActor != null) {
             fireEvent(focusedActor, type, e);
         }
     }
 
-    private void fireEvent(DExcited actor, DEventType type, java.awt.event.InputEvent rawEvent) {
-        Map<DEventType, List<Consumer<DEvent>>> actorEvents = eventRegistry.get(actor);
+    private void fireEvent(DExcited actor, DInteractType type, java.awt.event.InputEvent rawEvent) {
+        Map<DInteractType, List<Consumer<DInteract>>> actorEvents = eventRegistry.get(actor);
         if (actorEvents != null) {
-            List<Consumer<DEvent>> actions = actorEvents.get(type);
+            List<Consumer<DInteract>> actions = actorEvents.get(type);
             if (actions != null) {
-                DEvent dEvent = new DEvent(actor, type, rawEvent);
-                for (Consumer<DEvent> action : actions) {
+                DInteract dEvent = new DInteract(actor, type, rawEvent);
+                for (Consumer<DInteract> action : actions) {
                     action.accept(dEvent);
                 }
             }
@@ -129,7 +129,7 @@ public class DMovie extends DCanvas {
      * @param action the action to execute when the event occurs
      * @return This DMovie instance for fluent chaining
      */
-    public DMovie addEvent(DExcited actor, DEventType type, Consumer<DEvent> action) {
+    public DMovie addEvent(DExcited actor, DInteractType type, Consumer<DInteract> action) {
         if (actor != null && type != null && action != null) {
             eventRegistry.computeIfAbsent(actor, k -> new HashMap<>())
                     .computeIfAbsent(type, k -> new ArrayList<>())
@@ -145,8 +145,8 @@ public class DMovie extends DCanvas {
      * @param action the action to execute
      * @return This DMovie instance for fluent chaining
      */
-    public DMovie onClick(DExcited actor, Consumer<DEvent> action) {
-        return addEvent(actor, DEventType.MOUSE_CLICK, action);
+    public DMovie onClick(DExcited actor, Consumer<DInteract> action) {
+        return addEvent(actor, DInteractType.MOUSE_CLICK, action);
     }
 
     /**

@@ -10,10 +10,10 @@ import java.awt.event.MouseEvent;
  * Provides easy access to the event payload such as mouse coordinates or key
  * pressed.
  */
-public class DEvent {
+public class DInteract {
 
     private final DExcited target;
-    private final DEventType type;
+    private final DInteractType type;
     private final InputEvent rawEvent;
 
     /**
@@ -23,7 +23,7 @@ public class DEvent {
      * @param type     the type of the event
      * @param rawEvent the underlying Swing InputEvent
      */
-    public DEvent(DExcited target, DEventType type, InputEvent rawEvent) {
+    public DInteract(DExcited target, DInteractType type, InputEvent rawEvent) {
         this.target = target;
         this.type = type;
         this.rawEvent = rawEvent;
@@ -43,7 +43,7 @@ public class DEvent {
      * 
      * @return the DEventType of this event
      */
-    public DEventType getType() {
+    public DInteractType getType() {
         return type;
     }
 
