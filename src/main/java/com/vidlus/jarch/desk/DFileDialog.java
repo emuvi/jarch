@@ -7,19 +7,20 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * A fluent API wrapper for JFileChooser to easily configure and display file dialogs.
+ * A fluent API wrapper for JFileChooser to easily configure and display file
+ * dialogs.
  */
-public class DFile extends JFileChooser {
+public class DFileDialog extends JFileChooser {
 
-    public DFile() {
+    public DFileDialog() {
         super();
     }
 
-    public DFile(String currentDirectoryPath) {
+    public DFileDialog(String currentDirectoryPath) {
         super(currentDirectoryPath);
     }
 
-    public DFile(File currentDirectory) {
+    public DFileDialog(File currentDirectory) {
         super(currentDirectory);
     }
 
@@ -29,7 +30,7 @@ public class DFile extends JFileChooser {
      * @param dir the current directory to point to
      * @return This DFile instance.
      */
-    public DFile directory(File dir) {
+    public DFileDialog directory(File dir) {
         setCurrentDirectory(dir);
         return this;
     }
@@ -40,18 +41,20 @@ public class DFile extends JFileChooser {
      * @param path the path of the current directory to point to
      * @return This DFile instance.
      */
-    public DFile directory(String path) {
+    public DFileDialog directory(String path) {
         setCurrentDirectory(new File(path));
         return this;
     }
 
     /**
-     * Sets the JFileChooser to allow the user to just select files, just select directories, or select both files and directories.
+     * Sets the JFileChooser to allow the user to just select files, just select
+     * directories, or select both files and directories.
      * 
-     * @param mode the type of files to be displayed (FILES_ONLY, DIRECTORIES_ONLY, FILES_AND_DIRECTORIES)
+     * @param mode the type of files to be displayed (FILES_ONLY, DIRECTORIES_ONLY,
+     *             FILES_AND_DIRECTORIES)
      * @return This DFile instance.
      */
-    public DFile selectionMode(int mode) {
+    public DFileDialog selectionMode(int mode) {
         setFileSelectionMode(mode);
         return this;
     }
@@ -62,7 +65,7 @@ public class DFile extends JFileChooser {
      * @param b true if multiple files may be selected
      * @return This DFile instance.
      */
-    public DFile multiSelection(boolean b) {
+    public DFileDialog multiSelection(boolean b) {
         setMultiSelectionEnabled(b);
         return this;
     }
@@ -73,7 +76,7 @@ public class DFile extends JFileChooser {
      * @param filter the new current file filter
      * @return This DFile instance.
      */
-    public DFile filter(FileFilter filter) {
+    public DFileDialog filter(FileFilter filter) {
         setFileFilter(filter);
         return this;
     }
@@ -84,18 +87,19 @@ public class DFile extends JFileChooser {
      * @param filter the FileFilter to add
      * @return This DFile instance.
      */
-    public DFile addFilter(FileFilter filter) {
+    public DFileDialog addFilter(FileFilter filter) {
         addChoosableFileFilter(filter);
         return this;
     }
 
     /**
-     * Determines whether the AcceptAll FileFilter is used as an available choice in the choosable filter list.
+     * Determines whether the AcceptAll FileFilter is used as an available choice in
+     * the choosable filter list.
      * 
      * @param b true to include the AcceptAll filter
      * @return This DFile instance.
      */
-    public DFile acceptAll(boolean b) {
+    public DFileDialog acceptAll(boolean b) {
         setAcceptAllFileFilterUsed(b);
         return this;
     }
@@ -106,7 +110,7 @@ public class DFile extends JFileChooser {
      * @param dialogTitle the new String for the title bar
      * @return This DFile instance.
      */
-    public DFile title(String dialogTitle) {
+    public DFileDialog title(String dialogTitle) {
         setDialogTitle(dialogTitle);
         return this;
     }
@@ -117,7 +121,7 @@ public class DFile extends JFileChooser {
      * @param b the boolean value that determines whether hidden files are shown
      * @return This DFile instance.
      */
-    public DFile hiddenFiles(boolean b) {
+    public DFileDialog hiddenFiles(boolean b) {
         setFileHidingEnabled(b);
         return this;
     }
@@ -126,7 +130,8 @@ public class DFile extends JFileChooser {
      * Pops up an "Open File" file chooser dialog.
      * 
      * @param parent the parent component of the dialog
-     * @return the return state of the file chooser on popdown: APPROVE_OPTION or CANCEL_OPTION
+     * @return the return state of the file chooser on popdown: APPROVE_OPTION or
+     *         CANCEL_OPTION
      */
     public int showOpen(Component parent) {
         return showOpenDialog(parent);
@@ -136,7 +141,8 @@ public class DFile extends JFileChooser {
      * Pops up a "Save File" file chooser dialog.
      * 
      * @param parent the parent component of the dialog
-     * @return the return state of the file chooser on popdown: APPROVE_OPTION or CANCEL_OPTION
+     * @return the return state of the file chooser on popdown: APPROVE_OPTION or
+     *         CANCEL_OPTION
      */
     public int showSave(Component parent) {
         return showSaveDialog(parent);
@@ -145,7 +151,7 @@ public class DFile extends JFileChooser {
     /**
      * Pops a custom file chooser dialog with a custom approve button.
      * 
-     * @param parent the parent component of the dialog
+     * @param parent            the parent component of the dialog
      * @param approveButtonText the text of the ApproveButton
      * @return the return state of the file chooser on popdown
      */
@@ -163,7 +169,8 @@ public class DFile extends JFileChooser {
     }
 
     /**
-     * Returns a list of selected files if the file chooser is set to allow multiple selection.
+     * Returns a list of selected files if the file chooser is set to allow multiple
+     * selection.
      * 
      * @return an array of selected Files
      */

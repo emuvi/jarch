@@ -5,7 +5,8 @@ import javax.swing.JFileChooser;
 
 /**
  * A UI component for editing and selecting a file.
- * Provides a text field for the path and a button that opens a file chooser dialog.
+ * Provides a text field for the path and a button that opens a file chooser
+ * dialog.
  */
 public class DChangeFile extends DEditChange<File> {
 
@@ -41,12 +42,14 @@ public class DChangeFile extends DEditChange<File> {
 
     /**
      * Handles the action button press event.
-     * Opens a file chooser dialog (DFile) configured with the set filters to select a file.
+     * Opens a file chooser dialog (DFile) configured with the set filters to select
+     * a file.
      */
     @Override
     protected void onActionPressed() {
-        if (!editable()) return;
-        DFile fileDialog = new DFile();
+        if (!editable())
+            return;
+        DFileDialog fileDialog = new DFileDialog();
         if (filter != null) {
             fileDialog.filter(filter);
         }
@@ -79,7 +82,7 @@ public class DChangeFile extends DEditChange<File> {
      * Fluent setter to add a file extension filter to the file chooser dialog.
      * 
      * @param description the description of the filter (e.g., "Images")
-     * @param extensions one or more file extensions (e.g., "png", "jpg")
+     * @param extensions  one or more file extensions (e.g., "png", "jpg")
      * @return this DChangeFile instance
      */
     public DChangeFile filter(String description, String... extensions) {

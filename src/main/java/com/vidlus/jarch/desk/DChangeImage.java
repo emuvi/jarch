@@ -8,7 +8,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * A UI component for editing and selecting an image.
- * Provides a text field detailing the image dimensions and a button that opens an image file chooser.
+ * Provides a text field detailing the image dimensions and a button that opens
+ * an image file chooser.
  */
 public class DChangeImage extends DEditChange<Image> {
 
@@ -35,7 +36,8 @@ public class DChangeImage extends DEditChange<Image> {
     }
 
     /**
-     * Sets the image value. Updates the text field to show the source file name and image dimensions.
+     * Sets the image value. Updates the text field to show the source file name and
+     * image dimensions.
      * 
      * @param value the Image to set
      */
@@ -52,7 +54,8 @@ public class DChangeImage extends DEditChange<Image> {
 
     /**
      * Sets whether this component is editable.
-     * The internal text field remains non-editable to enforce selection via the dialog.
+     * The internal text field remains non-editable to enforce selection via the
+     * dialog.
      * 
      * @param editable true to enable the action button, false to disable
      * @return this DChangeImage instance
@@ -66,12 +69,14 @@ public class DChangeImage extends DEditChange<Image> {
 
     /**
      * Handles the action button press event.
-     * Opens a file chooser filtered for images. Upon selection, reads the image and updates the value.
+     * Opens a file chooser filtered for images. Upon selection, reads the image and
+     * updates the value.
      */
     @Override
     protected void onActionPressed() {
-        if (!editable()) return;
-        DFile fileDialog = new DFile();
+        if (!editable())
+            return;
+        DFileDialog fileDialog = new DFileDialog();
         fileDialog.filter(new FileNameExtensionFilter("Images (png, jpg, gif)", "png", "jpg", "jpeg", "gif"));
 
         if (sourceFile != null && sourceFile.exists()) {

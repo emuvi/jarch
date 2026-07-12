@@ -5,7 +5,8 @@ import javax.swing.JFileChooser;
 
 /**
  * A UI component for editing and selecting a directory.
- * Provides a text field for the path and a button that opens a directory chooser dialog.
+ * Provides a text field for the path and a button that opens a directory
+ * chooser dialog.
  */
 public class DChangeDir extends DEditChange<File> {
 
@@ -17,7 +18,8 @@ public class DChangeDir extends DEditChange<File> {
     }
 
     /**
-     * Retrieves the selected directory as a File object based on the text field content.
+     * Retrieves the selected directory as a File object based on the text field
+     * content.
      * 
      * @return the selected directory File, or null if the text is empty
      */
@@ -39,12 +41,14 @@ public class DChangeDir extends DEditChange<File> {
 
     /**
      * Handles the action button press event.
-     * Opens a directory chooser dialog (DFile configured for directories) to select a folder.
+     * Opens a directory chooser dialog (DFile configured for directories) to select
+     * a folder.
      */
     @Override
     protected void onActionPressed() {
-        if (!editable()) return;
-        DFile fileDialog = new DFile();
+        if (!editable())
+            return;
+        DFileDialog fileDialog = new DFileDialog();
         fileDialog.selectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         File current = getValue();
