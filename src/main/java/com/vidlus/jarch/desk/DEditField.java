@@ -240,4 +240,205 @@ public abstract class DEditField<T> extends DEdit<T> {
         return this;
     }
 
+    public DEditField<T> onFocusGained(Consumer<java.awt.event.FocusEvent> consumer) {
+        super.onFocusGained(consumer);
+        return this;
+    }
+
+    public DEditField<T> onFocusLost(Consumer<java.awt.event.FocusEvent> consumer) {
+        super.onFocusLost(consumer);
+        return this;
+    }
+
+    @Override
+    public DEditField<T> onAction(Consumer<java.awt.event.ActionEvent> consumer) {
+        comp().addActionListener(e -> consumer.accept(e));
+        return this;
+    }
+
+    public String text() {
+        return comp().getText();
+    }
+
+    public DEditField<T> text(String text) {
+        comp().setText(text);
+        return this;
+    }
+
+    public java.awt.Font font() {
+        return comp().getFont();
+    }
+
+    public DEditField<T> font(java.awt.Font font) {
+        comp().setFont(font);
+        return this;
+    }
+
+    public java.awt.Color foreground() {
+        return comp().getForeground();
+    }
+
+    public DEditField<T> foreground(java.awt.Color color) {
+        comp().setForeground(color);
+        return this;
+    }
+
+    public java.awt.Color background() {
+        return comp().getBackground();
+    }
+
+    public DEditField<T> background(java.awt.Color color) {
+        comp().setBackground(color);
+        return this;
+    }
+
+    public java.awt.Color caretColor() {
+        return comp().getCaretColor();
+    }
+
+    public DEditField<T> caretColor(java.awt.Color c) {
+        comp().setCaretColor(c);
+        return this;
+    }
+
+    public java.awt.Color disabledTextColor() {
+        return comp().getDisabledTextColor();
+    }
+
+    public DEditField<T> disabledTextColor(java.awt.Color c) {
+        comp().setDisabledTextColor(c);
+        return this;
+    }
+
+    public java.awt.Color selectedTextColor() {
+        return comp().getSelectedTextColor();
+    }
+
+    public DEditField<T> selectedTextColor(java.awt.Color c) {
+        comp().setSelectedTextColor(c);
+        return this;
+    }
+
+    public java.awt.Color selectionColor() {
+        return comp().getSelectionColor();
+    }
+
+    public DEditField<T> selectionColor(java.awt.Color c) {
+        comp().setSelectionColor(c);
+        return this;
+    }
+
+    public java.awt.Insets margin() {
+        return comp().getMargin();
+    }
+
+    public DEditField<T> margin(java.awt.Insets m) {
+        comp().setMargin(m);
+        return this;
+    }
+
+    public boolean dragEnabled() {
+        return comp().getDragEnabled();
+    }
+
+    public DEditField<T> dragEnabled(boolean b) {
+        comp().setDragEnabled(b);
+        return this;
+    }
+
+    public javax.swing.DropMode dropMode() {
+        return comp().getDropMode();
+    }
+
+    public DEditField<T> dropMode(javax.swing.DropMode m) {
+        comp().setDropMode(m);
+        return this;
+    }
+
+    public javax.swing.text.Document document() {
+        return comp().getDocument();
+    }
+
+    public DEditField<T> document(javax.swing.text.Document doc) {
+        comp().setDocument(doc);
+        return this;
+    }
+
+    public javax.swing.text.Highlighter highlighter() {
+        return comp().getHighlighter();
+    }
+
+    public DEditField<T> highlighter(javax.swing.text.Highlighter h) {
+        comp().setHighlighter(h);
+        return this;
+    }
+
+    public javax.swing.text.Keymap keymap() {
+        return comp().getKeymap();
+    }
+
+    public DEditField<T> keymap(javax.swing.text.Keymap map) {
+        comp().setKeymap(map);
+        return this;
+    }
+
+    public javax.swing.text.Caret caret() {
+        return comp().getCaret();
+    }
+
+    public DEditField<T> caret(javax.swing.text.Caret c) {
+        comp().setCaret(c);
+        return this;
+    }
+
+    public javax.swing.text.NavigationFilter navigationFilter() {
+        return comp().getNavigationFilter();
+    }
+
+    public DEditField<T> navigationFilter(javax.swing.text.NavigationFilter filter) {
+        comp().setNavigationFilter(filter);
+        return this;
+    }
+
+    public int scrollOffset() {
+        return comp().getScrollOffset();
+    }
+
+    public DEditField<T> scrollOffset(int scrollOffset) {
+        comp().setScrollOffset(scrollOffset);
+        return this;
+    }
+
+    public DEditField<T> actionCommand(String command) {
+        comp().setActionCommand(command);
+        return this;
+    }
+
+    public char focusAccelerator() {
+        return comp().getFocusAccelerator();
+    }
+
+    public DEditField<T> focusAccelerator(char aKey) {
+        comp().setFocusAccelerator(aKey);
+        return this;
+    }
+
+    public boolean opaque() {
+        return comp().isOpaque();
+    }
+
+    public DEditField<T> opaque(boolean isOpaque) {
+        comp().setOpaque(isOpaque);
+        return this;
+    }
+
+    public javax.swing.border.Border border() {
+        return comp().getBorder();
+    }
+
+    public DEditField<T> border(javax.swing.border.Border border) {
+        comp().setBorder(border);
+        return this;
+    }
+
 }
