@@ -116,4 +116,44 @@ public class DEditPass extends DEdit<String> {
     public boolean editable() {
         return comp().isEditable();
     }
+
+    /**
+     * Returns the horizontal alignment of the text.
+     * 
+     * @return the horizontal alignment
+     */
+    public int horizontalAlignment() {
+        return comp().getHorizontalAlignment();
+    }
+
+    /**
+     * Sets the horizontal alignment of the text.
+     * 
+     * @param alignment the alignment
+     * @return this DEditPass instance
+     */
+    public DEditPass horizontalAlignment(int alignment) {
+        comp().setHorizontalAlignment(alignment);
+        return this;
+    }
+
+    /**
+     * Returns the text of the password field as a String.
+     * 
+     * @return the text
+     */
+    public String text() {
+        return new String(comp().getPassword());
+    }
+
+    /**
+     * Sets the text of the password field.
+     * 
+     * @param text the new text
+     * @return this DEditPass instance
+     */
+    public DEditPass text(String text) {
+        comp().setText(text);
+        return this;
+    }
 }

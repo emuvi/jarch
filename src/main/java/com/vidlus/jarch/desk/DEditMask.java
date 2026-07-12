@@ -71,6 +71,19 @@ public class DEditMask extends DEdit<Object> {
     }
 
     /**
+     * Returns the mask string if a MaskFormatter is used.
+     * 
+     * @return the mask string, or null
+     */
+    public String mask() {
+        JFormattedTextField.AbstractFormatter formatter = comp().getFormatter();
+        if (formatter instanceof MaskFormatter) {
+            return ((MaskFormatter) formatter).getMask();
+        }
+        return null;
+    }
+
+    /**
      * Sets a string mask using MaskFormatter.
      * 
      * @param mask the mask to apply (e.g., "###-##-####")
@@ -88,6 +101,19 @@ public class DEditMask extends DEdit<Object> {
     }
 
     /**
+     * Returns the placeholder character used by the MaskFormatter.
+     * 
+     * @return the placeholder character, or '\0'
+     */
+    public char placeholder() {
+        JFormattedTextField.AbstractFormatter formatter = comp().getFormatter();
+        if (formatter instanceof MaskFormatter) {
+            return ((MaskFormatter) formatter).getPlaceholderCharacter();
+        }
+        return '\0';
+    }
+
+    /**
      * Sets the placeholder characters used when the value does not completely fill the mask.
      * 
      * @param placeholder the placeholder character
@@ -102,6 +128,15 @@ public class DEditMask extends DEdit<Object> {
     }
 
     /**
+     * Returns the current formatter.
+     * 
+     * @return the formatter
+     */
+    public JFormattedTextField.AbstractFormatter formatter() {
+        return comp().getFormatter();
+    }
+
+    /**
      * Sets the formatter used by this component.
      * 
      * @param formatter the formatter
@@ -110,6 +145,19 @@ public class DEditMask extends DEdit<Object> {
     public DEditMask formatter(JFormattedTextField.AbstractFormatter formatter) {
         comp().setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(formatter));
         return this;
+    }
+
+    /**
+     * Returns the format used by the formatter, if applicable.
+     * 
+     * @return the format, or null
+     */
+    public Format format() {
+        JFormattedTextField.AbstractFormatter formatter = comp().getFormatter();
+        if (formatter instanceof javax.swing.text.InternationalFormatter) {
+            return ((javax.swing.text.InternationalFormatter) formatter).getFormat();
+        }
+        return null;
     }
 
     /**
@@ -125,6 +173,15 @@ public class DEditMask extends DEdit<Object> {
     }
 
     /**
+     * Returns the number of columns in this field.
+     * 
+     * @return the number of columns
+     */
+    public int cols() {
+        return comp().getColumns();
+    }
+
+    /**
      * Set the number of columns in this field.
      * 
      * @param cols the number of columns
@@ -133,6 +190,15 @@ public class DEditMask extends DEdit<Object> {
     public DEditMask cols(int cols) {
         comp().setColumns(cols);
         return this;
+    }
+
+    /**
+     * Returns whether this field is editable.
+     * 
+     * @return true if editable
+     */
+    public boolean editable() {
+        return comp().isEditable();
     }
 
     /**
@@ -147,6 +213,15 @@ public class DEditMask extends DEdit<Object> {
     }
     
     /**
+     * Returns the behavior when focus is lost.
+     * 
+     * @return the focus lost behavior
+     */
+    public int focusLostBehavior() {
+        return comp().getFocusLostBehavior();
+    }
+
+    /**
      * Sets the behavior when focus is lost.
      * 
      * @param behavior JFormattedTextField.COMMIT_OR_REVERT, REVERT, COMMIT, or PERSIST
@@ -154,6 +229,26 @@ public class DEditMask extends DEdit<Object> {
      */
     public DEditMask focusLostBehavior(int behavior) {
         comp().setFocusLostBehavior(behavior);
+        return this;
+    }
+
+    /**
+     * Returns the horizontal alignment of the text.
+     * 
+     * @return the horizontal alignment
+     */
+    public int horizontalAlignment() {
+        return comp().getHorizontalAlignment();
+    }
+
+    /**
+     * Sets the horizontal alignment of the text.
+     * 
+     * @param alignment the alignment
+     * @return this DEditMask instance
+     */
+    public DEditMask horizontalAlignment(int alignment) {
+        comp().setHorizontalAlignment(alignment);
         return this;
     }
 
