@@ -82,10 +82,10 @@ public class DListEditor<T> extends DEdit<ArrayList<T>> {
 
     private void actEdit(ActionEvent event) {
         try { 
-            int index = list.getSelectedIndex();
+            int index = list.selectedIndex();
             if (index >= 0) {
                 var editFrame = editFrameClass.getConstructor().newInstance();
-                editFrame.setValue(list.getSelectedValue());
+                editFrame.setValue(list.selectedValue());
                 editFrame.onConfirm(value -> list.set(index, value));
                 editFrame.setVisible(true);
             }
