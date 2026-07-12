@@ -1,70 +1,74 @@
 package com.vidlus.jarch.desk;
 
 import java.awt.Color;
-import java.awt.Component;
-
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.colorchooser.ColorSelectionModel;
 
 /**
- * A fluent API wrapper for JColorChooser extending DEdit for inline color selection fields.
+ * A fluent API wrapper around {@link JColorChooser} that extends {@link DEdit}.
+ * <p>
+ * This component is intended to be embedded directly into a desktop layout, allowing 
+ * users to select colors inline without spawning external dialogs. Because it inherits 
+ * from {@code DEdit<Color>}, it natively supports value retrieval, setting, and standard 
+ * framework events (like double clicks or enters acting as primary actions).
+ * </p>
  */
 public class DEditColor extends DEdit<Color> {
 
-    private Component parentComponent;
-    private String dialogTitle = "Select a Color";
-
+    /**
+     * Constructs a new inline color editor using a default {@link JColorChooser}.
+     */
     public DEditColor() {
         super(new JColorChooser());
     }
 
+    /**
+     * Constructs a new inline color editor initialized to the given color.
+     * 
+     * @param initialColor the starting {@link Color} to display in the chooser
+     */
     public DEditColor(Color initialColor) {
         super(new JColorChooser(initialColor));
     }
 
+    /**
+     * Returns the underlying Swing component used for editing.
+     * 
+     * @return the embedded {@link JColorChooser} instance
+     */
     @Override
     public JColorChooser comp() {
         return (JColorChooser) super.comp();
     }
 
+    /**
+     * Retrieves the currently selected color from the chooser.
+     * 
+     * @return the selected {@link Color}
+     */
     @Override
     public Color getValue() {
         return comp().getColor();
     }
 
+    /**
+     * Updates the selected color in the underlying chooser.
+     * 
+     * @param value the {@link Color} to select
+     */
     @Override
     public void setValue(Color value) {
         comp().setColor(value);
     }
 
     /**
-     * Sets the parent component for the modal dialog.
+     * Fluent setter to dynamically update the currently selected color.
      * 
-     * @param parent the parent component
-     * @return This DEditColor instance.
-     */
-    public DEditColor parent(Component parent) {
-        this.parentComponent = parent;
-        return this;
-    }
-
-    /**
-     * Sets the title for the modal dialog.
-     * 
-     * @param title the dialog title
-     * @return This DEditColor instance.
-     */
-    public DEditColor title(String title) {
-        this.dialogTitle = title;
-        return this;
-    }
-
-    /**
-     * Sets the current color of the color chooser.
-     * 
-     * @param c the new color
-     * @return This DEditColor instance.
+     * @param c the new {@link Color} to apply
+     * @return this {@code DEditColor} instance to allow method chaining
      */
     public DEditColor color(Color c) {
         comp().setColor(c);
@@ -72,10 +76,63 @@ public class DEditColor extends DEdit<Color> {
     }
 
     /**
-     * Specifies the color panels used to choose a color value.
+     * Fluent setter for updating the current color using specific RGB values.
      * 
-     * @param panels an array of AbstractColorChooserPanel objects
-     * @return This DEditColor instance.
+     * @param r the red component (0-255)
+     * @param g the green component (0-255)
+     * @param b the blue component (0-255)
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor color(int r, int g, int b) {
+        comp().setColor(new Color(r, g, b));
+        return this;
+    }
+
+    /**
+     * Fluent setter for updating the current color using an integer RGB value.
+     * 
+     * @param c the new color represented as an integer
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor color(int c) {
+        comp().setColor(new Color(c));
+        return this;
+    }
+
+    /**
+     * Fluent setter for updating the current color using a hex string.
+     * 
+     * @param hex the hex string (e.g., "#FF0000" or "FF0000")
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor color(String hex) {
+        if (hex != null && !hex.isEmpty()) {
+            if (!hex.startsWith("#")) {
+                hex = "#" + hex;
+            }
+            comp().setColor(Color.decode(hex));
+        }
+        return this;
+    }
+
+    /**
+     * Fluent setter for updating the current color using Hue, Saturation, Brightness.
+     * 
+     * @param h the hue component
+     * @param s the saturation component
+     * @param b the brightness component
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor colorHSB(float h, float s, float b) {
+        comp().setColor(Color.getHSBColor(h, s, b));
+        return this;
+    }
+
+    /**
+     * Replaces the default color panels in the chooser with a custom set.
+     * 
+     * @param panels an array of {@link AbstractColorChooserPanel} objects
+     * @return this {@code DEditColor} instance to allow method chaining
      */
     public DEditColor panels(AbstractColorChooserPanel[] panels) {
         comp().setChooserPanels(panels);
@@ -83,10 +140,33 @@ public class DEditColor extends DEdit<Color> {
     }
 
     /**
-     * Sets the current preview panel.
+     * Adds a color chooser panel to the color chooser.
+     * Useful for extending the chooser with custom color selection UIs.
      * 
-     * @param preview the JComponent which displays the current color
-     * @return This DEditColor instance.
+     * @param panel the {@link AbstractColorChooserPanel} to add
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor addPanel(AbstractColorChooserPanel panel) {
+        comp().addChooserPanel(panel);
+        return this;
+    }
+
+    /**
+     * Removes a color chooser panel from the color chooser.
+     * 
+     * @param panel the {@link AbstractColorChooserPanel} to remove
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor removePanel(AbstractColorChooserPanel panel) {
+        comp().removeChooserPanel(panel);
+        return this;
+    }
+
+    /**
+     * Sets a custom preview panel that displays the currently selected color.
+     * 
+     * @param preview the custom {@link JComponent} to act as the preview panel
+     * @return this {@code DEditColor} instance to allow method chaining
      */
     public DEditColor previewPanel(JComponent preview) {
         comp().setPreviewPanel(preview);
@@ -94,22 +174,34 @@ public class DEditColor extends DEdit<Color> {
     }
 
     /**
-     * Sets the dragEnabled property, which must be true to enable automatic drag handling.
+     * Hides the default preview panel by replacing it with an empty JPanel.
      * 
-     * @param b the dragEnabled property
-     * @return This DEditColor instance.
+     * @return this {@code DEditColor} instance to allow method chaining
      */
-    public DEditColor dragEnabled(boolean b) {
-        comp().setDragEnabled(b);
+    public DEditColor hidePreviewPanel() {
+        comp().setPreviewPanel(new JPanel());
         return this;
     }
 
     /**
-     * Shows a modal color-chooser dialog and blocks until the dialog is hidden.
+     * Sets the model containing the selected color.
      * 
-     * @return the selected color or null if the user opted out
+     * @param model the new {@link ColorSelectionModel}
+     * @return this {@code DEditColor} instance to allow method chaining
      */
-    public Color showDialog() {
-        return JColorChooser.showDialog(parentComponent, dialogTitle, comp().getColor());
+    public DEditColor selectionModel(ColorSelectionModel model) {
+        comp().setSelectionModel(model);
+        return this;
+    }
+
+    /**
+     * Enables or disables automatic drag handling on the underlying chooser component.
+     * 
+     * @param b {@code true} to enable drag handling, {@code false} to disable
+     * @return this {@code DEditColor} instance to allow method chaining
+     */
+    public DEditColor dragEnabled(boolean b) {
+        comp().setDragEnabled(b);
+        return this;
     }
 }

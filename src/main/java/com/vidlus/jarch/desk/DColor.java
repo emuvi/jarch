@@ -5,194 +5,152 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionListener;
+import java.awt.LayoutManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
 
-import javax.swing.JColorChooser;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
-import javax.swing.colorchooser.ColorSelectionModel;
 
 /**
- * A fluent API wrapper for {@link javax.swing.JColorChooser} that provides a
- * streamlined way to create, configure, and display color chooser dialogs.
- * 
+ * A UI component that serves as a solid-colored rectangular box on the desktop.
  * <p>
- * This class extends {@code JColorChooser} and introduces method chaining
- * (a fluent interface) for configuration options. This allows developers to 
- * set up colors, custom panels, and generic component properties in a single, 
- * highly readable statement.
+ * {@code DColor} extends {@link JPanel} and implements {@link DValue} to seamlessly
+ * integrate with the jarch framework's value management system. It provides a highly 
+ * fluent API for rapid configuration (e.g., setting dimensions, borders, and colors).
  * </p>
- * 
  * <p>
- * <b>Example usage:</b>
- * <pre>{@code
- * Color selectedColor = new DColor(Color.RED)
- *         .parent(myFrame)
- *         .title("Choose Background Color")
- *         .dragEnabled(true)
- *         .showDialog();
- * }</pre>
+ * <b>Useful implementation detail:</b> This component forces itself to be opaque 
+ * internally during initialization to ensure the color is always drawn properly by Swing.
  * </p>
- * 
- * @see javax.swing.JColorChooser
  */
-public class DColor extends JColorChooser {
+public class DColor extends JPanel implements DValue<Color> {
 
-    private Component parentComponent;
-    private String dialogTitle = "Select a Color";
+    /** The current color displayed by this box. Defaults to white. */
+    private Color currentColor = Color.WHITE;
 
     /**
-     * Creates a new, default color chooser with an initial color of white.
+     * Constructs a new {@code DColor} box with an initial color of white.
      */
     public DColor() {
         super();
+        init();
     }
 
     /**
-     * Creates a new color chooser with the specified initial color.
+     * Constructs a new {@code DColor} box initialized to the specified color.
      * 
-     * @param initialColor the initial {@link java.awt.Color} to display in the chooser
+     * @param initialColor the initial {@link java.awt.Color} to display in the box
      */
     public DColor(Color initialColor) {
-        super(initialColor);
+        super();
+        this.currentColor = initialColor;
+        init();
     }
-
+    
     /**
-     * Sets the parent component for the modal dialog.
-     * The dialog will be centered relative to this component.
-     * 
-     * @param parent the parent {@link java.awt.Component}
-     * @return this {@code DColor} instance for chaining
+     * Internal initialization routine.
+     * Ensures the panel is opaque and applies the starting background color.
      */
-    public DColor parent(Component parent) {
-        this.parentComponent = parent;
-        return this;
+    private void init() {
+        setOpaque(true);
+        setBackground(currentColor);
     }
-
+    
     /**
-     * Sets the title for the modal dialog.
+     * Retrieves the currently displayed color.
      * 
-     * @param title the dialog title string
-     * @return this {@code DColor} instance for chaining
+     * @return the current {@link Color} of the box
      */
-    public DColor title(String title) {
-        this.dialogTitle = title;
-        return this;
+    @Override
+    public Color getValue() {
+        return currentColor;
+    }
+    
+    /**
+     * Updates the color of the box and repaints the component's background.
+     * 
+     * @param value the new {@link Color} to display
+     */
+    @Override
+    public void setValue(Color value) {
+        this.currentColor = value;
+        setBackground(value);
     }
 
     /**
-     * Sets the current color of the color chooser.
+     * Fluent setter for updating the current color of the color box.
+     * <p>
+     * <b>Note:</b> This delegates directly to {@link #setValue(Color)}.
+     * </p>
      * 
-     * @param c the new {@link java.awt.Color}
-     * @return this {@code DColor} instance for chaining
-     * @see #getColor()
+     * @param c the new {@link Color} to set
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor color(Color c) {
-        setColor(c);
+        setValue(c);
         return this;
     }
 
     /**
-     * Specifies the color panels used to choose a color value.
-     * Replaces the default color panels with the provided array.
-     * 
-     * @param panels an array of {@link javax.swing.colorchooser.AbstractColorChooserPanel} objects
-     * @return this {@code DColor} instance for chaining
-     */
-    public DColor panels(AbstractColorChooserPanel[] panels) {
-        setChooserPanels(panels);
-        return this;
-    }
-
-    /**
-     * Sets the current preview panel.
-     * This panel displays the currently selected color.
-     * 
-     * @param preview the {@link javax.swing.JComponent} which displays the current color
-     * @return this {@code DColor} instance for chaining
-     */
-    public DColor previewPanel(JComponent preview) {
-        setPreviewPanel(preview);
-        return this;
-    }
-
-    /**
-     * Sets the {@code dragEnabled} property, which must be {@code true} to enable
-     * automatic drag handling on this component.
-     * 
-     * @param b the {@code dragEnabled} property
-     * @return this {@code DColor} instance for chaining
-     */
-    public DColor dragEnabled(boolean b) {
-        setDragEnabled(b);
-        return this;
-    }
-
-    /**
-     * Sets the current color of the color chooser using specific RGB values.
+     * Fluent setter for updating the current color using specific RGB values.
      * 
      * @param r the red component (0-255)
      * @param g the green component (0-255)
      * @param b the blue component (0-255)
-     * @return this {@code DColor} instance for chaining
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor color(int r, int g, int b) {
-        setColor(r, g, b);
+        setValue(new Color(r, g, b));
         return this;
     }
 
     /**
-     * Sets the current color of the color chooser using an integer RGB value.
+     * Fluent setter for updating the current color using an integer RGB value.
      * 
      * @param c the new color represented as an integer
-     * @return this {@code DColor} instance for chaining
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor color(int c) {
-        setColor(c);
+        setValue(new Color(c));
         return this;
     }
 
     /**
-     * Sets the model containing the selected color.
+     * Fluent setter for updating the current color using a hex string.
      * 
-     * @param model the new {@link javax.swing.colorchooser.ColorSelectionModel}
-     * @return this {@code DColor} instance for chaining
+     * @param hex the hex string (e.g., "#FF0000" or "FF0000")
+     * @return this {@code DColor} instance to allow method chaining
      */
-    public DColor selectionModel(ColorSelectionModel model) {
-        setSelectionModel(model);
+    public DColor color(String hex) {
+        if (hex != null && !hex.isEmpty()) {
+            if (!hex.startsWith("#")) {
+                hex = "#" + hex;
+            }
+            setValue(Color.decode(hex));
+        }
         return this;
     }
 
     /**
-     * Adds a color chooser panel to the color chooser.
-     * Useful for extending the chooser with custom color selection UIs.
+     * Fluent setter for updating the current color using Hue, Saturation, Brightness.
      * 
-     * @param panel the {@link javax.swing.colorchooser.AbstractColorChooserPanel} to add
-     * @return this {@code DColor} instance for chaining
+     * @param h the hue component
+     * @param s the saturation component
+     * @param b the brightness component
+     * @return this {@code DColor} instance to allow method chaining
      */
-    public DColor addPanel(AbstractColorChooserPanel panel) {
-        addChooserPanel(panel);
+    public DColor colorHSB(float h, float s, float b) {
+        setValue(Color.getHSBColor(h, s, b));
         return this;
     }
 
     /**
-     * Removes a color chooser panel from the color chooser.
+     * Fluent setter for the background color of this component.
      * 
-     * @param panel the {@link javax.swing.colorchooser.AbstractColorChooserPanel} to remove
-     * @return this {@code DColor} instance for chaining
-     */
-    public DColor removePanel(AbstractColorChooserPanel panel) {
-        removeChooserPanel(panel);
-        return this;
-    }
-
-    /**
-     * Sets the background color of this component.
-     * 
-     * @param bg the desired background {@link java.awt.Color}
-     * @return this {@code DColor} instance for chaining
+     * @param bg the desired background {@link Color}
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor background(Color bg) {
         setBackground(bg);
@@ -200,10 +158,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the foreground color of this component.
+     * Fluent setter for the foreground color of this component.
      * 
-     * @param fg the desired foreground {@link java.awt.Color}
-     * @return this {@code DColor} instance for chaining
+     * @param fg the desired foreground {@link Color}
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor foreground(Color fg) {
         setForeground(fg);
@@ -211,10 +169,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the font for this component.
+     * Fluent setter for the font of this component.
      * 
-     * @param font the desired {@link java.awt.Font}
-     * @return this {@code DColor} instance for chaining
+     * @param font the desired {@link Font}
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor font(Font font) {
         setFont(font);
@@ -222,10 +180,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the tool tip text for this component.
+     * Fluent setter for the tool tip text displayed when hovering over this component.
      * 
-     * @param text the string to display when hovering over the component
-     * @return this {@code DColor} instance for chaining
+     * @param text the string to display
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor tooltip(String text) {
         setToolTipText(text);
@@ -233,10 +191,11 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the border of this component.
+     * Fluent setter for the border of this component.
+     * Useful for framing the color box on the UI.
      * 
-     * @param border the {@link javax.swing.border.Border} object
-     * @return this {@code DColor} instance for chaining
+     * @param border the {@link Border} object to apply
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor border(Border border) {
         setBorder(border);
@@ -244,10 +203,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the cursor that is displayed when the mouse pointer is over this component.
+     * Fluent setter for the cursor displayed when the mouse hovers over this component.
      * 
-     * @param cursor the {@link java.awt.Cursor} object
-     * @return this {@code DColor} instance for chaining
+     * @param cursor the {@link Cursor} object
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor cursor(Cursor cursor) {
         setCursor(cursor);
@@ -255,11 +214,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets whether this component is enabled.
-     * Disabled components typically do not respond to user input and appear grayed out.
+     * Fluent setter to enable or disable this component.
      * 
-     * @param enabled {@code true} if this component should be enabled
-     * @return this {@code DColor} instance for chaining
+     * @param enabled {@code true} to enable, {@code false} to disable
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor enabled(boolean enabled) {
         setEnabled(enabled);
@@ -267,10 +225,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets whether this component is visible.
+     * Fluent setter to control the visibility of this component.
      * 
-     * @param visible {@code true} if this component should be visible
-     * @return this {@code DColor} instance for chaining
+     * @param visible {@code true} to show, {@code false} to hide
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor visible(boolean visible) {
         setVisible(visible);
@@ -278,11 +236,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets whether this component is opaque.
-     * If {@code true}, the component paints every pixel within its bounds.
+     * Fluent setter to control the opacity of this component.
      * 
-     * @param opaque {@code true} if this component should be opaque
-     * @return this {@code DColor} instance for chaining
+     * @param opaque {@code true} to paint every pixel within its bounds
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor opaque(boolean opaque) {
         setOpaque(opaque);
@@ -290,10 +247,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the preferred size of this component.
+     * Fluent setter for the preferred size of this component.
      * 
-     * @param preferredSize the preferred {@link java.awt.Dimension}
-     * @return this {@code DColor} instance for chaining
+     * @param preferredSize the desired preferred {@link Dimension}
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor preferredSize(Dimension preferredSize) {
         setPreferredSize(preferredSize);
@@ -301,10 +258,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the minimum size of this component.
+     * Fluent setter for the minimum size of this component.
      * 
-     * @param minimumSize the minimum {@link java.awt.Dimension}
-     * @return this {@code DColor} instance for chaining
+     * @param minimumSize the minimum {@link Dimension}
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor minimumSize(Dimension minimumSize) {
         setMinimumSize(minimumSize);
@@ -312,10 +269,10 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the maximum size of this component.
+     * Fluent setter for the maximum size of this component.
      * 
-     * @param maximumSize the maximum {@link java.awt.Dimension}
-     * @return this {@code DColor} instance for chaining
+     * @param maximumSize the maximum {@link Dimension}
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor maximumSize(Dimension maximumSize) {
         setMaximumSize(maximumSize);
@@ -323,11 +280,93 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Sets the name of this component.
-     * This is useful for identifying the component, especially in UI testing.
+     * Fluent setter for the bounds of this component.
      * 
-     * @param name the string name to assign to this component
-     * @return this {@code DColor} instance for chaining
+     * @param x the new x-coordinate of this component
+     * @param y the new y-coordinate of this component
+     * @param width the new width of this component
+     * @param height the new height of this component
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor bounds(int x, int y, int width, int height) {
+        setBounds(x, y, width, height);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the location of this component.
+     * 
+     * @param x the new x-coordinate of this component
+     * @param y the new y-coordinate of this component
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor location(int x, int y) {
+        setLocation(x, y);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the size of this component.
+     * 
+     * @param width the new width of this component
+     * @param height the new height of this component
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor size(int width, int height) {
+        setSize(width, height);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the layout manager of this component.
+     * 
+     * @param mgr the specified layout manager
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor layout(LayoutManager mgr) {
+        setLayout(mgr);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the X alignment of this component.
+     * 
+     * @param alignmentX the alignment value (0.0f to 1.0f)
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor alignmentX(float alignmentX) {
+        setAlignmentX(alignmentX);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the Y alignment of this component.
+     * 
+     * @param alignmentY the alignment value (0.0f to 1.0f)
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor alignmentY(float alignmentY) {
+        setAlignmentY(alignmentY);
+        return this;
+    }
+
+    /**
+     * Fluent setter to enable or disable focusability.
+     * 
+     * @param focusable {@code true} if this component should be focusable
+     * @return this {@code DColor} instance to allow method chaining
+     */
+    public DColor focusable(boolean focusable) {
+        setFocusable(focusable);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the name of this component.
+     * Useful for UI automated testing or component lookups.
+     * 
+     * @param name the string name to assign
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor name(String name) {
         setName(name);
@@ -335,12 +374,11 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Adds an arbitrary key/value "client property" to this component.
-     * Client properties are useful for storing metadata or flags directly on the component.
+     * Adds an arbitrary key/value client property to this component.
      * 
      * @param key the property key
      * @param value the property value
-     * @return this {@code DColor} instance for chaining
+     * @return this {@code DColor} instance to allow method chaining
      */
     public DColor clientProperty(Object key, Object value) {
         putClientProperty(key, value);
@@ -348,21 +386,18 @@ public class DColor extends JColorChooser {
     }
 
     /**
-     * Shows a modal color-chooser dialog and blocks until the dialog is hidden.
-     * <p>
-     * This method wraps {@link javax.swing.JColorChooser#createDialog} but ensures 
-     * that <em>this</em> instance (and all its configured custom panels, preview panels, 
-     * and styling) is used rather than creating a new default {@code JColorChooser}.
-     * </p>
+     * Binds a click listener to this component.
      * 
-     * @return the selected {@link java.awt.Color}, or {@code null} if the user cancelled the dialog
+     * @param consumer the code to execute when this component is clicked
+     * @return this {@code DColor} instance to allow method chaining
      */
-    public Color showDialog() {
-        final Color[] result = {null};
-        ActionListener okListener = e -> result[0] = getColor();
-        JDialog dialog = JColorChooser.createDialog(parentComponent, dialogTitle, true, this, okListener, null);
-        dialog.setVisible(true);
-        dialog.dispose();
-        return result[0];
+    public DColor onClick(Consumer<MouseEvent> consumer) {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                consumer.accept(e);
+            }
+        });
+        return this;
     }
 }
