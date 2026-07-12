@@ -1,15 +1,20 @@
 package com.vidlus.jarch.desk;
-
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Cursor;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import javax.swing.border.Border;
+import javax.swing.BorderFactory;
+import javax.swing.SwingConstants;
+import java.util.function.Consumer;
+
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.border.Border;
 
 /**
  * A fluent API wrapper for JButton to easily create and configure buttons.
@@ -17,54 +22,56 @@ import javax.swing.border.Border;
 public class DButton extends JButton {
     
     /**
-     * Creates a button with no set text or icon.
+     * Constructs a new {@code DButton} with no set text or icon.
+     * This is the default constructor.
      */
     public DButton() {
         super();
     }
 
     /**
-     * Creates a button with text.
+     * Constructs a new {@code DButton} with the specified text label.
      * 
-     * @param text the text of the button
+     * @param text the text to display on the button
      */
     public DButton(String text) {
         super(text);
     }
 
     /**
-     * Creates a button where properties are taken from the Action supplied.
+     * Constructs a new {@code DButton} whose properties are taken from the supplied {@link Action}.
      * 
-     * @param a the Action used to specify the new button
+     * @param a the {@link Action} used to specify the new button
      */
     public DButton(Action a) {
         super(a);
     }
 
     /**
-     * Creates a button with an icon.
+     * Constructs a new {@code DButton} with the specified icon.
      * 
-     * @param icon the Icon image to display on the button
+     * @param icon the {@link DIcon} image to display on the button
      */
-    public DButton(Icon icon) {
+    public DButton(DIcon icon) {
         super(icon);
     }
 
     /**
-     * Creates a button with initial text and an icon.
+     * Constructs a new {@code DButton} with both initial text and an icon.
      * 
-     * @param text the text of the button
-     * @param icon the Icon image to display on the button
+     * @param text the text to display on the button
+     * @param icon the {@link DIcon} image to display on the button
      */
-    public DButton(String text, Icon icon) {
+    public DButton(String text, DIcon icon) {
         super(text, icon);
     }
 
     /**
-     * Adds an ActionListener to the button.
+     * Attaches an {@link ActionListener} to this component.
+     * The listener is invoked whenever the user triggers the primary action (e.g., clicking).
      * 
-     * @param listener the ActionListener to be added
-     * @return This DButton instance.
+     * @param listener the {@link ActionListener} to be attached
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton onAction(ActionListener listener) {
         addActionListener(listener);
@@ -72,10 +79,11 @@ public class DButton extends JButton {
     }
 
     /**
-     * Sets the Action for the button.
+     * Sets the {@link Action} for the button.
+     * This automatically configures the button's properties (text, icon, enabled state) from the action.
      * 
-     * @param a the Action for the button
-     * @return This DButton instance.
+     * @param a the {@link Action} for the button
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton action(Action a) {
         setAction(a);
@@ -83,11 +91,11 @@ public class DButton extends JButton {
     }
 
     /**
-     * Attaches a DPopup to this button, which will be shown on action performed.
-     * The popup is shown directly under the button.
-     *
-     * @param popup The DPopup to show.
-     * @return This DButton instance.
+     * Attaches a {@link DPopup} to this button, which will be automatically shown when the button is clicked.
+     * The popup is displayed directly underneath the button.
+     * 
+     * @param popup the {@link DPopup} to display
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton popup(DPopup popup) {
         addActionListener(e -> popup.show(this, 0, getHeight()));
@@ -95,10 +103,10 @@ public class DButton extends JButton {
     }
 
     /**
-     * Sets the button's text.
+     * Sets the text label of the button.
      * 
-     * @param text the string used to set the text
-     * @return This DButton instance.
+     * @param text the string to display
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton text(String text) {
         setText(text);
@@ -106,12 +114,12 @@ public class DButton extends JButton {
     }
 
     /**
-     * Sets the button's default icon.
+     * Sets the primary icon of the button.
      * 
-     * @param icon the icon used to set the default icon
-     * @return This DButton instance.
+     * @param icon the {@link DIcon} to display
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton icon(Icon icon) {
+    public DButton icon(DIcon icon) {
         setIcon(icon);
         return this;
     }
@@ -120,9 +128,9 @@ public class DButton extends JButton {
      * Sets the pressed icon for the button.
      * 
      * @param icon the icon used to set the pressed icon
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton pressedIcon(Icon icon) {
+    public DButton pressedIcon(DIcon icon) {
         setPressedIcon(icon);
         return this;
     }
@@ -131,9 +139,9 @@ public class DButton extends JButton {
      * Sets the selected icon for the button.
      * 
      * @param icon the icon used to set the selected icon
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton selectedIcon(Icon icon) {
+    public DButton selectedIcon(DIcon icon) {
         setSelectedIcon(icon);
         return this;
     }
@@ -142,9 +150,9 @@ public class DButton extends JButton {
      * Sets the rollover icon for the button.
      * 
      * @param icon the icon used to set the rollover icon
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton rolloverIcon(Icon icon) {
+    public DButton rolloverIcon(DIcon icon) {
         setRolloverIcon(icon);
         return this;
     }
@@ -153,9 +161,9 @@ public class DButton extends JButton {
      * Sets the disabled icon for the button.
      * 
      * @param icon the icon used to set the disabled icon
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton disabledIcon(Icon icon) {
+    public DButton disabledIcon(DIcon icon) {
         setDisabledIcon(icon);
         return this;
     }
@@ -164,9 +172,9 @@ public class DButton extends JButton {
      * Sets the disabled selection icon for the button.
      * 
      * @param icon the icon used to set the disabled selection icon
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton disabledSelectedIcon(Icon icon) {
+    public DButton disabledSelectedIcon(DIcon icon) {
         setDisabledSelectedIcon(icon);
         return this;
     }
@@ -175,9 +183,9 @@ public class DButton extends JButton {
      * Sets the rollover selection icon for the button.
      * 
      * @param icon the icon used to set the rollover selection icon
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton rolloverSelectedIcon(Icon icon) {
+    public DButton rolloverSelectedIcon(DIcon icon) {
         setRolloverSelectedIcon(icon);
         return this;
     }
@@ -186,7 +194,7 @@ public class DButton extends JButton {
      * Sets the keyboard mnemonic on the current model.
      * 
      * @param mnemonic the key code which represents the mnemonic
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton mnemonic(int mnemonic) {
         setMnemonic(mnemonic);
@@ -197,7 +205,7 @@ public class DButton extends JButton {
      * Sets the keyboard mnemonic on the current model.
      * 
      * @param mnemonic the char which represents the mnemonic
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton mnemonic(char mnemonic) {
         setMnemonic(mnemonic);
@@ -208,7 +216,7 @@ public class DButton extends JButton {
      * Provides a hint to the look and feel as to which character in the text should be decorated to represent the mnemonic.
      * 
      * @param index the index into the String to display as the mnemonic
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton displayedMnemonicIndex(int index) {
         setDisplayedMnemonicIndex(index);
@@ -219,7 +227,7 @@ public class DButton extends JButton {
      * Sets the action command for this button.
      * 
      * @param actionCommand the action command for this button
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton actionCommand(String actionCommand) {
         setActionCommand(actionCommand);
@@ -230,7 +238,7 @@ public class DButton extends JButton {
      * Sets the border of this component.
      * 
      * @param border the border to be rendered for this component
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton border(Border border) {
         setBorder(border);
@@ -241,7 +249,7 @@ public class DButton extends JButton {
      * Sets whether the border should be painted.
      * 
      * @param b if true, the border is painted
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton borderPainted(boolean b) {
         setBorderPainted(b);
@@ -252,7 +260,7 @@ public class DButton extends JButton {
      * Sets whether focus should be painted.
      * 
      * @param b if true, the focus state is painted
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton focusPainted(boolean b) {
         setFocusPainted(b);
@@ -263,7 +271,7 @@ public class DButton extends JButton {
      * Sets the contentAreaFilled property.
      * 
      * @param b if true, the content are is filled; if false the content area is not filled
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton contentAreaFilled(boolean b) {
         setContentAreaFilled(b);
@@ -274,7 +282,7 @@ public class DButton extends JButton {
      * Sets the rolloverEnabled property.
      * 
      * @param b if true, rollover effects should be painted
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton rolloverEnabled(boolean b) {
         setRolloverEnabled(b);
@@ -285,7 +293,7 @@ public class DButton extends JButton {
      * Sets the background color of this component.
      * 
      * @param bg the desired background Color
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton background(Color bg) {
         setBackground(bg);
@@ -296,7 +304,7 @@ public class DButton extends JButton {
      * Sets the foreground color of this component.
      * 
      * @param fg the desired foreground Color
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton foreground(Color fg) {
         setForeground(fg);
@@ -306,8 +314,8 @@ public class DButton extends JButton {
     /**
      * Sets the font of this component.
      * 
-     * @param font the desired Font
-     * @return This DButton instance.
+     * @param font the desired {@link Font}
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton font(Font font) {
         setFont(font);
@@ -318,7 +326,7 @@ public class DButton extends JButton {
      * Sets space for margin between the button's border and the label.
      * 
      * @param m the space between the border and the label
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton margin(Insets m) {
         setMargin(m);
@@ -332,7 +340,7 @@ public class DButton extends JButton {
      * @param left the left margin
      * @param bottom the bottom margin
      * @param right the right margin
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton margin(int top, int left, int bottom, int right) {
         setMargin(new Insets(top, left, bottom, right));
@@ -343,7 +351,7 @@ public class DButton extends JButton {
      * Enables or disables this component.
      * 
      * @param enabled true to enable, false to disable
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton enabled(boolean enabled) {
         setEnabled(enabled);
@@ -354,7 +362,7 @@ public class DButton extends JButton {
      * Sets the focusable state of this Component.
      * 
      * @param focusable indicates whether this Component is focusable
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton focusable(boolean focusable) {
         setFocusable(focusable);
@@ -365,7 +373,7 @@ public class DButton extends JButton {
      * Shows or hides this component.
      * 
      * @param visible true to make the component visible; false to make it invisible
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton visible(boolean visible) {
         setVisible(visible);
@@ -376,7 +384,7 @@ public class DButton extends JButton {
      * If true the component paints every pixel within its bounds.
      * 
      * @param isOpaque true if this component should be opaque
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton opaque(boolean isOpaque) {
         setOpaque(isOpaque);
@@ -387,7 +395,7 @@ public class DButton extends JButton {
      * Sets the preferred size of this component.
      * 
      * @param preferredSize the new preferred size, or null
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton preferredSize(Dimension preferredSize) {
         setPreferredSize(preferredSize);
@@ -399,7 +407,7 @@ public class DButton extends JButton {
      * 
      * @param width the preferred width
      * @param height the preferred height
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton preferredSize(int width, int height) {
         setPreferredSize(new Dimension(width, height));
@@ -410,7 +418,7 @@ public class DButton extends JButton {
      * Sets the minimum size of this component.
      * 
      * @param minimumSize the new minimum size of this component
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton minimumSize(Dimension minimumSize) {
         setMinimumSize(minimumSize);
@@ -422,7 +430,7 @@ public class DButton extends JButton {
      * 
      * @param width the minimum width
      * @param height the minimum height
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton minimumSize(int width, int height) {
         setMinimumSize(new Dimension(width, height));
@@ -433,7 +441,7 @@ public class DButton extends JButton {
      * Sets the maximum size of this component.
      * 
      * @param maximumSize the new maximum size of this component
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton maximumSize(Dimension maximumSize) {
         setMaximumSize(maximumSize);
@@ -445,7 +453,7 @@ public class DButton extends JButton {
      * 
      * @param width the maximum width
      * @param height the maximum height
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton maximumSize(int width, int height) {
         setMaximumSize(new Dimension(width, height));
@@ -456,7 +464,7 @@ public class DButton extends JButton {
      * Sets the horizontal alignment of the icon and text.
      * 
      * @param alignment one of the following constants: SwingConstants.RIGHT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.LEADING or SwingConstants.TRAILING
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton horizontalAlignment(int alignment) {
         setHorizontalAlignment(alignment);
@@ -467,7 +475,7 @@ public class DButton extends JButton {
      * Sets the vertical alignment of the icon and text.
      * 
      * @param alignment one of the following constants: SwingConstants.CENTER, SwingConstants.TOP, SwingConstants.BOTTOM
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton verticalAlignment(int alignment) {
         setVerticalAlignment(alignment);
@@ -478,7 +486,7 @@ public class DButton extends JButton {
      * Sets the horizontal position of the text relative to the icon.
      * 
      * @param textPosition one of the following constants: SwingConstants.RIGHT, SwingConstants.LEFT, SwingConstants.CENTER, SwingConstants.LEADING or SwingConstants.TRAILING
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton horizontalTextPosition(int textPosition) {
         setHorizontalTextPosition(textPosition);
@@ -489,7 +497,7 @@ public class DButton extends JButton {
      * Sets the vertical position of the text relative to the icon.
      * 
      * @param textPosition one of the following constants: SwingConstants.CENTER, SwingConstants.TOP, SwingConstants.BOTTOM
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton verticalTextPosition(int textPosition) {
         setVerticalTextPosition(textPosition);
@@ -500,7 +508,7 @@ public class DButton extends JButton {
      * If both the icon and text properties are set, this property defines the space between them.
      * 
      * @param iconTextGap the space between icon and text
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton iconTextGap(int iconTextGap) {
         setIconTextGap(iconTextGap);
@@ -511,7 +519,7 @@ public class DButton extends JButton {
      * Sets the amount of time (in milliseconds) required between mouse press events for the button to generate the corresponding action events.
      * 
      * @param threshhold the amount of time required between mouse press events
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton multiClickThreshhold(long threshhold) {
         setMultiClickThreshhold(threshhold);
@@ -531,7 +539,7 @@ public class DButton extends JButton {
      * Sets the name of the component.
      * 
      * @param name the string that is to be this component's name
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton name(String name) {
         setName(name);
@@ -542,7 +550,7 @@ public class DButton extends JButton {
      * Sets the tooltip text.
      * 
      * @param hint the string to display
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton hint(String hint) {
         setToolTipText(hint);
@@ -561,8 +569,8 @@ public class DButton extends JButton {
     /**
      * Sets the hideActionText property, which determines whether the button displays text from the Action.
      * 
-     * @param hide if true, the button's text is not updated from the Action
-     * @return This DButton instance.
+     * @param hide if true, the button's text is not updated from the {@link Action}
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton hideActionText(boolean hide) {
         setHideActionText(hide);
@@ -575,10 +583,10 @@ public class DButton extends JButton {
      * Sets an empty border around the button, effectively acting as padding.
      * 
      * @param size the padding size for all four sides
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton borderEmpty(int size) {
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(size, size, size, size));
+        setBorder(BorderFactory.createEmptyBorder(size, size, size, size));
         return this;
     }
 
@@ -589,10 +597,10 @@ public class DButton extends JButton {
      * @param left   the left padding
      * @param bottom the bottom padding
      * @param right  the right padding
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton borderEmpty(int top, int left, int bottom, int right) {
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(top, left, bottom, right));
+        setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
         return this;
     }
 
@@ -600,10 +608,10 @@ public class DButton extends JButton {
      * Sets a simple 1px solid line border around the button.
      * 
      * @param color the color of the line border
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton borderLine(java.awt.Color color) {
-        setBorder(javax.swing.BorderFactory.createLineBorder(color));
+    public DButton borderLine(Color color) {
+        setBorder(BorderFactory.createLineBorder(color));
         return this;
     }
 
@@ -612,31 +620,31 @@ public class DButton extends JButton {
      * 
      * @param color     the color of the line border
      * @param thickness the thickness of the border in pixels
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton borderLine(java.awt.Color color, int thickness) {
-        setBorder(javax.swing.BorderFactory.createLineBorder(color, thickness));
+    public DButton borderLine(Color color, int thickness) {
+        setBorder(BorderFactory.createLineBorder(color, thickness));
         return this;
     }
 
     /**
      * Sets the mouse cursor that displays when hovering over this button.
      * 
-     * @param cursorType the integer constant from java.awt.Cursor
-     * @return This DButton instance.
+     * @param cursorType the integer constant from {@link Cursor}
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton cursor(int cursorType) {
-        setCursor(new java.awt.Cursor(cursorType));
+        setCursor(new Cursor(cursorType));
         return this;
     }
 
     /**
      * Instantly sets the cursor to a Hand cursor when hovering over the button.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton cursorHand() {
-        return cursor(java.awt.Cursor.HAND_CURSOR);
+        return cursor(Cursor.HAND_CURSOR);
     }
 
     // --- Font Styling Helpers ---
@@ -644,20 +652,20 @@ public class DButton extends JButton {
     /**
      * Derives and applies a bold version of the current font.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton fontBold() {
-        if (getFont() != null) setFont(getFont().deriveFont(java.awt.Font.BOLD));
+        if (getFont() != null) setFont(getFont().deriveFont(Font.BOLD));
         return this;
     }
 
     /**
      * Derives and applies an italic version of the current font.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton fontItalic() {
-        if (getFont() != null) setFont(getFont().deriveFont(java.awt.Font.ITALIC));
+        if (getFont() != null) setFont(getFont().deriveFont(Font.ITALIC));
         return this;
     }
 
@@ -665,7 +673,7 @@ public class DButton extends JButton {
      * Derives and applies a specific size to the current font.
      * 
      * @param size the new font size as a float
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton fontSize(float size) {
         if (getFont() != null) setFont(getFont().deriveFont(size));
@@ -677,71 +685,71 @@ public class DButton extends JButton {
     /**
      * Aligns the content of the button to the left.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton alignLeft() {
-        return horizontalAlignment(javax.swing.SwingConstants.LEFT);
+        return horizontalAlignment(SwingConstants.LEFT);
     }
 
     /**
      * Aligns the content of the button to the right.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton alignRight() {
-        return horizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        return horizontalAlignment(SwingConstants.RIGHT);
     }
 
     /**
      * Aligns the content of the button to the center.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton alignCenter() {
-        return horizontalAlignment(javax.swing.SwingConstants.CENTER);
+        return horizontalAlignment(SwingConstants.CENTER);
     }
 
     /**
      * Automatically positions the text directly beneath the icon.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton textUnderIcon() {
-        verticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        horizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        verticalTextPosition(SwingConstants.BOTTOM);
+        horizontalTextPosition(SwingConstants.CENTER);
         return this;
     }
 
     /**
      * Automatically positions the text directly to the right of the icon.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton textRightOfIcon() {
-        verticalTextPosition(javax.swing.SwingConstants.CENTER);
-        horizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        verticalTextPosition(SwingConstants.CENTER);
+        horizontalTextPosition(SwingConstants.RIGHT);
         return this;
     }
 
     /**
      * Automatically positions the text directly to the left of the icon.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton textLeftOfIcon() {
-        verticalTextPosition(javax.swing.SwingConstants.CENTER);
-        horizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        verticalTextPosition(SwingConstants.CENTER);
+        horizontalTextPosition(SwingConstants.LEFT);
         return this;
     }
 
     /**
      * Automatically positions the text directly above the icon.
      * 
-     * @return This DButton instance.
+     * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton textAboveIcon() {
-        verticalTextPosition(javax.swing.SwingConstants.TOP);
-        horizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        verticalTextPosition(SwingConstants.TOP);
+        horizontalTextPosition(SwingConstants.CENTER);
         return this;
     }
 
@@ -750,13 +758,13 @@ public class DButton extends JButton {
     /**
      * Injects a functional action that is triggered when the mouse enters the button area.
      * 
-     * @param action the Consumer accepting the MouseEvent
-     * @return This DButton instance.
+     * @param action the Consumer accepting the {@link MouseEvent}
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton onMouseEnter(java.util.function.Consumer<java.awt.event.MouseEvent> action) {
-        addMouseListener(new java.awt.event.MouseAdapter() {
+    public DButton onMouseEnter(Consumer<MouseEvent> action) {
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
+            public void mouseEntered(MouseEvent e) {
                 action.accept(e);
             }
         });
@@ -766,13 +774,13 @@ public class DButton extends JButton {
     /**
      * Injects a functional action that is triggered when the mouse exits the button area.
      * 
-     * @param action the Consumer accepting the MouseEvent
-     * @return This DButton instance.
+     * @param action the Consumer accepting the {@link MouseEvent}
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton onMouseExit(java.util.function.Consumer<java.awt.event.MouseEvent> action) {
-        addMouseListener(new java.awt.event.MouseAdapter() {
+    public DButton onMouseExit(Consumer<MouseEvent> action) {
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
+            public void mouseExited(MouseEvent e) {
                 action.accept(e);
             }
         });
@@ -782,16 +790,117 @@ public class DButton extends JButton {
     /**
      * Injects a functional action that is triggered when the mouse clicks the button.
      * 
-     * @param action the Consumer accepting the MouseEvent
-     * @return This DButton instance.
+     * @param action the Consumer accepting the {@link MouseEvent}
+     * @return this {@code DButton} instance to allow for method chaining
      */
-    public DButton onMouseClick(java.util.function.Consumer<java.awt.event.MouseEvent> action) {
-        addMouseListener(new java.awt.event.MouseAdapter() {
+    public DButton onMouseClick(Consumer<MouseEvent> action) {
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 action.accept(e);
             }
         });
+        return this;
+    }
+
+    /**
+     * Injects a functional action that is triggered when the mouse is double-clicked on the button.
+     * 
+     * @param action the Consumer accepting the {@link MouseEvent}
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton onDoubleClick(Consumer<MouseEvent> action) {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2 && javax.swing.SwingUtilities.isLeftMouseButton(e)) {
+                    action.accept(e);
+                }
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Injects a functional action that is triggered when the mouse is right-clicked on the button.
+     * 
+     * @param action the Consumer accepting the {@link MouseEvent}
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton onRightClick(Consumer<MouseEvent> action) {
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (javax.swing.SwingUtilities.isRightMouseButton(e)) {
+                    action.accept(e);
+                }
+            }
+        });
+        return this;
+    }
+
+    /**
+     * Sets the bounds of the button.
+     * 
+     * @param x the new x-coordinate
+     * @param y the new y-coordinate
+     * @param width the new width
+     * @param height the new height
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton bounds(int x, int y, int width, int height) {
+        setBounds(x, y, width, height);
+        return this;
+    }
+
+    /**
+     * Sets the location of the button.
+     * 
+     * @param x the new x-coordinate
+     * @param y the new y-coordinate
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton location(int x, int y) {
+        setLocation(x, y);
+        return this;
+    }
+
+    /**
+     * Sets the size of the button.
+     * 
+     * @param width the new width
+     * @param height the new height
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton size(int width, int height) {
+        setSize(width, height);
+        return this;
+    }
+
+    /**
+     * Strips the button of its background, border, and content area fill, making it fully transparent.
+     * Useful for image-only buttons or link-style buttons.
+     * 
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton transparent() {
+        setOpaque(false);
+        setContentAreaFilled(false);
+        setBorderPainted(false);
+        return this;
+    }
+
+    /**
+     * Alias for {@link #margin(int, int, int, int)}. Sets the space between the button's border and the label.
+     * 
+     * @param top the top padding
+     * @param left the left padding
+     * @param bottom the bottom padding
+     * @param right the right padding
+     * @return this {@code DButton} instance to allow for method chaining
+     */
+    public DButton padding(int top, int left, int bottom, int right) {
+        setMargin(new Insets(top, left, bottom, right));
         return this;
     }
 }
