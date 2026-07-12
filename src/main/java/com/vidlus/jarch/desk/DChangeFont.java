@@ -12,19 +12,38 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+/**
+ * A UI component for editing and selecting a font.
+ * Provides a text field displaying font details and a button that opens a custom font picker dialog.
+ */
 public class DChangeFont extends DEditChange<Font> {
 
     private Font currentFont = new JLabel().getFont();
+    private String dialogTitle = "Select Font";
 
+    /**
+     * Constructs a new DChangeFont component.
+     */
     public DChangeFont() {
         super("F");
     }
 
+    /**
+     * Retrieves the currently selected font.
+     * 
+     * @return the selected Font
+     */
     @Override
     public Font getValue() {
         return currentFont;
     }
 
+    /**
+     * Sets the font value. Updates the text field to display the font family and size,
+     * and sets the component's font.
+     * 
+     * @param value the Font to set
+     */
     @Override
     public void setValue(Font value) {
         this.currentFont = value == null ? new JLabel().getFont() : value;
@@ -32,6 +51,10 @@ public class DChangeFont extends DEditChange<Font> {
         getField().setFont(currentFont);
     }
 
+    /**
+     * Handles the action button press event.
+     * Opens a custom dialog listing system fonts and a size spinner to let the user select a font.
+     */
     @Override
     protected void onActionPressed() {
         if (!editable()) return;
@@ -48,7 +71,7 @@ public class DChangeFont extends DEditChange<Font> {
         
         DAlert alert = new DAlert()
             .parent(comp())
-            .title("Select Font")
+            .title(dialogTitle)
             .message(panel)
             .plain()
             .okCancel();
@@ -59,5 +82,27 @@ public class DChangeFont extends DEditChange<Font> {
             int size = (Integer) sizeSpinner.getValue();
             setValue(new Font(family, currentFont.getStyle(), size));
         }
+    }
+
+    /**
+     * Fluent setter for the font value.
+     * 
+     * @param font the Font to set
+     * @return this DChangeFont instance
+     */
+    public DChangeFont font(Font font) {
+        setValue(font);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the dialog title displayed when the action button is pressed.
+     * 
+     * @param dialogTitle the title for the dialog
+     * @return this DChangeFont instance
+     */
+    public DChangeFont dialogTitle(String dialogTitle) {
+        this.dialogTitle = dialogTitle;
+        return this;
     }
 }

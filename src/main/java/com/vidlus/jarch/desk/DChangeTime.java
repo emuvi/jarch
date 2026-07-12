@@ -11,13 +11,28 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
+/**
+ * A UI component for editing and selecting a time.
+ * Provides a text field with a time format filter and a button that opens a time picker dialog.
+ */
 public class DChangeTime extends DEditChange<LocalTime> {
 
+    private String dialogTitle = "Select Time";
+
+    /**
+     * Constructs a new DChangeTime component.
+     * Applies a TimeFilter to restrict input to valid time characters.
+     */
     public DChangeTime() {
         super("*");
         ((AbstractDocument) field.getDocument()).setDocumentFilter(new TimeFilter());
     }
 
+    /**
+     * Retrieves the parsed time from the text field.
+     * 
+     * @return the parsed LocalTime, or null if empty or invalid
+     */
     @Override
     public LocalTime getValue() {
         var text = getField().getText();
@@ -28,11 +43,20 @@ public class DChangeTime extends DEditChange<LocalTime> {
         }
     }
 
+    /**
+     * Sets the time value, formatting it as a string in the text field.
+     * 
+     * @param value the LocalTime to set
+     */
     @Override
     public void setValue(LocalTime value) {
         getField().setText(value == null ? "" : value.toString());
     }
 
+    /**
+     * Handles the action button press event.
+     * Opens a spinner-based time picker dialog for the user to select a time.
+     */
     @Override
     protected void onActionPressed() {
         if (!editable()) return;
@@ -49,7 +73,7 @@ public class DChangeTime extends DEditChange<LocalTime> {
 
         DAlert alert = new DAlert()
                 .parent(comp())
-                .title("Select Time")
+                .title(dialogTitle)
                 .message(spinner)
                 .plain()
                 .okCancel();
@@ -60,6 +84,9 @@ public class DChangeTime extends DEditChange<LocalTime> {
         }
     }
 
+    /**
+     * A document filter that restricts text input to a partial or complete HH:mm:ss time format.
+     */
     private class TimeFilter extends DocumentFilter {
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -87,5 +114,27 @@ public class DChangeTime extends DEditChange<LocalTime> {
             if (text.length() > 8) return false;
             return text.matches("^\\d{0,2}(:\\d{0,2}(:\\d{0,2})?)?$");
         }
+    }
+
+    /**
+     * Fluent setter for the time value.
+     * 
+     * @param time the LocalTime to set
+     * @return this DChangeTime instance
+     */
+    public DChangeTime time(LocalTime time) {
+        setValue(time);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the dialog title displayed when the action button is pressed.
+     * 
+     * @param dialogTitle the title for the dialog
+     * @return this DChangeTime instance
+     */
+    public DChangeTime dialogTitle(String dialogTitle) {
+        this.dialogTitle = dialogTitle;
+        return this;
     }
 }

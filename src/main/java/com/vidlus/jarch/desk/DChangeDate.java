@@ -11,13 +11,28 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
+/**
+ * A UI component for editing and selecting a date.
+ * Provides a text field with a date format filter and a button that opens a date picker dialog.
+ */
 public class DChangeDate extends DEditChange<LocalDate> {
 
+    private String dialogTitle = "Select Date";
+
+    /**
+     * Constructs a new DChangeDate component.
+     * Applies a DateFilter to restrict input to valid date characters.
+     */
     public DChangeDate() {
         super("*");
         ((AbstractDocument) field.getDocument()).setDocumentFilter(new DateFilter());
     }
 
+    /**
+     * Retrieves the parsed date from the text field.
+     * 
+     * @return the parsed LocalDate, or null if empty or invalid
+     */
     @Override
     public LocalDate getValue() {
         var text = getField().getText();
@@ -28,11 +43,20 @@ public class DChangeDate extends DEditChange<LocalDate> {
         }
     }
 
+    /**
+     * Sets the date value, formatting it as a string in the text field.
+     * 
+     * @param value the LocalDate to set
+     */
     @Override
     public void setValue(LocalDate value) {
         getField().setText(value == null ? "" : value.toString());
     }
 
+    /**
+     * Handles the action button press event.
+     * Opens a spinner-based date picker dialog for the user to select a date.
+     */
     @Override
     protected void onActionPressed() {
         if (!editable()) return;
@@ -49,7 +73,7 @@ public class DChangeDate extends DEditChange<LocalDate> {
 
         DAlert alert = new DAlert()
                 .parent(comp())
-                .title("Select Date")
+                .title(dialogTitle)
                 .message(spinner)
                 .plain()
                 .okCancel();
@@ -60,6 +84,9 @@ public class DChangeDate extends DEditChange<LocalDate> {
         }
     }
 
+    /**
+     * A document filter that restricts text input to a partial or complete yyyy-MM-dd date format.
+     */
     private class DateFilter extends DocumentFilter {
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
@@ -87,5 +114,27 @@ public class DChangeDate extends DEditChange<LocalDate> {
             if (text.length() > 10) return false;
             return text.matches("^\\d{0,4}(-\\d{0,2}(-\\d{0,2})?)?$");
         }
+    }
+
+    /**
+     * Fluent setter for the date value.
+     * 
+     * @param date the LocalDate to set
+     * @return this DChangeDate instance
+     */
+    public DChangeDate date(LocalDate date) {
+        setValue(date);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the dialog title displayed when the action button is pressed.
+     * 
+     * @param dialogTitle the title for the dialog
+     * @return this DChangeDate instance
+     */
+    public DChangeDate dialogTitle(String dialogTitle) {
+        this.dialogTitle = dialogTitle;
+        return this;
     }
 }

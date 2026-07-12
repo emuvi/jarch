@@ -11,12 +11,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * A UI component for editing and selecting a map of string key-value pairs.
+ * Provides a text field for semicolon-separated pairs and a button that opens a multiline text area dialog.
+ */
 public class DChangeMap extends DEditChange<Map<String, String>> {
 
+    private String dialogTitle = "Edit Map (key=value per line)";
+
+    /**
+     * Constructs a new DChangeMap component.
+     */
     public DChangeMap() {
         super("Edit");
     }
 
+    /**
+     * Retrieves the map parsed from the text field (semicolon-separated `key=value` pairs).
+     * 
+     * @return the Map of key-value string pairs, or an empty map if blank
+     */
     @Override
     public Map<String, String> getValue() {
         var text = getField().getText();
@@ -35,6 +49,11 @@ public class DChangeMap extends DEditChange<Map<String, String>> {
         return map;
     }
 
+    /**
+     * Sets the map value, formatting it as `key=value` separated by semicolons in the text field.
+     * 
+     * @param value the Map to set
+     */
     @Override
     public void setValue(Map<String, String> value) {
         if (value == null || value.isEmpty()) {
@@ -48,6 +67,10 @@ public class DChangeMap extends DEditChange<Map<String, String>> {
         getField().setText(String.join("; ", entries));
     }
 
+    /**
+     * Handles the action button press event.
+     * Opens a dialog with a text area allowing the user to edit the map with one `key=value` per line.
+     */
     @Override
     protected void onActionPressed() {
         if (!editable()) return;
@@ -67,7 +90,7 @@ public class DChangeMap extends DEditChange<Map<String, String>> {
 
         DAlert alert = new DAlert()
             .parent(comp())
-            .title("Edit Map (key=value per line)")
+            .title(dialogTitle)
             .message(panel)
             .plain()
             .okCancel();
@@ -88,5 +111,27 @@ public class DChangeMap extends DEditChange<Map<String, String>> {
             }
             setValue(newMap);
         }
+    }
+
+    /**
+     * Fluent setter for the map value.
+     * 
+     * @param map the Map to set
+     * @return this DChangeMap instance
+     */
+    public DChangeMap map(Map<String, String> map) {
+        setValue(map);
+        return this;
+    }
+
+    /**
+     * Fluent setter for the dialog title displayed when the action button is pressed.
+     * 
+     * @param dialogTitle the title for the dialog
+     * @return this DChangeMap instance
+     */
+    public DChangeMap dialogTitle(String dialogTitle) {
+        this.dialogTitle = dialogTitle;
+        return this;
     }
 }
