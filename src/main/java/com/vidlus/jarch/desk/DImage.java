@@ -15,29 +15,62 @@ import javax.swing.JComponent;
  */
 public class DImage extends JComponent {
 
+    /**
+     * Defines how the image should be scaled to fit within the component's bounds.
+     */
     public enum ScaleType {
-        NONE, FIT, FILL, STRETCH
+        /** Display the image at its original resolution, centered. */
+        NONE, 
+        /** Scale the image to fit entirely within the component, maintaining aspect ratio. */
+        FIT, 
+        /** Scale the image to completely fill the component, maintaining aspect ratio (may crop). */
+        FILL, 
+        /** Stretch the image to exactly match the component's dimensions, ignoring aspect ratio. */
+        STRETCH
     }
 
     private Image image;
     private ScaleType scaleType = ScaleType.FIT;
     private boolean highQuality = true;
 
+    /**
+     * Creates an empty DImage component with no initial image.
+     */
     public DImage() {
     }
 
+    /**
+     * Creates a DImage component that displays the given awt Image.
+     * 
+     * @param image the Image to display
+     */
     public DImage(Image image) {
         this.image = image;
     }
 
+    /**
+     * Creates a DImage component that loads and displays an image from the specified path.
+     * 
+     * @param path the file path to the image
+     */
     public DImage(String path) {
         this(new ImageIcon(path).getImage());
     }
 
+    /**
+     * Creates a DImage component that loads and displays an image from the specified URL.
+     * 
+     * @param url the URL to the image
+     */
     public DImage(URL url) {
         this(new ImageIcon(url).getImage());
     }
 
+    /**
+     * Creates a DImage component that loads and displays an image from the specified File.
+     * 
+     * @param file the File pointing to the image
+     */
     public DImage(File file) {
         this(new ImageIcon(file.getAbsolutePath()).getImage());
     }

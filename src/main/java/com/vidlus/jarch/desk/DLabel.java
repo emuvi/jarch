@@ -51,7 +51,7 @@ public class DLabel extends JLabel {
         setVerticalAlignment(alignment);
         return this;
     }
-    
+
     public DLabel verticalAlignmentTop() {
         setVerticalAlignment(JLabel.TOP);
         return this;
