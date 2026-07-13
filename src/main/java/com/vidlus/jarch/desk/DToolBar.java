@@ -179,4 +179,70 @@ public class DToolBar extends JToolBar {
         setBackground(bg);
         return this;
     }
+
+    /**
+     * Sets whether the tool bar is enabled.
+     * 
+     * @param b true to enable, false to disable
+     * @return This DToolBar instance.
+     */
+    public DToolBar enabled(boolean b) {
+        setEnabled(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the tool bar is visible.
+     * 
+     * @param b true to make visible, false to hide
+     * @return This DToolBar instance.
+     */
+    public DToolBar visible(boolean b) {
+        setVisible(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the tool bar is opaque.
+     * 
+     * @param b true to make opaque, false to make transparent
+     * @return This DToolBar instance.
+     */
+    public DToolBar opaque(boolean b) {
+        setOpaque(b);
+        return this;
+    }
+
+    /**
+     * Sets the name of this tool bar.
+     * 
+     * @param name the name to set
+     * @return This DToolBar instance.
+     */
+    public DToolBar name(String name) {
+        setName(name);
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this tool bar.
+     * 
+     * @param preferredSize the preferred size
+     * @return This DToolBar instance.
+     */
+    public DToolBar preferredSize(Dimension preferredSize) {
+        setPreferredSize(preferredSize);
+        return this;
+    }
+
+    /**
+     * Registers the text to display in a tool tip.
+     * 
+     * @param text the string to display
+     * @return This DToolBar instance.
+     */
+    public DToolBar toolTip(String text) {
+        setToolTipText(text);
+        return this;
+    }
 }

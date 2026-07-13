@@ -1,9 +1,11 @@
 package com.vidlus.jarch.desk;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 
 
+import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -12,18 +14,37 @@ import javax.swing.JMenuItem;
  */
 public class DMenu extends JMenu {
 
+    /**
+     * Constructs a new DMenu with no text.
+     */
     public DMenu() {
         super();
     }
 
+    /**
+     * Constructs a new DMenu with the supplied string as its text.
+     *
+     * @param s the text for the menu label
+     */
     public DMenu(String s) {
         super(s);
     }
 
+    /**
+     * Constructs a menu whose properties are taken from the Action supplied.
+     *
+     * @param a an Action
+     */
     public DMenu(DAction a) {
         super(a);
     }
 
+    /**
+     * Constructs a new DMenu with the supplied string as its text and specified as a tear-off menu or not.
+     *
+     * @param s the text for the menu label
+     * @param b can the menu be torn off (not yet implemented)
+     */
     public DMenu(String s, boolean b) {
         super(s, b);
     }
@@ -123,6 +144,105 @@ public class DMenu extends JMenu {
      */
     public DMenu background(Color bg) {
         setBackground(bg);
+        return this;
+    }
+
+    /**
+     * Sets the text of this menu.
+     * 
+     * @param text the text to set
+     * @return This DMenu instance.
+     */
+    public DMenu text(String text) {
+        setText(text);
+        return this;
+    }
+
+    /**
+     * Sets the icon of this menu.
+     * 
+     * @param icon the icon to set
+     * @return This DMenu instance.
+     */
+    public DMenu icon(Icon icon) {
+        setIcon(icon);
+        return this;
+    }
+
+    /**
+     * Sets whether the menu is enabled.
+     * 
+     * @param b true to enable, false to disable
+     * @return This DMenu instance.
+     */
+    public DMenu enabled(boolean b) {
+        setEnabled(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the menu is visible.
+     * 
+     * @param b true to make visible, false to hide
+     * @return This DMenu instance.
+     */
+    public DMenu visible(boolean b) {
+        setVisible(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the menu is opaque.
+     * 
+     * @param b true to make opaque, false to make transparent
+     * @return This DMenu instance.
+     */
+    public DMenu opaque(boolean b) {
+        setOpaque(b);
+        return this;
+    }
+
+    /**
+     * Sets the name of this menu.
+     * 
+     * @param name the name to set
+     * @return This DMenu instance.
+     */
+    public DMenu name(String name) {
+        setName(name);
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this menu.
+     * 
+     * @param preferredSize the preferred size
+     * @return This DMenu instance.
+     */
+    public DMenu preferredSize(Dimension preferredSize) {
+        setPreferredSize(preferredSize);
+        return this;
+    }
+
+    /**
+     * Sets the action command for this menu.
+     * 
+     * @param command the action command
+     * @return This DMenu instance.
+     */
+    public DMenu actionCommand(String command) {
+        setActionCommand(command);
+        return this;
+    }
+
+    /**
+     * Sets the delay in milliseconds before the menu's popup menu appears or disappears.
+     * 
+     * @param d the delay in milliseconds
+     * @return This DMenu instance.
+     */
+    public DMenu delay(int d) {
+        setDelay(d);
         return this;
     }
 }
