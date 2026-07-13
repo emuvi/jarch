@@ -2,7 +2,6 @@ package com.vidlus.jarch.desk;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -63,17 +62,14 @@ public class DChangeDateTime extends DEditChange<LocalDateTime> {
             current = LocalDateTime.now();
         }
         
-        DEditDateTime editor = new DEditDateTime().value(current);
-
-        DAlert alert = new DAlert()
-                .parent(comp())
+        DDialogDateTime dialog = new DDialogDateTime()
                 .title(dialogTitle)
-                .message(editor.comp())
-                .plain()
-                .okCancel();
+                .value(current)
+                .locationRelativeTo(comp());
 
-        if (alert.confirm() == JOptionPane.OK_OPTION) {
-            setValue(editor.getValue());
+        LocalDateTime result = dialog.showDialog();
+        if (result != null) {
+            setValue(result);
         }
     }
 

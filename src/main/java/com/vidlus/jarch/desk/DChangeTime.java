@@ -1,7 +1,6 @@
 package com.vidlus.jarch.desk;
 
 import java.time.LocalTime;
-import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -61,17 +60,14 @@ public class DChangeTime extends DEditChange<LocalTime> {
             current = LocalTime.now();
         }
         
-        DEditTime editor = new DEditTime().value(current);
-
-        DAlert alert = new DAlert()
-                .parent(comp())
+        DDialogTime dialog = new DDialogTime()
                 .title(dialogTitle)
-                .message(editor.comp())
-                .plain()
-                .okCancel();
+                .value(current)
+                .locationRelativeTo(comp());
 
-        if (alert.confirm() == JOptionPane.OK_OPTION) {
-            setValue(editor.getValue());
+        LocalTime result = dialog.showDialog();
+        if (result != null) {
+            setValue(result);
         }
     }
 
