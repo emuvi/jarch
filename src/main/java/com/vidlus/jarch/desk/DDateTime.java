@@ -4,15 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.swing.border.Border;
 
 /**
- * A custom component for displaying a java.util.Date combining both DDate and DTime
+ * A custom component for displaying a java.time.LocalDateTime combining both DDate and DTime
  * side by side.
  */
-public class DTimestamp extends DPane {
+public class DDateTime extends DPane {
 
     private final DDate dateView;
     private final DTime timeView;
@@ -21,7 +23,7 @@ public class DTimestamp extends DPane {
      * Constructs a DTimestamp component, initializing both DDate and DTime
      * side by side.
      */
-    public DTimestamp() {
+    public DDateTime() {
         super(new GridLayout(1, 2, 10, 0));
         
         this.dateView = new DDate();
@@ -32,24 +34,32 @@ public class DTimestamp extends DPane {
     }
 
     /**
-     * Sets the date to display in this component.
+     * Sets the date and time to display in this component.
      * 
-     * @param date the date to show
+     * @param datetime the date and time to show
      * @return this DTimestamp instance for fluent chaining
      */
-    public DTimestamp value(Date date) {
-        this.dateView.value(date);
-        this.timeView.value(date);
+    public DDateTime value(LocalDateTime datetime) {
+        if (datetime == null) {
+            this.dateView.value((java.time.LocalDate) null);
+            this.timeView.value(null);
+        } else {
+            this.dateView.value(datetime.toLocalDate());
+            this.timeView.value(Date.from(datetime.atZone(ZoneId.systemDefault()).toInstant()));
+        }
         return this;
     }
 
     /**
-     * Retrieves the currently displayed date.
+     * Retrieves the currently displayed date and time.
      * 
-     * @return the displayed date
+     * @return the displayed date and time
      */
-    public Date value() {
-        return dateView.value(); // assuming both are updated together
+    public LocalDateTime value() {
+        java.time.LocalDate d = dateView.value();
+        Date t = timeView.value();
+        if (d == null || t == null) return null;
+        return LocalDateTime.of(d, t.toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
     }
 
     /**
@@ -58,7 +68,7 @@ public class DTimestamp extends DPane {
      * @param color the highlight color
      * @return this DTimestamp instance for fluent chaining
      */
-    public DTimestamp highlightColor(Color color) {
+    public DDateTime highlightColor(Color color) {
         this.dateView.highlightColor(color);
         this.timeView.highlightColor(color);
         return this;
@@ -70,7 +80,7 @@ public class DTimestamp extends DPane {
      * @param font the font to apply
      * @return this DTimestamp instance for fluent chaining
      */
-    public DTimestamp font(Font font) {
+    public DDateTime font(Font font) {
         super.setFont(font);
         this.dateView.font(font);
         this.timeView.font(font);
@@ -83,7 +93,7 @@ public class DTimestamp extends DPane {
      * @param bg the background color
      * @return this DTimestamp instance for fluent chaining
      */
-    public DTimestamp background(Color bg) {
+    public DDateTime background(Color bg) {
         super.setBackground(bg);
         this.dateView.background(bg);
         this.timeView.background(bg);
@@ -96,7 +106,7 @@ public class DTimestamp extends DPane {
      * @param fg the foreground color
      * @return this DTimestamp instance for fluent chaining
      */
-    public DTimestamp foreground(Color fg) {
+    public DDateTime foreground(Color fg) {
         super.setForeground(fg);
         this.dateView.foreground(fg);
         this.timeView.foreground(fg);
@@ -109,7 +119,7 @@ public class DTimestamp extends DPane {
      * @param enabled true if enabled, false otherwise
      * @return this DTimestamp instance for fluent chaining
      */
-    public DTimestamp enabled(boolean enabled) {
+    public DDateTime enabled(boolean enabled) {
         setEnabled(enabled);
         this.dateView.enabled(enabled);
         this.timeView.enabled(enabled);
@@ -124,7 +134,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp layout(LayoutManager layout) {
+    public DDateTime layout(LayoutManager layout) {
         super.layout(layout);
         return this;
     }
@@ -135,7 +145,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp border(Border border) {
+    public DDateTime border(Border border) {
         super.border(border);
         return this;
     }
@@ -146,7 +156,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderEmpty(int size) {
+    public DDateTime borderEmpty(int size) {
         super.borderEmpty(size);
         return this;
     }
@@ -160,7 +170,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderEmpty(int top, int left, int bottom, int right) {
+    public DDateTime borderEmpty(int top, int left, int bottom, int right) {
         super.borderEmpty(top, left, bottom, right);
         return this;
     }
@@ -171,7 +181,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderLine(Color color) {
+    public DDateTime borderLine(Color color) {
         super.borderLine(color);
         return this;
     }
@@ -183,7 +193,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderLine(Color color, int thickness) {
+    public DDateTime borderLine(Color color, int thickness) {
         super.borderLine(color, thickness);
         return this;
     }
@@ -196,7 +206,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderLine(Color color, int thickness, boolean rounded) {
+    public DDateTime borderLine(Color color, int thickness, boolean rounded) {
         super.borderLine(color, thickness, rounded);
         return this;
     }
@@ -206,7 +216,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderEtched() {
+    public DDateTime borderEtched() {
         super.borderEtched();
         return this;
     }
@@ -217,7 +227,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderEtched(int type) {
+    public DDateTime borderEtched(int type) {
         super.borderEtched(type);
         return this;
     }
@@ -229,7 +239,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderEtched(Color highlight, Color shadow) {
+    public DDateTime borderEtched(Color highlight, Color shadow) {
         super.borderEtched(highlight, shadow);
         return this;
     }
@@ -242,7 +252,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderEtched(int type, Color highlight, Color shadow) {
+    public DDateTime borderEtched(int type, Color highlight, Color shadow) {
         super.borderEtched(type, highlight, shadow);
         return this;
     }
@@ -252,7 +262,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderBevelRaised() {
+    public DDateTime borderBevelRaised() {
         super.borderBevelRaised();
         return this;
     }
@@ -262,7 +272,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderBevelLowered() {
+    public DDateTime borderBevelLowered() {
         super.borderBevelLowered();
         return this;
     }
@@ -273,7 +283,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderBevel(int type) {
+    public DDateTime borderBevel(int type) {
         super.borderBevel(type);
         return this;
     }
@@ -286,7 +296,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderBevel(int type, Color highlight, Color shadow) {
+    public DDateTime borderBevel(int type, Color highlight, Color shadow) {
         super.borderBevel(type, highlight, shadow);
         return this;
     }
@@ -301,7 +311,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderBevel(int type, Color highlightOuter, Color highlightInner, Color shadowOuter,
+    public DDateTime borderBevel(int type, Color highlightOuter, Color highlightInner, Color shadowOuter,
             Color shadowInner) {
         super.borderBevel(type, highlightOuter, highlightInner, shadowOuter, shadowInner);
         return this;
@@ -313,7 +323,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderSoftBevel(int type) {
+    public DDateTime borderSoftBevel(int type) {
         super.borderSoftBevel(type);
         return this;
     }
@@ -326,7 +336,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderSoftBevel(int type, Color highlight, Color shadow) {
+    public DDateTime borderSoftBevel(int type, Color highlight, Color shadow) {
         super.borderSoftBevel(type, highlight, shadow);
         return this;
     }
@@ -341,7 +351,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderSoftBevel(int type, Color highlightOuter, Color highlightInner, Color shadowOuter,
+    public DDateTime borderSoftBevel(int type, Color highlightOuter, Color highlightInner, Color shadowOuter,
             Color shadowInner) {
         super.borderSoftBevel(type, highlightOuter, highlightInner, shadowOuter, shadowInner);
         return this;
@@ -353,7 +363,7 @@ public class DTimestamp extends DPane {
      * @return this DTimestamp instance for fluent chaining
      */
     @Override
-    public DTimestamp borderTitled(String title) {
+    public DDateTime borderTitled(String title) {
         super.borderTitled(title);
         return this;
     }

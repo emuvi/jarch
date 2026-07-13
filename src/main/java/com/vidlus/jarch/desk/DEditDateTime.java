@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.function.Consumer;
@@ -15,10 +17,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
- * A custom component for selecting a java.util.Date combining both DEditDate and DEditTime
+ * A custom component for selecting a java.time.LocalDateTime combining both DEditDate and DEditTime
  * side by side.
  */
-public class DEditTimestamp extends DEdit<Date> {
+public class DEditDateTime extends DEdit<LocalDateTime> {
 
     private final JPanel rootPanel;
     private final DEditDate dateEdit;
@@ -28,7 +30,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * Constructs a DEditTimestamp component, initializing both DEditDate and DEditTime
      * side by side.
      */
-    public DEditTimestamp() {
+    public DEditDateTime() {
         super(new JPanel(new GridLayout(1, 2, 10, 0)));
         this.rootPanel = (JPanel) super.comp();
         
@@ -40,40 +42,35 @@ public class DEditTimestamp extends DEdit<Date> {
     }
 
     /**
-     * Retrieves the currently selected date.
+     * Retrieves the currently selected date and time.
      * 
-     * @return the selected date, or null if either date or time is cleared
+     * @return the selected date and time, or null if either date or time is cleared
      */
     @Override
-    public Date getValue() {
-        Date d = dateEdit.getValue();
+    public LocalDateTime getValue() {
+        java.time.LocalDate d = dateEdit.getValue();
         Date t = timeEdit.getValue();
         
         if (d == null || t == null) return null;
         
-        Calendar calD = Calendar.getInstance();
-        calD.setTime(d);
-        
-        Calendar calT = Calendar.getInstance();
-        calT.setTime(t);
-        
-        calD.set(Calendar.HOUR_OF_DAY, calT.get(Calendar.HOUR_OF_DAY));
-        calD.set(Calendar.MINUTE, calT.get(Calendar.MINUTE));
-        calD.set(Calendar.SECOND, calT.get(Calendar.SECOND));
-        calD.set(Calendar.MILLISECOND, calT.get(Calendar.MILLISECOND));
-        
-        return calD.getTime();
+        java.time.LocalTime time = t.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+        return LocalDateTime.of(d, time);
     }
 
     /**
-     * Sets the currently selected date and updates both UI components.
+     * Sets the currently selected date and time and updates both UI components.
      * 
-     * @param value the date to select, or null to clear selection
+     * @param value the date and time to select, or null to clear selection
      */
     @Override
-    public void setValue(Date value) {
-        this.dateEdit.setValue(value);
-        this.timeEdit.setValue(value);
+    public void setValue(LocalDateTime value) {
+        if (value == null) {
+            this.dateEdit.setValue(null);
+            this.timeEdit.setValue(null);
+        } else {
+            this.dateEdit.setValue(value.toLocalDate());
+            this.timeEdit.setValue(Date.from(value.atZone(ZoneId.systemDefault()).toInstant()));
+        }
     }
 
     // --- DEdit Overrides ---
@@ -84,7 +81,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp comp(JComponent comp) {
+    public DEditDateTime comp(JComponent comp) {
         super.comp(comp);
         return this;
     }
@@ -95,7 +92,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp value(Date value) {
+    public DEditDateTime value(LocalDateTime value) {
         super.value(value);
         return this;
     }
@@ -105,7 +102,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp clear() {
+    public DEditDateTime clear() {
         super.clear();
         return this;
     }
@@ -116,7 +113,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp enabled(boolean enabled) {
+    public DEditDateTime enabled(boolean enabled) {
         super.enabled(enabled);
         this.dateEdit.enabled(enabled);
         this.timeEdit.enabled(enabled);
@@ -129,7 +126,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp focusable(boolean focusable) {
+    public DEditDateTime focusable(boolean focusable) {
         super.focusable(focusable);
         return this;
     }
@@ -139,7 +136,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp requestFocus() {
+    public DEditDateTime requestFocus() {
         super.requestFocus();
         return this;
     }
@@ -149,7 +146,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp requestFocusInWindow() {
+    public DEditDateTime requestFocusInWindow() {
         super.requestFocusInWindow();
         return this;
     }
@@ -160,7 +157,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp name(String name) {
+    public DEditDateTime name(String name) {
         super.name(name);
         return this;
     }
@@ -171,7 +168,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp hint(String hint) {
+    public DEditDateTime hint(String hint) {
         super.hint(hint);
         return this;
     }
@@ -182,7 +179,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onAction(Consumer<ActionEvent> consumer) {
+    public DEditDateTime onAction(Consumer<ActionEvent> consumer) {
         super.onAction(consumer);
         return this;
     }
@@ -193,7 +190,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onMouseClicked(Consumer<MouseEvent> consumer) {
+    public DEditDateTime onMouseClicked(Consumer<MouseEvent> consumer) {
         super.onMouseClicked(consumer);
         return this;
     }
@@ -204,7 +201,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onMousePressed(Consumer<MouseEvent> consumer) {
+    public DEditDateTime onMousePressed(Consumer<MouseEvent> consumer) {
         super.onMousePressed(consumer);
         return this;
     }
@@ -215,7 +212,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onMouseReleased(Consumer<MouseEvent> consumer) {
+    public DEditDateTime onMouseReleased(Consumer<MouseEvent> consumer) {
         super.onMouseReleased(consumer);
         return this;
     }
@@ -226,7 +223,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onMouseEntered(Consumer<MouseEvent> consumer) {
+    public DEditDateTime onMouseEntered(Consumer<MouseEvent> consumer) {
         super.onMouseEntered(consumer);
         return this;
     }
@@ -237,7 +234,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onMouseExited(Consumer<MouseEvent> consumer) {
+    public DEditDateTime onMouseExited(Consumer<MouseEvent> consumer) {
         super.onMouseExited(consumer);
         return this;
     }
@@ -248,7 +245,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onKeyTyped(Consumer<KeyEvent> consumer) {
+    public DEditDateTime onKeyTyped(Consumer<KeyEvent> consumer) {
         super.onKeyTyped(consumer);
         return this;
     }
@@ -259,7 +256,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onKeyPressed(Consumer<KeyEvent> consumer) {
+    public DEditDateTime onKeyPressed(Consumer<KeyEvent> consumer) {
         super.onKeyPressed(consumer);
         return this;
     }
@@ -270,7 +267,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onKeyReleased(Consumer<KeyEvent> consumer) {
+    public DEditDateTime onKeyReleased(Consumer<KeyEvent> consumer) {
         super.onKeyReleased(consumer);
         return this;
     }
@@ -281,7 +278,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onFocusGained(Consumer<FocusEvent> consumer) {
+    public DEditDateTime onFocusGained(Consumer<FocusEvent> consumer) {
         super.onFocusGained(consumer);
         return this;
     }
@@ -292,7 +289,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
     @Override
-    public DEditTimestamp onFocusLost(Consumer<FocusEvent> consumer) {
+    public DEditDateTime onFocusLost(Consumer<FocusEvent> consumer) {
         super.onFocusLost(consumer);
         return this;
     }
@@ -304,7 +301,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param consumer the consumer to accept the newly selected date
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp onTimestampSelected(Consumer<Date> consumer) {
+    public DEditDateTime onTimestampSelected(Consumer<LocalDateTime> consumer) {
         this.dateEdit.onDateSelected(d -> consumer.accept(getValue()));
         this.timeEdit.onTimeSelected(t -> consumer.accept(getValue()));
         return this;
@@ -315,7 +312,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param font the font to apply
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp font(Font font) {
+    public DEditDateTime font(Font font) {
         this.dateEdit.font(font);
         this.timeEdit.font(font);
         return this;
@@ -326,7 +323,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param bg the background color
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp background(Color bg) {
+    public DEditDateTime background(Color bg) {
         this.dateEdit.background(bg);
         this.timeEdit.background(bg);
         return this;
@@ -337,7 +334,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param fg the foreground color
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp foreground(Color fg) {
+    public DEditDateTime foreground(Color fg) {
         this.dateEdit.foreground(fg);
         this.timeEdit.foreground(fg);
         return this;
@@ -348,7 +345,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param minYear the minimum year
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp minYear(int minYear) {
+    public DEditDateTime minYear(int minYear) {
         this.dateEdit.minYear(minYear);
         return this;
     }
@@ -358,7 +355,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param maxYear the maximum year
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp maxYear(int maxYear) {
+    public DEditDateTime maxYear(int maxYear) {
         this.dateEdit.maxYear(maxYear);
         return this;
     }
@@ -368,7 +365,7 @@ public class DEditTimestamp extends DEdit<Date> {
      * @param color the clock face color
      * @return This {@code DEditTimestamp} instance for fluent chaining.
      */
-    public DEditTimestamp clockColor(Color color) {
+    public DEditDateTime clockColor(Color color) {
         this.timeEdit.clockColor(color);
         return this;
     }

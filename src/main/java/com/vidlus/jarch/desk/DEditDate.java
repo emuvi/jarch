@@ -7,8 +7,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -23,10 +22,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 /**
- * A custom calendar component for selecting a java.util.Date.
+ * A custom calendar component for selecting a java.time.LocalDate.
  * Extends DEdit to integrate with the jarch framework and provides a fluent API.
  */
-public class DEditDate extends DEdit<Date> {
+public class DEditDate extends DEdit<LocalDate> {
 
     /** The main wrapper panel containing the entire calendar layout. */
     private final JPanel rootPanel;
@@ -40,11 +39,8 @@ public class DEditDate extends DEdit<Date> {
     /** The grid panel that holds the day-of-week headers and day toggle buttons. */
     private final JPanel daysPanel;
     
-    /** Internal calendar instance used for calculating offsets and date metrics. */
-    private final Calendar calendar;
-    
     /** The currently selected date in the component. */
-    private Date selectedDate;
+    private LocalDate selectedDate;
     
     /** Array storing the 42 toggle buttons for days of the month (spanning up to 6 weeks). */
     private final JToggleButton[] dayButtons;
@@ -60,9 +56,8 @@ public class DEditDate extends DEdit<Date> {
         super(new JPanel(new BorderLayout()));
         this.rootPanel = (JPanel) super.comp();
         
-        // Initialize internal calendar and current selection
-        this.calendar = Calendar.getInstance();
-        this.selectedDate = calendar.getTime();
+        // Initialize current selection
+        this.selectedDate = LocalDate.now();
         
         // --- North Panel: Month and Year ---
         JPanel headerPanel = new JPanel(new BorderLayout());
@@ -75,10 +70,10 @@ public class DEditDate extends DEdit<Date> {
         
         // Setup month combo box
         monthCombo = new JComboBox<>(cleanMonths);
-        monthCombo.setSelectedIndex(calendar.get(Calendar.MONTH));
+        monthCombo.setSelectedIndex(this.selectedDate.getMonthValue() - 1);
         
         // Setup year spinner (default 1900-2100)
-        int currentYear = calendar.get(Calendar.YEAR);
+        int currentYear = this.selectedDate.getYear();
         yearSpinner = new JSpinner(new SpinnerNumberModel(currentYear, 1900, 2100, 1));
         yearSpinner.setEditor(new JSpinner.NumberEditor(yearSpinner, "#"));
         
@@ -94,7 +89,7 @@ public class DEditDate extends DEdit<Date> {
         // Add headers for days of the week (Sun-Sat)
         String[] shortWeekdays = new DateFormatSymbols(Locale.getDefault()).getShortWeekdays();
         // Calendar days are 1-indexed (Sunday=1). shortWeekdays length is 8.
-        for (int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++) {
+        for (int i = java.util.Calendar.SUNDAY; i <= java.util.Calendar.SATURDAY; i++) {
             JLabel dayLabel = new JLabel(shortWeekdays[i], SwingConstants.CENTER);
             daysPanel.add(dayLabel);
         }
@@ -116,10 +111,9 @@ public class DEditDate extends DEdit<Date> {
             // Add action listener to register explicit user selection
             btn.addActionListener(e -> {
                 int day = Integer.parseInt(btn.getText());
-                calendar.set(Calendar.YEAR, (Integer) yearSpinner.getValue());
-                calendar.set(Calendar.MONTH, monthCombo.getSelectedIndex());
-                calendar.set(Calendar.DAY_OF_MONTH, day);
-                selectedDate = calendar.getTime();
+                int year = (Integer) yearSpinner.getValue();
+                int month = monthCombo.getSelectedIndex() + 1;
+                selectedDate = LocalDate.of(year, month, day);
             });
         }
         
@@ -143,25 +137,17 @@ public class DEditDate extends DEdit<Date> {
         int selectedMonth = monthCombo.getSelectedIndex();
         int selectedYear = (Integer) yearSpinner.getValue();
         
-        // Temporary calendar to determine first day offset and maximum days
-        Calendar tempCal = Calendar.getInstance();
-        tempCal.set(Calendar.YEAR, selectedYear);
-        tempCal.set(Calendar.MONTH, selectedMonth);
-        tempCal.set(Calendar.DAY_OF_MONTH, 1);
-        
-        int firstDayOfWeek = tempCal.get(Calendar.DAY_OF_WEEK); // 1 = Sunday
-        int daysInMonth = tempCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        LocalDate firstOfMonth = LocalDate.of(selectedYear, selectedMonth + 1, 1);
+        int firstDayOfWeek = firstOfMonth.getDayOfWeek().getValue(); // 1=Monday, 7=Sunday
         
         // Calculate offset (e.g., if month starts on Tuesday, offset is 2)
-        int startOffset = firstDayOfWeek - Calendar.SUNDAY;
+        int startOffset = firstDayOfWeek == 7 ? 0 : firstDayOfWeek;
+        int daysInMonth = firstOfMonth.lengthOfMonth();
         
         // Validate if there's currently a valid selection in this specific year/month view
-        Calendar selectedCal = Calendar.getInstance();
         boolean hasSelectionInThisMonth = false;
         if (selectedDate != null) {
-            selectedCal.setTime(selectedDate);
-            if (selectedCal.get(Calendar.YEAR) == selectedYear &&
-                selectedCal.get(Calendar.MONTH) == selectedMonth) {
+            if (selectedDate.getYear() == selectedYear && selectedDate.getMonthValue() == selectedMonth + 1) {
                 hasSelectionInThisMonth = true;
             }
         }
@@ -180,7 +166,7 @@ public class DEditDate extends DEdit<Date> {
                 btn.setVisible(true);
                 
                 // Select if it matches the recorded selection
-                if (hasSelectionInThisMonth && selectedCal.get(Calendar.DAY_OF_MONTH) == day) {
+                if (hasSelectionInThisMonth && selectedDate.getDayOfMonth() == day) {
                     btn.setSelected(true);
                 }
             } else {
@@ -196,7 +182,7 @@ public class DEditDate extends DEdit<Date> {
      * @return the selected date, or null if cleared
      */
     @Override
-    public Date getValue() {
+    public LocalDate getValue() {
         return selectedDate;
     }
 
@@ -206,12 +192,11 @@ public class DEditDate extends DEdit<Date> {
      * @param value the date to select, or null to clear selection
      */
     @Override
-    public void setValue(Date value) {
+    public void setValue(LocalDate value) {
         this.selectedDate = value;
         if (value != null) {
-            calendar.setTime(value);
-            yearSpinner.setValue(calendar.get(Calendar.YEAR));
-            monthCombo.setSelectedIndex(calendar.get(Calendar.MONTH));
+            yearSpinner.setValue(value.getYear());
+            monthCombo.setSelectedIndex(value.getMonthValue() - 1);
         } else {
             buttonGroup.clearSelection();
         }
@@ -237,7 +222,7 @@ public class DEditDate extends DEdit<Date> {
      * @return This {@code DEditDate} instance for fluent chaining.
      */
     @Override
-    public DEditDate value(Date value) {
+    public DEditDate value(LocalDate value) {
         super.value(value);
         return this;
     }
@@ -510,7 +495,7 @@ public class DEditDate extends DEdit<Date> {
      * @param consumer the consumer to accept the newly selected date
      * @return This {@code DEditDate} instance for fluent chaining.
      */
-    public DEditDate onDateSelected(Consumer<Date> consumer) {
+    public DEditDate onDateSelected(Consumer<LocalDate> consumer) {
         for (JToggleButton btn : dayButtons) {
             btn.addActionListener(e -> {
                 if (btn.isSelected()) {

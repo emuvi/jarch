@@ -16,7 +16,7 @@ import javax.swing.text.DocumentFilter;
  * A UI component for editing and selecting a timestamp (date and time).
  * Provides a text field with a timestamp format filter and a button that opens a datetime picker dialog.
  */
-public class DChangeTimestamp extends DEditChange<LocalDateTime> {
+public class DChangeDateTime extends DEditChange<LocalDateTime> {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private String dialogTitle = "Select Timestamp";
@@ -25,7 +25,7 @@ public class DChangeTimestamp extends DEditChange<LocalDateTime> {
      * Constructs a new DChangeTimestamp component.
      * Applies a TimestampFilter to restrict input to valid timestamp characters.
      */
-    public DChangeTimestamp() {
+    public DChangeDateTime() {
         super("*");
         ((AbstractDocument) field.getDocument()).setDocumentFilter(new TimestampFilter());
     }
@@ -124,7 +124,7 @@ public class DChangeTimestamp extends DEditChange<LocalDateTime> {
      * @param timestamp the LocalDateTime to set
      * @return this DChangeTimestamp instance
      */
-    public DChangeTimestamp timestamp(LocalDateTime timestamp) {
+    public DChangeDateTime timestamp(LocalDateTime timestamp) {
         setValue(timestamp);
         return this;
     }
@@ -135,7 +135,7 @@ public class DChangeTimestamp extends DEditChange<LocalDateTime> {
      * @param dialogTitle the title for the dialog
      * @return this DChangeTimestamp instance
      */
-    public DChangeTimestamp dialogTitle(String dialogTitle) {
+    public DChangeDateTime dialogTitle(String dialogTitle) {
         this.dialogTitle = dialogTitle;
         return this;
     }

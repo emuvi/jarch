@@ -731,7 +731,7 @@ public class DTable extends JTable {
         setDefaultEditor(Date.class, new DEditCellEditorAdapter(new DChangeDate()));
         setDefaultEditor(java.sql.Date.class, new DEditCellEditorAdapter(new DChangeDate()));
         setDefaultEditor(Time.class, new DEditCellEditorAdapter(new DChangeTime()));
-        setDefaultEditor(Timestamp.class, new DEditCellEditorAdapter(new DChangeTimestamp()));
+        setDefaultEditor(Timestamp.class, new DEditCellEditorAdapter(new DChangeDateTime()));
         setDefaultEditor(Font.class, new DEditCellEditorAdapter(new DChangeFont()));
         setDefaultEditor(Image.class, new DEditCellEditorAdapter(new DChangeImage()));
         setDefaultEditor(Icon.class, new IconCellEditorAdapter());

@@ -3,7 +3,7 @@ package com.vidlus.jarch.desk;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -24,7 +24,7 @@ public class DDialogDate extends DDialog {
     private final JButton cancelBtn;
     
     /** The resulting date to return upon confirmation. */
-    private Date result = null;
+    private LocalDate result = null;
 
     /**
      * Constructs a modal date selection dialog with no specific owner frame.
@@ -88,7 +88,7 @@ public class DDialogDate extends DDialog {
      * @param date the date to select initially
      * @return this DDialogDate instance for fluent chaining
      */
-    public DDialogDate value(Date date) {
+    public DDialogDate value(LocalDate date) {
         editor.setValue(date);
         return this;
     }
@@ -118,7 +118,7 @@ public class DDialogDate extends DDialog {
      * 
      * @return the selected date if OK was pressed, or null if Cancel was pressed.
      */
-    public Date showDialog() {
+    public LocalDate showDialog() {
         result = null;
         visible(true); // Since it's modal, this blocks until visible(false) is called
         return result;

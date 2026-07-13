@@ -12,8 +12,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormatSymbols;
+import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -26,7 +26,7 @@ import javax.swing.Icon;
 import javax.swing.border.Border;
 
 /**
- * A custom calendar component strictly for displaying a java.util.Date.
+ * A custom calendar component strictly for displaying a java.time.LocalDate.
  * It provides the same visual style and grid layout as DEditDate but is
  * read-only,
  * removing all interactive editor components like spinners or dropdowns.
@@ -39,11 +39,8 @@ public class DDate extends DPane {
     /** The panel holding the grid of days. */
     private final JPanel daysPanel;
 
-    /** Internal calendar used for calculations. */
-    private final Calendar calendar;
-
     /** The date currently being displayed. */
-    private Date displayDate;
+    private LocalDate displayDate;
 
     /**
      * The grid of 42 labels (spanning up to 6 weeks) representing days of the
@@ -60,8 +57,7 @@ public class DDate extends DPane {
     public DDate() {
         super(new BorderLayout());
 
-        calendar = Calendar.getInstance();
-        displayDate = calendar.getTime();
+        displayDate = LocalDate.now();
 
         // --- North Panel: Month and Year Header ---
         headerLabel = new JLabel("", SwingConstants.CENTER);
@@ -105,25 +101,18 @@ public class DDate extends DPane {
             return;
         }
 
-        calendar.setTime(displayDate);
-        int targetYear = calendar.get(Calendar.YEAR);
-        int targetMonth = calendar.get(Calendar.MONTH);
-        int targetDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int targetYear = displayDate.getYear();
+        int targetMonth = displayDate.getMonthValue() - 1; // 0-11 for DateFormatSymbols
+        int targetDay = displayDate.getDayOfMonth();
 
         // Update Header
         String[] months = new DateFormatSymbols(Locale.getDefault()).getMonths();
         headerLabel.setText(months[targetMonth] + " " + targetYear);
 
-        // Setup Temporary Calendar for grid calculations
-        Calendar tempCal = Calendar.getInstance();
-        tempCal.set(Calendar.YEAR, targetYear);
-        tempCal.set(Calendar.MONTH, targetMonth);
-        tempCal.set(Calendar.DAY_OF_MONTH, 1);
-
-        int firstDayOfWeek = tempCal.get(Calendar.DAY_OF_WEEK); // 1 = Sunday
-        int daysInMonth = tempCal.getActualMaximum(Calendar.DAY_OF_MONTH);
-
-        int startOffset = firstDayOfWeek - Calendar.SUNDAY;
+        LocalDate firstOfMonth = displayDate.withDayOfMonth(1);
+        int firstDayOfWeek = firstOfMonth.getDayOfWeek().getValue(); // 1=Monday, 7=Sunday
+        int startOffset = firstDayOfWeek == 7 ? 0 : firstDayOfWeek;
+        int daysInMonth = displayDate.lengthOfMonth();
 
         for (int i = 0; i < 42; i++) {
             JLabel lbl = dayLabels[i];
@@ -149,7 +138,7 @@ public class DDate extends DPane {
      * @param date the date to show
      * @return this DDate instance for fluent chaining
      */
-    public DDate value(Date date) {
+    public DDate value(LocalDate date) {
         this.displayDate = date;
         updateCalendar();
         return this;
@@ -160,7 +149,7 @@ public class DDate extends DPane {
      * 
      * @return the displayed date
      */
-    public Date value() {
+    public LocalDate value() {
         return displayDate;
     }
 
