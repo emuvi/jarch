@@ -6,6 +6,9 @@ import java.awt.Font;
 
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
+import java.awt.Dimension;
+import javax.swing.plaf.TabbedPaneUI;
+import javax.swing.event.ChangeListener;
 
 /**
  * A fluent API wrapper for JTabbedPane to easily create and configure tabbed components.
@@ -153,5 +156,244 @@ public class DTabs extends JTabbedPane {
     public DTabs background(Color bg) {
         setBackground(bg);
         return this;
+    }
+
+    /**
+     * Sets the disabled icon at the given index.
+     * 
+     * @param index the tab index
+     * @param icon the icon to display
+     * @return This DTabs instance.
+     */
+    public DTabs disabledIconAt(int index, Icon icon) {
+        setDisabledIconAt(index, icon);
+        return this;
+    }
+
+    /**
+     * Sets the icon at the given index.
+     * 
+     * @param index the tab index
+     * @param icon the icon to display
+     * @return This DTabs instance.
+     */
+    public DTabs iconAt(int index, Icon icon) {
+        setIconAt(index, icon);
+        return this;
+    }
+
+    /**
+     * Sets the mnemonic at the given index.
+     * 
+     * @param index the tab index
+     * @param mnemonic the mnemonic
+     * @return This DTabs instance.
+     */
+    public DTabs mnemonicAt(int index, int mnemonic) {
+        setMnemonicAt(index, mnemonic);
+        return this;
+    }
+
+    /**
+     * Sets the component at the given index.
+     * 
+     * @param index the tab index
+     * @param component the component to display
+     * @return This DTabs instance.
+     */
+    public DTabs componentAt(int index, Component component) {
+        setComponentAt(index, component);
+        return this;
+    }
+
+    /**
+     * Sets the component that is responsible for rendering the title for the specified tab.
+     * 
+     * @param index the tab index
+     * @param component the component to render the title
+     * @return This DTabs instance.
+     */
+    public DTabs tabComponentAt(int index, Component component) {
+        setTabComponentAt(index, component);
+        return this;
+    }
+
+    /**
+     * Sets the title at the given index.
+     * 
+     * @param index the tab index
+     * @param title the title to display
+     * @return This DTabs instance.
+     */
+    public DTabs titleAt(int index, String title) {
+        setTitleAt(index, title);
+        return this;
+    }
+
+    /**
+     * Sets the tool tip text at the given index.
+     * 
+     * @param index the tab index
+     * @param toolTipText the tool tip text to display
+     * @return This DTabs instance.
+     */
+    public DTabs toolTipTextAt(int index, String toolTipText) {
+        setToolTipTextAt(index, toolTipText);
+        return this;
+    }
+
+    /**
+     * Sets the UI object which implements the L&F for this component.
+     * 
+     * @param ui the TabbedPaneUI L&F object
+     * @return This DTabs instance.
+     */
+    public DTabs ui(TabbedPaneUI ui) {
+        setUI(ui);
+        return this;
+    }
+    
+    /**
+     * Adds a ChangeListener to this tabbedpane.
+     * 
+     * @param listener the ChangeListener to add
+     * @return This DTabs instance.
+     */
+    public DTabs onChange(ChangeListener listener) {
+        addChangeListener(listener);
+        return this;
+    }
+
+    /**
+     * Sets whether this component is enabled.
+     * 
+     * @param b true to enable, false to disable
+     * @return This DTabs instance.
+     */
+    public DTabs enabled(boolean b) {
+        setEnabled(b);
+        return this;
+    }
+
+    /**
+     * Sets whether this component is visible.
+     * 
+     * @param b true to make visible, false to hide
+     * @return This DTabs instance.
+     */
+    public DTabs visible(boolean b) {
+        setVisible(b);
+        return this;
+    }
+
+    /**
+     * Sets whether this component is opaque.
+     * 
+     * @param b true to make opaque, false to make transparent
+     * @return This DTabs instance.
+     */
+    public DTabs opaque(boolean b) {
+        setOpaque(b);
+        return this;
+    }
+
+    /**
+     * Sets the bounds of this component.
+     * 
+     * @param x the new x-coordinate
+     * @param y the new y-coordinate
+     * @param width the new width
+     * @param height the new height
+     * @return This DTabs instance.
+     */
+    public DTabs bounds(int x, int y, int width, int height) {
+        setBounds(x, y, width, height);
+        return this;
+    }
+
+    /**
+     * Sets the size of this component.
+     * 
+     * @param width the new width
+     * @param height the new height
+     * @return This DTabs instance.
+     */
+    public DTabs size(int width, int height) {
+        setSize(width, height);
+        return this;
+    }
+
+    /**
+     * Sets the size of this component.
+     * 
+     * @param d the new size
+     * @return This DTabs instance.
+     */
+    public DTabs size(Dimension d) {
+        setSize(d);
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this component.
+     * 
+     * @param width the new preferred width
+     * @param height the new preferred height
+     * @return This DTabs instance.
+     */
+    public DTabs preferredSize(int width, int height) {
+        setPreferredSize(new Dimension(width, height));
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this component.
+     * 
+     * @param d the new preferred size
+     * @return This DTabs instance.
+     */
+    public DTabs preferredSize(Dimension d) {
+        setPreferredSize(d);
+        return this;
+    }
+
+    /**
+     * Sets the name of this component.
+     * 
+     * @param name the name to set
+     * @return This DTabs instance.
+     */
+    public DTabs name(String name) {
+        setName(name);
+        return this;
+    }
+
+    /**
+     * Gets the name of this component.
+     * 
+     * @return the name
+     */
+    public String name() {
+        return getName();
+    }
+
+    /**
+     * Registers the text to display in a tool tip.
+     * 
+     * @param hint the string to display
+     * @return This DTabs instance.
+     */
+    public DTabs hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    /**
+     * Gets the tool tip text.
+     * 
+     * @return the tool tip text
+     */
+    public String hint() {
+        return getToolTipText();
     }
 }

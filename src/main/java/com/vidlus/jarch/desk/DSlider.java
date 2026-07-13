@@ -6,7 +6,9 @@ import java.awt.Font;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
-
+import java.awt.Dimension;
+import java.util.Dictionary;
+import javax.swing.plaf.SliderUI;
 /**
  * A fluent API wrapper for JSlider to easily create and configure slider components.
  */
@@ -233,5 +235,182 @@ public class DSlider extends JSlider {
     public DSlider background(Color bg) {
         setBackground(bg);
         return this;
+    }
+
+    /**
+     * Sets the slider's extent.
+     * 
+     * @param extent the extent
+     * @return This DSlider instance.
+     */
+    public DSlider extent(int extent) {
+        setExtent(extent);
+        return this;
+    }
+
+    /**
+     * Sets the dictionary of labels.
+     * 
+     * @param labels the Dictionary of labels
+     * @return This DSlider instance.
+     */
+    public DSlider labelTable(Dictionary labels) {
+        setLabelTable(labels);
+        return this;
+    }
+
+    /**
+     * Sets the model that handles the slider's minimum, maximum, and current values.
+     * 
+     * @param brm the new BoundedRangeModel to use
+     * @return This DSlider instance.
+     */
+    public DSlider model(BoundedRangeModel brm) {
+        setModel(brm);
+        return this;
+    }
+
+    /**
+     * Sets the UI object which implements the L&F for this component.
+     * 
+     * @param ui the SliderUI L&F object
+     * @return This DSlider instance.
+     */
+    public DSlider ui(SliderUI ui) {
+        setUI(ui);
+        return this;
+    }
+
+    /**
+     * Sets whether the slider is enabled.
+     * 
+     * @param b true to enable, false to disable
+     * @return This DSlider instance.
+     */
+    public DSlider enabled(boolean b) {
+        setEnabled(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the slider is visible.
+     * 
+     * @param b true to make visible, false to hide
+     * @return This DSlider instance.
+     */
+    public DSlider visible(boolean b) {
+        setVisible(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the slider is opaque.
+     * 
+     * @param b true to make opaque, false to make transparent
+     * @return This DSlider instance.
+     */
+    public DSlider opaque(boolean b) {
+        setOpaque(b);
+        return this;
+    }
+
+    /**
+     * Sets the bounds of this component.
+     * 
+     * @param x the new x-coordinate of this component
+     * @param y the new y-coordinate of this component
+     * @param width the new width of this component
+     * @param height the new height of this component
+     * @return This DSlider instance.
+     */
+    public DSlider bounds(int x, int y, int width, int height) {
+        setBounds(x, y, width, height);
+        return this;
+    }
+
+    /**
+     * Sets the size of this component.
+     * 
+     * @param width the new width of this component
+     * @param height the new height of this component
+     * @return This DSlider instance.
+     */
+    public DSlider size(int width, int height) {
+        setSize(width, height);
+        return this;
+    }
+
+    /**
+     * Sets the size of this component.
+     * 
+     * @param d the new size of this component
+     * @return This DSlider instance.
+     */
+    public DSlider size(Dimension d) {
+        setSize(d);
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this component.
+     * 
+     * @param width the new preferred width of this component
+     * @param height the new preferred height of this component
+     * @return This DSlider instance.
+     */
+    public DSlider preferredSize(int width, int height) {
+        setPreferredSize(new Dimension(width, height));
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this component.
+     * 
+     * @param d the new preferred size of this component
+     * @return This DSlider instance.
+     */
+    public DSlider preferredSize(Dimension d) {
+        setPreferredSize(d);
+        return this;
+    }
+
+    /**
+     * Sets the name of this component.
+     * 
+     * @param name the name to set
+     * @return This DSlider instance.
+     */
+    public DSlider name(String name) {
+        setName(name);
+        return this;
+    }
+
+    /**
+     * Gets the name of this component.
+     * 
+     * @return the name of this component
+     */
+    public String name() {
+        return getName();
+    }
+
+    /**
+     * Registers the text to display in a tool tip.
+     * 
+     * @param hint the string to display
+     * @return This DSlider instance.
+     */
+    public DSlider hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    /**
+     * Gets the tool tip text of this component.
+     * 
+     * @return the tool tip text
+     */
+    public String hint() {
+        return getToolTipText();
     }
 }

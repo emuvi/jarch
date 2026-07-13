@@ -12,6 +12,8 @@ import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeListener;
+import java.awt.Dimension;
+import javax.swing.plaf.SpinnerUI;
 
 /**
  * A fluent API wrapper for JSpinner to easily create and configure spinner components.
@@ -177,5 +179,149 @@ public class DSpinner extends JSpinner {
     public DSpinner background(Color bg) {
         setBackground(bg);
         return this;
+    }
+
+    /**
+     * Sets the UI object which implements the L&F for this component.
+     * 
+     * @param ui the SpinnerUI L&F object
+     * @return This DSpinner instance.
+     */
+    public DSpinner ui(SpinnerUI ui) {
+        setUI(ui);
+        return this;
+    }
+
+    /**
+     * Sets whether the spinner is enabled.
+     * 
+     * @param b true to enable, false to disable
+     * @return This DSpinner instance.
+     */
+    public DSpinner enabled(boolean b) {
+        setEnabled(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the spinner is visible.
+     * 
+     * @param b true to make visible, false to hide
+     * @return This DSpinner instance.
+     */
+    public DSpinner visible(boolean b) {
+        setVisible(b);
+        return this;
+    }
+
+    /**
+     * Sets whether the spinner is opaque.
+     * 
+     * @param b true to make opaque, false to make transparent
+     * @return This DSpinner instance.
+     */
+    public DSpinner opaque(boolean b) {
+        setOpaque(b);
+        return this;
+    }
+
+    /**
+     * Sets the bounds of this component.
+     * 
+     * @param x the new x-coordinate
+     * @param y the new y-coordinate
+     * @param width the new width
+     * @param height the new height
+     * @return This DSpinner instance.
+     */
+    public DSpinner bounds(int x, int y, int width, int height) {
+        setBounds(x, y, width, height);
+        return this;
+    }
+
+    /**
+     * Sets the size of this component.
+     * 
+     * @param width the new width
+     * @param height the new height
+     * @return This DSpinner instance.
+     */
+    public DSpinner size(int width, int height) {
+        setSize(width, height);
+        return this;
+    }
+
+    /**
+     * Sets the size of this component.
+     * 
+     * @param d the new size
+     * @return This DSpinner instance.
+     */
+    public DSpinner size(Dimension d) {
+        setSize(d);
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this component.
+     * 
+     * @param width the new preferred width
+     * @param height the new preferred height
+     * @return This DSpinner instance.
+     */
+    public DSpinner preferredSize(int width, int height) {
+        setPreferredSize(new Dimension(width, height));
+        return this;
+    }
+
+    /**
+     * Sets the preferred size of this component.
+     * 
+     * @param d the new preferred size
+     * @return This DSpinner instance.
+     */
+    public DSpinner preferredSize(Dimension d) {
+        setPreferredSize(d);
+        return this;
+    }
+
+    /**
+     * Sets the name of this component.
+     * 
+     * @param name the name to set
+     * @return This DSpinner instance.
+     */
+    public DSpinner name(String name) {
+        setName(name);
+        return this;
+    }
+
+    /**
+     * Gets the name of this component.
+     * 
+     * @return the name of this component
+     */
+    public String name() {
+        return getName();
+    }
+
+    /**
+     * Registers the text to display in a tool tip.
+     * 
+     * @param hint the string to display
+     * @return This DSpinner instance.
+     */
+    public DSpinner hint(String hint) {
+        setToolTipText(hint);
+        return this;
+    }
+
+    /**
+     * Gets the tool tip text of this component.
+     * 
+     * @return the tool tip text
+     */
+    public String hint() {
+        return getToolTipText();
     }
 }
