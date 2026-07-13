@@ -11,8 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.function.Consumer;
 
 import javax.swing.ButtonGroup;
@@ -21,21 +20,18 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 /**
- * A custom clock component for selecting the time of a java.util.Date.
+ * A custom clock component for selecting the time of a java.time.LocalTime.
  * Extends DEdit to integrate with the jarch framework and provides a fluent API.
  * The UI is constructed with a concentric circular layout containing toggle buttons
  * for hours (inner circle) and minutes (outer circle), along with a central AM/PM toggle.
  */
-public class DEditTime extends DEdit<Date> {
+public class DEditTime extends DEdit<LocalTime> {
 
     /** The main clock panel drawing the background and handling circular layout. */
     private final ClockPanel rootPanel;
     
-    /** Internal calendar instance used for calculating and storing time values. */
-    private final Calendar calendar;
-    
-    /** The currently selected date (acting purely as a time container) in the component. */
-    private Date selectedDate;
+    /** The currently selected time in the component. */
+    private LocalTime selectedTime;
     
     /** Array containing the 12 toggle buttons representing hours 1 through 12. */
     private final JToggleButton[] hourButtons;
@@ -64,9 +60,8 @@ public class DEditTime extends DEdit<Date> {
         this.rootPanel = new ClockPanel();
         super.comp(this.rootPanel);
         
-        // Initialize internal calendar and pull the initial current time
-        this.calendar = Calendar.getInstance();
-        this.selectedDate = calendar.getTime();
+        // Pull the initial current time
+        this.selectedTime = LocalTime.now();
         
         hourGroup = new ButtonGroup();
         minuteGroup = new ButtonGroup();
@@ -113,8 +108,8 @@ public class DEditTime extends DEdit<Date> {
         });
         rootPanel.add(amPmButton);
         
-        // Sync the initial UI layout toggles to the current default selectedDate
-        syncUIWithDate();
+        // Sync the initial UI layout toggles to the current default selectedTime
+        syncUIWithTime();
     }
     
     /**
@@ -130,8 +125,8 @@ public class DEditTime extends DEdit<Date> {
     }
 
     /**
-     * Reads the current toggled state across the clock face and applies it to the internal selectedDate.
-     * Determines which hour and minute buttons are active, checks the AM/PM state, and updates the Calendar.
+     * Reads the current toggled state across the clock face and applies it to the internal selectedTime.
+     * Determines which hour and minute buttons are active, checks the AM/PM state, and updates the LocalTime.
      */
     private void updateTimeFromSelection() {
         int h = 0;
@@ -151,21 +146,19 @@ public class DEditTime extends DEdit<Date> {
         }
         
         boolean isPm = amPmButton.isSelected();
+        if (isPm && h < 12) h += 12;
+        if (!isPm && h == 12) h = 0;
         
-        calendar.set(Calendar.HOUR, h);
-        calendar.set(Calendar.MINUTE, m);
-        calendar.set(Calendar.AM_PM, isPm ? Calendar.PM : Calendar.AM);
-        
-        selectedDate = calendar.getTime();
+        selectedTime = LocalTime.of(h, m);
     }
     
     /**
-     * Synchronizes the UI toggle buttons with the current underlying selectedDate object.
+     * Synchronizes the UI toggle buttons with the current underlying selectedTime object.
      * Calculates the nearest 5-minute interval for minutes and updates button states accordingly.
      */
-    private void syncUIWithDate() {
-        if (selectedDate == null) {
-            // Wipe UI state entirely if date is cleared
+    private void syncUIWithTime() {
+        if (selectedTime == null) {
+            // Wipe UI state entirely if time is cleared
             hourGroup.clearSelection();
             minuteGroup.clearSelection();
             amPmButton.setSelected(false);
@@ -173,10 +166,9 @@ public class DEditTime extends DEdit<Date> {
             return;
         }
         
-        calendar.setTime(selectedDate);
-        int hour = calendar.get(Calendar.HOUR); // 0-11 based on 12-hour AM/PM clock
-        int minute = calendar.get(Calendar.MINUTE);
-        int amPm = calendar.get(Calendar.AM_PM);
+        int hour = selectedTime.getHour() % 12; // 0-11 based on 12-hour clock
+        int minute = selectedTime.getMinute();
+        boolean isPm = selectedTime.getHour() >= 12;
         
         // Select matching hour button (where index 0 is 12)
         hourButtons[hour].setSelected(true);
@@ -187,7 +179,7 @@ public class DEditTime extends DEdit<Date> {
         minuteButtons[minIndex].setSelected(true);
         
         // Toggle the central AM/PM state
-        if (amPm == Calendar.PM) {
+        if (isPm) {
             amPmButton.setSelected(true);
             amPmButton.setText("PM");
         } else {
@@ -197,22 +189,22 @@ public class DEditTime extends DEdit<Date> {
     }
 
     /**
-     * Retrieves the currently selected date containing the chosen time.
-     * @return the selected date, or null if cleared
+     * Retrieves the currently selected time.
+     * @return the selected time, or null if cleared
      */
     @Override
-    public Date getValue() {
-        return selectedDate;
+    public LocalTime getValue() {
+        return selectedTime;
     }
 
     /**
-     * Sets the currently selected date and strictly updates the UI components.
-     * @param value the date to select, or null to clear selection
+     * Sets the currently selected time and strictly updates the UI components.
+     * @param value the time to select, or null to clear selection
      */
     @Override
-    public void setValue(Date value) {
-        this.selectedDate = value;
-        syncUIWithDate();
+    public void setValue(LocalTime value) {
+        this.selectedTime = value;
+        syncUIWithTime();
     }
     
     /**
@@ -329,7 +321,7 @@ public class DEditTime extends DEdit<Date> {
      * @return This {@code DEditTime} instance for fluent chaining.
      */
     @Override
-    public DEditTime value(Date value) {
+    public DEditTime value(LocalTime value) {
         super.value(value);
         return this;
     }
@@ -586,7 +578,7 @@ public class DEditTime extends DEdit<Date> {
      * @param consumer the consumer to accept the newly selected time
      * @return This {@code DEditTime} instance for fluent chaining.
      */
-    public DEditTime onTimeSelected(Consumer<Date> consumer) {
+    public DEditTime onTimeSelected(Consumer<LocalTime> consumer) {
         // Register the listener to all inner component toggle buttons explicitly
         java.awt.event.ActionListener listener = e -> consumer.accept(getValue());
         for (JToggleButton btn : hourButtons) {

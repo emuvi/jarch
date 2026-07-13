@@ -13,8 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.function.Consumer;
 
 import javax.swing.JLabel;
@@ -27,7 +26,7 @@ import javax.swing.border.Border;
 
 /**
  * A custom clock component strictly for displaying the time of a
- * java.util.Date.
+ * java.time.LocalTime.
  * It provides the same visual concentric circular layout as DEditTime but is
  * read-only.
  */
@@ -36,11 +35,8 @@ public class DTime extends DPane {
     /** The main clock panel drawing the background and handling circular layout. */
     private final ClockPanel rootPanel;
 
-    /** Internal calendar instance used for time calculations. */
-    private final Calendar calendar;
-
-    /** The date currently being displayed. */
-    private Date displayDate;
+    /** The time currently being displayed. */
+    private LocalTime displayTime;
 
     /** Array containing the 12 labels representing hours 1 through 12. */
     private final JLabel[] hourLabels;
@@ -73,8 +69,7 @@ public class DTime extends DPane {
         this.rootPanel = new ClockPanel();
         super.put(this.rootPanel);
 
-        this.calendar = Calendar.getInstance();
-        this.displayDate = calendar.getTime();
+        this.displayTime = LocalTime.now();
 
         // --- Hours (Inner Circle) ---
         hourLabels = new JLabel[12];
@@ -98,7 +93,7 @@ public class DTime extends DPane {
         amPmLabel = createCircleLabel("AM");
         rootPanel.add(amPmLabel);
 
-        syncUIWithDate();
+        syncUIWithTime();
     }
 
     /**
@@ -114,11 +109,11 @@ public class DTime extends DPane {
     }
 
     /**
-     * Synchronizes the UI labels with the current underlying displayDate object.
+     * Synchronizes the UI labels with the current underlying displayTime object.
      * Calculates the nearest 5-minute interval for minutes and updates label
      * highlighting accordingly.
      */
-    private void syncUIWithDate() {
+    private void syncUIWithTime() {
         // Clear all highlights
         for (JLabel lbl : hourLabels)
             lbl.setBackground(null);
@@ -126,15 +121,14 @@ public class DTime extends DPane {
             lbl.setBackground(null);
         amPmLabel.setBackground(null);
 
-        if (displayDate == null) {
+        if (displayTime == null) {
             amPmLabel.setText("");
             return;
         }
 
-        calendar.setTime(displayDate);
-        int hour = calendar.get(Calendar.HOUR); // 0-11 based on 12-hour AM/PM clock
-        int minute = calendar.get(Calendar.MINUTE);
-        int amPm = calendar.get(Calendar.AM_PM);
+        int hour = displayTime.getHour() % 12; // 0-11 based on 12-hour clock
+        int minute = displayTime.getMinute();
+        boolean isPm = displayTime.getHour() >= 12;
 
         // Highlight matching hour label (where index 0 is 12)
         hourLabels[hour].setBackground(highlightColor);
@@ -146,7 +140,7 @@ public class DTime extends DPane {
         minuteLabels[minIndex].setBackground(highlightColor);
 
         // Update the central AM/PM state
-        if (amPm == Calendar.PM) {
+        if (isPm) {
             amPmLabel.setText("PM");
         } else {
             amPmLabel.setText("AM");
@@ -155,23 +149,23 @@ public class DTime extends DPane {
     }
 
     /**
-     * Retrieves the currently displayed date.
+     * Retrieves the currently displayed time.
      * 
-     * @return the displayed date, or null if cleared
+     * @return the displayed time, or null if cleared
      */
-    public Date value() {
-        return displayDate;
+    public LocalTime value() {
+        return displayTime;
     }
 
     /**
-     * Sets the currently displayed date and strictly updates the UI components.
+     * Sets the currently displayed time and strictly updates the UI components.
      * 
-     * @param value the date to show, or null to clear display
+     * @param value the time to show, or null to clear display
      * @return this DTime instance for fluent chaining
      */
-    public DTime value(Date value) {
-        this.displayDate = value;
-        syncUIWithDate();
+    public DTime value(LocalTime value) {
+        this.displayTime = value;
+        syncUIWithTime();
         return this;
     }
 
@@ -183,7 +177,7 @@ public class DTime extends DPane {
      */
     public DTime highlightColor(Color color) {
         this.highlightColor = color;
-        syncUIWithDate();
+        syncUIWithTime();
         return this;
     }
 

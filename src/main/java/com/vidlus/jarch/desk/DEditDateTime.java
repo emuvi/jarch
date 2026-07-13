@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.function.Consumer;
 
 import javax.swing.JComponent;
@@ -27,7 +26,7 @@ public class DEditDateTime extends DEdit<LocalDateTime> {
     private final DEditTime timeEdit;
 
     /**
-     * Constructs a DEditTimestamp component, initializing both DEditDate and DEditTime
+     * Constructs a DEditDateTime component, initializing both DEditDate and DEditTime
      * side by side.
      */
     public DEditDateTime() {
@@ -49,12 +48,11 @@ public class DEditDateTime extends DEdit<LocalDateTime> {
     @Override
     public LocalDateTime getValue() {
         java.time.LocalDate d = dateEdit.getValue();
-        Date t = timeEdit.getValue();
+        java.time.LocalTime t = timeEdit.getValue();
         
         if (d == null || t == null) return null;
         
-        java.time.LocalTime time = t.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-        return LocalDateTime.of(d, time);
+        return LocalDateTime.of(d, t);
     }
 
     /**
@@ -69,7 +67,7 @@ public class DEditDateTime extends DEdit<LocalDateTime> {
             this.timeEdit.setValue(null);
         } else {
             this.dateEdit.setValue(value.toLocalDate());
-            this.timeEdit.setValue(Date.from(value.atZone(ZoneId.systemDefault()).toInstant()));
+            this.timeEdit.setValue(value.toLocalTime());
         }
     }
 

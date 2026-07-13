@@ -3,7 +3,7 @@ package com.vidlus.jarch.desk;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.util.Date;
+import java.time.LocalTime;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -24,7 +24,7 @@ public class DDialogTime extends DDialog {
     private final JButton cancelBtn;
     
     /** The resulting time to return upon confirmation. */
-    private Date result = null;
+    private LocalTime result = null;
 
     /**
      * Constructs a modal time selection dialog with no specific owner frame.
@@ -85,11 +85,11 @@ public class DDialogTime extends DDialog {
     /**
      * Sets the initial time selection of the dialog.
      * 
-     * @param date the time to select initially
+     * @param time the time to select initially
      * @return this DDialogTime instance for fluent chaining
      */
-    public DDialogTime value(Date date) {
-        editor.setValue(date);
+    public DDialogTime value(LocalTime time) {
+        editor.setValue(time);
         return this;
     }
 
@@ -116,9 +116,9 @@ public class DDialogTime extends DDialog {
     /**
      * Displays the dialog and blocks execution until the user selects OK or Cancel.
      * 
-     * @return the selected date if OK was pressed, or null if Cancel was pressed.
+     * @return the selected time if OK was pressed, or null if Cancel was pressed.
      */
-    public Date showDialog() {
+    public LocalTime showDialog() {
         result = null;
         visible(true); // Since it's modal, this blocks until visible(false) is called
         return result;

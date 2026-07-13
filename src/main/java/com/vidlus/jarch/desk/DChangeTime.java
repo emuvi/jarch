@@ -1,11 +1,7 @@
 package com.vidlus.jarch.desk;
 
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -65,22 +61,17 @@ public class DChangeTime extends DEditChange<LocalTime> {
             current = LocalTime.now();
         }
         
-        Date initDate = Date.from(current.atDate(java.time.LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant());
-        SpinnerDateModel model = new SpinnerDateModel(initDate, null, null, java.util.Calendar.MINUTE);
-        JSpinner spinner = new JSpinner(model);
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "HH:mm:ss");
-        spinner.setEditor(editor);
+        DEditTime editor = new DEditTime().value(current);
 
         DAlert alert = new DAlert()
                 .parent(comp())
                 .title(dialogTitle)
-                .message(spinner)
+                .message(editor.comp())
                 .plain()
                 .okCancel();
 
         if (alert.confirm() == JOptionPane.OK_OPTION) {
-            Date selected = (Date) spinner.getValue();
-            setValue(selected.toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+            setValue(editor.getValue());
         }
     }
 

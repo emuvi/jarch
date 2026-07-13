@@ -1,12 +1,8 @@
 package com.vidlus.jarch.desk;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -22,7 +18,7 @@ public class DChangeDateTime extends DEditChange<LocalDateTime> {
     private String dialogTitle = "Select Timestamp";
 
     /**
-     * Constructs a new DChangeTimestamp component.
+     * Constructs a new DChangeDateTime component.
      * Applies a TimestampFilter to restrict input to valid timestamp characters.
      */
     public DChangeDateTime() {
@@ -67,22 +63,17 @@ public class DChangeDateTime extends DEditChange<LocalDateTime> {
             current = LocalDateTime.now();
         }
         
-        Date initDate = Date.from(current.atZone(ZoneId.systemDefault()).toInstant());
-        SpinnerDateModel model = new SpinnerDateModel(initDate, null, null, java.util.Calendar.MINUTE);
-        JSpinner spinner = new JSpinner(model);
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinner, "yyyy-MM-dd HH:mm:ss");
-        spinner.setEditor(editor);
+        DEditDateTime editor = new DEditDateTime().value(current);
 
         DAlert alert = new DAlert()
                 .parent(comp())
                 .title(dialogTitle)
-                .message(spinner)
+                .message(editor.comp())
                 .plain()
                 .okCancel();
 
         if (alert.confirm() == JOptionPane.OK_OPTION) {
-            Date selected = (Date) spinner.getValue();
-            setValue(selected.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+            setValue(editor.getValue());
         }
     }
 
@@ -122,7 +113,7 @@ public class DChangeDateTime extends DEditChange<LocalDateTime> {
      * Fluent setter for the timestamp value.
      * 
      * @param timestamp the LocalDateTime to set
-     * @return this DChangeTimestamp instance
+     * @return this DChangeDateTime instance
      */
     public DChangeDateTime timestamp(LocalDateTime timestamp) {
         setValue(timestamp);
@@ -133,7 +124,7 @@ public class DChangeDateTime extends DEditChange<LocalDateTime> {
      * Fluent setter for the dialog title displayed when the action button is pressed.
      * 
      * @param dialogTitle the title for the dialog
-     * @return this DChangeTimestamp instance
+     * @return this DChangeDateTime instance
      */
     public DChangeDateTime dialogTitle(String dialogTitle) {
         this.dialogTitle = dialogTitle;
