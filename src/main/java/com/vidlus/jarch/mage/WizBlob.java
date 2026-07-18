@@ -13,17 +13,28 @@ import java.sql.Clob;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+/**
+ * A utility class for safely managing, converting, and interacting with {@link Blob} structures.
+ * <p>
+ * {@code WizBlob} provides static methods engineered to seamlessly parse various inputs (such as raw byte arrays, strings,
+ * and serializable objects) into functional {@link Blob} instances. It handles proper streaming, memory release mechanisms,
+ * and serialization pipelines without the boilerplate standard JDBC interaction requires.
+ * </p>
+ */
 public class WizBlob {
 
     private WizBlob() {
     }
 
     /**
-     * Checks if the given value can be converted to a Blob.
-     * Supports Blob, byte[], Clob, String, Number, and Serializable types.
+     * Determines whether the given object is natively compatible or actively translatable into a {@link Blob}.
+     * <p>
+     * Supported mapping formats encompass active {@link Blob} or {@link Clob} objects, raw {@code byte[]} structures,
+     * {@link String} and {@link Number} formats, or any explicitly mapped {@link Serializable} object.
+     * </p>
      *
-     * @param value the value to check
-     * @return true if value can be converted to Blob; false otherwise
+     * @param value the target object to evaluate
+     * @return {@code true} if the object can map directly into a {@link Blob}; {@code false} otherwise (or if the input is null)
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -36,14 +47,15 @@ public class WizBlob {
     }
 
     /**
-     * Converts the given value to a Blob.
-     * Handles Blob, byte[], Clob, String, Number, and Serializable types.
-     * Serializable objects are serialized using ObjectOutputStream.
-     * Text values are encoded using UTF-8.
+     * Converts a supported, versatile object format structurally into a {@link Blob}.
+     * <p>
+     * General textual fields and numbers are formatted into a stream utilizing a standard UTF-8 charset. Unstructured
+     * complex items are piped through an {@link ObjectOutputStream}.
+     * </p>
      *
-     * @param value the value to convert
-     * @return a Blob representing the value, or null if value is null
-     * @throws Exception if the value cannot be converted to Blob or serialization fails
+     * @param value the raw structural parameter aimed for translation
+     * @return the successfully mapped {@link Blob} containing the parameter's bytes, or {@code null} if the input is identically null
+     * @throws Exception if the targeted value fails translation or fails during serialization bindings
      */
     public static Blob get(Object value) throws Exception {
         if (value == null) return null;
@@ -77,11 +89,14 @@ public class WizBlob {
     }
 
     /**
-     * Converts the given value to a Blob, returning a default if conversion fails.
-     * 
-     * @param value the value to convert
-     * @param orDefault the default Blob to return if conversion fails
-     * @return the converted Blob, or orDefault if conversion fails or value is null
+     * Converts an object into a {@link Blob}, providing a protective fallback in case of translation failure.
+     * <p>
+     * Any structural or serialization exception thrown during processing is suppressed, deferring back to the provided fallback.
+     * </p>
+     *
+     * @param value     the raw parameter queued for translation
+     * @param orDefault the default structured {@link Blob} returned upon an aborted conversion attempt
+     * @return the correctly generated {@link Blob}, or the designated fallback default
      */
     public static Blob get(Object value, Blob orDefault) {
         try {
@@ -92,11 +107,11 @@ public class WizBlob {
     }
 
     /**
-     * Extracts the raw byte array from a Blob.
+     * Harvests the complete raw byte array spanning the targeted {@link Blob}.
      *
-     * @param blob the Blob to extract bytes from
-     * @return a byte array, or null if blob is null
-     * @throws Exception if accessing the Blob fails
+     * @param blob the active {@link Blob} targeted for extraction
+     * @return the structural {@code byte[]} mapped into memory, or {@code null} if the provided Blob is itself null
+     * @throws Exception if stream access terminates unexpectedly or is denied structurally
      */
     public static byte[] getBytes(Blob blob) throws Exception {
         if (blob == null) return null;
@@ -104,23 +119,23 @@ public class WizBlob {
     }
 
     /**
-     * Converts a Blob to a String using UTF-8 charset.
+     * Extracts a targeted {@link Blob} translating its byte layout into a structured UTF-8 string.
      *
-     * @param blob the Blob to convert
-     * @return the string representation, or null if blob is null
-     * @throws Exception if accessing the Blob fails
+     * @param blob the targeted {@link Blob} queued for extraction
+     * @return the successfully formatted structural {@link String}, or {@code null} if the provided Blob is itself null
+     * @throws Exception if character conversion fails or byte acquisition is interrupted
      */
     public static String getString(Blob blob) throws Exception {
         return getString(blob, StandardCharsets.UTF_8);
     }
 
     /**
-     * Converts a Blob to a String using the specified charset.
+     * Extracts a targeted {@link Blob} translating its byte layout dynamically via the explicitly provided character set boundary.
      *
-     * @param blob the Blob to convert
-     * @param charset the character set to use for decoding
-     * @return the string representation, or null if blob is null
-     * @throws Exception if accessing the Blob fails
+     * @param blob    the targeted {@link Blob} queued for extraction
+     * @param charset the character translation protocol utilized for mapping bytes to a formatted string
+     * @return the accurately mapped {@link String}, or {@code null} if the provided Blob is itself null
+     * @throws Exception if stream bounds fall outside specified encoding lengths or standard access fails
      */
     public static String getString(Blob blob, Charset charset) throws Exception {
         byte[] bytes = getBytes(blob);
@@ -129,12 +144,14 @@ public class WizBlob {
     }
 
     /**
-     * Deserializes a Blob back to its original Object.
-     * Used for Blobs created from Serializable objects.
+     * Structurally unbinds a serialized {@link Blob}, extracting its byte streams directly into its prior Object form.
+     * <p>
+     * Specifically designed to decode complex fields written down utilizing standard {@link ObjectOutputStream} bounds.
+     * </p>
      *
-     * @param blob the Blob to deserialize
-     * @return the deserialized object, or null if blob is null
-     * @throws Exception if accessing the Blob or deserialization fails
+     * @param blob the fully compiled serial {@link Blob}
+     * @return the parsed object restored to its pre-serialization framework format, or {@code null} if the blob provided was null
+     * @throws Exception if stream deserialization blocks fail unexpectedly
      */
     public static Object getObject(Blob blob) throws Exception {
         byte[] bytes = getBytes(blob);
@@ -146,12 +163,14 @@ public class WizBlob {
     }
 
     /**
-     * Gets an InputStream for reading the Blob content.
-     * The caller is responsible for closing the stream.
+     * Isolates the standard {@link InputStream} bridged to the internal bytes of the provided {@link Blob}.
+     * <p>
+     * The returned stream sits entirely at the user's discretion. Subsequent programmatic closures must be handled independently.
+     * </p>
      *
-     * @param blob the Blob to read from
-     * @return an InputStream, or null if blob is null
-     * @throws Exception if accessing the Blob fails
+     * @param blob the functional {@link Blob} needing extraction
+     * @return the structured binary {@link InputStream} mapping directly to the item's stored state, or {@code null} if the param is null
+     * @throws Exception if the internal byte connection faces critical stream failures
      */
     public static InputStream getInputStream(Blob blob) throws Exception {
         if (blob == null) return null;
@@ -159,11 +178,13 @@ public class WizBlob {
     }
 
     /**
-     * Returns the length of a Blob in bytes.
-     * Handles exceptions gracefully and returns 0 on error.
+     * Quantifies the complete structural length natively comprising a given {@link Blob} parameter.
+     * <p>
+     * Abortive runtime constraints blocking measurement evaluate transparently strictly to {@code 0}.
+     * </p>
      *
-     * @param blob the Blob to measure
-     * @return the length in bytes, or 0 if blob is null or an error occurs
+     * @param blob the parsed object parameter
+     * @return the total volume footprint configured within the object strictly in bytes, or {@code 0} if null or unmeasurable
      */
     public static long length(Blob blob) {
         if (blob == null) return 0;
@@ -175,10 +196,12 @@ public class WizBlob {
     }
 
     /**
-     * Frees the resources associated with a Blob.
-     * Suppresses any exceptions that occur during cleanup.
+     * Forcefully releases all underlying system boundaries and bindings occupied by an active {@link Blob}.
+     * <p>
+     * Functions safely. Null targets are entirely ignored, and forced systemic exceptions caught during cleanup are heavily suppressed.
+     * </p>
      *
-     * @param blob the Blob to free (can be null)
+     * @param blob the active item designated for memory clearing (may be null)
      */
     public static void free(Blob blob) {
         if (blob != null) {
@@ -191,20 +214,20 @@ public class WizBlob {
     }
 
     /**
-     * Checks if a Blob is empty (has zero bytes).
+     * Checks if an provided {@link Blob} exists totally devoid of contained bytes.
      *
-     * @param blob the Blob to check
-     * @return true if blob is null or has no bytes; false otherwise
+     * @param blob the target item undergoing evaluation
+     * @return {@code true} if identically null, or if its reported length evaluates definitively to zero; {@code false} otherwise
      */
     public static boolean isEmpty(Blob blob) {
         return length(blob) == 0;
     }
 
     /**
-     * Checks if a Blob is not empty (has at least one byte).
+     * Checks if a structured {@link Blob} encapsulates at minimum a single byte within its domain.
      *
-     * @param blob the Blob to check
-     * @return true if blob has at least one byte; false otherwise
+     * @param blob the target item undergoing evaluation
+     * @return {@code true} if mathematically greater than an empty volume; {@code false} otherwise
      */
     public static boolean isNotEmpty(Blob blob) {
         return !isEmpty(blob);
