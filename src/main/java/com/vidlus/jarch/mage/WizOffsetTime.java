@@ -16,8 +16,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
- * Utility class providing null-safe conversion, manipulation, comparison, 
- * and formatting methods for java.time.OffsetTime objects.
+ * A utility class providing safe manipulation, checking, and conversion operations for {@link OffsetTime} objects.
+ * <p>
+ * This class abstracts away common boundary conditions like null-checking while bridging conversions between legacy Time types, 
+ * numeric timestamps, and java.time API constructs maintaining their regional zone offset metadata.
+ * </p>
  */
 public class WizOffsetTime {
 
@@ -25,11 +28,10 @@ public class WizOffsetTime {
     }
 
     /**
-     * Checks if the given object can be successfully converted to an OffsetTime.
-     * Supports various date/time types, numbers (epoch millis), and string formats.
+     * Checks if the given value can be cleanly converted to an {@link OffsetTime}.
      *
-     * @param value the object to check
-     * @return true if the object can be converted to an OffsetTime, false otherwise
+     * @param value the value to check
+     * @return {@code true} if the value is supported for conversion, {@code false} otherwise
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -50,13 +52,14 @@ public class WizOffsetTime {
     }
 
     /**
-     * Converts a wide variety of object types into an OffsetTime.
-     * Extracts time information and applies the system default offset if necessary.
-     * Supports standard Java date/time objects, SQL date/time, strings, and numeric epoch milliseconds.
+     * Converts various object types into an {@link OffsetTime}.
+     * <p>
+     * Extracts time information and applies the system default offset mapping if natively omitted from the source format.
+     * </p>
      *
-     * @param value the object to convert
-     * @return the corresponding OffsetTime, or null if the input is null or an empty string
-     * @throws Exception if the conversion fails or the type is unsupported
+     * @param value the target value to convert
+     * @return the resolved {@link OffsetTime}, or {@code null} if the input is null or a blank string
+     * @throws Exception if the conversion fails or the object type is not supported
      */
     public static OffsetTime get(Object value) throws Exception {
         if (value == null) return null;
@@ -115,20 +118,20 @@ public class WizOffsetTime {
     // =========================================================================
 
     /**
-     * Gets the current time with the system's default offset.
+     * Gets the current system offset time.
      *
-     * @return the current OffsetTime
+     * @return an {@link OffsetTime} representing the exact current moment factoring local zone offsets
      */
     public static OffsetTime now() {
         return OffsetTime.now();
     }
 
     /**
-     * Adds the specified number of hours to an OffsetTime in a null-safe manner.
+     * Adds hours securely to a given offset time.
      *
-     * @param time  the original time
+     * @param time  the initial time
      * @param hours the number of hours to add
-     * @return a new OffsetTime with the hours added, or null if the input time was null
+     * @return the manipulated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime plusHours(OffsetTime time, long hours) {
         if (time == null) return null;
@@ -136,11 +139,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Subtracts the specified number of hours from an OffsetTime in a null-safe manner.
+     * Subtracts hours securely from a given offset time.
      *
-     * @param time  the original time
+     * @param time  the initial time
      * @param hours the number of hours to subtract
-     * @return a new OffsetTime with the hours subtracted, or null if the input time was null
+     * @return the manipulated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime minusHours(OffsetTime time, long hours) {
         if (time == null) return null;
@@ -148,11 +151,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Adds the specified number of minutes to an OffsetTime in a null-safe manner.
+     * Adds minutes securely to a given offset time.
      *
-     * @param time    the original time
+     * @param time    the initial time
      * @param minutes the number of minutes to add
-     * @return a new OffsetTime with the minutes added, or null if the input time was null
+     * @return the manipulated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime plusMinutes(OffsetTime time, long minutes) {
         if (time == null) return null;
@@ -160,11 +163,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Subtracts the specified number of minutes from an OffsetTime in a null-safe manner.
+     * Subtracts minutes securely from a given offset time.
      *
-     * @param time    the original time
+     * @param time    the initial time
      * @param minutes the number of minutes to subtract
-     * @return a new OffsetTime with the minutes subtracted, or null if the input time was null
+     * @return the manipulated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime minusMinutes(OffsetTime time, long minutes) {
         if (time == null) return null;
@@ -172,11 +175,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Adds the specified number of seconds to an OffsetTime in a null-safe manner.
+     * Adds seconds securely to a given offset time.
      *
-     * @param time    the original time
+     * @param time    the initial time
      * @param seconds the number of seconds to add
-     * @return a new OffsetTime with the seconds added, or null if the input time was null
+     * @return the manipulated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime plusSeconds(OffsetTime time, long seconds) {
         if (time == null) return null;
@@ -184,11 +187,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Subtracts the specified number of seconds from an OffsetTime in a null-safe manner.
+     * Subtracts seconds securely from a given offset time.
      *
-     * @param time    the original time
+     * @param time    the initial time
      * @param seconds the number of seconds to subtract
-     * @return a new OffsetTime with the seconds subtracted, or null if the input time was null
+     * @return the manipulated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime minusSeconds(OffsetTime time, long seconds) {
         if (time == null) return null;
@@ -197,10 +200,9 @@ public class WizOffsetTime {
 
     /**
      * Truncates the time component to exactly the start of the current hour.
-     * For example, 14:35:12 becomes 14:00:00.
      *
-     * @param time the time to truncate
-     * @return the truncated OffsetTime, or null if the input time was null
+     * @param time the initial time
+     * @return the truncated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime truncateToHours(OffsetTime time) {
         if (time == null) return null;
@@ -209,10 +211,9 @@ public class WizOffsetTime {
 
     /**
      * Truncates the time component to exactly the start of the current minute.
-     * For example, 14:35:12 becomes 14:35:00.
      *
-     * @param time the time to truncate
-     * @return the truncated OffsetTime, or null if the input time was null
+     * @param time the initial time
+     * @return the truncated {@link OffsetTime}, or {@code null} if the input is null
      */
     public static OffsetTime truncateToMinutes(OffsetTime time) {
         if (time == null) return null;
@@ -224,11 +225,11 @@ public class WizOffsetTime {
     // =========================================================================
 
     /**
-     * Checks if the first OffsetTime is strictly before the second in a null-safe manner.
+     * Safely evaluates if the first offset time strictly precedes the second.
      *
-     * @param t1 the first time
-     * @param t2 the second time
-     * @return true if t1 is before t2, false if either is null or the condition is not met
+     * @param t1 the first {@link OffsetTime}
+     * @param t2 the second {@link OffsetTime}
+     * @return {@code true} if t1 is before t2; {@code false} if either is null or t1 >= t2
      */
     public static boolean isBefore(OffsetTime t1, OffsetTime t2) {
         if (t1 == null || t2 == null) return false;
@@ -236,11 +237,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Checks if the first OffsetTime is strictly after the second in a null-safe manner.
+     * Safely evaluates if the first offset time strictly follows the second.
      *
-     * @param t1 the first time
-     * @param t2 the second time
-     * @return true if t1 is after t2, false if either is null or the condition is not met
+     * @param t1 the first {@link OffsetTime}
+     * @param t2 the second {@link OffsetTime}
+     * @return {@code true} if t1 is after t2; {@code false} if either is null or t1 <= t2
      */
     public static boolean isAfter(OffsetTime t1, OffsetTime t2) {
         if (t1 == null || t2 == null) return false;
@@ -248,11 +249,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Checks if two OffsetTime objects are exactly equal in a null-safe manner.
+     * Safely evaluates if the first offset time is chronologically equal to the second.
      *
-     * @param t1 the first time
-     * @param t2 the second time
-     * @return true if both are null or both are equal, false otherwise
+     * @param t1 the first {@link OffsetTime}
+     * @param t2 the second {@link OffsetTime}
+     * @return {@code true} if both are exactly equal; {@code true} if both are null; {@code false} otherwise
      */
     public static boolean isEqual(OffsetTime t1, OffsetTime t2) {
         if (t1 == null && t2 == null) return true;
@@ -261,11 +262,11 @@ public class WizOffsetTime {
     }
 
     /**
-     * Calculates the exact duration between two OffsetTime objects.
+     * Returns the exact {@link Duration} between two offset times.
      *
-     * @param startInclusive the start time
-     * @param endExclusive   the end time
-     * @return a Duration representing the difference, or null if either time is null
+     * @param startInclusive the start {@link OffsetTime} (inclusive)
+     * @param endExclusive   the end {@link OffsetTime} (exclusive)
+     * @return the {@link Duration} between the two limits, or {@code null} if either is null
      */
     public static Duration between(OffsetTime startInclusive, OffsetTime endExclusive) {
         if (startInclusive == null || endExclusive == null) return null;
@@ -277,10 +278,10 @@ public class WizOffsetTime {
     // =========================================================================
 
     /**
-     * Formats the OffsetTime using the default machine format (HH:mm:ss).
+     * Formats an {@link OffsetTime} via the machine-readable default standard {@code (HH:mm:ss)}.
      *
-     * @param value the time to format
-     * @return the formatted string, or an empty string if the input is null
+     * @param value the offset time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String format(OffsetTime value) {
         if (value == null) return "";
@@ -288,10 +289,10 @@ public class WizOffsetTime {
     }
 
     /**
-     * Formats the OffsetTime using the strict machine pattern (HH:mm:ss).
+     * Formats an {@link OffsetTime} utilizing the strict machine pattern {@code (HH:mm:ss)}.
      *
-     * @param value the time to format
-     * @return the formatted string, or an empty string if the input is null
+     * @param value the offset time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatTimeMach(OffsetTime value) {
         if (value == null) return "";
@@ -299,10 +300,10 @@ public class WizOffsetTime {
     }
 
     /**
-     * Formats the OffsetTime using the user-friendly pattern (HH:mm:ss).
+     * Formats an {@link OffsetTime} utilizing the preferred user-readable pattern {@code (HH:mm:ss)}.
      *
-     * @param value the time to format
-     * @return the formatted string, or an empty string if the input is null
+     * @param value the offset time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatTimeUser(OffsetTime value) {
         if (value == null) return "";
@@ -310,10 +311,10 @@ public class WizOffsetTime {
     }
 
     /**
-     * Formats the OffsetTime using a file-safe pattern (HH-mm-ss).
+     * Formats an {@link OffsetTime} utilizing a file-system compatible pattern {@code (HH-mm-ss)}.
      *
-     * @param value the time to format
-     * @return the formatted string, or an empty string if the input is null
+     * @param value the offset time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatTimeFile(OffsetTime value) {
         if (value == null) return "";
