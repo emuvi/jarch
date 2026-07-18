@@ -15,17 +15,33 @@ import java.util.function.Predicate;
 
 import com.vidlus.jarch.data.Pair;
 
+/**
+ * A comprehensive utility class for operations on arrays and array-like collections.
+ * <p>
+ * {@code WizArray} provides static methods for common tasks such as searching,
+ * transforming, filtering, and manipulating both primitive and object arrays.
+ * It is designed to be null-safe and handles various edge cases gracefully.
+ * </p>
+ * <p>
+ * Additionally, it provides interoperability methods to check and convert
+ * collections (like {@link List}, {@link Set}, and {@link Map}) into standard
+ * object arrays.
+ * </p>
+ */
 public class WizArray {
     
     private WizArray() {
     }
 
     /**
-     * Checks if the given value is an array-like object.
-     * Supports arrays, Lists, Sets, and Maps.
+     * Determines whether the given object is an array or an array-like collection.
+     * <p>
+     * An object is considered array-like if it is a standard Java array, or if it
+     * implements {@link List}, {@link Set}, or {@link Map}.
+     * </p>
      *
-     * @param value the value to check
-     * @return true if value is an array, List, Set, or Map; false otherwise
+     * @param value the object to evaluate
+     * @return {@code true} if the object is an array, list, set, or map; {@code false} otherwise (or if null)
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -36,12 +52,16 @@ public class WizArray {
     }
 
     /**
-     * Converts array-like objects to an Object array.
-     * Handles arrays, Lists, Sets, and Maps (Maps are converted to Pair arrays).
+     * Converts an array-like object into a standard {@code Object[]} array.
+     * <p>
+     * This method handles raw arrays, {@link List}s, {@link Set}s, and {@link Map}s.
+     * In the case of a {@code Map}, it is converted into an array of {@link Pair} objects,
+     * where each pair represents a key-value entry from the map.
+     * </p>
      *
-     * @param value the value to convert (array, List, Set, or Map)
-     * @return an Object array representation of the value, or null if value is null
-     * @throws IllegalArgumentException if the value cannot be converted to Object[]
+     * @param value the array-like object to convert (array, {@link List}, {@link Set}, or {@link Map})
+     * @return an {@code Object[]} representation of the given value, or {@code null} if the input is {@code null}
+     * @throws IllegalArgumentException if the provided value cannot be converted into an {@code Object[]}
      */
     public static Object[] get(Object value) {
         if (value == null) return null;
@@ -67,12 +87,16 @@ public class WizArray {
     }
 
     /**
-     * Checks if a value exists in the given array.
+     * Checks if a specific value exists within the given object array.
+     * <p>
+     * This method uses {@link Objects#equals(Object, Object)} for comparison,
+     * safely handling {@code null} values for both the target value and the array elements.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param value the value to search for
+     * @param <T>     the type of the array elements
+     * @param value   the value to search for
      * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @return {@code true} if the array contains the given value; {@code false} otherwise (or if the array is null)
      */
     public static <T> boolean has(T value, T... onArray) {
         if (onArray != null) {
@@ -86,12 +110,17 @@ public class WizArray {
     }
 
     /**
-     * Checks if all values in the first array exist in the second array.
+     * Checks if all the values from the first array exist within the second array.
+     * <p>
+     * The method determines if the {@code onArray} contains every single element
+     * present in the {@code values} array. The comparison is done using 
+     * {@link Objects#equals(Object, Object)}.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param values the array of values to search for
+     * @param <T>     the type of the array elements
+     * @param values  the array of target values to search for
      * @param onArray the array to search in
-     * @return true if all values are found in the array; false otherwise
+     * @return {@code true} if all values are found in the target array; {@code false} if any is missing or if either array is null
      */
     public static <T> boolean has(T[] values, T[] onArray) {
         if (values == null || onArray == null) {
@@ -114,12 +143,16 @@ public class WizArray {
     }
 
     /**
-     * Checks if any value from the first array exists in the second array.
+     * Checks if any value from the first array exists within the second array.
+     * <p>
+     * This acts as an intersection check. If at least one element from the
+     * {@code values} array is found in {@code onArray}, it returns {@code true}.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param values the array of values to search for
+     * @param <T>     the type of the array elements
+     * @param values  the array of target values to search for
      * @param onArray the array to search in
-     * @return true if at least one value is found in the array; false otherwise
+     * @return {@code true} if at least one value is found in the target array; {@code false} otherwise
      */
     public static <T> boolean hasAny(T[] values, T[] onArray) {
         if (values == null || onArray == null) {
@@ -136,11 +169,11 @@ public class WizArray {
     }
 
     /**
-     * Checks if a boolean value exists in the given array.
+     * Checks if a boolean value exists within the given boolean array.
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the boolean value to search for
+     * @param onArray the boolean array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(boolean value, boolean... onArray) {
         if (onArray != null) {
@@ -154,11 +187,11 @@ public class WizArray {
     }
 
     /**
-     * Checks if a byte value exists in the given array.
+     * Checks if a byte value exists within the given byte array.
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the byte value to search for
+     * @param onArray the byte array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(byte value, byte... onArray) {
         if (onArray != null) {
@@ -172,11 +205,11 @@ public class WizArray {
     }
 
     /**
-     * Checks if a short value exists in the given array.
+     * Checks if a short value exists within the given short array.
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the short value to search for
+     * @param onArray the short array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(short value, short... onArray) {
         if (onArray != null) {
@@ -190,11 +223,11 @@ public class WizArray {
     }
 
     /**
-     * Checks if a char value exists in the given array.
+     * Checks if a char value exists within the given char array.
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the char value to search for
+     * @param onArray the char array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(char value, char... onArray) {
         if (onArray != null) {
@@ -208,11 +241,11 @@ public class WizArray {
     }
 
     /**
-     * Checks if an int value exists in the given array.
+     * Checks if an int value exists within the given int array.
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the int value to search for
+     * @param onArray the int array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(int value, int... onArray) {
         if (onArray != null) {
@@ -226,11 +259,11 @@ public class WizArray {
     }
 
     /**
-     * Checks if a long value exists in the given array.
+     * Checks if a long value exists within the given long array.
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the long value to search for
+     * @param onArray the long array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(long value, long... onArray) {
         if (onArray != null) {
@@ -244,12 +277,15 @@ public class WizArray {
     }
 
     /**
-     * Checks if a float value exists in the given array.
-     * Uses Float.compare() for accurate floating-point comparison.
+     * Checks if a float value exists within the given float array.
+     * <p>
+     * This method relies on {@link Float#compare(float, float)} to ensure
+     * accurate floating-point comparison, properly handling NaN and zero cases.
+     * </p>
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the float value to search for
+     * @param onArray the float array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(float value, float... onArray) {
         if (onArray != null) {
@@ -263,12 +299,15 @@ public class WizArray {
     }
 
     /**
-     * Checks if a double value exists in the given array.
-     * Uses Double.compare() for accurate floating-point comparison.
+     * Checks if a double value exists within the given double array.
+     * <p>
+     * This method relies on {@link Double#compare(double, double)} to ensure
+     * accurate double-precision floating-point comparison, properly handling NaN and zero cases.
+     * </p>
      *
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return true if value is found in the array; false otherwise
+     * @param value   the double value to search for
+     * @param onArray the double array to search in
+     * @return {@code true} if the value is found; {@code false} otherwise
      */
     public static boolean has(double value, double... onArray) {
         if (onArray != null) {
@@ -282,14 +321,19 @@ public class WizArray {
     }
 
     /**
-     * Inserts a value at the specified index in the array.
-     * Shifts elements at and after the index to the right.
+     * Inserts a value into an array at a specific index.
+     * <p>
+     * A new array is created with an increased size. The specified value is placed
+     * at the {@code index}, and all existing elements at or after the index are
+     * shifted one position to the right. If the provided index is greater than the
+     * length of the array, the array is padded with {@code null}s up to the index.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param index the position at which to insert the value
-     * @param value the value to insert
+     * @param <T>     the type of the array elements
+     * @param index   the position at which to insert the new value
+     * @param value   the value to be inserted
      * @param onArray the original array
-     * @return a new array with the value inserted, or null if the original array is null
+     * @return a new array containing the inserted value, or {@code null} if the original array is null
      */
     @SuppressWarnings("all")
     public static <T> T[] insert(int index, T value, T... onArray) {
@@ -305,12 +349,15 @@ public class WizArray {
     }
 
     /**
-     * Filters out null elements from the given array.
-     * Returns a new array containing only non-null elements.
+     * Filters out all {@code null} elements from the provided array.
+     * <p>
+     * A new array is returned containing only the non-null elements, 
+     * preserving their original relative order.
+     * </p>
      *
-     * @param <T> the type of elements
+     * @param <T>      the type of the array elements
      * @param elements the array to filter
-     * @return a new array with null elements removed, or null if input is null
+     * @return a new array devoid of {@code null} elements, or {@code null} if the input array is null
      */
     @SuppressWarnings("all")
     public static <T> T[] getNotNull(T... elements) {
@@ -331,13 +378,13 @@ public class WizArray {
     }
 
     /**
-     * Creates a new array of the specified size filled with the given value.
+     * Instantiates a new array of the specified size and populates it with a single value.
      *
-     * @param <T> the type of elements
-     * @param clazz the class of the element type
-     * @param value the value to fill the array with
-     * @param size the size of the array to create
-     * @return a new array of specified size filled with the value
+     * @param <T>   the type of the array elements
+     * @param clazz the {@link Class} representing the component type of the array
+     * @param value the value to populate the entire array with
+     * @param size  the length of the new array
+     * @return a newly created array of the requested size, filled with the provided value
      */
     @SuppressWarnings("all")
     public static <T> T[] make(Class<T> clazz, T value, int size) {
@@ -347,25 +394,29 @@ public class WizArray {
     }
 
     /**
-     * Finds the index of the first occurrence of a value in the array.
+     * Returns the index of the first occurrence of the specified value in the array.
+     * <p>
+     * Comparison is performed using {@link Objects#equals(Object, Object)}, making it null-safe.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return the index of the first occurrence, or -1 if not found
+     * @param <T>     the type of the array elements
+     * @param value   the value to search for
+     * @param onArray the array to traverse
+     * @return the zero-based index of the first occurrence, or {@code -1} if the value is not found
      */
     public static <T> int indexOf(T value, T... onArray) {
         return indexOf(value, 0, onArray);
     }
 
     /**
-     * Finds the index of the first occurrence of a value in the array, starting from a specified index.
+     * Returns the index of the first occurrence of the specified value in the array,
+     * starting the search from a designated index.
      *
-     * @param <T> the type of elements
-     * @param value the value to search for
-     * @param startIndex the index to start searching from
-     * @param onArray the array to search in
-     * @return the index of the first occurrence, or -1 if not found
+     * @param <T>        the type of the array elements
+     * @param value      the value to search for
+     * @param startIndex the index to commence the search from (negative values are treated as 0)
+     * @param onArray    the array to traverse
+     * @return the zero-based index of the first occurrence starting from {@code startIndex}, or {@code -1} if not found
      */
     public static <T> int indexOf(T value, int startIndex, T... onArray) {
         if (onArray == null) {
@@ -383,12 +434,15 @@ public class WizArray {
     }
 
     /**
-     * Finds the index of the last occurrence of a value in the array.
+     * Returns the index of the last occurrence of the specified value in the array.
+     * <p>
+     * The array is searched backwards starting from the last element.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param value the value to search for
-     * @param onArray the array to search in
-     * @return the index of the last occurrence, or -1 if not found
+     * @param <T>     the type of the array elements
+     * @param value   the value to search for
+     * @param onArray the array to traverse
+     * @return the zero-based index of the last occurrence, or {@code -1} if the value is not found
      */
     public static <T> int lastIndexOf(T value, T... onArray) {
         if (onArray == null) {
@@ -403,34 +457,38 @@ public class WizArray {
     }
 
     /**
-     * Checks if an array is empty (null or zero length).
+     * Checks if the specified array is {@code null} or contains zero elements.
      *
-     * @param <T> the type of elements
-     * @param array the array to check
-     * @return true if array is null or empty; false otherwise
+     * @param <T>   the type of the array elements
+     * @param array the array to inspect
+     * @return {@code true} if the array is null or its length is 0; {@code false} otherwise
      */
     public static <T> boolean isEmpty(T... array) {
         return array == null || array.length == 0;
     }
 
     /**
-     * Checks if an array is not empty.
+     * Checks if the specified array is neither {@code null} nor empty.
      *
-     * @param <T> the type of elements
-     * @param array the array to check
-     * @return true if array is not null and not empty; false otherwise
+     * @param <T>   the type of the array elements
+     * @param array the array to inspect
+     * @return {@code true} if the array is not null and has at least one element; {@code false} otherwise
      */
     public static <T> boolean isNotEmpty(T... array) {
         return !isEmpty(array);
     }
 
     /**
-     * Adds an element to the end of an array.
+     * Appends the specified element to the end of an array.
+     * <p>
+     * This creates a new array that is one element larger than the original,
+     * copying all existing elements before inserting the new one at the end.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the original array
-     * @param element the element to add
-     * @return a new array with the element added, or null if the original array is null
+     * @param <T>     the type of the array elements
+     * @param array   the original array to append to
+     * @param element the new element to append
+     * @return a new array with the element appended, or {@code null} if the original array is null
      */
     @SuppressWarnings("all")
     public static <T> T[] add(T[] array, T element) {
@@ -443,12 +501,17 @@ public class WizArray {
     }
 
     /**
-     * Removes an element at the specified index from the array.
+     * Removes the element at a specific index from the array.
+     * <p>
+     * A new array is returned with a length reduced by one, containing all elements
+     * except the one situated at the specified {@code index}. If the index is out of bounds,
+     * the original array is returned unaltered.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param index the index of the element to remove
-     * @param onArray the array to remove from
-     * @return a new array with the element removed, or the original array if index is invalid
+     * @param <T>     the type of the array elements
+     * @param index   the zero-based index of the element to be removed
+     * @param onArray the array from which to remove the element
+     * @return a new array with the element removed, or the original array if the index is invalid
      */
     @SuppressWarnings("all")
     public static <T> T[] remove(int index, T... onArray) {
@@ -464,12 +527,17 @@ public class WizArray {
     }
     
     /**
-     * Removes the first occurrence of a value from the array.
+     * Removes the first occurrence of the specified value from the array.
+     * <p>
+     * The array is searched from the beginning, and if the value is found, a new array
+     * is created excluding that first matching element. If the value does not exist,
+     * the original array is returned.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param value the value to remove
-     * @param onArray the array to remove from
-     * @return a new array with the first occurrence of the value removed, or the original array if not found
+     * @param <T>     the type of the array elements
+     * @param value   the value to remove
+     * @param onArray the array from which to remove the value
+     * @return a new array with the first occurrence removed, or the original array if the value wasn't found
      */
     @SuppressWarnings("all")
     public static <T> T[] removeElement(T value, T... onArray) {
@@ -481,12 +549,16 @@ public class WizArray {
     }
 
     /**
-     * Concatenates two arrays into a single array.
+     * Concatenates two arrays sequentially into a single new array.
+     * <p>
+     * The resulting array contains all elements of {@code array1} followed by all
+     * elements of {@code array2}. If one array is null, a clone of the other is returned.
+     * </p>
      *
-     * @param <T> the type of elements
+     * @param <T>    the type of the array elements
      * @param array1 the first array
-     * @param array2 the second array
-     * @return a new array with elements from both arrays, or null if both are null
+     * @param array2 the second array, to be appended after the first
+     * @return a new concatenated array, or {@code null} if both inputs are null
      */
     @SuppressWarnings("all")
     public static <T> T[] concat(T[] array1, T... array2) {
@@ -502,11 +574,14 @@ public class WizArray {
     }
 
     /**
-     * Reverses the order of elements in an array.
+     * Reverses the order of the elements within the given array.
+     * <p>
+     * A new array is returned, leaving the original array completely untouched.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array to reverse
-     * @return a new array with elements in reverse order, or null if input is null
+     * @param <T>   the type of the array elements
+     * @param array the array whose elements should be reversed
+     * @return a new array with the elements in reverse order, or {@code null} if the input is null
      */
     @SuppressWarnings("all")
     public static <T> T[] reverse(T... array) {
@@ -527,13 +602,18 @@ public class WizArray {
     }
 
     /**
-     * Extracts a subarray from the specified start (inclusive) to end (exclusive) indices.
+     * Extracts a continuous sub-section from the specified array.
+     * <p>
+     * The extracted section begins at {@code startIndexInclusive} and ends right before
+     * {@code endIndexExclusive}. Indices are safely bound to the array's length; out-of-bound
+     * indices will not throw exceptions.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array to extract from
-     * @param startIndexInclusive the start index (inclusive)
-     * @param endIndexExclusive the end index (exclusive)
-     * @return a new array containing elements from start to end, or null if input is null
+     * @param <T>                 the type of the array elements
+     * @param array               the source array to extract from
+     * @param startIndexInclusive the beginning index, inclusive
+     * @param endIndexExclusive   the ending index, exclusive
+     * @return a new array containing the requested sub-range, or {@code null} if the input array is null
      */
     @SuppressWarnings("all")
     public static <T> T[] subArray(T[] array, int startIndexInclusive, int endIndexExclusive) {
@@ -554,12 +634,15 @@ public class WizArray {
     }
 
     /**
-     * Joins array elements into a string with the specified separator.
+     * Combines all elements of the array into a single {@link String}, separated by a delimiter.
+     * <p>
+     * Elements are converted to strings using their {@link Object#toString()} method.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array to join
-     * @param separator the separator string
-     * @return a string with joined elements, or null if input array is null
+     * @param <T>       the type of the array elements
+     * @param array     the array of elements to join
+     * @param separator the string to place between each element
+     * @return the joined string, or {@code null} if the input array is null
      */
     public static <T> String join(T[] array, String separator) {
         if (array == null) {
@@ -580,13 +663,13 @@ public class WizArray {
     }
 
     /**
-     * Filters array elements based on a predicate.
-     * Returns a new array containing only elements that match the predicate.
+     * Evaluates each element of an array against a {@link Predicate}, returning a new array
+     * composed only of the elements that satisfied the condition.
      *
-     * @param <T> the type of elements
-     * @param array the array to filter
-     * @param predicate the filtering condition
-     * @return a new array with filtered elements, or null if input is null
+     * @param <T>       the type of the array elements
+     * @param array     the original array to filter
+     * @param predicate the condition each element must pass to be included
+     * @return a new array containing the elements that matched the predicate, or {@code null} if any input is null
      */
     @SuppressWarnings("all")
     public static <T> T[] filter(T[] array, Predicate<T> predicate) {
@@ -607,15 +690,18 @@ public class WizArray {
     }
 
     /**
-     * Maps array elements to a different type using a transformation function.
-     * Returns a new array of the target type with transformed elements.
+     * Transforms every element in the array to a new form using a {@link Function}.
+     * <p>
+     * A new array of the target class type is created and populated with the results
+     * of applying the mapper function to each original element.
+     * </p>
      *
-     * @param <T> the type of input elements
-     * @param <R> the type of output elements
-     * @param array the array to map
-     * @param mapper the transformation function
-     * @param clazz the class of the output element type
-     * @return a new array with mapped elements, or null if input is null
+     * @param <T>    the type of the original array elements
+     * @param <R>    the type of the resulting array elements
+     * @param array  the source array
+     * @param mapper the function applied to each element to generate a new value
+     * @param clazz  the {@link Class} representing the component type of the resulting array
+     * @return a new array containing the transformed elements, or {@code null} if any input is null
      */
     @SuppressWarnings("all")
     public static <T, R> R[] map(T[] array, Function<T, R> mapper, Class<R> clazz) {
@@ -630,12 +716,12 @@ public class WizArray {
     }
 
     /**
-     * Returns the first element in the array that matches the predicate.
+     * Retrieves the first element in the array that satisfies the provided {@link Predicate}.
      *
-     * @param <T> the type of elements
-     * @param array the array to search
-     * @param predicate the matching condition
-     * @return the first matching element, or null if no match is found
+     * @param <T>       the type of the array elements
+     * @param array     the array to search
+     * @param predicate the condition to evaluate
+     * @return the first element that matches the condition, or {@code null} if no match is found or inputs are null
      */
     public static <T> T first(T[] array, Predicate<T> predicate) {
         if (array == null || predicate == null) {
@@ -650,12 +736,12 @@ public class WizArray {
     }
 
     /**
-     * Checks if any element in the array matches the predicate.
+     * Verifies whether at least one element in the array meets the given condition.
      *
-     * @param <T> the type of elements
-     * @param array the array to check
-     * @param predicate the matching condition
-     * @return true if at least one element matches; false otherwise
+     * @param <T>       the type of the array elements
+     * @param array     the array to evaluate
+     * @param predicate the condition to test elements against
+     * @return {@code true} if any element matches; {@code false} otherwise (or if inputs are null)
      */
     public static <T> boolean anyMatch(T[] array, Predicate<T> predicate) {
         if (array == null || predicate == null) {
@@ -670,12 +756,15 @@ public class WizArray {
     }
 
     /**
-     * Checks if all elements in the array match the predicate.
+     * Verifies whether all elements in the array meet the given condition.
+     * <p>
+     * An empty array inherently satisfies this condition.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array to check
-     * @param predicate the matching condition
-     * @return true if all elements match; false otherwise (or if array is empty)
+     * @param <T>       the type of the array elements
+     * @param array     the array to evaluate
+     * @param predicate the condition to test elements against
+     * @return {@code true} if every element matches (or if the array is empty); {@code false} otherwise
      */
     public static <T> boolean allMatch(T[] array, Predicate<T> predicate) {
         if (array == null || predicate == null) {
@@ -693,24 +782,26 @@ public class WizArray {
     }
 
     /**
-     * Checks if no elements in the array match the predicate.
+     * Verifies whether no elements in the array meet the given condition.
      *
-     * @param <T> the type of elements
-     * @param array the array to check
-     * @param predicate the matching condition
-     * @return true if no elements match; false otherwise
+     * @param <T>       the type of the array elements
+     * @param array     the array to evaluate
+     * @param predicate the condition to test elements against
+     * @return {@code true} if absolutely no elements match; {@code false} otherwise
      */
     public static <T> boolean noneMatch(T[] array, Predicate<T> predicate) {
         return !anyMatch(array, predicate);
     }
 
     /**
-     * Removes duplicate elements from the array.
-     * Preserves insertion order using a LinkedHashSet.
+     * Filters out duplicate elements from the array, keeping only unique occurrences.
+     * <p>
+     * The relative insertion order of the unique elements is preserved.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array to process
-     * @return a new array with duplicate elements removed, or null if input is null
+     * @param <T>   the type of the array elements
+     * @param array the source array
+     * @return a new array containing only distinct elements, or {@code null} if the input is null
      */
     @SuppressWarnings("all")
     public static <T> T[] distinct(T[] array) {
@@ -727,12 +818,16 @@ public class WizArray {
     }
 
     /**
-     * Swaps two elements at the specified indices in the array.
+     * Interchanges the elements located at two designated indices within the array.
+     * <p>
+     * If any of the indices are out of bounds, the operation gracefully aborts without
+     * throwing an exception.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array containing the elements to swap
-     * @param i the index of the first element
-     * @param j the index of the second element
+     * @param <T>   the type of the array elements
+     * @param array the array to modify in-place
+     * @param i     the index of the first element to swap
+     * @param j     the index of the second element to swap
      */
     public static <T> void swap(T[] array, int i, int j) {
         if (array == null || i < 0 || j < 0 || i >= array.length || j >= array.length) {
@@ -744,10 +839,14 @@ public class WizArray {
     }
 
     /**
-     * Shuffles the array in random order using Fisher-Yates algorithm.
+     * Randomizes the order of the elements in the array in-place.
+     * <p>
+     * This implementation utilizes the Fisher-Yates shuffle algorithm to ensure an
+     * unbiased, uniform random distribution of the elements.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the array to shuffle
+     * @param <T>   the type of the array elements
+     * @param array the array to be randomly shuffled
      */
     public static <T> void shuffle(T[] array) {
         if (array == null) {
@@ -761,11 +860,11 @@ public class WizArray {
     }
 
     /**
-     * Sorts the array using the provided comparator.
+     * Sorts the array in-place based on the rules dictated by a custom {@link Comparator}.
      *
-     * @param <T> the type of elements
-     * @param array the array to sort
-     * @param comparator the comparator to use for sorting
+     * @param <T>        the type of the array elements
+     * @param array      the array to be sorted
+     * @param comparator the logic defining the ordering of the elements
      */
     public static <T> void sort(T[] array, Comparator<? super T> comparator) {
         if (array == null) {
@@ -775,12 +874,12 @@ public class WizArray {
     }
 
     /**
-     * Finds the minimum element in the array using the provided comparator.
+     * Identifies the minimum (smallest) element in the array using a provided {@link Comparator}.
      *
-     * @param <T> the type of elements
-     * @param array the array to search
-     * @param comparator the comparator to use for comparison
-     * @return the minimum element, or null if array is null or empty
+     * @param <T>        the type of the array elements
+     * @param array      the array to evaluate
+     * @param comparator the logic determining which element is smaller
+     * @return the smallest element found, or {@code null} if the array is null or empty
      */
     public static <T> T min(T[] array, Comparator<? super T> comparator) {
         if (array == null || array.length == 0) {
@@ -796,12 +895,12 @@ public class WizArray {
     }
 
     /**
-     * Finds the maximum element in the array using the provided comparator.
+     * Identifies the maximum (largest) element in the array using a provided {@link Comparator}.
      *
-     * @param <T> the type of elements
-     * @param array the array to search
-     * @param comparator the comparator to use for comparison
-     * @return the maximum element, or null if array is null or empty
+     * @param <T>        the type of the array elements
+     * @param array      the array to evaluate
+     * @param comparator the logic determining which element is larger
+     * @return the largest element found, or {@code null} if the array is null or empty
      */
     public static <T> T max(T[] array, Comparator<? super T> comparator) {
         if (array == null || array.length == 0) {
@@ -817,12 +916,12 @@ public class WizArray {
     }
 
     /**
-     * Counts the number of elements in the array that match the predicate.
+     * Computes the total number of elements in the array that fulfill the given condition.
      *
-     * @param <T> the type of elements
-     * @param array the array to count
-     * @param predicate the matching condition
-     * @return the number of elements matching the predicate
+     * @param <T>       the type of the array elements
+     * @param array     the array to tally
+     * @param predicate the condition required for an element to be counted
+     * @return the integer count of elements matching the predicate
      */
     public static <T> int count(T[] array, Predicate<T> predicate) {
         if (array == null || predicate == null) {
@@ -838,12 +937,15 @@ public class WizArray {
     }
 
     /**
-     * Flattens a 2D array into a 1D array.
-     * Concatenates all sub-arrays into a single array.
+     * Consolidates a two-dimensional array (an array of arrays) into a single, flat one-dimensional array.
+     * <p>
+     * This effectively concatenates all the sub-arrays sequentially. Null sub-arrays
+     * within the main array are safely ignored and skipped over.
+     * </p>
      *
-     * @param <T> the type of elements
-     * @param array the 2D array to flatten
-     * @return a new 1D array containing all elements, or null if input is null
+     * @param <T>   the type of the array elements
+     * @param array the 2D array to be flattened
+     * @return a single 1D array encompassing all elements of the sub-arrays, or {@code null} if the input is null or solely comprised of null sub-arrays
      */
     @SuppressWarnings("all")
     public static <T> T[] flatten(T[][] array) {
