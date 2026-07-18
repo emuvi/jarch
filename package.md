@@ -83,3 +83,4 @@ Once your environment is set up and your `pom.xml` is configured, use the `packa
 
 ```bash
 python package.py
+```
