@@ -14,13 +14,23 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+/**
+ * A utility class providing safe manipulation, checking, and conversion operations for {@link LocalDateTime} objects.
+ * <p>
+ * This class abstracts away common boundary conditions like null-checking while bridging conversions between legacy Date types, 
+ * numeric timestamps, and java.time API constructs.
+ * </p>
+ */
 public class WizLocalDateTime {
 
     private WizLocalDateTime() {
     }
 
     /**
-     * Checks if the given value can be converted to a LocalDateTime.
+     * Checks if the given value can be converted to a {@link LocalDateTime}.
+     *
+     * @param value the value to check
+     * @return {@code true} if the value is supported for conversion, {@code false} otherwise
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -41,7 +51,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Converts various object types into a LocalDateTime.
+     * Converts various object types into a {@link LocalDateTime}.
+     *
+     * @param value the target value to convert
+     * @return the resolved {@link LocalDateTime}, or {@code null} if the input is null or a blank string
+     * @throws Exception if the conversion fails or the object type is not supported
      */
     public static LocalDateTime get(Object value) throws Exception {
         if (value == null) return null;
@@ -99,14 +113,20 @@ public class WizLocalDateTime {
     // =========================================================================
 
     /**
-     * Gets the current local date and time.
+     * Gets the current system local date and time.
+     *
+     * @return a {@link LocalDateTime} representing the exact current moment
      */
     public static LocalDateTime now() {
         return LocalDateTime.now();
     }
 
     /**
-     * Adds days securely.
+     * Adds days securely to a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param days     the number of days to add
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime plusDays(LocalDateTime dateTime, long days) {
         if (dateTime == null) return null;
@@ -114,7 +134,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Subtracts days securely.
+     * Subtracts days securely from a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param days     the number of days to subtract
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime minusDays(LocalDateTime dateTime, long days) {
         if (dateTime == null) return null;
@@ -122,7 +146,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Adds hours securely.
+     * Adds hours securely to a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param hours    the number of hours to add
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime plusHours(LocalDateTime dateTime, long hours) {
         if (dateTime == null) return null;
@@ -130,7 +158,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Subtracts hours securely.
+     * Subtracts hours securely from a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param hours    the number of hours to subtract
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime minusHours(LocalDateTime dateTime, long hours) {
         if (dateTime == null) return null;
@@ -138,7 +170,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Adds minutes securely.
+     * Adds minutes securely to a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param minutes  the number of minutes to add
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime plusMinutes(LocalDateTime dateTime, long minutes) {
         if (dateTime == null) return null;
@@ -146,7 +182,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Subtracts minutes securely.
+     * Subtracts minutes securely from a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param minutes  the number of minutes to subtract
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime minusMinutes(LocalDateTime dateTime, long minutes) {
         if (dateTime == null) return null;
@@ -154,7 +194,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Adds seconds securely.
+     * Adds seconds securely to a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param seconds  the number of seconds to add
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime plusSeconds(LocalDateTime dateTime, long seconds) {
         if (dateTime == null) return null;
@@ -162,7 +206,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Subtracts seconds securely.
+     * Subtracts seconds securely from a given date-time.
+     *
+     * @param dateTime the initial date-time
+     * @param seconds  the number of seconds to subtract
+     * @return the manipulated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime minusSeconds(LocalDateTime dateTime, long seconds) {
         if (dateTime == null) return null;
@@ -171,6 +219,9 @@ public class WizLocalDateTime {
 
     /**
      * Truncates the time component to exactly the start of the current hour.
+     *
+     * @param dateTime the initial date-time
+     * @return the truncated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime truncateToHours(LocalDateTime dateTime) {
         if (dateTime == null) return null;
@@ -179,6 +230,9 @@ public class WizLocalDateTime {
 
     /**
      * Truncates the time component to exactly the start of the current minute.
+     *
+     * @param dateTime the initial date-time
+     * @return the truncated {@link LocalDateTime}, or {@code null} if the input date-time is null
      */
     public static LocalDateTime truncateToMinutes(LocalDateTime dateTime) {
         if (dateTime == null) return null;
@@ -190,7 +244,11 @@ public class WizLocalDateTime {
     // =========================================================================
 
     /**
-     * Checks if d1 is before d2 securely.
+     * Safely evaluates if the first date-time strictly precedes the second.
+     *
+     * @param d1 the first {@link LocalDateTime}
+     * @param d2 the second {@link LocalDateTime}
+     * @return {@code true} if d1 is before d2; {@code false} if either is null or d1 >= d2
      */
     public static boolean isBefore(LocalDateTime d1, LocalDateTime d2) {
         if (d1 == null || d2 == null) return false;
@@ -198,7 +256,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Checks if d1 is after d2 securely.
+     * Safely evaluates if the first date-time strictly follows the second.
+     *
+     * @param d1 the first {@link LocalDateTime}
+     * @param d2 the second {@link LocalDateTime}
+     * @return {@code true} if d1 is after d2; {@code false} if either is null or d1 <= d2
      */
     public static boolean isAfter(LocalDateTime d1, LocalDateTime d2) {
         if (d1 == null || d2 == null) return false;
@@ -206,7 +268,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Checks if d1 is equal to d2 securely.
+     * Safely evaluates if the first date-time is chronologically equal to the second.
+     *
+     * @param d1 the first {@link LocalDateTime}
+     * @param d2 the second {@link LocalDateTime}
+     * @return {@code true} if both are exactly equal; {@code true} if both are null; {@code false} otherwise
      */
     public static boolean isEqual(LocalDateTime d1, LocalDateTime d2) {
         if (d1 == null && d2 == null) return true;
@@ -215,7 +281,11 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Returns the exact duration between two date-times.
+     * Returns the exact {@link Duration} between two date-times.
+     *
+     * @param startInclusive the start {@link LocalDateTime} (inclusive)
+     * @param endExclusive   the end {@link LocalDateTime} (exclusive)
+     * @return the {@link Duration} between the two limits, or {@code null} if either is null
      */
     public static Duration between(LocalDateTime startInclusive, LocalDateTime endExclusive) {
         if (startInclusive == null || endExclusive == null) return null;
@@ -224,6 +294,10 @@ public class WizLocalDateTime {
 
     /**
      * Calculates the exact number of days between two date-times.
+     *
+     * @param startInclusive the start {@link LocalDateTime} (inclusive)
+     * @param endExclusive   the end {@link LocalDateTime} (exclusive)
+     * @return the number of days separating the two dates, or {@code null} if either is null
      */
     public static Long daysBetween(LocalDateTime startInclusive, LocalDateTime endExclusive) {
         if (startInclusive == null || endExclusive == null) return null;
@@ -235,7 +309,10 @@ public class WizLocalDateTime {
     // =========================================================================
 
     /**
-     * Default formatter (machine format yyyy-MM-dd HH:mm:ss).
+     * Formats a {@link LocalDateTime} via the machine-readable default standard {@code (yyyy-MM-dd HH:mm:ss)}.
+     *
+     * @param value the date-time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String format(LocalDateTime value) {
         if (value == null) return "";
@@ -243,7 +320,10 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Formats using the machine pattern (yyyy-MM-dd HH:mm:ss).
+     * Formats a {@link LocalDateTime} utilizing the strict machine pattern {@code (yyyy-MM-dd HH:mm:ss)}.
+     *
+     * @param value the date-time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatDateTimeMach(LocalDateTime value) {
         if (value == null) return "";
@@ -251,7 +331,10 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Formats using the user pattern (dd/MM/yyyy HH:mm:ss).
+     * Formats a {@link LocalDateTime} utilizing the preferred user-readable pattern {@code (dd/MM/yyyy HH:mm:ss)}.
+     *
+     * @param value the date-time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatDateTimeUser(LocalDateTime value) {
         if (value == null) return "";
@@ -259,7 +342,10 @@ public class WizLocalDateTime {
     }
 
     /**
-     * Formats using the file pattern (yyyy-MM-dd-HH-mm-ss).
+     * Formats a {@link LocalDateTime} utilizing a file-system compatible pattern {@code (yyyy-MM-dd-HH-mm-ss)}.
+     *
+     * @param value the date-time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatDateTimeFile(LocalDateTime value) {
         if (value == null) return "";
