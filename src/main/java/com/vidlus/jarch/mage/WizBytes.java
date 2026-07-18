@@ -16,11 +16,23 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 
+/**
+ * A robust utility class designed for managing, transforming, and inspecting raw byte arrays ({@code byte[]}).
+ * <p>
+ * {@code WizBytes} provides static methods handling standard byte conversions, structural manipulations 
+ * (like splitting, reversing, and concatenating arrays), encoding/decoding implementations (Hexadecimal and Base64), 
+ * cryptographic hashing (MD5, SHA-1, SHA-256), and gzip stream compression.
+ * </p>
+ * <p>
+ * Null safety is applied universally, typically rendering a natural mathematical evaluation (e.g., returning {@code false},
+ * {@code null}, or {@code 0}) upon encountering uninstantiated references.
+ * </p>
+ */
 public class WizBytes {
 
     /**
-     * Prefix used for Base64-encoded byte array strings.
-     * Default value: "byte[]^64:"
+     * Standardized structural prefix utilized when serializing byte arrays specifically into Base64 formats.
+     * Default marker string: {@code "byte[]^64:"}
      */
     public static String byteArrayOnBase64Prefix = "byte[]^64:";
 
@@ -28,11 +40,14 @@ public class WizBytes {
     }
 
     /**
-     * Checks if the given value can be converted to a byte array.
-     * Supports byte[], Blob, Clob, String, Number, and Serializable types.
+     * Determines whether the given object natively matches or securely translates into a primitive {@code byte[]}.
+     * <p>
+     * Supported mapping bounds encompass active byte arrays, {@link Blob} and {@link Clob} SQL references,
+     * {@link String} formats, standard {@link Number} evaluations, and explicitly mapped {@link Serializable} objects.
+     * </p>
      *
-     * @param value the value to check
-     * @return true if value can be converted to byte[]; false otherwise
+     * @param value the target object to evaluate
+     * @return {@code true} if the object can natively map into a byte array structure; {@code false} otherwise (or if the input is null)
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -45,13 +60,16 @@ public class WizBytes {
     }
 
     /**
-     * Converts the given value to a byte array.
-     * Handles byte[], Blob, Clob, String (with Base64 decoding support), Number, and Serializable types.
-     * Empty strings return null.
+     * Translates a supported, versatile object format dynamically into a primitive {@code byte[]}.
+     * <p>
+     * Translating strings actively evaluates against pre-existing structural prefixes (e.g., {@link #byteArrayOnBase64Prefix})
+     * to perform on-the-fly Base64 unboxing. Empty strings translate intrinsically to {@code null}. {@link Serializable}
+     * items translate cleanly through a managed {@link ObjectOutputStream}.
+     * </p>
      *
-     * @param value the value to convert
-     * @return a byte array, or null if value is null or empty string
-     * @throws Exception if the value cannot be converted to byte[]
+     * @param value the raw structural parameter slated for byte extraction
+     * @return the successfully compiled {@code byte[]}, or {@code null} if the input evaluates as null or an empty string
+     * @throws Exception if the targeted parameter falls entirely out of bound or fails unboxing dynamically
      */
     public static byte[] get(Object value) throws Exception {
         if (value == null) return null;
@@ -92,10 +110,13 @@ public class WizBytes {
     }
 
     /**
-     * Formats a byte array as a Base64-encoded string with a prefix.
+     * Formats a raw byte array directly into a prefixed Base64 structural string.
+     * <p>
+     * The finalized string prepends {@link #byteArrayOnBase64Prefix} to mark its underlying encoded nature.
+     * </p>
      *
-     * @param value the byte array to format
-     * @return the Base64-encoded string with byteArrayOnBase64Prefix, or empty string if value is null
+     * @param value the byte array slated for formatting
+     * @return the generated prefix-stamped Base64 string, or an empty format ({@code ""}) given a null array
      */
     public static String format(byte[] value) {
         if (value == null) return "";
@@ -103,32 +124,34 @@ public class WizBytes {
     }
 
     /**
-     * Encodes a byte array to a Base64 string.
+     * Encodes a raw byte array squarely into a Base64 structural string utilizing standard platform mapping.
      *
-     * @param bytes the byte array to encode
-     * @return the Base64-encoded string
+     * @param bytes the raw byte layout slated for encoding
+     * @return the mathematically accurate Base64 output string
      */
     public static String encodeToBase64(byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
     /**
-     * Decodes a Base64 string to a byte array.
+     * Unboxes a raw Base64-formatted string dynamically into its underlying byte array structure.
      *
-     * @param formatted the Base64-encoded string to decode
-     * @return the decoded byte array
-     * @throws IllegalArgumentException if the string is not valid Base64
+     * @param formatted the targeted Base64 string slated for decoding
+     * @return the correctly extracted byte array mapping
+     * @throws IllegalArgumentException if the parameter structurally breaks Base64 bounds or contains illegible mapping bits
      */
     public static byte[] decodeFromBase64(String formatted) {
         return Base64.getDecoder().decode(formatted);
     }
 
     /**
-     * Encodes a byte array to a hexadecimal string.
-     * Each byte is represented by two hex digits (0-9, a-f).
+     * Encodes a standard byte array mapped directly into a textual Hexadecimal sequence.
+     * <p>
+     * Formatting employs lowercase character bindings ({@code 0-9, a-f}) generating exactly two hex digits for each contained byte.
+     * </p>
      *
-     * @param bytes the byte array to encode
-     * @return the hexadecimal string representation
+     * @param bytes the raw byte sequence aimed for mapping
+     * @return the mathematically precise hexadecimal sequence translated strictly into a string
      */
     public static String encodeToHex(byte[] bytes) {
         var hexString = new StringBuilder(2 * bytes.length);
@@ -143,77 +166,78 @@ public class WizBytes {
     }
 
     /**
-     * Computes the MD5 hash of a file.
+     * Extracts and calculates the MD5 cryptographic checksum representing the targeted file.
      *
-     * @param file the file to hash
-     * @return the MD5 hash as a hexadecimal string
-     * @throws Exception if file I/O or hashing fails
+     * @param file the mapped file target on the system path
+     * @return a mapped Hexadecimal string defining the complete MD5 hash footprint
+     * @throws Exception if read privileges fail, target path remains unresolved, or internal hash algorithm breaks down
      */
     public static String getMD5(File file) throws Exception {
         return WizBytes.getMD5(Files.readAllBytes(file.toPath()));
     }
 
     /**
-     * Computes the MD5 hash of a byte array.
+     * Calculates the explicit MD5 cryptographic checksum representing an unboxed byte array.
      *
-     * @param bytes the byte array to hash
-     * @return the MD5 hash as a hexadecimal string
-     * @throws Exception if hashing fails
+     * @param bytes the raw structural array undergoing hash processing
+     * @return a mapped Hexadecimal string defining the computed MD5 hash footprint
+     * @throws Exception if internal {@link MessageDigest} generation evaluates unexpectedly
      */
     public static String getMD5(byte[] bytes) throws Exception {
         return WizBytes.encodeToHex(MessageDigest.getInstance("MD5").digest(bytes));
     }
 
     /**
-     * Computes the SHA-1 hash of a file.
+     * Extracts and calculates the SHA-1 cryptographic checksum representing the targeted file.
      *
-     * @param file the file to hash
-     * @return the SHA-1 hash as a hexadecimal string
-     * @throws Exception if file I/O or hashing fails
+     * @param file the mapped file target on the system path
+     * @return a mapped Hexadecimal string defining the complete SHA-1 hash footprint
+     * @throws Exception if read privileges fail, target path remains unresolved, or internal hash algorithm breaks down
      */
     public static String getSHA1(File file) throws Exception {
         return WizBytes.getSHA1(Files.readAllBytes(file.toPath()));
     }
 
     /**
-     * Computes the SHA-1 hash of a byte array.
+     * Calculates the explicit SHA-1 cryptographic checksum representing an unboxed byte array.
      *
-     * @param bytes the byte array to hash
-     * @return the SHA-1 hash as a hexadecimal string
-     * @throws Exception if hashing fails
+     * @param bytes the raw structural array undergoing hash processing
+     * @return a mapped Hexadecimal string defining the computed SHA-1 hash footprint
+     * @throws Exception if internal {@link MessageDigest} generation evaluates unexpectedly
      */
     public static String getSHA1(byte[] bytes) throws Exception {
         return WizBytes.encodeToHex(MessageDigest.getInstance("SHA-1").digest(bytes));
     }
 
     /**
-     * Computes the SHA-256 hash of a file.
+     * Extracts and calculates the SHA-256 cryptographic checksum representing the targeted file.
      *
-     * @param file the file to hash
-     * @return the SHA-256 hash as a hexadecimal string
-     * @throws Exception if file I/O or hashing fails
+     * @param file the mapped file target on the system path
+     * @return a mapped Hexadecimal string defining the complete SHA-256 hash footprint
+     * @throws Exception if read privileges fail, target path remains unresolved, or internal hash algorithm breaks down
      */
     public static String getSHA256(File file) throws Exception {
         return WizBytes.getSHA256(Files.readAllBytes(file.toPath()));
     }
 
     /**
-     * Computes the SHA-256 hash of a byte array.
+     * Calculates the explicit SHA-256 cryptographic checksum representing an unboxed byte array.
      *
-     * @param bytes the byte array to hash
-     * @return the SHA-256 hash as a hexadecimal string
-     * @throws Exception if hashing fails
+     * @param bytes the raw structural array undergoing hash processing
+     * @return a mapped Hexadecimal string defining the computed SHA-256 hash footprint
+     * @throws Exception if internal {@link MessageDigest} generation evaluates unexpectedly
      */
     public static String getSHA256(byte[] bytes) throws Exception {
         return WizBytes.encodeToHex(MessageDigest.getInstance("SHA-256").digest(bytes));
     }
 
     /**
-     * Converts the given value to a byte array, returning a default if conversion fails.
+     * Converts an object dynamically into a primitive byte array, mapping any thrown translation
+     * errors smoothly to a prescribed fallback array.
      *
-     * @param value the value to convert
-     * @param orDefault the default byte array to return if conversion fails
-     * @return the converted byte array, or orDefault if conversion fails or value is null
+     * @param value     the raw parameter queued for translation
+     * @param orDefault the default byte array fallback utilized upon aborted processing limits
+     * @return the successfully generated byte array, or the designated default upon failure constraints
      */
     public static byte[] get(Object value, byte[] orDefault) {
         try {
@@ -224,12 +248,15 @@ public class WizBytes {
     }
 
     /**
-     * Decodes a hexadecimal string to a byte array.
-     * The hex string must have an even length with valid hex characters (0-9, a-f, A-F).
+     * Translates a formalized hexadecimal string cleanly into its native internal primitive byte array block.
+     * <p>
+     * Strictly verifies mathematical requirements enforcing string sequences explicitly bound to even lengths
+     * encompassing allowed character mapping ranges ({@code 0-9, a-f, A-F}).
+     * </p>
      *
-     * @param hexString the hexadecimal string to decode
-     * @return the decoded byte array
-     * @throws IllegalArgumentException if hex string has odd length or contains invalid characters
+     * @param hexString the sequence evaluated for decoding bounds
+     * @return the accurately translated primitive byte array mapping, or {@code null} given identically null input
+     * @throws IllegalArgumentException if the sequence length breaks mathematically uneven bounds or encompasses invalid textual tokens
      */
     public static byte[] decodeFromHex(String hexString) {
         if (hexString == null) return null;
@@ -249,11 +276,11 @@ public class WizBytes {
     }
 
     /**
-     * Concatenates two byte arrays.
+     * Functionally bridges two separate byte arrays into a newly allocated sequenced array.
      *
-     * @param a the first byte array
-     * @param b the second byte array
-     * @return a new byte array with a followed by b, or null if both are null
+     * @param a the leading byte array sequence
+     * @param b the trailing byte array sequence appended sequentially
+     * @return the combined primitive {@code byte[]} clone, or simply a cloned copy if one parameter was selectively null
      */
     public static byte[] concat(byte[] a, byte[] b) {
         if (a == null) return b != null ? b.clone() : null;
@@ -265,12 +292,16 @@ public class WizBytes {
     }
 
     /**
-     * Extracts a subarray from a byte array.
+     * Harvests an explicit sequential sub-block extracted from an overarching byte array.
+     * <p>
+     * Out-of-bounds parameters structurally resolve cleanly without failure by coercing constraints safely back
+     * into naturally allowed array parameters limit bounds.
+     * </p>
      *
-     * @param bytes the byte array to extract from
-     * @param start the starting index (inclusive)
-     * @param length the number of bytes to extract
-     * @return a new byte array with the extracted bytes, or null if bytes is null
+     * @param bytes  the baseline array slated for extraction
+     * @param start  the explicit zero-indexed extraction point constraint
+     * @param length the target offset length limit dictating block volume
+     * @return the generated bounded primitive array, or {@code null} given identically null input mapping
      */
     public static byte[] subBytes(byte[] bytes, int start, int length) {
         if (bytes == null) return null;
@@ -284,31 +315,33 @@ public class WizBytes {
     }
 
     /**
-     * Checks if a byte array is empty (null or zero length).
+     * Assesses whether a primitive byte array holds structurally an empty state limit bounds (length mapping to zero)
+     * or equates precisely to an absolute {@code null} reference.
      *
-     * @param bytes the byte array to check
-     * @return true if bytes is null or empty; false otherwise
+     * @param bytes the array targeted for measurement
+     * @return {@code true} given null or completely empty dimensions; {@code false} explicitly otherwise
      */
     public static boolean isEmpty(byte[] bytes) {
         return bytes == null || bytes.length == 0;
     }
 
     /**
-     * Checks if a byte array is not empty.
+     * Checks if a structured byte array securely encompasses at least one populated index dimension element.
      *
-     * @param bytes the byte array to check
-     * @return true if bytes is not null and has at least one element; false otherwise
+     * @param bytes the array targeted for bounds measurement
+     * @return {@code true} provided the array maintains a valid mapped length mathematically greater than 0
      */
     public static boolean isNotEmpty(byte[] bytes) {
         return !isEmpty(bytes);
     }
 
     /**
-     * Finds the first index of a byte in the array.
+     * Executes a linear search scanning sequentially to evaluate the earliest position explicitly containing
+     * the designated targeted byte.
      *
-     * @param bytes the byte array to search
-     * @param b the byte to search for
-     * @return the index of the first occurrence, or -1 if not found
+     * @param bytes the primary byte array undergoing search parsing
+     * @param b     the isolated byte value to secure against
+     * @return the explicit valid zero-based index mapping locating the element natively, or {@code -1} assuming total failure limits
      */
     public static int indexOf(byte[] bytes, byte b) {
         if (bytes == null) return -1;
@@ -319,11 +352,12 @@ public class WizBytes {
     }
 
     /**
-     * Finds the last index of a byte in the array.
+     * Executes a reverse linear search sequentially to extract the ultimate final trailing sequence occurrence containing
+     * the mathematically exact target byte.
      *
-     * @param bytes the byte array to search
-     * @param b the byte to search for
-     * @return the index of the last occurrence, or -1 if not found
+     * @param bytes the designated sequential array undergoing backward resolution parsing
+     * @param b     the functional targeting byte offset to match against
+     * @return the correctly bounded ultimate array index offset matching logically, or {@code -1} anticipating failure sequences
      */
     public static int lastIndexOf(byte[] bytes, byte b) {
         if (bytes == null) return -1;
@@ -334,22 +368,23 @@ public class WizBytes {
     }
 
     /**
-     * Checks if a byte array contains a specific byte value.
+     * Explicitly identifies if a structured primitive byte array securely houses at least a singular instance mapping
+     * functionally to the provided targeted query byte.
      *
-     * @param bytes the byte array to search
-     * @param b the byte to search for
-     * @return true if the byte is found; false otherwise
+     * @param bytes the array queried
+     * @param b     the byte evaluated
+     * @return {@code true} if exactly mapped during linear scan blocks; {@code false} otherwise
      */
     public static boolean contains(byte[] bytes, byte b) {
         return indexOf(bytes, b) >= 0;
     }
 
     /**
-     * Checks if a byte array starts with the given prefix.
+     * Assesses if a primitive byte array initiates sequentially matching exactly bounded components encompassing an explicitly given suffix mapping.
      *
-     * @param bytes the byte array to check
-     * @param prefix the prefix to match
-     * @return true if bytes starts with prefix; false otherwise (including if either is null)
+     * @param bytes  the structural byte array evaluating bounding alignments
+     * @param prefix the exact array expected positioned immediately at start boundaries
+     * @return {@code true} if prefix mapping encompasses successfully bounds precisely; {@code false} if constraints fall short dynamically
      */
     public static boolean startsWith(byte[] bytes, byte[] prefix) {
         if (bytes == null || prefix == null) return false;
@@ -361,11 +396,11 @@ public class WizBytes {
     }
 
     /**
-     * Checks if a byte array ends with the given suffix.
+     * Assesses if a primitive byte array concludes sequentially matching exactly bounded components encompassing an explicitly given suffix mapping.
      *
-     * @param bytes the byte array to check
-     * @param suffix the suffix to match
-     * @return true if bytes ends with suffix; false otherwise (including if either is null)
+     * @param bytes  the structural byte array evaluating bounds offsets
+     * @param suffix the strict suffix anticipated tracking precisely the ending length metrics
+     * @return {@code true} resolving exact match bounds securely; {@code false} mapping failures bounds completely or null references
      */
     public static boolean endsWith(byte[] bytes, byte[] suffix) {
         if (bytes == null || suffix == null) return false;
@@ -378,24 +413,26 @@ public class WizBytes {
     }
 
     /**
-     * Compares two byte arrays for equality.
-     * Handles null values (both nulls are equal, nulls are not equal to non-null).
+     * Validates mathematically if two distinct primitive byte arrays encapsulate functionally exact mirrored components encompassing exact sequencing.
      *
-     * @param a the first byte array
-     * @param b the second byte array
-     * @return true if both arrays are equal; false otherwise
+     * @param a the leading array metric compared logically
+     * @param b the trailing target array component mapped for comparison bounds
+     * @return {@code true} securing strict identity overlap precisely; {@code false} reflecting unequal value offsets
      */
     public static boolean equals(byte[] a, byte[] b) {
         return Arrays.equals(a, b);
     }
 
     /**
-     * Compares two byte arrays lexicographically (unsigned byte values).
-     * Null is considered less than any non-null array.
+     * Compares two byte arrays lexicographically treating explicitly each constituent byte element distinctly mapped
+     * identically via primitive unsigned translation values bounds dynamically.
+     * <p>
+     * Uninstantiated null bindings natively structure systematically translating as implicitly 'lesser' constraints relative to initialized sequences.
+     * </p>
      *
-     * @param a the first byte array
-     * @param b the second byte array
-     * @return a negative value if a < b, zero if a == b, positive if a > b
+     * @param a the structural leading bound mapping sequentially
+     * @param b the mapping parameter array translating lexicographical ordering offsets
+     * @return a definitively negative constraint mapping resolving {@code a < b}, zero matching symmetrically {@code a == b}, or identically positive bounding tracking logically {@code a > b}
      */
     public static int compare(byte[] a, byte[] b) {
         if (a == b) return 0;
@@ -413,10 +450,10 @@ public class WizBytes {
     }
 
     /**
-     * Reverses the order of bytes in an array.
+     * Generates explicitly an entirely reallocated primitive array mapping the initial sequence components exactly structurally inversed functionally.
      *
-     * @param bytes the byte array to reverse
-     * @return a new byte array with bytes in reverse order, or null if bytes is null
+     * @param bytes the targeting array block structurally configured for reverse translation ordering
+     * @return the manipulated swapped structured clone cleanly initialized bounded array mapping
      */
     public static byte[] reverse(byte[] bytes) {
         if (bytes == null) return null;
@@ -428,11 +465,11 @@ public class WizBytes {
     }
 
     /**
-     * Compresses a byte array using GZIP compression.
+     * Executes natively mapped active stream components functionally compressing an input array structurally mapped cleanly via standard GZIP configurations constraints.
      *
-     * @param bytes the byte array to compress
-     * @return the compressed byte array, or null if bytes is null
-     * @throws Exception if compression fails
+     * @param bytes the raw uncompressed standard sequence mapped sequentially
+     * @return the newly constructed strictly compressed bounded mapping block natively utilizing native GZIP formats
+     * @throws Exception explicitly if mapping algorithms abort unexpectedly generating IO sequence boundaries errors
      */
     public static byte[] compress(byte[] bytes) throws Exception {
         if (bytes == null) return null;
@@ -445,11 +482,11 @@ public class WizBytes {
     }
 
     /**
-     * Decompresses a byte array that was compressed using GZIP.
+     * Systematically translates mapped active dynamically-compressed array formats structurally unpacking bound sequences functionally mapping native uncompressed configurations algorithms cleanly utilizing standard GZIP configurations constraints.
      *
-     * @param bytes the compressed byte array to decompress
-     * @return the decompressed byte array, or null if bytes is null
-     * @throws Exception if decompression fails
+     * @param bytes the actively compressed bounds array mapped tracking sequential constraints
+     * @return the cleanly native strictly decompressed baseline mapping block natively utilizing explicitly native primitive array bindings
+     * @throws Exception explicitly mapped mathematically aborting algorithm parameters bounds evaluating formatting boundaries errors
      */
     public static byte[] decompress(byte[] bytes) throws Exception {
         if (bytes == null) return null;
