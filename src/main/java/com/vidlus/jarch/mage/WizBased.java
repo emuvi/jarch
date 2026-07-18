@@ -26,17 +26,33 @@ import com.vidlus.jarch.data.TableHead;
 import com.vidlus.jarch.data.Typed;
 import com.vidlus.jarch.data.Update;
 
+/**
+ * A comprehensive utility class for executing database operations and mapping JDBC result sets.
+ * <p>
+ * {@code WizBased} provides static methods to streamline common JDBC tasks, including
+ * the dynamic generation of DML objects ({@link Insert}, {@link Select}, {@link Update}, {@link Delete}),
+ * execution of parameterized queries and batches, and automatic reflection-based mapping
+ * from {@link ResultSet} rows to standard Java objects.
+ * </p>
+ * <p>
+ * It also encapsulates resource management (e.g., quiet closure of connections) and metadata extraction
+ * to seamlessly adapt between SQL data types and internal {@link Nature} enums.
+ * </p>
+ */
 public class WizBased {
 
     private WizBased() {
     }
 
     /**
-     * Creates an Insert statement from a Table.
-     * Maps table head and field values from the table to an Insert object.
+     * Constructs an {@link Insert} statement object derived from the provided {@link Table} metadata.
+     * <p>
+     * This method maps the table's header and field values into the corresponding data structures
+     * required for executing a database insertion.
+     * </p>
      *
-     * @param fromTable the source table to create the insert from
-     * @return an Insert object with table head and valued fields
+     * @param fromTable the source table providing the schema and data for the insert
+     * @return an {@link Insert} object containing the table header and the list of valued fields
      */
 	public static Insert makeInsert(Table fromTable) {
 	    var result = new Insert();
@@ -52,11 +68,14 @@ public class WizBased {
 	}
 
     /**
-     * Creates a Select statement from a Table.
-     * Maps table head, typed fields, and primary key filters from the table to a Select object.
+     * Constructs a {@link Select} statement object derived from the provided {@link Table} metadata.
+     * <p>
+     * This method maps the table's header, typed fields, and any primary key filters to formulate
+     * an object representing a database selection query.
+     * </p>
      *
-     * @param fromTable the source table to create the select from
-     * @return a Select object with table head, field list, and primary key filters
+     * @param fromTable the source table providing the schema and filters for the select
+     * @return a {@link Select} object containing the table header, field list, and primary key filters
      */
 	public static Select makeSelect(Table fromTable) {
 	    var result = new Select();
@@ -76,12 +95,15 @@ public class WizBased {
 	}
 
     /**
-     * Creates an Update statement from a Table.
-     * Uses non-primary key fields as values and primary key fields as filters.
+     * Constructs an {@link Update} statement object derived from the provided {@link Table} metadata.
+     * <p>
+     * The update operation distinguishes between standard fields (used as the new values) and
+     * primary key fields (used to construct the {@code WHERE} filter clause).
+     * </p>
      *
-     * @param fromTable the source table to create the update from
-     * @return an Update object with valued fields (non-primary) and filter fields (primary)
-     * @throws IllegalArgumentException if the table has no non-primary key fields or no primary key fields
+     * @param fromTable the source table providing the schema, data, and keys for the update
+     * @return an {@link Update} object containing the values to be set and the filters to target specific rows
+     * @throws IllegalArgumentException if the table lacks non-primary key fields (no values to update) or lacks primary key fields (no filters to target)
      */
 	public static Update makeUpdate(Table fromTable) {
 	    var result = new Update();
@@ -106,12 +128,14 @@ public class WizBased {
 	}
 
     /**
-     * Creates a Delete statement from a Table.
-     * Uses primary key fields as filters for the deletion.
+     * Constructs a {@link Delete} statement object derived from the provided {@link Table} metadata.
+     * <p>
+     * The deletion targets rows based exclusively on the primary key fields defined in the table.
+     * </p>
      *
-     * @param fromTable the source table to create the delete from
-     * @return a Delete object with primary key filters
-     * @throws IllegalArgumentException if the table has no primary key fields
+     * @param fromTable the source table providing the schema and primary keys for the delete operation
+     * @return a {@link Delete} object configured with the primary key filters
+     * @throws IllegalArgumentException if the table has no primary key fields to use as filters
      */
 	public static Delete makeDelete(Table fromTable) {
 	    var result = new Delete();
@@ -131,29 +155,32 @@ public class WizBased {
 	}
 
     /**
-     * Maps a ResultSet to a list of objects of the specified type.
-     * Uses column metadata to determine constructor and field mappings.
+     * Translates a complete {@link ResultSet} into a {@link List} of populated Java objects of the target class.
+     * <p>
+     * This method iterates through all available rows, internally extracting column metadata to seamlessly
+     * match standard constructors or dynamically map values to the corresponding fields.
+     * </p>
      *
-     * @param <T> the target class type
-     * @param result the ResultSet to map
-     * @param onClass the class to map each row to
-     * @return a list of mapped objects, one per row
-     * @throws Exception if mapping or reflection operations fail
+     * @param <T>     the generic target class type
+     * @param result  the {@link ResultSet} positioned before the first row
+     * @param onClass the {@link Class} representing the target data object
+     * @return a {@link List} containing a newly instantiated and mapped object for each row
+     * @throws Exception if iterating the result set, class instantiation, or reflection mappings fail
      */
     public static <T> List<T> mapResults(ResultSet result, Class<T> onClass) throws Exception {
         return WizBased.mapResults(result, null, onClass);
     }
 
     /**
-     * Maps a ResultSet to a list of objects with explicit field type information.
-     * Uses provided field list to determine type information for mapping.
+     * Translates a complete {@link ResultSet} into a {@link List} of populated Java objects,
+     * guiding the reflection mapping with an optional explicit field list.
      *
-     * @param <T> the target class type
-     * @param result the ResultSet to map
-     * @param fieldList the list of typed fields to use for mapping (can be null)
-     * @param onClass the class to map each row to
-     * @return a list of mapped objects, one per row
-     * @throws Exception if mapping or reflection operations fail
+     * @param <T>       the generic target class type
+     * @param result    the {@link ResultSet} positioned before the first row
+     * @param fieldList a {@link List} of {@link Typed} fields to aid in matching data types; may be {@code null}
+     * @param onClass   the {@link Class} representing the target data object
+     * @return a {@link List} containing a newly instantiated and mapped object for each row
+     * @throws Exception if iterating the result set, class instantiation, or reflection mappings fail
      */
     public static <T> List<T> mapResults(ResultSet result, List<Typed> fieldList, Class<T> onClass) throws Exception {
         var results = new ArrayList<T>();
@@ -165,30 +192,37 @@ public class WizBased {
     }
 
     /**
-     * Maps a single row from a ResultSet to an object of the specified type.
-     * Automatically determines constructor and field mappings from column metadata.
+     * Translates the current row of a {@link ResultSet} into a populated Java object of the target class.
+     * <p>
+     * This method automatically interprets column types and names to locate an appropriate constructor
+     * or inject values directly into object fields.
+     * </p>
      *
-     * @param <T> the target class type
-     * @param result the ResultSet positioned at the desired row
-     * @param onClass the class to map the row to
-     * @return a mapped object instance
-     * @throws Exception if mapping or reflection operations fail
+     * @param <T>     the generic target class type
+     * @param result  the {@link ResultSet} currently positioned at the targeted row
+     * @param onClass the {@link Class} representing the target data object
+     * @return an instance of the target class, populated with the row's data
+     * @throws Exception if data extraction, class instantiation, or reflection mappings fail
      */
     public static <T> T mapResult(ResultSet result, Class<T> onClass) throws Exception {
         return WizBased.mapResult(result, null, onClass);
     }
 
     /**
-     * Maps a single row from a ResultSet to an object with explicit field type information.
-     * Tries standard constructor first, then looks for best matching constructor.
-     * Sets remaining columns as instance fields if needed.
+     * Translates the current row of a {@link ResultSet} into a populated Java object, utilizing an
+     * explicit field list for more robust type mapping when available.
+     * <p>
+     * The process attempts to find an exact matching standard constructor based on column classes.
+     * Failing that, it attempts to deduce the best available constructor. For any remaining columns
+     * not consumed by the constructor, values are injected directly into instance fields by name.
+     * </p>
      *
-     * @param <T> the target class type
-     * @param result the ResultSet positioned at the desired row
-     * @param fieldList the list of typed fields to use for mapping (can be null)
-     * @param onClass the class to map the row to
-     * @return a mapped object instance
-     * @throws Exception if mapping or reflection operations fail
+     * @param <T>       the generic target class type
+     * @param result    the {@link ResultSet} currently positioned at the targeted row
+     * @param fieldList a {@link List} of {@link Typed} fields to aid in matching data types; may be {@code null}
+     * @param onClass   the {@link Class} representing the target data object
+     * @return an instance of the target class, populated with the row's data
+     * @throws Exception if data extraction, class instantiation, or reflection mappings fail
      */
     public static <T> T mapResult(ResultSet result, List<Typed> fieldList, Class<T> onClass) throws Exception {
         if (WizData.isNatureData(onClass)) {
@@ -230,6 +264,19 @@ public class WizBased {
         }
     }
 
+    /**
+     * Extracts deep relational schema metadata for a designated table using an active database connection.
+     * <p>
+     * The resulting {@link Table} object comprehensively defines the schema, including lists of all fields,
+     * their data types (translated to internal {@link Nature} enum values), nullability, autoincrement traits, 
+     * primary keys, and foreign key relationships.
+     * </p>
+     *
+     * @param tableHead  the metadata outlining the catalog, schema, and name of the table to inspect
+     * @param connection an active JDBC {@link Connection} to execute metadata queries against
+     * @return a fully constructed {@link Table} object modeling the physical database schema
+     * @throws Exception if retrieving schema information via {@link java.sql.DatabaseMetaData} fails
+     */
 	public static Table getTable(TableHead tableHead, Connection connection) throws Exception {
 	    var fieldList = new ArrayList<com.vidlus.jarch.data.Field>();
 	    var keyPrimaryList = new ArrayList<KeyPrimary>();
@@ -291,11 +338,11 @@ public class WizBased {
 	}
 
     /**
-     * Extracts all column names from a ResultSet.
+     * Extracts an array of strictly ordered column labels from the provided {@link ResultSet}.
      *
-     * @param results the ResultSet to extract column names from
-     * @return an array of column names
-     * @throws Exception if metadata extraction fails
+     * @param results the active {@link ResultSet} to interrogate
+     * @return a {@link String} array denoting the column names in sequential order
+     * @throws Exception if fetching metadata encounters an error
      */
 	public static String[] getColumnsNames(ResultSet results) throws Exception {
 	    var meta = results.getMetaData();
@@ -307,11 +354,11 @@ public class WizBased {
 	}
 
     /**
-     * Extracts the Java class types of all columns from a ResultSet.
+     * Extracts an array of strictly ordered Java {@link Class} definitions from the provided {@link ResultSet}.
      *
-     * @param results the ResultSet to extract column types from
-     * @return an array of column classes
-     * @throws Exception if metadata extraction or class loading fails
+     * @param results the active {@link ResultSet} to interrogate
+     * @return a {@link Class} array denoting the mapped Java types for each column
+     * @throws Exception if fetching metadata or loading the respective class fails
      */
 	public static Class<?>[] getColumnsClasses(ResultSet results) throws Exception {
 	    var meta = results.getMetaData();
@@ -324,11 +371,11 @@ public class WizBased {
 	}
 
     /**
-     * Extracts all column values from the current row of a ResultSet.
+     * Fetches an array of values mapping sequentially to every column on the current row of the {@link ResultSet}.
      *
-     * @param results the ResultSet positioned at a row
-     * @return an array of column values
-     * @throws Exception if value extraction fails
+     * @param results the active {@link ResultSet}, positioned at a valid row
+     * @return an {@link Object} array harboring the extracted data points for the current row
+     * @throws Exception if object extraction runs into an error
      */
 	public static Object[] getColumnsValues(ResultSet results) throws Exception {
 	    var meta = results.getMetaData();
@@ -340,12 +387,11 @@ public class WizBased {
 	}
 
     /**
-     * Extracts the Nature types of all columns from a ResultSet.
-     * Converts SQL types to internal Nature enums.
+     * Translates column types found in the provided {@link ResultSet} into internal {@link Nature} definitions.
      *
-     * @param results the ResultSet to extract nature types from
-     * @return an array of Nature types for each column
-     * @throws Exception if metadata extraction fails
+     * @param results the active {@link ResultSet} to interrogate
+     * @return an array mapping every column's JDBC type to a respective {@link Nature} enum
+     * @throws Exception if the conversion process or metadata extraction fails
      */
 	public static Nature[] getNaturesFrom(ResultSet results) throws Exception {
 	    var meta = results.getMetaData();
@@ -357,12 +403,11 @@ public class WizBased {
 	}
 
     /**
-     * Converts a JDBC type code to a Nature enum.
-     * Maps SQL types to internal type representations.
+     * Determines the most appropriate internal {@link Nature} enum corresponding to a standard JDBC type ID.
      *
-     * @param jdbcType the JDBC type code from Types
-     * @return the corresponding Nature enum value
-     * @throws UnsupportedOperationException if the JDBC type is not recognized
+     * @param jdbcType the integer type code outlined in {@link java.sql.Types}
+     * @return the corresponding {@link Nature} categorization for the data type
+     * @throws UnsupportedOperationException if the JDBC type does not have a mapped {@link Nature}
      */
 	public static Nature getNatureOfSQL(int jdbcType) {
 	    switch (jdbcType) {
@@ -425,12 +470,11 @@ public class WizBased {
 	}
 
     /**
-     * Sets parameters in a PreparedStatement.
-     * Binds an array of parameter values to the statement positions.
+     * Binds a variable-length sequence of Java objects as parameter arguments on a given {@link PreparedStatement}.
      *
-     * @param statement the PreparedStatement to set parameters on
-     * @param params the parameter values to bind
-     * @throws Exception if parameter binding fails
+     * @param statement the active {@link PreparedStatement} awaiting bindings
+     * @param params    the arguments to be bound incrementally starting at parameter index 1
+     * @throws Exception if setting the parameters raises a JDBC error
      */
 	public static void setParams(PreparedStatement statement, Object[] params) throws Exception {
 	    for (int i = 0; i < params.length; i++) {
@@ -439,23 +483,27 @@ public class WizBased {
 	}
 
     /**
-     * Prints all rows and columns from a ResultSet to standard output.
-     * Each row is printed on a new line with columns separated by " | ".
+     * Consumes and outputs all ensuing rows within a {@link ResultSet} to the standard output buffer ({@link System#out}).
+     * <p>
+     * Every row spans a single line. Inside a row, data columns are visibly segmented using a " | " separator.
+     * </p>
      *
-     * @param results the ResultSet to print
-     * @throws Exception if reading from the ResultSet fails
+     * @param results the target {@link ResultSet} to print
+     * @throws Exception if iterating or inspecting the cursor fails
      */
 	public static void printAllValues(ResultSet results) throws Exception {
 	    WizBased.printAllValues(results, System.out);
 	}
 
     /**
-     * Prints all rows and columns from a ResultSet to the specified PrintStream.
-     * Each row is printed on a new line with columns separated by " | ".
+     * Consumes and outputs all ensuing rows within a {@link ResultSet} to a designated {@link PrintStream}.
+     * <p>
+     * Every row spans a single line. Inside a row, data columns are visibly segmented using a " | " separator.
+     * </p>
      *
-     * @param results the ResultSet to print
-     * @param out the PrintStream to write output to
-     * @throws Exception if reading from the ResultSet fails
+     * @param results the target {@link ResultSet} to print
+     * @param out     the target {@link PrintStream} for data rendering
+     * @throws Exception if iterating or inspecting the cursor fails
      */
 	public static void printAllValues(ResultSet results, PrintStream out) throws Exception {
 	    var count = results.getMetaData().getColumnCount();
@@ -472,23 +520,29 @@ public class WizBased {
 	}
 
     /**
-     * Prints column names and their Nature types from a ResultSet to standard output.
-     * Format: [index] columnName : nature
+     * Outputs the column metadata mapping from a given {@link ResultSet} into standard output ({@link System#out}).
+     * <p>
+     * Yields one line per column detailing index, name, and translated internal {@link Nature}.
+     * Example: {@code [1] ID : Int}
+     * </p>
      *
-     * @param results the ResultSet to extract column information from
-     * @throws Exception if reading from the ResultSet fails
+     * @param results the active {@link ResultSet} holding the relevant shape data
+     * @throws Exception if pulling JDBC metadata structures triggers an error
      */
 	public static void printColumnsNamesAndNatures(ResultSet results) throws Exception {
 	    WizBased.printColumnsNamesAndNatures(results, System.out);
 	}
 
     /**
-     * Prints column names and their Nature types to the specified PrintStream.
-     * Format: [index] columnName : nature
+     * Outputs the column metadata mapping from a given {@link ResultSet} into a designated {@link PrintStream}.
+     * <p>
+     * Yields one line per column detailing index, name, and translated internal {@link Nature}.
+     * Example: {@code [1] ID : Int}
+     * </p>
      *
-     * @param results the ResultSet to extract column information from
-     * @param out the PrintStream to write output to
-     * @throws Exception if reading from the ResultSet fails
+     * @param results the active {@link ResultSet} holding the relevant shape data
+     * @param out     the designated output stream
+     * @throws Exception if pulling JDBC metadata structures triggers an error
      */
 	public static void printColumnsNamesAndNatures(ResultSet results, PrintStream out) throws Exception {
 	    var meta = results.getMetaData();
@@ -499,10 +553,13 @@ public class WizBased {
 	}
 
     /**
-     * Closes an AutoCloseable resource, suppressing any exceptions that occur.
-     * Safely closes connections, statements, result sets, and other resources.
+     * Triggers the {@code close()} methodology on a provided {@link AutoCloseable} instance while intercepting
+     * and wholly suppressing any subsequent closure exceptions.
+     * <p>
+     * This method securely handles {@code null} values without generating {@link NullPointerException}.
+     * </p>
      *
-     * @param closeable the resource to close (can be null)
+     * @param closeable the targeted object to be closed quietly (may be null)
      */
 	public static void closeQuietly(AutoCloseable closeable) {
 	    if (closeable != null) {
@@ -515,12 +572,15 @@ public class WizBased {
 	}
 
     /**
-     * Closes a connection, statement, and result set in order, suppressing any exceptions.
-     * Useful for cleanup in finally blocks or try-with-resources alternatives.
+     * Iteratively triggers {@code close()} against a {@link ResultSet}, a {@link Statement}, and finally a {@link Connection},
+     * completely suppressing any raised closure exceptions.
+     * <p>
+     * Valuable strictly as a broad safety net inside finalization blocks.
+     * </p>
      *
-     * @param conn the connection to close
-     * @param stmt the statement to close
-     * @param rs the result set to close
+     * @param conn the connection targeted for closing
+     * @param stmt the statement targeted for closing
+     * @param rs   the result set targeted for closing
      */
 	public static void closeQuietly(Connection conn, Statement stmt, ResultSet rs) {
 	    closeQuietly(rs);
@@ -529,10 +589,10 @@ public class WizBased {
 	}
 
     /**
-     * Rolls back a database transaction, suppressing any exceptions that occur.
-     * Useful for error handling in database operations.
+     * Executes a transaction abort by invoking {@code rollback()} against the {@link Connection}. Any underlying
+     * SQL exceptions spawned during this rollback attempt are muted.
      *
-     * @param conn the connection to rollback (can be null)
+     * @param conn the active transaction connection to be rolled back (may be null)
      */
 	public static void rollbackQuietly(Connection conn) {
 	    if (conn != null) {
@@ -545,10 +605,10 @@ public class WizBased {
 	}
 
     /**
-     * Commits a database transaction, suppressing any exceptions that occur.
-     * Useful for error handling in database operations.
+     * Executes a transaction finalization by invoking {@code commit()} against the {@link Connection}. Any underlying
+     * SQL exceptions spawned during this commit attempt are muted.
      *
-     * @param conn the connection to commit (can be null)
+     * @param conn the active transaction connection to be committed (may be null)
      */
 	public static void commitQuietly(Connection conn) {
 	    if (conn != null) {
@@ -561,14 +621,14 @@ public class WizBased {
 	}
 
     /**
-     * Checks if a table exists in the database.
+     * Interrogates the active catalog database to check for the pre-existence of a uniquely named table.
      *
-     * @param conn the database connection
-     * @param catalog the catalog name (can be null)
-     * @param schema the schema name (can be null)
-     * @param tableName the table name
-     * @return true if the table exists; false otherwise
-     * @throws Exception if database metadata queries fail
+     * @param conn      a viable {@link Connection} hooked to the target database
+     * @param catalog   the explicit database catalog namespace (can be null)
+     * @param schema    the explicit database schema namespace (can be null)
+     * @param tableName the strict name of the table sought after
+     * @return {@code true} if an artifact bearing this table name resolves in the schema; {@code false} otherwise
+     * @throws Exception if retrieving structural database metadata faults
      */
 	public static boolean tableExists(Connection conn, String catalog, String schema, String tableName) throws Exception {
 	    var meta = conn.getMetaData();
@@ -578,14 +638,14 @@ public class WizBased {
 	}
 
     /**
-     * Executes an update, insert, or delete SQL statement.
-     * Binds parameters and executes the prepared statement.
+     * Invokes a mutating DML SQL string ({@code INSERT}, {@code UPDATE}, or {@code DELETE}), appropriately substituting 
+     * argument values for any parameterized slots designated by question marks ({@code ?}).
      *
-     * @param conn the database connection
-     * @param sql the SQL statement to execute
-     * @param params the parameter values to bind (can be null)
-     * @return the number of rows affected
-     * @throws Exception if database operations fail
+     * @param conn   the viable {@link Connection} over which the update traverses
+     * @param sql    the query skeleton intended for execution
+     * @param params any positional values expected by the parameters outlined within the query
+     * @return the total volume of discrete rows successfully updated or wiped by the query
+     * @throws Exception if a database manipulation issue develops
      */
 	public static int executeUpdate(Connection conn, String sql, Object... params) throws Exception {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -597,14 +657,14 @@ public class WizBased {
 	}
 
     /**
-     * Executes an insert statement and retrieves the auto-generated key.
-     * Useful for getting primary keys after insertion.
+     * Drives an insertion statement directly into the database engine while distinctly enforcing a request for
+     * whatever primary key auto-generation materialized during the insert process.
      *
-     * @param conn the database connection
-     * @param sql the SQL insert statement
-     * @param params the parameter values to bind (can be null)
-     * @return the generated key value, or null if no key was generated
-     * @throws Exception if database operations fail
+     * @param conn   the viable {@link Connection} over which the update traverses
+     * @param sql    the query skeleton intended for execution
+     * @param params any positional values expected by the parameters outlined within the query
+     * @return a standalone {@link Object} mapping the primary key emitted for this freshly injected row, or {@code null}
+     * @throws Exception if a database manipulation issue develops or if retrieving generated keys fails
      */
 	public static Object executeInsertAndGetGeneratedKey(Connection conn, String sql, Object... params) throws Exception {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -624,14 +684,14 @@ public class WizBased {
 	}
 
     /**
-     * Executes a batch of parameterized SQL statements.
-     * More efficient than executing statements individually.
+     * Injects a continuous, sequential array of multiple parameter bundles strictly mapped to a singular,
+     * re-usable SQL template, vastly bolstering performance through batch optimizations.
      *
-     * @param conn the database connection
-     * @param sql the SQL statement template
-     * @param paramsList a list of parameter arrays, one per statement execution
-     * @return an array of update counts for each statement
-     * @throws Exception if database operations fail
+     * @param conn       the viable {@link Connection} overseeing the data batch
+     * @param sql        the single repeating parameter-bearing statement skeleton
+     * @param paramsList the expansive nested array payload housing positional variables applied repetitively
+     * @return a primitive {@code int[]} where each array node reflects the row update threshold achieved by the matching batch cycle
+     * @throws Exception if the batch aggregation limits out or execution catastrophically faults
      */
 	public static int[] executeBatch(Connection conn, String sql, List<Object[]> paramsList) throws Exception {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -648,16 +708,16 @@ public class WizBased {
 	}
 
     /**
-     * Queries the database and maps all result rows to a list of objects.
-     * Uses reflection and constructors to map ResultSet rows to the target class.
+     * Projects a query into the database engine, fetching a multi-row {@link ResultSet}, and sequentially mapping
+     * its outputs into a clean collection of strictly-typed, instantiated objects via {@link #mapResults(ResultSet, Class)}.
      *
-     * @param <T> the target class type
-     * @param conn the database connection
-     * @param sql the SQL query statement
-     * @param onClass the class to map each row to
-     * @param params the query parameter values (can be null)
-     * @return a list of mapped objects, one per result row
-     * @throws Exception if database operations or mapping fails
+     * @param <T>     the generic layout mapping of the resultant data wrapper instances
+     * @param conn    the viable {@link Connection} targeted for selection operations
+     * @param sql     the query statement
+     * @param onClass the strict reference mapped strictly to the target data structures
+     * @param params  any positional values demanded by query variables
+     * @return a distinct {@link List} containing parsed object models aligned synchronously with row indexes
+     * @throws Exception if execution halts or reflexive bindings malfunction
      */
 	public static <T> List<T> queryForList(Connection conn, String sql, Class<T> onClass, Object... params) throws Exception {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -671,16 +731,16 @@ public class WizBased {
 	}
 
     /**
-     * Queries the database and maps the first result row to an object.
-     * Returns null if no rows are found.
+     * Projects a query into the database engine tailored entirely around selecting one distinct record (e.g. searching via Primary Key).
+     * Any extra resulting rows returned beyond the initial element will be ignored.
      *
-     * @param <T> the target class type
-     * @param conn the database connection
-     * @param sql the SQL query statement
-     * @param onClass the class to map the first row to
-     * @param params the query parameter values (can be null)
-     * @return the mapped object from the first result row, or null if no results
-     * @throws Exception if database operations or mapping fails
+     * @param <T>     the generic layout mapping of the resultant data wrapper instance
+     * @param conn    the viable {@link Connection} targeted for selection operations
+     * @param sql     the query statement
+     * @param onClass the strict reference mapped strictly to the target data structure
+     * @param params  any positional values demanded by query variables
+     * @return a purely single-instanced object wrapping the first found database row; or strictly {@code null} upon zero rows
+     * @throws Exception if execution halts or reflexive bindings malfunction
      */
 	public static <T> T queryForObject(Connection conn, String sql, Class<T> onClass, Object... params) throws Exception {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
