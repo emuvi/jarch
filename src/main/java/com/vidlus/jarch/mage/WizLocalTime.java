@@ -14,13 +14,23 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+/**
+ * A utility class providing safe manipulation, checking, and conversion operations for {@link LocalTime} objects.
+ * <p>
+ * This class abstracts away common boundary conditions like null-checking while bridging conversions between legacy Time types, 
+ * numeric timestamps, and java.time API constructs.
+ * </p>
+ */
 public class WizLocalTime {
 
     private WizLocalTime() {
     }
 
     /**
-     * Checks if the given value can be converted to a LocalTime.
+     * Checks if the given value can be converted to a {@link LocalTime}.
+     *
+     * @param value the value to check
+     * @return {@code true} if the value is supported for conversion, {@code false} otherwise
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -41,7 +51,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Converts various object types into a LocalTime.
+     * Converts various object types into a {@link LocalTime}.
+     *
+     * @param value the target value to convert
+     * @return the resolved {@link LocalTime}, or {@code null} if the input is null or a blank string
+     * @throws Exception if the conversion fails or the object type is not supported
      */
     public static LocalTime get(Object value) throws Exception {
         if (value == null) return null;
@@ -98,14 +112,20 @@ public class WizLocalTime {
     // =========================================================================
 
     /**
-     * Gets the current local time.
+     * Gets the current system local time.
+     *
+     * @return a {@link LocalTime} representing the exact current moment
      */
     public static LocalTime now() {
         return LocalTime.now();
     }
 
     /**
-     * Adds hours securely.
+     * Adds hours securely to a given time.
+     *
+     * @param time  the initial time
+     * @param hours the number of hours to add
+     * @return the manipulated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime plusHours(LocalTime time, long hours) {
         if (time == null) return null;
@@ -113,7 +133,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Subtracts hours securely.
+     * Subtracts hours securely from a given time.
+     *
+     * @param time  the initial time
+     * @param hours the number of hours to subtract
+     * @return the manipulated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime minusHours(LocalTime time, long hours) {
         if (time == null) return null;
@@ -121,7 +145,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Adds minutes securely.
+     * Adds minutes securely to a given time.
+     *
+     * @param time    the initial time
+     * @param minutes the number of minutes to add
+     * @return the manipulated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime plusMinutes(LocalTime time, long minutes) {
         if (time == null) return null;
@@ -129,7 +157,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Subtracts minutes securely.
+     * Subtracts minutes securely from a given time.
+     *
+     * @param time    the initial time
+     * @param minutes the number of minutes to subtract
+     * @return the manipulated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime minusMinutes(LocalTime time, long minutes) {
         if (time == null) return null;
@@ -137,7 +169,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Adds seconds securely.
+     * Adds seconds securely to a given time.
+     *
+     * @param time    the initial time
+     * @param seconds the number of seconds to add
+     * @return the manipulated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime plusSeconds(LocalTime time, long seconds) {
         if (time == null) return null;
@@ -145,7 +181,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Subtracts seconds securely.
+     * Subtracts seconds securely from a given time.
+     *
+     * @param time    the initial time
+     * @param seconds the number of seconds to subtract
+     * @return the manipulated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime minusSeconds(LocalTime time, long seconds) {
         if (time == null) return null;
@@ -154,6 +194,9 @@ public class WizLocalTime {
 
     /**
      * Truncates the time component to exactly the start of the current hour.
+     *
+     * @param time the initial time
+     * @return the truncated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime truncateToHours(LocalTime time) {
         if (time == null) return null;
@@ -162,6 +205,9 @@ public class WizLocalTime {
 
     /**
      * Truncates the time component to exactly the start of the current minute.
+     *
+     * @param time the initial time
+     * @return the truncated {@link LocalTime}, or {@code null} if the input time is null
      */
     public static LocalTime truncateToMinutes(LocalTime time) {
         if (time == null) return null;
@@ -173,7 +219,11 @@ public class WizLocalTime {
     // =========================================================================
 
     /**
-     * Checks if t1 is before t2 securely.
+     * Safely evaluates if the first time strictly precedes the second.
+     *
+     * @param t1 the first {@link LocalTime}
+     * @param t2 the second {@link LocalTime}
+     * @return {@code true} if t1 is before t2; {@code false} if either is null or t1 >= t2
      */
     public static boolean isBefore(LocalTime t1, LocalTime t2) {
         if (t1 == null || t2 == null) return false;
@@ -181,7 +231,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Checks if t1 is after t2 securely.
+     * Safely evaluates if the first time strictly follows the second.
+     *
+     * @param t1 the first {@link LocalTime}
+     * @param t2 the second {@link LocalTime}
+     * @return {@code true} if t1 is after t2; {@code false} if either is null or t1 <= t2
      */
     public static boolean isAfter(LocalTime t1, LocalTime t2) {
         if (t1 == null || t2 == null) return false;
@@ -189,7 +243,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Checks if t1 is equal to t2 securely.
+     * Safely evaluates if the first time is chronologically equal to the second.
+     *
+     * @param t1 the first {@link LocalTime}
+     * @param t2 the second {@link LocalTime}
+     * @return {@code true} if both are exactly equal; {@code true} if both are null; {@code false} otherwise
      */
     public static boolean isEqual(LocalTime t1, LocalTime t2) {
         if (t1 == null && t2 == null) return true;
@@ -198,7 +256,11 @@ public class WizLocalTime {
     }
 
     /**
-     * Returns the exact duration between two times.
+     * Returns the exact {@link Duration} between two times.
+     *
+     * @param startInclusive the start {@link LocalTime} (inclusive)
+     * @param endExclusive   the end {@link LocalTime} (exclusive)
+     * @return the {@link Duration} between the two limits, or {@code null} if either is null
      */
     public static Duration between(LocalTime startInclusive, LocalTime endExclusive) {
         if (startInclusive == null || endExclusive == null) return null;
@@ -210,7 +272,10 @@ public class WizLocalTime {
     // =========================================================================
 
     /**
-     * Default formatter (machine format HH:mm:ss).
+     * Formats a {@link LocalTime} via the machine-readable default standard {@code (HH:mm:ss)}.
+     *
+     * @param value the time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String format(LocalTime value) {
         if (value == null) return "";
@@ -218,7 +283,10 @@ public class WizLocalTime {
     }
 
     /**
-     * Formats using the machine pattern (HH:mm:ss).
+     * Formats a {@link LocalTime} utilizing the strict machine pattern {@code (HH:mm:ss)}.
+     *
+     * @param value the time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatTimeMach(LocalTime value) {
         if (value == null) return "";
@@ -226,7 +294,10 @@ public class WizLocalTime {
     }
 
     /**
-     * Formats using the user pattern (HH:mm:ss).
+     * Formats a {@link LocalTime} utilizing the preferred user-readable pattern {@code (HH:mm:ss)}.
+     *
+     * @param value the time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatTimeUser(LocalTime value) {
         if (value == null) return "";
@@ -234,7 +305,10 @@ public class WizLocalTime {
     }
 
     /**
-     * Formats using the file pattern (HH-mm-ss).
+     * Formats a {@link LocalTime} utilizing a file-system compatible pattern {@code (HH-mm-ss)}.
+     *
+     * @param value the time to format
+     * @return the formatted string, or an empty string if null
      */
     public static String formatTimeFile(LocalTime value) {
         if (value == null) return "";
