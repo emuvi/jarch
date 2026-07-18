@@ -18,15 +18,19 @@ import java.net.URI;
 /**
  * Native integration utility providing OS detection, process insights,
  * hardware profiling, desktop integration, and native JNA bindings.
+ * <p>
+ * This class abstracts complex system-level calls, granting easy access to memory limits, 
+ * active window tracking, and cross-platform (Windows, Linux, macOS) process management.
+ * </p>
  */
 public class WizNative {
 
     private static final String OS_NAME_PROPERTY = "os.name";
 
     /**
-     * Checks if the underlying operating system is Windows.
+     * Checks if the underlying operating system is a Windows variant.
      *
-     * @return true if Windows, false otherwise
+     * @return {@code true} if running on Windows, {@code false} otherwise
      */
     public static boolean isWin() {
         var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
@@ -36,7 +40,7 @@ public class WizNative {
     /**
      * Checks if the underlying operating system is a Unix/Linux variant.
      *
-     * @return true if Linux/Unix/AIX, false otherwise
+     * @return {@code true} if running on Linux, Unix, or AIX, {@code false} otherwise
      */
     public static boolean isLin() {
         var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
@@ -46,7 +50,7 @@ public class WizNative {
     /**
      * Checks if the underlying operating system is macOS.
      *
-     * @return true if Mac, false otherwise
+     * @return {@code true} if running on macOS, {@code false} otherwise
      */
     public static boolean isMac() {
         var os = System.getProperty(OS_NAME_PROPERTY).toLowerCase();
@@ -60,16 +64,16 @@ public class WizNative {
     /**
      * Retrieves the process ID (PID) of the currently running Java Virtual Machine.
      *
-     * @return the process ID
+     * @return the process ID mapped from the active {@link ProcessHandle}
      */
     public static long getPID() {
         return ProcessHandle.current().pid();
     }
 
     /**
-     * Retrieves the raw operating system name property.
+     * Retrieves the raw operating system name property exactly as defined by the JVM.
      *
-     * @return the OS name
+     * @return the OS name string mapped from {@link System#getProperty(String)}
      */
     public static String getOsName() {
         return System.getProperty(OS_NAME_PROPERTY);
@@ -85,7 +89,7 @@ public class WizNative {
     }
 
     /**
-     * Retrieves the operating system architecture (e.g., amd64, x86, aarch64).
+     * Retrieves the operating system architecture payload (e.g., amd64, x86, aarch64).
      *
      * @return the OS architecture string
      */
@@ -94,9 +98,9 @@ public class WizNative {
     }
 
     /**
-     * Retrieves the username of the account executing the application.
+     * Retrieves the username of the account actively executing the application.
      *
-     * @return the username
+     * @return the system username string
      */
     public static String getUserName() {
         return System.getProperty("user.name");
@@ -105,7 +109,7 @@ public class WizNative {
     /**
      * Retrieves the home directory path of the active user.
      *
-     * @return the user's home directory
+     * @return the absolute path string to the user's home directory
      */
     public static String getUserHome() {
         return System.getProperty("user.home");
@@ -114,17 +118,19 @@ public class WizNative {
     /**
      * Retrieves the current working directory from which the application was launched.
      *
-     * @return the user directory path
+     * @return the user directory path string
      */
     public static String getUserDir() {
         return System.getProperty("user.dir");
     }
 
     /**
-     * Resolves the local network hostname of the machine.
-     * Falls back to 'localhost' if resolution fails.
+     * Resolves the local network hostname of the host machine.
+     * <p>
+     * If the resolution via {@link InetAddress} fails, it gracefully falls back to returning {@code "localhost"}.
+     * </p>
      *
-     * @return the hostname
+     * @return the active hostname string
      */
     public static String getHostName() {
         try {
@@ -139,45 +145,45 @@ public class WizNative {
     // =========================================================================
 
     /**
-     * Retrieves the number of logical processors available to the Java Virtual Machine.
+     * Retrieves the exact number of logical processors currently available to the Java Virtual Machine.
      *
-     * @return the number of available processors
+     * @return the number of available processors exposed by the {@link Runtime}
      */
     public static int getAvailableProcessors() {
         return Runtime.getRuntime().availableProcessors();
     }
 
     /**
-     * Retrieves the amount of free memory in the Java Virtual Machine.
+     * Retrieves the total amount of instantly accessible free memory in the Java Virtual Machine.
      *
-     * @return the free memory in bytes
+     * @return the free memory allocation defined in bytes
      */
     public static long getFreeMemory() {
         return Runtime.getRuntime().freeMemory();
     }
 
     /**
-     * Retrieves the total amount of memory currently allocated to the Java Virtual Machine.
+     * Retrieves the total amount of memory currently reserved and allocated to the Java Virtual Machine.
      *
-     * @return the total memory in bytes
+     * @return the total memory footprint defined in bytes
      */
     public static long getTotalMemory() {
         return Runtime.getRuntime().totalMemory();
     }
 
     /**
-     * Retrieves the maximum amount of memory that the Java Virtual Machine will attempt to use.
+     * Retrieves the maximum absolute ceiling of memory that the Java Virtual Machine will attempt to use.
      *
-     * @return the max memory in bytes
+     * @return the maximum threshold limit defined in bytes
      */
     public static long getMaxMemory() {
         return Runtime.getRuntime().maxMemory();
     }
 
     /**
-     * Calculates the amount of memory currently being used by the JVM.
+     * Calculates the real-time amount of memory actively being used by the JVM footprint.
      *
-     * @return the used memory in bytes
+     * @return the used memory calculation defined in bytes
      */
     public static long getUsedMemory() {
         return getTotalMemory() - getFreeMemory();
@@ -188,10 +194,12 @@ public class WizNative {
     // =========================================================================
 
     /**
-     * Requests the native operating system to open a URL in the default web browser.
-     * Fails silently if desktop integration is unsupported.
+     * Requests the native operating system to open a specified web {@link URI} in the default internet browser.
+     * <p>
+     * This method safely verifies the {@link Desktop} availability and fails silently if desktop integration is unsupported.
+     * </p>
      *
-     * @param url the URL to open
+     * @param url the destination URL to open
      */
     public static void openUrl(String url) {
         if (url == null || url.isBlank()) return;
@@ -205,10 +213,12 @@ public class WizNative {
     }
 
     /**
-     * Requests the native operating system to open a file using its default associated application.
-     * Fails silently if desktop integration is unsupported.
+     * Requests the native operating system to open a local {@link File} leveraging its default associated desktop application.
+     * <p>
+     * This method safely verifies the {@link Desktop} availability and fails silently if desktop integration is unsupported.
+     * </p>
      *
-     * @param file the file to open
+     * @param file the target file to execute/open
      */
     public static void openFile(File file) {
         if (file == null || !file.exists()) return;
@@ -226,11 +236,14 @@ public class WizNative {
     // =========================================================================
 
     /**
-     * Retrieves the title of the currently focused/active window on the operating system.
-     * Leverages native JNA calls tailored for Windows, Linux, or macOS.
+     * Retrieves the title of the currently focused/active window operating globally on the host operating system.
+     * <p>
+     * Leverages native JNA framework bindings strictly tailored and routed for Windows, Linux, and macOS platforms.
+     * </p>
      *
-     * @return the title of the active window, or an empty string if unresolvable
-     * @throws Exception if native library loading or interrogation fails
+     * @return the title of the active window, or an empty string if unresolvable or inaccessible
+     * @throws Exception if native library loading or interrogation explicitly fails
+     * @throws UnsupportedOperationException if the host OS is unsupported
      */
     public static String getActiveWindowTitle() throws Exception {
         if (isWin()) {
@@ -245,9 +258,9 @@ public class WizNative {
     }
 
     /**
-     * Fetches the active window title natively on Windows using user32.dll.
+     * Fetches the active window title natively on Windows utilizing {@code user32.dll} bindings.
      *
-     * @return the window title
+     * @return the focused window title string
      */
     private static String getWinActiveWindowTitle() {
         WinUser32 user32 = WinUser32.getInstance();
@@ -258,10 +271,10 @@ public class WizNative {
     }
 
     /**
-     * Fetches the active window title natively on Linux/Unix using X11 bindings.
+     * Fetches the active window title natively on Linux/Unix operating systems mapping {@code X11} bindings.
      *
-     * @return the window title
-     * @throws Exception if X11 communication fails
+     * @return the focused window title string
+     * @throws Exception if X11 native communication structurally fails
      */
     private static String getLinActiveWindowTitle() throws Exception {
         LinX11 x11 = LinX11.getInstance();
@@ -288,12 +301,12 @@ public class WizNative {
     }
 
     /**
-     * Helper to read specific window properties from an X11 Atom.
+     * Helper protocol to securely extract precise window properties routed from an X11 Atom context.
      *
-     * @param display the X11 display connection
-     * @param window the X11 window
-     * @param property the property key to query
-     * @return the string value of the property, or null if missing
+     * @param display  the active X11 display connection pointer
+     * @param window   the targeted X11 window pointer
+     * @param property the internal property key to query
+     * @return the resolved string value payload of the property, or {@code null} if missing/unreadable
      */
     private static String getWindowProperty(LinX11.Display display, LinX11.Window window, String property) {
         LinX11 x11 = LinX11.getInstance();
@@ -316,10 +329,10 @@ public class WizNative {
     }
 
     /**
-     * Fetches the active window title natively on macOS using CoreGraphics.
+     * Fetches the active window title natively on macOS utilizing {@code CoreGraphics} bindings.
      *
-     * @return the window title
-     * @throws Exception if CoreGraphics interrogation fails
+     * @return the focused window title string
+     * @throws Exception if CoreGraphics interrogation structurally fails
      */
     private static String getMacActiveWindowTitle() throws Exception {
         MacCoreGraphics instance = MacCoreGraphics.getInstance();
@@ -337,12 +350,12 @@ public class WizNative {
     }
 
     /**
-     * JNA bindings for Windows user32.dll API.
+     * Internal JNA integration bindings mapping the Windows {@code user32.dll} API.
      */
     private interface WinUser32 extends StdCallLibrary {
 
         /**
-         * Loads and returns the User32 instance safely.
+         * Loads and securely returns the localized User32 instance.
          */
         static WinUser32 getInstance() {
             if (isWin()) {
@@ -359,12 +372,12 @@ public class WizNative {
     }
 
     /**
-     * JNA bindings for Linux/Unix libX11.so API.
+     * Internal JNA integration bindings mapping the Linux/Unix {@code libX11.so} API.
      */
     private interface LinX11 extends X11 {
         
          /**
-          * Loads and returns the X11 instance safely.
+          * Loads and securely returns the localized X11 instance.
           */
          static LinX11 getInstance() {
             if (isLin()) {
@@ -388,7 +401,7 @@ public class WizNative {
         int XFree(Pointer data);
 
         /**
-         * JNA by-reference pointer wrapper for X11 Window.
+         * Internal JNA by-reference pointer wrapper abstracting an X11 Window.
          */
         class WindowByReference extends ByReference {
 
@@ -405,7 +418,7 @@ public class WizNative {
         }
 
         /**
-         * JNA by-reference pointer wrapper for X11 Atom.
+         * Internal JNA by-reference pointer wrapper abstracting an X11 Atom context.
          */
         class AtomByReference extends ByReference {
 
@@ -423,12 +436,12 @@ public class WizNative {
     }
 
     /**
-     * JNA bindings for macOS CoreGraphics framework API.
+     * Internal JNA integration bindings mapping the macOS {@code CoreGraphics} framework API.
      */
     private interface MacCoreGraphics extends com.sun.jna.Library {
 
         /**
-         * Loads and returns the CoreGraphics instance safely.
+         * Loads and securely returns the localized CoreGraphics instance.
          */
         static MacCoreGraphics getInstance() {
             if (isMac()) {
@@ -447,7 +460,7 @@ public class WizNative {
         String CGWindowTitle(CGWindowID window);
 
         /**
-         * JNA specific wrapper for macOS Window ID tracking.
+         * Internal JNA specific wrapper providing mapping for macOS Window ID tracking.
          */
         class CGWindowID extends com.sun.jna.IntegerType {
             public CGWindowID() { super(4); }
