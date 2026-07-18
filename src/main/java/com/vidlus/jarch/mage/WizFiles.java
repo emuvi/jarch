@@ -15,7 +15,11 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Utility class for bulk file system operations (recursive moves, copying, zipping, etc.).
+ * A utility class for bulk file system operations.
+ * <p>
+ * This class provides methods for recursive moving, copying, deleting, 
+ * zipping, and unzipping files and directories.
+ * </p>
  */
 public class WizFiles {
 
@@ -24,7 +28,7 @@ public class WizFiles {
     /**
      * Retrieves the file system roots along with their system display names.
      *
-     * @return An array of RootName records containing the root file and its display name.
+     * @return an array of {@link RootName} records containing the root file and its display name
      */
     public static RootName[] getRootsNamed() {
         FileSystemView fileSystemView = FileSystemView.getFileSystemView();
@@ -40,11 +44,13 @@ public class WizFiles {
 
     /**
      * Recursively moves all files from a source directory to a destination directory.
+     * <p>
      * If a file with the same name exists in the destination, it is renamed with an incremental counter.
+     * </p>
      *
-     * @param from The source directory.
-     * @param to The destination directory.
-     * @throws Exception If an error occurs during the move operation.
+     * @param from the source directory
+     * @param to   the destination directory
+     * @throws Exception if an error occurs during the move operation, or if the source is invalid
      */
     public static void moveAll(File from, File to) throws Exception {
         if (from == null || !from.exists() || !from.isDirectory()) {
@@ -78,9 +84,9 @@ public class WizFiles {
     /**
      * Recursively copies a directory and its contents to a destination directory.
      *
-     * @param source The source directory or file.
-     * @param dest The destination directory or file.
-     * @throws IOException If an I/O error occurs.
+     * @param source the source directory or file
+     * @param dest   the destination directory or file
+     * @throws IOException if an I/O error occurs
      */
     public static void copyAll(File source, File dest) throws IOException {
         if (source == null || dest == null || !source.exists()) return;
@@ -102,11 +108,13 @@ public class WizFiles {
 
     /**
      * Generates a unique file handle in the specified folder based on the given name.
+     * <p>
      * If the file already exists, it appends a counter to the base name (e.g., "name (1).ext").
+     * </p>
      *
-     * @param folder The folder where the file should be unique.
-     * @param name The original file name.
-     * @return A File object representing a unique path in the folder.
+     * @param folder the folder where the file should be unique
+     * @param name   the original file name
+     * @return a {@link File} object representing a unique path in the folder
      */
     public static File getUnique(File folder, String name) {
         var base = WizFile.getBaseName(name);
@@ -123,8 +131,8 @@ public class WizFiles {
     /**
      * Recursively deletes a file or directory.
      *
-     * @param file The file or directory to delete.
-     * @return true if the file or directory was successfully deleted, false otherwise.
+     * @param file the {@link File} or directory to delete
+     * @return {@code true} if the file or directory was successfully deleted, {@code false} otherwise
      */
     public static boolean delete(File file) {
         if (file == null || !file.exists()) {
@@ -144,7 +152,7 @@ public class WizFiles {
     /**
      * Deletes multiple files or directories recursively.
      *
-     * @param files The files to delete.
+     * @param files the files to delete
      */
     public static void deleteAll(File... files) {
         if (files != null) {
@@ -157,8 +165,8 @@ public class WizFiles {
     /**
      * Recursively lists all files within a directory (excluding directories themselves).
      *
-     * @param folder The directory to search.
-     * @return A list of all files.
+     * @param folder the directory to search
+     * @return a {@link List} of all files found within the directory and its subdirectories
      */
     public static List<File> listAll(File folder) {
         List<File> result = new ArrayList<>();
@@ -180,9 +188,9 @@ public class WizFiles {
     /**
      * Zips a file or directory into a target zip file.
      *
-     * @param source The file or directory to compress.
-     * @param zipFile The output zip file.
-     * @throws IOException If an I/O error occurs.
+     * @param source  the file or directory to compress
+     * @param zipFile the output zip file
+     * @throws IOException if an I/O error occurs
      */
     public static void zip(File source, File zipFile) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(zipFile);
@@ -193,11 +201,13 @@ public class WizFiles {
 
     /**
      * Recursively adds a file or directory to a zip output stream.
+     * <p>
      * Skips hidden files and creates directory entries as needed.
+     * </p>
      *
      * @param fileToZip the file or directory to add to the zip
-     * @param fileName the name to use in the zip entry
-     * @param zos the ZipOutputStream to write to
+     * @param fileName  the name to use in the zip entry
+     * @param zos       the {@link ZipOutputStream} to write to
      * @throws IOException if an I/O error occurs
      */
     private static void zipFile(File fileToZip, String fileName, ZipOutputStream zos) throws IOException {
@@ -234,9 +244,9 @@ public class WizFiles {
     /**
      * Unzips a zip file into a target directory.
      *
-     * @param zipFile The zip file to extract.
-     * @param destDir The target directory.
-     * @throws IOException If an I/O error occurs.
+     * @param zipFile the zip file to extract
+     * @param destDir the target directory
+     * @throws IOException if an I/O error occurs
      */
     public static void unzip(File zipFile, File destDir) throws IOException {
         if (!destDir.exists()) {
@@ -269,6 +279,14 @@ public class WizFiles {
         }
     }
 
+    /**
+     * Resolves a {@link ZipEntry} safely against a target directory, protecting against Zip Slip vulnerabilities.
+     *
+     * @param destinationDir the target extraction directory
+     * @param zipEntry       the current zip entry
+     * @return the resolved {@link File} inside the destination directory
+     * @throws IOException if the entry attempts to write outside the target directory
+     */
     private static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
         String destDirPath = destinationDir.getCanonicalPath();
@@ -282,8 +300,8 @@ public class WizFiles {
     /**
      * A record to hold a file system root and its display name.
      *
-     * @param root The root directory.
-     * @param name The display name of the root.
+     * @param root the root directory {@link File}
+     * @param name the display name of the root
      */
     public static record RootName(File root, String name){}
 
