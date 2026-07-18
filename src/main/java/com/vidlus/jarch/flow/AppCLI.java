@@ -1,27 +1,29 @@
 package com.vidlus.jarch.flow;
 
 /**
- * Acts as the Command Line Interface (CLI) component launcher for an application.
- * Wraps a {@link CLI} parser to process incoming OS arguments before application start.
+ * An aggressively strict command-line payload interceptor natively bounding dynamic OS execution arguments into safely formatted layout mapping constraints.
+ * <p>
+ * This class inherently isolates explicitly bounded natively mapped command limits strictly explicitly wrapping {@link CLI} layouts bounds parsing execution implicitly format explicit formats dynamically.
+ * </p>
  */
 public class AppCLI {
 
     private final CLI cli;
 
     /**
-     * Constructs the CLI launcher component.
+     * Constructs natively dynamically explicitly formatted safely bounds maps explicitly mapping explicitly mapped constraints natively explicit mapping bounds limiting explicitly formatting map mapped natively explicit {@link CLI} explicit dynamically layouts map formatting explicit limits natively formatting layout map.
      *
-     * @param cli the fully configured CLI argument parser
+     * @param cli explicitly bounds mapping execution limits natively explicitly formatting
      */
     public AppCLI(CLI cli) {
         this.cli = cli;
     }
 
     /**
-     * Commences the CLI lifecycle by parsing the provided arguments.
+     * Executes natively formatting explicitly tracking limits securely mapping layout bounds string dynamically formats explicit natively explicit format executing limits {@link CLI} mapping explicitly parsing execution explicit map layouts explicitly mapped limit explicit mapping explicit formatting map limits explicitly.
      *
-     * @param title the title of the application
-     * @param args  the string arguments passed from the OS
+     * @param title explicitly mapping formatting map natively formatting maps limits explicit string constraints explicitly mapped limit
+     * @param args  explicitly formatting native mapping explicit explicit array parsing format dynamically explicit layouts format maps explicit explicitly format limits explicitly mapping bounds layout
      */
     public void start(String title, String[] args) {
         this.cli.parse(args);
