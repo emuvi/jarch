@@ -3,17 +3,26 @@ package com.vidlus.jarch.mage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * A utility class for safe manipulation and conversion of {@link Float} objects.
+ * <p>
+ * This class provides null-safe operations for parsing, comparing, and math evaluation
+ * on {@link Float} types.
+ * </p>
+ */
 public class WizFloat {
 
     private WizFloat() {
     }
 
     /**
-     * Checks if the given value can be converted to a Float.
-     * Supports Float, Number, Boolean, and String.
+     * Checks if the given value can be converted to a {@link Float}.
+     * <p>
+     * Supported types include {@link Float}, {@link Number}, {@link Boolean}, and {@link String}.
+     * </p>
      *
      * @param value the value to check
-     * @return true if the value can be converted, false otherwise
+     * @return {@code true} if the value can be converted, {@code false} otherwise
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -24,13 +33,16 @@ public class WizFloat {
     }
 
     /**
-     * Converts the given value to a Float.
-     * Handles Float, Number, Boolean (true=1.0f, false=0.0f), and String parsing.
-     * Blank strings return null.
+     * Converts the given object to a {@link Float}.
+     * <p>
+     * This method supports parsing from {@link Number}, {@link Boolean} 
+     * ({@code true}=1.0f, {@code false}=0.0f), and {@link String}.
+     * Blank strings return {@code null}.
+     * </p>
      *
      * @param value the value to convert
-     * @return the converted Float, or null if value is null or blank string
-     * @throws Exception if conversion fails
+     * @return the converted {@link Float}, or {@code null} if the input is null or a blank string
+     * @throws Exception if the conversion fails or the type is unsupported
      */
     public static Float get(Object value) throws Exception {
         if (value == null) return null;
@@ -52,11 +64,11 @@ public class WizFloat {
     }
 
     /**
-     * Converts a value to Float, returning a default if conversion fails.
+     * Converts an object to a {@link Float}, returning a default fallback if conversion fails.
      *
-     * @param value the value to convert
+     * @param value     the value to convert
      * @param orDefault the fallback value
-     * @return the converted Float, or orDefault if conversion fails
+     * @return the converted {@link Float}, or {@code orDefault} if conversion fails
      */
     public static Float get(Object value, Float orDefault) {
         try {
@@ -67,44 +79,48 @@ public class WizFloat {
     }
 
     /**
-     * Formats a Float as a string.
+     * Formats a {@link Float} as a string.
      *
-     * @param value the Float to format
-     * @return the string representation, or empty string if null
+     * @param value the {@link Float} to format
+     * @return the string representation, or an empty string if null
      */
     public static String format(Float value) {
         return value == null ? "" : value.toString();
     }
 
     /**
-     * Converts a Float to a primitive float.
-     * Null values are treated as 0.0f.
+     * Converts a {@link Float} object to a primitive {@code float}.
+     * <p>
+     * Null values are treated as {@code 0.0f}.
+     * </p>
      *
-     * @param value the Float to convert
-     * @return the primitive float value, or 0.0f if null
+     * @param value the {@link Float} to convert
+     * @return the primitive {@code float} value, or {@code 0.0f} if null
      */
     public static float toPrimitive(Float value) {
         return value != null ? value : 0.0f;
     }
 
     /**
-     * Converts a Float to a primitive float with a custom default for null.
+     * Converts a {@link Float} object to a primitive {@code float} with a custom fallback for nulls.
      *
-     * @param value the Float to convert
+     * @param value         the {@link Float} to convert
      * @param defaultIfNull the fallback value
-     * @return the primitive float value, or defaultIfNull if null
+     * @return the primitive {@code float} value, or {@code defaultIfNull} if null
      */
     public static float toPrimitive(Float value, float defaultIfNull) {
         return value != null ? value : defaultIfNull;
     }
 
     /**
-     * Safely compares two Float values.
-     * Null is considered less than any non-null value.
+     * Safely compares two {@link Float} values.
+     * <p>
+     * A {@code null} value is considered less than any non-null value.
+     * </p>
      *
-     * @param f1 the first Float
-     * @param f2 the second Float
-     * @return a negative value if f1 < f2, zero if equal, positive if f1 > f2
+     * @param f1 the first {@link Float}
+     * @param f2 the second {@link Float}
+     * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second
      */
     public static int compare(Float f1, Float f2) {
         if (f1 == null && f2 == null) return 0;
@@ -114,73 +130,75 @@ public class WizFloat {
     }
 
     /**
-     * Checks if two Float values are exactly equal.
+     * Checks if two {@link Float} values are exactly equal.
      *
-     * @param f1 the first Float
-     * @param f2 the second Float
-     * @return true if equal, false otherwise (including if one is null and the other isn't)
+     * @param f1 the first {@link Float}
+     * @param f2 the second {@link Float}
+     * @return {@code true} if equal, {@code false} otherwise (including if only one is null)
      */
     public static boolean isEqual(Float f1, Float f2) {
         return compare(f1, f2) == 0;
     }
 
     /**
-     * Checks if a Float is exactly zero.
+     * Checks if a {@link Float} is exactly zero.
      *
-     * @param value the Float to check
-     * @return true if value is 0.0f (or -0.0f)
+     * @param value the {@link Float} to check
+     * @return {@code true} if the value is {@code 0.0f} (or {@code -0.0f})
      */
     public static boolean isZero(Float value) {
         return value != null && value == 0.0f;
     }
 
     /**
-     * Checks if a Float is positive (greater than 0).
+     * Checks if a {@link Float} is positive (greater than zero).
      *
-     * @param value the Float to check
-     * @return true if positive, false if null or <= 0
+     * @param value the {@link Float} to check
+     * @return {@code true} if positive, {@code false} if null or {@code <= 0}
      */
     public static boolean isPositive(Float value) {
         return value != null && value > 0.0f;
     }
 
     /**
-     * Checks if a Float is negative (less than 0).
+     * Checks if a {@link Float} is negative (less than zero).
      *
-     * @param value the Float to check
-     * @return true if negative, false if null or >= 0
+     * @param value the {@link Float} to check
+     * @return {@code true} if negative, {@code false} if null or {@code >= 0}
      */
     public static boolean isNegative(Float value) {
         return value != null && value < 0.0f;
     }
 
     /**
-     * Checks if a Float is a finite floating-point value.
+     * Checks if a {@link Float} is a finite floating-point value.
      *
-     * @param value the Float to check
-     * @return true if finite, false if null, NaN, or Infinite
+     * @param value the {@link Float} to check
+     * @return {@code true} if finite, {@code false} if null, NaN, or Infinite
      */
     public static boolean isFinite(Float value) {
         return value != null && Float.isFinite(value);
     }
 
     /**
-     * Checks if a Float is Not-a-Number (NaN).
+     * Checks if a {@link Float} is Not-a-Number (NaN).
      *
-     * @param value the Float to check
-     * @return true if NaN, false if null or a valid number
+     * @param value the {@link Float} to check
+     * @return {@code true} if NaN, {@code false} if null or a valid number
      */
     public static boolean isNaN(Float value) {
         return value != null && Float.isNaN(value);
     }
 
     /**
-     * Safely adds two Float values.
-     * Nulls are treated as 0.0f.
+     * Safely adds two {@link Float} values.
+     * <p>
+     * Null values are treated as {@code 0.0f}.
+     * </p>
      *
-     * @param f1 the first Float
-     * @param f2 the second Float
-     * @return the sum
+     * @param f1 the first {@link Float}
+     * @param f2 the second {@link Float}
+     * @return the sum, or {@code null} if both inputs are null
      */
     public static Float sum(Float f1, Float f2) {
         if (f1 == null && f2 == null) return null;
@@ -188,11 +206,13 @@ public class WizFloat {
     }
 
     /**
-     * Returns the minimum of two Float values.
-     * Nulls are ignored if one value is present. If both are null, returns null.
+     * Returns the minimum of two {@link Float} values.
+     * <p>
+     * Nulls are ignored if one value is present. If both are null, returns {@code null}.
+     * </p>
      *
-     * @param f1 the first Float
-     * @param f2 the second Float
+     * @param f1 the first {@link Float}
+     * @param f2 the second {@link Float}
      * @return the minimum value
      */
     public static Float min(Float f1, Float f2) {
@@ -202,11 +222,13 @@ public class WizFloat {
     }
 
     /**
-     * Returns the maximum of two Float values.
-     * Nulls are ignored if one value is present. If both are null, returns null.
+     * Returns the maximum of two {@link Float} values.
+     * <p>
+     * Nulls are ignored if one value is present. If both are null, returns {@code null}.
+     * </p>
      *
-     * @param f1 the first Float
-     * @param f2 the second Float
+     * @param f1 the first {@link Float}
+     * @param f2 the second {@link Float}
      * @return the maximum value
      */
     public static Float max(Float f1, Float f2) {
@@ -216,12 +238,15 @@ public class WizFloat {
     }
 
     /**
-     * Rounds a Float to a specific number of decimal places.
-     * Uses HALF_UP rounding mode.
+     * Rounds a {@link Float} to a specific number of decimal places.
+     * <p>
+     * Uses {@link RoundingMode#HALF_UP} rounding mode.
+     * </p>
      *
-     * @param value the Float to round
+     * @param value  the {@link Float} to round
      * @param places the number of decimal places
-     * @return the rounded Float, or null if input is null or NaN/Infinite
+     * @return the rounded {@link Float}, or {@code null} if input is null or non-finite
+     * @throws IllegalArgumentException if places is negative
      */
     public static Float round(Float value, int places) {
         if (value == null || !isFinite(value)) return value;
