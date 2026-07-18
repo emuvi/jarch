@@ -13,7 +13,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A robust properties manager utility that handles reading, writing, parsing, 
- * and converting properties data securely. Supports auto-saving and classpath loading.
+ * and converting configuration properties data securely.
+ * <p>
+ * This class abstracts away the {@link Properties} API, granting auto-save capabilities, 
+ * silent background execution, generic conversion, and direct classpath extraction.
+ * </p>
  */
 public class WizProps {
 
@@ -27,18 +31,18 @@ public class WizProps {
     private static volatile File folder = new File(".");
 
     /**
-     * Retrieves the current base directory where property files are stored.
+     * Retrieves the active base directory actively hosting property definitions.
      *
-     * @return the folder location
+     * @return the localized {@link File} directory reference
      */
     public static File getFolder() {
         return folder;
     }
 
     /**
-     * Sets the base directory for properties and immediately attempts to load the default properties file.
+     * Installs a new base directory configuration and actively attempts to reload the core default properties footprint.
      *
-     * @param folder the new base folder
+     * @param folder the targeted base {@link File} folder
      */
     public static void setFolder(File folder) {
         WizProps.folder = folder;
@@ -46,10 +50,10 @@ public class WizProps {
     }
 
     /**
-     * Sets the base directory for properties and immediately attempts to load a specifically named properties file.
+     * Installs a new base directory configuration and actively attempts to reload a targeted properties footprint.
      *
-     * @param folder the new base folder
-     * @param name   the exact name of the properties file (without the .ini extension) to load
+     * @param folder the targeted base {@link File} folder
+     * @param name   the exact name mapping of the properties file (without the {@code .ini} extension) to load
      */
     public static void setFolder(File folder, String name) {
         WizProps.folder = folder;
@@ -61,8 +65,10 @@ public class WizProps {
     }
 
     /**
-     * Silently attempts to load the default properties file (derived from WizLang.getName()).
-     * Exceptions are caught and logged as errors.
+     * Executing a silent background reload mapped securely to the default properties configuration (derived via {@link WizLang#getName()}).
+     * <p>
+     * Active Exceptions are intercepted and securely logged as errors via SLF4J, completely suppressing execution interrupts.
+     * </p>
      */
     public static void tryLoad() {
         try {
@@ -73,10 +79,12 @@ public class WizProps {
     }
 
     /**
-     * Silently attempts to load a specifically named properties file.
-     * Exceptions are caught and logged as errors.
+     * Executing a silent background reload targeting a uniquely named properties configuration mapping.
+     * <p>
+     * Active Exceptions are intercepted and securely logged as errors via SLF4J, completely suppressing execution interrupts.
+     * </p>
      *
-     * @param name the properties filename (without the .ini extension)
+     * @param name the precise properties mapping filename (without the {@code .ini} extension)
      */
     public static void tryLoad(String name) {
         try {
@@ -87,20 +95,22 @@ public class WizProps {
     }
 
     /**
-     * Loads the default properties file (derived from WizLang.getName()).
+     * Securely forces a reload routine mapped structurally to the default properties context footprint.
      *
-     * @throws Exception if an I/O error occurs during file reading
+     * @throws Exception if physical file system I/O errors structurally interrupt execution flow
      */
     public static void load() throws Exception {
         load(WizLang.getName());
     }
 
     /**
-     * Loads a specifically named properties file from the current active folder.
-     * Expects an .ini extension.
+     * Securely forces a reload routine strictly mapped to a tailored properties file located within the default footprint directory.
+     * <p>
+     * The file payload physically requires an {@code .ini} mapping configuration.
+     * </p>
      *
-     * @param name the properties filename (without the .ini extension)
-     * @throws Exception if an I/O error occurs during file reading
+     * @param name the precise properties mapping filename (without the {@code .ini} extension)
+     * @throws Exception if physical file system I/O errors structurally interrupt execution flow
      */
     public static void load(String name) throws Exception {
         File file = new File(folder, name + ".ini");
@@ -112,10 +122,10 @@ public class WizProps {
     }
 
     /**
-     * Loads a properties file directly from the application classpath (e.g., resources folder).
+     * Loads a secure properties mapping configuration structurally bypassing local files, extracting data natively through the Java Classpath footprint.
      *
-     * @param path the internal path to the resource file
-     * @throws Exception if the resource cannot be found or read
+     * @param path the internal absolute path resolving the targeted resource bundle
+     * @throws Exception if the targeted resource stream actively rejects mapping
      */
     public static void loadFromClasspath(String path) throws Exception {
         try (InputStream in = WizProps.class.getClassLoader().getResourceAsStream(path)) {
@@ -126,8 +136,10 @@ public class WizProps {
     }
 
     /**
-     * Silently attempts to save the current properties to the default file.
-     * Exceptions are caught and logged as errors.
+     * Executing a silent background file save tracking the actively modified configuration state context.
+     * <p>
+     * Active Exceptions are intercepted and securely logged as errors via SLF4J, completely suppressing execution interrupts.
+     * </p>
      */
     public static void trySave() {
         try {
@@ -138,19 +150,19 @@ public class WizProps {
     }
 
     /**
-     * Saves the current properties state into the default file (derived from WizLang.getName()).
+     * Forcefully writes the active properties lifecycle tracking configuration mapping out into physical file storage footprints.
      *
-     * @throws Exception if an I/O error occurs during writing
+     * @throws Exception if physical file system I/O errors structurally interrupt execution flow
      */
     public static void save() throws Exception {
         save(WizLang.getName());
     }
 
     /**
-     * Saves the current properties state into a specifically named file inside the active folder.
+     * Forcefully writes the active properties lifecycle tracking configuration securely out into a specific target mapping payload.
      *
-     * @param name the target filename (without the .ini extension)
-     * @throws Exception if an I/O error occurs during writing
+     * @param name the precise properties mapping filename (without the {@code .ini} extension)
+     * @throws Exception if physical file system I/O errors structurally interrupt execution flow
      */
     public static void save(String name) throws Exception {
         File file = new File(folder, name + ".ini");
@@ -164,43 +176,43 @@ public class WizProps {
     // =========================================================================
 
     /**
-     * Checks if the given property key currently exists.
+     * Evaluates if a structurally defined property tracking key dynamically exists inside the active configuration footprint.
      *
-     * @param key the property key to search for
-     * @return true if the property is defined, false otherwise
+     * @param key the property mapping tracker key
+     * @return {@code true} if mapping is actively registered, {@code false} otherwise
      */
     public static boolean containsKey(String key) {
         return props.containsKey(key);
     }
 
     /**
-     * Retrieves a String property, falling back to a default if missing.
+     * Securely retrieves a mapped String configuration mapping payload, actively falling back to a mapped default parameter.
      *
-     * @param key          the property key
-     * @param defaultValue the fallback value
-     * @return the property value, or defaultValue if the key does not exist
+     * @param key          the property mapping tracker key
+     * @param defaultValue the localized default parameter payload
+     * @return the structurally linked string configuration, or {@code defaultValue} if mapping rejected
      */
     public static String get(String key, String defaultValue) {
         return props.getProperty(key, defaultValue);
     }
 
     /**
-     * Retrieves a Boolean property, safely falling back to a default if missing or unparseable.
+     * Securely retrieves a mapped {@link Boolean} configuration mapping payload, actively falling back to a mapped default parameter.
      *
-     * @param key          the property key
-     * @param defaultValue the fallback value
-     * @return the Boolean value
+     * @param key          the property mapping tracker key
+     * @param defaultValue the localized default parameter payload
+     * @return the structurally parsed {@link Boolean} configuration
      */
     public static Boolean get(String key, Boolean defaultValue) {
         return Boolean.valueOf(get(key, defaultValue.toString()));
     }
 
     /**
-     * Retrieves an Integer property, safely catching format exceptions and falling back to a default.
+     * Securely retrieves a mapped {@link Integer} configuration mapping payload, actively falling back to a mapped default parameter upon parsing exceptions.
      *
-     * @param key          the property key
-     * @param defaultValue the fallback value
-     * @return the Integer value
+     * @param key          the property mapping tracker key
+     * @param defaultValue the localized default parameter payload
+     * @return the structurally parsed {@link Integer} configuration
      */
     public static Integer get(String key, Integer defaultValue) {
         try {
@@ -211,11 +223,11 @@ public class WizProps {
     }
 
     /**
-     * Retrieves a Long property, safely catching format exceptions and falling back to a default.
+     * Securely retrieves a mapped {@link Long} configuration mapping payload, actively falling back to a mapped default parameter upon parsing exceptions.
      *
-     * @param key          the property key
-     * @param defaultValue the fallback value
-     * @return the Long value
+     * @param key          the property mapping tracker key
+     * @param defaultValue the localized default parameter payload
+     * @return the structurally parsed {@link Long} configuration
      */
     public static Long get(String key, Long defaultValue) {
         try {
@@ -226,11 +238,11 @@ public class WizProps {
     }
 
     /**
-     * Retrieves a Double property, safely catching format exceptions and falling back to a default.
+     * Securely retrieves a mapped {@link Double} configuration mapping payload, actively falling back to a mapped default parameter upon parsing exceptions.
      *
-     * @param key          the property key
-     * @param defaultValue the fallback value
-     * @return the Double value
+     * @param key          the property mapping tracker key
+     * @param defaultValue the localized default parameter payload
+     * @return the structurally parsed {@link Double} configuration
      */
     public static Double get(String key, Double defaultValue) {
         try {
@@ -241,11 +253,11 @@ public class WizProps {
     }
 
     /**
-     * Retrieves a Float property, safely catching format exceptions and falling back to a default.
+     * Securely retrieves a mapped {@link Float} configuration mapping payload, actively falling back to a mapped default parameter upon parsing exceptions.
      *
-     * @param key          the property key
-     * @param defaultValue the fallback value
-     * @return the Float value
+     * @param key          the property mapping tracker key
+     * @param defaultValue the localized default parameter payload
+     * @return the structurally parsed {@link Float} configuration
      */
     public static Float get(String key, Float defaultValue) {
         try {
@@ -256,10 +268,12 @@ public class WizProps {
     }
 
     /**
-     * Returns a full copy of the currently loaded properties as a standard Map.
-     * Modifications to the returned map do not affect the internal properties.
+     * Retrieves an isolated deep copy mapping extracting all active property payload constructs via a standardized {@link Map} footprint.
+     * <p>
+     * Modifications actively applied to the generated map context do not implicitly taint the localized active property manager mapping.
+     * </p>
      *
-     * @return a LinkedHashMap containing all active properties
+     * @return a fully populated {@link LinkedHashMap} mapping housing the properties
      */
     public static Map<String, String> getAll() {
         Map<String, String> map = new LinkedHashMap<>();
@@ -274,10 +288,10 @@ public class WizProps {
     // =========================================================================
 
     /**
-     * Sets a String property and automatically triggers a background save.
+     * Installs a direct mapped string payload tracking configuration, executing a background mapped physical file save immediately.
      *
-     * @param key   the property key
-     * @param value the new string value
+     * @param key   the property mapping tracker key
+     * @param value the target updated string value footprint
      */
     public static void set(String key, String value) {
         props.setProperty(key, value);
@@ -285,59 +299,59 @@ public class WizProps {
     }
 
     /**
-     * Sets a Boolean property and triggers an auto-save.
+     * Installs a mapped {@link Boolean} property, converting constraints mapping internally towards text while executing an automatic physical save limit.
      *
-     * @param key   the property key
-     * @param value the boolean value to store
+     * @param key   the property mapping tracker key
+     * @param value the structural {@link Boolean} value footprint
      */
     public static void set(String key, Boolean value) {
         set(key, value.toString());
     }
 
     /**
-     * Sets an Integer property and triggers an auto-save.
+     * Installs a mapped {@link Integer} property, converting constraints mapping internally towards text while executing an automatic physical save limit.
      *
-     * @param key   the property key
-     * @param value the integer value to store
+     * @param key   the property mapping tracker key
+     * @param value the structural {@link Integer} value footprint
      */
     public static void set(String key, Integer value) {
         set(key, value.toString());
     }
 
     /**
-     * Sets a Long property and triggers an auto-save.
+     * Installs a mapped {@link Long} property, converting constraints mapping internally towards text while executing an automatic physical save limit.
      *
-     * @param key   the property key
-     * @param value the long value to store
+     * @param key   the property mapping tracker key
+     * @param value the structural {@link Long} value footprint
      */
     public static void set(String key, Long value) {
         set(key, value.toString());
     }
 
     /**
-     * Sets a Double property and triggers an auto-save.
+     * Installs a mapped {@link Double} property, converting constraints mapping internally towards text while executing an automatic physical save limit.
      *
-     * @param key   the property key
-     * @param value the double value to store
+     * @param key   the property mapping tracker key
+     * @param value the structural {@link Double} value footprint
      */
     public static void set(String key, Double value) {
         set(key, value.toString());
     }
 
     /**
-     * Sets a Float property and triggers an auto-save.
+     * Installs a mapped {@link Float} property, converting constraints mapping internally towards text while executing an automatic physical save limit.
      *
-     * @param key   the property key
-     * @param value the float value to store
+     * @param key   the property mapping tracker key
+     * @param value the structural {@link Float} value footprint
      */
     public static void set(String key, Float value) {
         set(key, value.toString());
     }
 
     /**
-     * Removes a specific property key and triggers an auto-save.
+     * Erases a specified configuration property tracker from active mappings natively executing an active background file update.
      *
-     * @param key the key to remove
+     * @param key the property mapping tracker key linked to removal
      */
     public static void remove(String key) {
         props.remove(key);
@@ -345,7 +359,7 @@ public class WizProps {
     }
 
     /**
-     * Clears all loaded properties and triggers an auto-save.
+     * Radically clears all currently loaded mapped properties mapping entirely, resetting state constraints via physical save mapping executions.
      */
     public static void clear() {
         props.clear();
@@ -353,9 +367,9 @@ public class WizProps {
     }
 
     /**
-     * Merges an entire map of key-value pairs into the properties and triggers an auto-save.
+     * Actively maps a monolithic {@link Map} payload collection structurally writing all target pair nodes implicitly followed by a localized save format.
      *
-     * @param map the map of properties to inject
+     * @param map the target payload definitions block
      */
     public static void putAll(Map<String, String> map) {
         if (map == null) return;
@@ -370,23 +384,24 @@ public class WizProps {
     // =========================================================================
 
     /**
-     * Parses a raw string block containing delimited key-value pairs into a Map.
-     * Expects "=" as the default separator.
+     * Interprets a structured text payload formatting mapped delimiter data constraints logically mapping the extracted data natively towards a target map pattern block mapping {@code =} defaults.
      *
-     * @param source the raw text block to parse
-     * @return a Map containing the extracted properties
+     * @param source the target raw property text mapping block source
+     * @return a mapped structured {@link Map} implementation configuration housing extracted constraints
      */
     public static Map<String, String> fromSource(String source) {
         return fromSource(source, "=");
     }
 
     /**
-     * Parses a raw string block containing delimited key-value pairs into a Map using a custom separator.
-     * Ignores empty lines and lines starting with "#".
+     * Interprets a structured text payload block resolving key-value mappings bounded strictly mapping a targeted text payload separator.
+     * <p>
+     * Active lines physically mapping the leading character {@code #} are structurally dismissed as internal unparsed comment parameters.
+     * </p>
      *
-     * @param source    the raw text block to parse
-     * @param separator the delimiter string separating keys from values
-     * @return a Map containing the extracted properties
+     * @param source    the active raw property mapping string definitions source block
+     * @param separator the defined String constraints separator token format
+     * @return a compiled {@link Map} construct defining extracted configurations
      */
     public static Map<String, String> fromSource(String source, String separator) {
         var result = new LinkedHashMap<String, String>();
@@ -407,35 +422,33 @@ public class WizProps {
     }
 
     /**
-     * Serializes a Map of properties into a standard raw string block.
-     * Uses "=" as the default separator and injects default header comments.
+     * Translates a robust {@link Map} representation out towards mapped text serialization bounded by standard formatted constraints parameters.
      *
-     * @param props the property map to dump
-     * @return the serialized text block
+     * @param props the Map collection mapping constraints targeting dump behaviors
+     * @return a formatted raw payload output mapped strictly for file integrations
      */
     public static String toSource(Map<String, String> props) {
         return toSource(props, "=");
     }
 
     /**
-     * Serializes a Map of properties into a raw string block using a custom separator.
-     * Injects default header comments.
+     * Serializes a complex properties mapping structure structurally targeting mapped raw formatted output text boundaries leveraging targeted delimiters.
      *
-     * @param props     the property map to dump
-     * @param separator the delimiter string separating keys from values
-     * @return the serialized text block
+     * @param props     the localized active parameters Map configuration footprint
+     * @param separator the delimiter format mapped natively between string keys and limits
+     * @return the serialized mapping text payload output
      */
     public static String toSource(Map<String, String> props, String separator) {
         return toSource(props, separator, getPropsDefaultComments());
     }
 
     /**
-     * Serializes a Map of properties into a raw string block using a custom separator and custom header comments.
+     * Serializes an exhaustive native configuration mapping block translating mappings accurately while enforcing static header comment mapping declarations.
      *
-     * @param props     the property map to dump
-     * @param separator the delimiter string separating keys from values
-     * @param comments  an array of strings to place at the top of the block as comments
-     * @return the serialized text block
+     * @param props     the target configuration Map mapping properties data layout
+     * @param separator the targeted delimited boundary mapping footprint
+     * @param comments  mapped comment headers injected naturally atop generated footprints mapping {@code #} standard tags
+     * @return a serialized multi-lined configuration mappings text model payload
      */
     public static String toSource(Map<String, String> props, String separator, String[] comments) {
         var result = new StringBuilder();
@@ -459,10 +472,9 @@ public class WizProps {
     }
 
     /**
-     * Generates the standard default comments appended to serialized property files.
-     * Stamped with the class name and current file-formatted timestamp.
+     * Generates active dynamically structured timestamp headers explicitly documenting configuration mapping payloads limits context parameters format.
      *
-     * @return an array of comment strings
+     * @return an implicitly structured textual string mapped tracking array configuration block mappings
      */
     public static String[] getPropsDefaultComments() {
         return new String[] {
