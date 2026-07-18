@@ -91,11 +91,11 @@ public class WizLang {
     }
 
     /**
-     * Performs a deep clone of a Serializable object.
+     * Performs a deep clone of a {@link Serializable} object.
      *
-     * @param <T> the type of the object
+     * @param <T>   the type of the object
      * @param value the object to clone
-     * @return a deep copy of the object, or null if the input is null
+     * @return a deep copy of the object, or {@code null} if the input is null
      * @throws RuntimeException if serialization fails
      */
     public static <T extends Serializable> T deepClone(final T value) {
@@ -109,11 +109,13 @@ public class WizLang {
 
     /**
      * Performs a deep equality check between two objects using reflection.
+     * <p>
      * It compares internal members and handles arrays recursively.
+     * </p>
      *
      * @param valueA the first object
      * @param valueB the second object
-     * @return true if deeply equal, false otherwise
+     * @return {@code true} if deeply equal, {@code false} otherwise
      * @throws RuntimeException if reflection fails
      */
     public static boolean deepEquals(Object valueA, Object valueB) {
@@ -159,7 +161,7 @@ public class WizLang {
     /**
      * Retrieves all fully qualified class names available in the current class loader.
      *
-     * @return a set of class names
+     * @return a {@link Set} of class names
      */
     public static Set<String> getAllClasses() {
         return getAllClasses(WizLang.class.getClassLoader());
@@ -169,7 +171,7 @@ public class WizLang {
      * Retrieves all fully qualified class names available in the specified class loader.
      *
      * @param classLoader the class loader to scan
-     * @return a set of class names, or an empty set if scanning fails
+     * @return a {@link Set} of class names, or an empty set if scanning fails
      */
     public static Set<String> getAllClasses(ClassLoader classLoader) {
         try {
@@ -187,7 +189,7 @@ public class WizLang {
     }
 
     /**
-     * Retrieves the primitive equivalent of a wrapper class (e.g., Integer.class -> int.class).
+     * Retrieves the primitive equivalent of a wrapper class (e.g., {@link Integer} -> {@code int.class}).
      *
      * @param ofClazz the wrapper class
      * @return the primitive class, or the original class if it has no primitive equivalent
@@ -221,7 +223,7 @@ public class WizLang {
     }
 
     /**
-     * Retrieves the wrapper equivalent of a primitive class (e.g., int.class -> Integer.class).
+     * Retrieves the wrapper equivalent of a primitive class (e.g., {@code int.class} -> {@link Integer}).
      *
      * @param clazz the primitive class
      * @return the wrapper class, or the original class if it is not primitive
@@ -257,7 +259,7 @@ public class WizLang {
      * Checks if a class represents a primitive type.
      *
      * @param clazz the class to check
-     * @return true if primitive, false otherwise
+     * @return {@code true} if primitive, {@code false} otherwise
      */
     public static Boolean isPrimitive(Class<?> clazz) {
         if (clazz == null) {
@@ -276,11 +278,13 @@ public class WizLang {
 
     /**
      * Checks if a class is a child of another class or implements the interface.
+     * <p>
      * Safely ignores primitive/wrapper boundaries.
+     * </p>
      *
-     * @param child the potential child class
+     * @param child  the potential child class
      * @param parent the potential parent class
-     * @return true if child can be assigned to parent
+     * @return {@code true} if child can be assigned to parent
      */
     public static boolean isChildOf(Class<?> child, Class<?> parent) {
         if (child == null || parent == null) {
@@ -299,9 +303,9 @@ public class WizLang {
     /**
      * Checks if a class is a child of any of the given parent classes.
      *
-     * @param child the potential child class
+     * @param child   the potential child class
      * @param parents the array of potential parent classes
-     * @return true if child can be assigned to at least one parent
+     * @return {@code true} if child can be assigned to at least one parent
      */
     public static boolean isChildOf(Class<?> child, Class<?>... parents) {
         if (child == null || parents == null || parents.length == 0) {
@@ -315,14 +319,13 @@ public class WizLang {
         return false;
     }
 
-
     /**
-     * Finds the best matching constructor for a class based on provided Natures and parameter names.
+     * Finds the best matching constructor for a class based on provided {@link Nature} objects and parameter names.
      *
-     * @param fromClass the class to inspect
+     * @param fromClass  the class to inspect
      * @param valNatures the nature descriptors of the arguments
-     * @param valNames the names of the arguments
-     * @return the best matching constructor, or null if none is found
+     * @param valNames   the names of the arguments
+     * @return the best matching constructor, or {@code null} if none is found
      */
     public static Constructor<?> getBestConstructor(Class<?> fromClass, Nature[] valNatures, String[] valNames) {
         if (fromClass == null || valNatures == null || valNatures.length == 0) {
@@ -382,7 +385,7 @@ public class WizLang {
      * Extracts an array of values representing the state of all declared fields of an object.
      *
      * @param ofObject the object to inspect
-     * @return an array of field values
+     * @return an array of field values, or {@code null} if the input is null
      * @throws Exception if reflection fails
      */
     public static Object[] getValuesFromMembers(Object ofObject) throws Exception {
@@ -407,7 +410,8 @@ public class WizLang {
 
     /**
      * Interrogates all declared fields of an object and automatically instantiates/injects 
-     * default values or recursively fixes nulls based on specific FixAnnotations.
+     * default values or recursively fixes nulls based on specific flow annotations 
+     * (e.g., {@link FixBool}, {@link FixByte}, {@link FixObject}).
      *
      * @param ofValue the object to fix
      * @throws Exception if reflection fails
@@ -466,11 +470,11 @@ public class WizLang {
 
     /**
      * Interrogates all declared fields of an object and automatically resolves environment variable
-     * syntax inside string fields unless prevented by annotations.
+     * syntax inside {@link String} fields unless prevented by annotations like {@link NotFixEnvs}.
      *
      * @param ofValue the object to fix
      * @throws IllegalAccessException if field access is blocked
-     * @throws Exception if resolution fails
+     * @throws Exception              if resolution fails
      */
     public static void fixEnvsOnMembers(Object ofValue) throws IllegalAccessException, Exception {
         for (var field : ofValue.getClass().getDeclaredFields()) {
@@ -498,11 +502,11 @@ public class WizLang {
     }
 
     /**
-     * Bypasses access controls (like private fields) to forcibly set a value on an object's field.
+     * Bypasses access controls (e.g., private fields) to forcibly set a value on an object's field.
      *
-     * @param field the field to modify
+     * @param field    the field to modify
      * @param ofObject the object instance containing the field
-     * @param toValue the value to inject
+     * @param toValue  the value to inject
      * @throws Exception if reflection fails
      */
     public static void forceSetField(Field field, Object ofObject, Object toValue) throws Exception {
@@ -520,7 +524,7 @@ public class WizLang {
      * Inspects the active stack trace to intelligently locate the "com.vidlus" root application class, 
      * returning its simple class name.
      *
-     * @return the simple name of the main class, or empty string if not found
+     * @return the simple name of the main class, or an empty string if not found
      */
     public static String getVidlusMainClassSimpleName() {
         var result = getVidlusMainClassName();
@@ -534,7 +538,7 @@ public class WizLang {
      * Inspects the active stack traces to intelligently locate the "com.vidlus" root application class, 
      * returning its fully qualified class name.
      *
-     * @return the fully qualified name of the main class, or null if not found
+     * @return the fully qualified name of the main class, or {@code null} if not found
      */
     public static String getVidlusMainClassName() {
         try {
@@ -577,7 +581,7 @@ public class WizLang {
     /**
      * Retrieves the current user's home directory across different OS environments.
      *
-     * @return the user home directory as a File
+     * @return the user home directory as a {@link File}
      */
     public static File getUserDir() {
         return new File(System.getProperty("user.home"));
@@ -586,7 +590,7 @@ public class WizLang {
     /**
      * Retrieves (and creates if necessary) the centralized application data directory (~/.vidlus/[AppName]).
      *
-     * @return the application directory as a File
+     * @return the application directory as a {@link File}
      */
     public static File getVidlusAppDir() {
         var result = new File(getUserDir(), ".vidlus");
@@ -605,12 +609,12 @@ public class WizLang {
     // =========================================================================
 
     /**
-     * Safely casts an object to a class, returning null if incompatible or null.
+     * Safely casts an object to a class, returning {@code null} if incompatible or null.
      *
-     * @param <T> the target type
-     * @param obj the object to cast
+     * @param <T>   the target type
+     * @param obj   the object to cast
      * @param clazz the class representing the target type
-     * @return the casted object, or null if casting is not possible
+     * @return the casted object, or {@code null} if casting is not possible
      */
     public static <T> T cast(Object obj, Class<T> clazz) {
         if (obj != null && clazz != null && clazz.isInstance(obj)) {
@@ -622,8 +626,8 @@ public class WizLang {
     /**
      * Returns the default value if the primary object is null.
      *
-     * @param <T> the type of the objects
-     * @param object the primary object
+     * @param <T>          the type of the objects
+     * @param object       the primary object
      * @param defaultValue the fallback object
      * @return the primary object if it's not null, otherwise the fallback object
      */
@@ -633,10 +637,12 @@ public class WizLang {
 
     /**
      * Checks if an object is logically "empty".
+     * <p>
      * Covers Strings (isBlank), Collections (isEmpty), Maps (isEmpty), and Arrays (length == 0).
+     * </p>
      *
      * @param obj the object to check
-     * @return true if the object is null or conceptually empty, false otherwise
+     * @return {@code true} if the object is null or conceptually empty, {@code false} otherwise
      */
     public static boolean isEmpty(Object obj) {
         if (obj == null) return true;
@@ -650,9 +656,9 @@ public class WizLang {
     /**
      * Safely instantiates a class using its no-args constructor, catching all exceptions.
      *
-     * @param <T> the generic class type
+     * @param <T>   the generic class type
      * @param clazz the class to instantiate
-     * @return a new instance of the class, or null if instantiation fails
+     * @return a new instance of the class, or {@code null} if instantiation fails
      */
     public static <T> T newInstance(Class<T> clazz) {
         if (clazz == null) return null;
@@ -665,7 +671,7 @@ public class WizLang {
     }
 
     /**
-     * Silently puts the current thread to sleep without forcing you to catch InterruptedException.
+     * Silently puts the current thread to sleep without forcing you to catch {@link InterruptedException}.
      *
      * @param millis the number of milliseconds to sleep
      */
