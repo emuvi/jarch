@@ -1,6 +1,7 @@
 package com.vidlus.jarch.mage;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,10 +13,21 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 
+/**
+ * A utility class for loading, saving, and executing Groovy scripts.
+ * <p>
+ * This class provides a streamlined API for interacting with the Groovy shell,
+ * managing script files within a designated folder, and binding variables to 
+ * the script execution context.
+ * </p>
+ */
 public class WizGroovy {
 
     private static String extension = ".gvy";
 
+    /**
+     * The default folder where Groovy scripts are stored.
+     */
     public static File folder = new File("gvy");
 
     private WizGroovy() {}
@@ -23,7 +35,7 @@ public class WizGroovy {
     /**
      * Gets the default file extension for Groovy scripts.
      *
-     * @return the file extension (e.g., ".gvy")
+     * @return the file extension (e.g., {@code ".gvy"})
      */
     public static String getExtension() {
         return extension;
@@ -31,9 +43,11 @@ public class WizGroovy {
 
     /**
      * Sets the file extension for Groovy scripts.
+     * <p>
      * Automatically normalizes the extension to lowercase and ensures it starts with a dot.
+     * </p>
      *
-     * @param extension the new extension (e.g., ".gvy" or "gvy")
+     * @param extension the new extension (e.g., {@code ".gvy"} or {@code "gvy"})
      */
     public static void setExtension(String extension) {
         extension = extension == null ? "" : extension.toLowerCase().trim();
@@ -46,7 +60,7 @@ public class WizGroovy {
     /**
      * Gets the default folder where Groovy scripts are stored.
      *
-     * @return the default folder
+     * @return the default folder as a {@link File}
      */
     public static File getFolder() {
         return folder;
@@ -55,7 +69,7 @@ public class WizGroovy {
     /**
      * Sets the default folder where Groovy scripts are stored.
      *
-     * @param folder the new default folder
+     * @param folder the new default folder as a {@link File}
      */
     public static void setFolder(File folder) {
         WizGroovy.folder = folder;
@@ -64,7 +78,7 @@ public class WizGroovy {
     /**
      * Gets the names of all Groovy scripts in the default folder.
      *
-     * @return a list of script file names with extensions
+     * @return a {@link List} of script file names with their extensions
      */
     public static List<String> getNames() {
         return getNames(folder);
@@ -72,10 +86,12 @@ public class WizGroovy {
  
     /**
      * Gets the names of all Groovy scripts in a specified folder.
-     * Creates the folder if it does not exist.
+     * <p>
+     * Creates the folder if it does not already exist.
+     * </p>
      *
      * @param folder the folder to list
-     * @return a list of script file names with extensions
+     * @return a {@link List} of script file names with their extensions
      */
     public static List<String> getNames(File folder) {
         var result = new ArrayList<String>();
@@ -84,9 +100,12 @@ public class WizGroovy {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (var inside : folder.listFiles()) {
-            if (inside.isFile() && inside.getName().toLowerCase().endsWith(extension)) {
-                result.add(inside.getName());
+        var files = folder.listFiles();
+        if (files != null) {
+            for (var inside : files) {
+                if (inside.isFile() && inside.getName().toLowerCase().endsWith(extension)) {
+                    result.add(inside.getName());
+                }
             }
         }
         return result;
@@ -95,7 +114,7 @@ public class WizGroovy {
     /**
      * Populates a combo box model with the names of all Groovy scripts from the default folder.
      *
-     * @param field the DefaultComboBoxModel to populate
+     * @param field the {@link DefaultComboBoxModel} to populate
      */
     public static void loadNames(DefaultComboBoxModel<String> field) {
         loadNames(field, folder);
@@ -104,12 +123,12 @@ public class WizGroovy {
     /**
      * Populates a combo box model with the names of all Groovy scripts from a specified folder.
      *
-     * @param field the DefaultComboBoxModel to populate
+     * @param field  the {@link DefaultComboBoxModel} to populate
      * @param folder the folder to list scripts from
      */
     public static void loadNames(DefaultComboBoxModel<String> field, File folder) {
         field.removeAllElements();
-        for(var chatName : getNames(folder)) {
+        for (var chatName : getNames(folder)) {
             field.addElement(chatName);
         }
     }
@@ -117,8 +136,8 @@ public class WizGroovy {
     /**
      * Checks if a Groovy script exists in the default folder.
      *
-     * @param name the script name (without extension)
-     * @return true if the script exists, false otherwise
+     * @param name the script name (without the extension)
+     * @return {@code true} if the script exists, {@code false} otherwise
      */
     public static boolean exists(String name) {
         return exists(name, folder);
@@ -127,9 +146,9 @@ public class WizGroovy {
     /**
      * Checks if a Groovy script exists in a specified folder.
      *
-     * @param name the script name (without extension)
+     * @param name   the script name (without the extension)
      * @param folder the folder to check in
-     * @return true if the script exists, false otherwise
+     * @return {@code true} if the script exists, {@code false} otherwise
      */
     public static boolean exists(String name, File folder) {
         var groovyFile = new File(folder, name + extension);
@@ -139,23 +158,23 @@ public class WizGroovy {
     /**
      * Loads a Groovy script from the default folder as a string.
      *
-     * @param name the script name (without extension)
-     * @return the script source code
-     * @throws Exception if the file cannot be read
+     * @param name the script name (without the extension)
+     * @return the script source code as a {@link String}
+     * @throws IOException if the file cannot be read
      */
-    public static String load(String name) throws Exception {
+    public static String load(String name) throws IOException {
         return load(name, folder);
     }
     
     /**
      * Loads a Groovy script from a specified folder as a string.
      *
-     * @param name the script name (without extension)
+     * @param name   the script name (without the extension)
      * @param folder the folder to load from
-     * @return the script source code
-     * @throws Exception if the file cannot be read
+     * @return the script source code as a {@link String}
+     * @throws IOException if the file cannot be read
      */
-    public static String load(String name, File folder) throws Exception {
+    public static String load(String name, File folder) throws IOException {
         var groovyFile = new File(folder, name + extension);
         return Files.readString(groovyFile.toPath(), StandardCharsets.UTF_8);
     }
@@ -163,23 +182,26 @@ public class WizGroovy {
     /**
      * Saves a Groovy script to the default folder.
      *
-     * @param name the script name (without extension)
+     * @param name   the script name (without the extension)
      * @param source the script source code
-     * @throws Exception if the file cannot be written
+     * @throws IOException if the file cannot be written
      */
-    public static void save(String name, String source) throws Exception {
+    public static void save(String name, String source) throws IOException {
         save(name, folder, source);
     }
 
     /**
      * Saves a Groovy script to a specified folder.
+     * <p>
+     * Creates the directory if it does not exist.
+     * </p>
      *
-     * @param name the script name (without extension)
+     * @param name   the script name (without the extension)
      * @param folder the folder to save to
      * @param source the script source code
-     * @throws Exception if the file cannot be written
+     * @throws IOException if the file cannot be written
      */
-    public static void save(String name, File folder, String source) throws Exception {
+    public static void save(String name, File folder, String source) throws IOException {
         if (!folder.exists()) {
             folder.mkdirs();
         }
@@ -190,8 +212,8 @@ public class WizGroovy {
     /**
      * Deletes a Groovy script from the default folder.
      *
-     * @param name the script name (without extension)
-     * @return true if successfully deleted, false otherwise
+     * @param name the script name (without the extension)
+     * @return {@code true} if successfully deleted, {@code false} otherwise
      */
     public static boolean delete(String name) {
         return delete(name, folder);
@@ -200,9 +222,9 @@ public class WizGroovy {
     /**
      * Deletes a Groovy script from a specified folder.
      *
-     * @param name the script name (without extension)
+     * @param name   the script name (without the extension)
      * @param folder the folder to delete from
-     * @return true if successfully deleted, false otherwise
+     * @return {@code true} if successfully deleted, {@code false} otherwise
      */
     public static boolean delete(String name, File folder) {
         var groovyFile = new File(folder, name + extension);
@@ -215,7 +237,7 @@ public class WizGroovy {
     /**
      * Loads and executes a Groovy script from the default folder.
      *
-     * @param name the script name (without extension)
+     * @param name the script name (without the extension)
      * @return the result of the script execution
      * @throws Exception if the script cannot be loaded or executed
      */
@@ -226,7 +248,7 @@ public class WizGroovy {
     /**
      * Loads and executes a Groovy script from a specified folder.
      *
-     * @param name the script name (without extension)
+     * @param name   the script name (without the extension)
      * @param folder the folder to load from
      * @return the result of the script execution
      * @throws Exception if the script cannot be loaded or executed
@@ -238,8 +260,8 @@ public class WizGroovy {
     /**
      * Loads and executes a Groovy script from the default folder with supplied variables.
      *
-     * @param name the script name (without extension)
-     * @param variables the variables available to the script
+     * @param name      the script name (without the extension)
+     * @param variables the variables available to the script binding
      * @return the result of the script execution
      * @throws Exception if the script cannot be loaded or executed
      */
@@ -250,9 +272,9 @@ public class WizGroovy {
     /**
      * Loads and executes a Groovy script from a specified folder with supplied variables.
      *
-     * @param name the script name (without extension)
-     * @param folder the folder to load from
-     * @param variables the variables available to the script
+     * @param name      the script name (without the extension)
+     * @param folder    the folder to load from
+     * @param variables the variables available to the script binding
      * @return the result of the script execution
      * @throws Exception if the script cannot be loaded or executed
      */
@@ -261,21 +283,21 @@ public class WizGroovy {
     }
 
     /**
-     * Parses Groovy source code into a Script object.
+     * Parses Groovy source code into a {@link Script} object.
      *
      * @param source the Groovy source code
-     * @return the compiled Script object
+     * @return the compiled {@link Script} object
      */
     public static Script parse(String source) {
         return new GroovyShell().parse(source);
     }
 
     /**
-     * Parses Groovy source code into a Script object with supplied variables.
+     * Parses Groovy source code into a {@link Script} object with supplied variables.
      *
-     * @param source the Groovy source code
-     * @param variables the variables available to the script
-     * @return the compiled Script object
+     * @param source    the Groovy source code
+     * @param variables the variables available to the script binding
+     * @return the compiled {@link Script} object
      */
     public static Script parse(String source, Map<String, Object> variables) {
         var binding = new Binding(variables);
@@ -296,8 +318,8 @@ public class WizGroovy {
     /**
      * Executes Groovy source code with supplied variables and returns the result.
      *
-     * @param source the Groovy source code
-     * @param variables the variables available to the script
+     * @param source    the Groovy source code
+     * @param variables the variables available to the script binding
      * @return the result of the script execution
      * @throws Exception if the script cannot be executed
      */
@@ -309,7 +331,9 @@ public class WizGroovy {
 
     /**
      * Evaluates a Groovy expression and returns the result.
-     * This is a convenience method equivalent to run(expression).
+     * <p>
+     * This is a convenience method equivalent to {@link #run(String)}.
+     * </p>
      *
      * @param expression the Groovy expression to evaluate
      * @return the result of the expression
@@ -320,11 +344,13 @@ public class WizGroovy {
     }
     
     /**
-     * Creates a map of variables from Variable records.
-     * Useful for quickly creating the variables map for script execution.
+     * Creates a map of variables from {@link Variable} records.
+     * <p>
+     * Useful for quickly constructing the variables map for script execution.
+     * </p>
      *
-     * @param variables the Variable records to include
-     * @return a map of variable names to values
+     * @param variables the {@link Variable} records to include
+     * @return a {@link Map} of variable names to values
      */
     public static Map<String, Object> vars(Variable... variables) {
         var result = new HashMap<String, Object>();
@@ -337,11 +363,11 @@ public class WizGroovy {
     }
     
     /**
-     * Creates a Variable record for use in the vars() method.
+     * Creates a {@link Variable} record for use in the {@link #vars(Variable...)} method.
      *
-     * @param name the variable name
+     * @param name  the variable name
      * @param value the variable value
-     * @return a Variable record
+     * @return a {@link Variable} record
      */
     public static Variable map(String name, Object value) {
         return new Variable(name, value);
@@ -350,29 +376,31 @@ public class WizGroovy {
     /**
      * A record representing a named variable for script execution.
      *
-     * @param name the variable name
+     * @param name  the variable name
      * @param value the variable value
      */
-    public static record Variable(String name, Object value){}
+    public static record Variable(String name, Object value) {}
 
     /**
      * A reusable shell context for executing multiple scripts 
      * while sharing the same variables and environment.
-     * Maintains a persistent Groovy binding across multiple evaluations.
+     * <p>
+     * Maintains a persistent Groovy {@link Binding} across multiple evaluations.
+     * </p>
      */
     public static class ShellContext {
         private final Binding binding;
         private final GroovyShell shell;
 
         /**
-         * Creates a new ShellContext with an empty set of variables.
+         * Creates a new {@link ShellContext} with an empty set of variables.
          */
         public ShellContext() {
             this(new HashMap<>());
         }
 
         /**
-         * Creates a new ShellContext with initial variables.
+         * Creates a new {@link ShellContext} with initial variables.
          *
          * @param initialVariables the initial variables available to scripts
          */
@@ -384,9 +412,9 @@ public class WizGroovy {
         /**
          * Sets or updates a variable in the shell context.
          *
-         * @param name the variable name
+         * @param name  the variable name
          * @param value the variable value
-         * @return this ShellContext for method chaining
+         * @return this {@link ShellContext} for method chaining
          */
         public ShellContext set(String name, Object value) {
             this.binding.setVariable(name, value);
@@ -397,7 +425,7 @@ public class WizGroovy {
          * Gets a variable from the shell context.
          *
          * @param name the variable name
-         * @return the variable value, or null if not found
+         * @return the variable value, or {@code null} if not found
          */
         public Object get(String name) {
             return this.binding.hasVariable(name) ? this.binding.getVariable(name) : null;
@@ -405,7 +433,9 @@ public class WizGroovy {
 
         /**
          * Evaluates a Groovy script within this context.
+         * <p>
          * The script has access to all variables in the binding.
+         * </p>
          *
          * @param script the Groovy source code to evaluate
          * @return the result of the script execution
@@ -418,7 +448,7 @@ public class WizGroovy {
          * Parses a Groovy script within this context.
          *
          * @param script the Groovy source code to parse
-         * @return the compiled Script object
+         * @return the compiled {@link Script} object
          */
         public Script parse(String script) {
             return this.shell.parse(script);
