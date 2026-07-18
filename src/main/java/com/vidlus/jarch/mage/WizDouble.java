@@ -3,17 +3,22 @@ package com.vidlus.jarch.mage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * A utility class for handling Double values.
+ * <p>
+ * This class provides null-safe methods for parsing, formatting, and comparing Double objects.
+ * </p>
+ */
 public class WizDouble {
 
     private WizDouble() {
     }
 
     /**
-     * Checks if the given value can be converted to a Double.
-     * Supports Double, Number, Boolean, and String.
+     * Checks if the given object can be converted to a Double.
      *
-     * @param value the value to check
-     * @return true if the value can be converted, false otherwise
+     * @param value the object to check
+     * @return {@code true} if it can be converted, {@code false} otherwise
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -24,13 +29,11 @@ public class WizDouble {
     }
 
     /**
-     * Converts the given value to a Double.
-     * Handles Double, Number, Boolean (true=1.0, false=0.0), and String parsing.
-     * Blank strings return null.
+     * Converts an object to a Double.
      *
-     * @param value the value to convert
-     * @return the converted Double, or null if value is null or blank string
-     * @throws Exception if conversion fails
+     * @param value the object to convert
+     * @return the Double value, or {@code null} if blank or null
+     * @throws Exception if the conversion fails
      */
     public static Double get(Object value) throws Exception {
         if (value == null) return null;
@@ -52,11 +55,11 @@ public class WizDouble {
     }
 
     /**
-     * Converts a value to Double, returning a default if conversion fails.
+     * Converts an object to a Double with a default fallback.
      *
-     * @param value the value to convert
+     * @param value     the object to convert
      * @param orDefault the fallback value
-     * @return the converted Double, or orDefault if conversion fails
+     * @return the converted Double, or the fallback
      */
     public static Double get(Object value, Double orDefault) {
         try {
@@ -67,10 +70,10 @@ public class WizDouble {
     }
 
     /**
-     * Formats a Double as a string.
+     * Formats a Double to a string.
      *
      * @param value the Double to format
-     * @return the string representation, or empty string if null
+     * @return the string representation
      */
     public static String format(Double value) {
         return value == null ? "" : value.toString();
@@ -78,33 +81,31 @@ public class WizDouble {
 
     /**
      * Converts a Double to a primitive double.
-     * Null values are treated as 0.0.
      *
      * @param value the Double to convert
-     * @return the primitive double value, or 0.0 if null
+     * @return the primitive value, or 0.0 if null
      */
     public static double toPrimitive(Double value) {
         return value != null ? value : 0.0;
     }
 
     /**
-     * Converts a Double to a primitive double with a custom default for null.
+     * Converts a Double to a primitive double with a custom fallback.
      *
-     * @param value the Double to convert
+     * @param value         the Double to convert
      * @param defaultIfNull the fallback value
-     * @return the primitive double value, or defaultIfNull if null
+     * @return the primitive value
      */
     public static double toPrimitive(Double value, double defaultIfNull) {
         return value != null ? value : defaultIfNull;
     }
 
     /**
-     * Safely compares two Double values.
-     * Null is considered less than any non-null value.
+     * Compares two Double values.
      *
-     * @param d1 the first Double
-     * @param d2 the second Double
-     * @return a negative value if d1 < d2, zero if equal, positive if d1 > d2
+     * @param d1 the first value
+     * @param d2 the second value
+     * @return negative if d1 is less than d2, zero if equal, positive if d1 is greater
      */
     public static int compare(Double d1, Double d2) {
         if (d1 == null && d2 == null) return 0;
@@ -114,72 +115,71 @@ public class WizDouble {
     }
 
     /**
-     * Checks if two Double values are exactly equal.
+     * Checks if two Double values are equal.
      *
-     * @param d1 the first Double
-     * @param d2 the second Double
-     * @return true if equal, false otherwise (including if one is null and the other isn't)
+     * @param d1 the first value
+     * @param d2 the second value
+     * @return {@code true} if equal, {@code false} otherwise
      */
     public static boolean isEqual(Double d1, Double d2) {
         return compare(d1, d2) == 0;
     }
 
     /**
-     * Checks if a Double is exactly zero.
+     * Checks if a Double is zero.
      *
      * @param value the Double to check
-     * @return true if value is 0.0 (or -0.0)
+     * @return {@code true} if zero
      */
     public static boolean isZero(Double value) {
         return value != null && value == 0.0;
     }
 
     /**
-     * Checks if a Double is positive (greater than 0).
+     * Checks if a Double is positive.
      *
      * @param value the Double to check
-     * @return true if positive, false if null or <= 0
+     * @return {@code true} if positive
      */
     public static boolean isPositive(Double value) {
         return value != null && value > 0.0;
     }
 
     /**
-     * Checks if a Double is negative (less than 0).
+     * Checks if a Double is negative.
      *
      * @param value the Double to check
-     * @return true if negative, false if null or >= 0
+     * @return {@code true} if negative
      */
     public static boolean isNegative(Double value) {
         return value != null && value < 0.0;
     }
 
     /**
-     * Checks if a Double is a finite floating-point value.
+     * Checks if a Double is finite.
      *
      * @param value the Double to check
-     * @return true if finite, false if null, NaN, or Infinite
+     * @return {@code true} if finite
      */
     public static boolean isFinite(Double value) {
         return value != null && Double.isFinite(value);
     }
 
     /**
-     * Checks if a Double is Not-a-Number (NaN).
+     * Checks if a Double is NaN.
      *
      * @param value the Double to check
-     * @return true if NaN, false if null or a valid number
+     * @return {@code true} if NaN
      */
     public static boolean isNaN(Double value) {
         return value != null && Double.isNaN(value);
     }
 
     /**
-     * Safely adds two Double values.
-     * Nulls are treated as 0.0.
+     * Adds two Double values.
      *
-     * @param d1 the first Double
-     * @param d2 the second Double
+     * @param d1 the first value
+     * @param d2 the second value
      * @return the sum
      */
     public static Double sum(Double d1, Double d2) {
@@ -189,10 +189,9 @@ public class WizDouble {
 
     /**
      * Returns the minimum of two Double values.
-     * Nulls are ignored if one value is present. If both are null, returns null.
      *
-     * @param d1 the first Double
-     * @param d2 the second Double
+     * @param d1 the first value
+     * @param d2 the second value
      * @return the minimum value
      */
     public static Double min(Double d1, Double d2) {
@@ -203,10 +202,9 @@ public class WizDouble {
 
     /**
      * Returns the maximum of two Double values.
-     * Nulls are ignored if one value is present. If both are null, returns null.
      *
-     * @param d1 the first Double
-     * @param d2 the second Double
+     * @param d1 the first value
+     * @param d2 the second value
      * @return the maximum value
      */
     public static Double max(Double d1, Double d2) {
@@ -216,12 +214,11 @@ public class WizDouble {
     }
 
     /**
-     * Rounds a Double to a specific number of decimal places.
-     * Uses HALF_UP rounding mode.
+     * Rounds a Double to the specified decimal places.
      *
-     * @param value the Double to round
-     * @param places the number of decimal places
-     * @return the rounded Double, or null if input is null or NaN/Infinite
+     * @param value  the Double to round
+     * @param places the decimal places
+     * @return the rounded value
      */
     public static Double round(Double value, int places) {
         if (value == null || !isFinite(value)) return value;
