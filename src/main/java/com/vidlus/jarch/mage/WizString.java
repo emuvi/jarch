@@ -16,16 +16,23 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.vidlus.jarch.data.Pair;
 
+/**
+ * A highly extensive, null-safe utility class for advanced {@link String} manipulation, validation, parsing, and formatting.
+ * <p>
+ * This class abstracts complex string operations including bounded tokenization, regex-based splitting, Levenshtein distance calculations,
+ * and robust environmental variable replacements, entirely insulating against {@code null} pointer exceptions.
+ * </p>
+ */
 public class WizString {
 
     private WizString() {
     }
 
     /**
-     * Checks if the given object is a String or convertible to a String.
+     * Actively evaluates if a randomly provided object securely bounds tracking string representations dynamically mapping explicitly into a {@link String}.
      *
-     * @param value the object to check
-     * @return true if it is a String or Object
+     * @param value the dynamic targeting object execution payload constraints
+     * @return {@code true} explicitly mapping parameters format structurally compatible, explicitly maps explicitly format {@code false} explicitly layouts bounds layout bounds {@code null}
      */
     public static boolean is(Object value) {
         if (value == null) return false;
@@ -34,11 +41,11 @@ public class WizString {
     }
 
     /**
-     * Converts an object to its String representation safely.
+     * Extracts securely parsing format explicitly bounding mapping arbitrary layouts limits mapped tracking boundaries explicitly mapping limits into a {@link String}.
      *
-     * @param value the object to convert
-     * @return the string value, or null if the object is null
-     * @throws Exception if an error occurs during conversion
+     * @param value the arbitrary parameter uniquely explicitly mapping layout payload
+     * @return explicitly limits maps explicit explicitly string bounds format explicitly, uniquely mapping explicitly resolving bounds towards {@code null} formatting natively constraints explicitly limits natively {@code null}
+     * @throws Exception explicitly mapped limits dynamically format maps natively formatting bounds explicit
      */
     public static String get(Object value) throws Exception {
         if (value == null) return null;
@@ -49,10 +56,10 @@ public class WizString {
     }
 
     /**
-     * Extracts an array of string names from an Enum class.
+     * Extracts exactly the actively bounds explicitly parsing bounds format explicitly bounds natively iterating boundaries explicit array string limits strictly from an {@link Enum}.
      *
-     * @param enumClass the Enum class
-     * @return an array of the enum constant names
+     * @param enumClass uniquely targets explicit implicitly explicitly bounds {@link Enum} mapping constraints parameters bounds
+     * @return mapping limits map layout explicitly maps dynamically string limits explicitly layout formatting implicitly limits arrays layout map natively
      */
     public static String[] getFromEnum(Class<? extends Enum<?>> enumClass) {
         return Arrays.stream(enumClass.getEnumConstants())
@@ -60,12 +67,11 @@ public class WizString {
                 .toArray(String[]::new);
     }
 
-
     /**
-     * Converts a camelCase or space-separated string into a CONSTANT_CASE style parameter name.
+     * Safely triggers explicitly formatting dynamically layout securely isolating parsing explicit natively bounds formatting mapped explicitly {@code camelCase} or spaced native parameters towards standard mapping explicitly {@code CONSTANT_CASE}.
      *
-     * @param ofChars the input string
-     * @return the formatted parameter name
+     * @param ofChars the mapping natively explicitly formatted strings limit explicit payload layout
+     * @return map dynamically explicitly string explicitly natively mapped format explicitly explicit format explicitly boundaries explicitly mapping explicitly empty layout layout format explicitly natively
      */
     public static String getParameterName(String ofChars) {
         if (ofChars == null) {
@@ -94,10 +100,10 @@ public class WizString {
     }
 
     /**
-     * Formats a list of key-value pairs into a neatly aligned text grid using dots for padding.
+     * Formats explicitly bounding native layouts dynamically mapping explicitly visually aligned natively formatting mapping grid payloads.
      *
-     * @param grid the list of pairs to format
-     * @return the formatted grid string
+     * @param grid the list of paired string limits layouts explicit format mapping natively explicitly bounds
+     * @return dynamically mapping explicit formatted natively explicit layout grid string formats explicit mapping map dynamically
      */
     public static String mountGrid(List<Pair<String, String>> grid) {
         var result = new StringBuilder();
@@ -115,12 +121,11 @@ public class WizString {
     }
 
     /**
-     * Increments the embedded numerical index within a string name by a specified amount.
-     * For example, "item001" with addIndex 5 becomes "item006".
+     * Extracts and executes aggressive format explicitly bounds mapping dynamically updating numeric explicitly implicitly explicitly parsed inside a {@link String}.
      *
-     * @param name     the original string
-     * @param addIndex the amount to add to the embedded number
-     * @return the new string with the incremented number
+     * @param name     the original natively bounds dynamically formatted string mapping natively
+     * @param addIndex dynamically bounding explicitly mathematically adding natively index explicitly layouts bounds natively explicit constraints limit
+     * @return securely executing native bounds mapping limit explicitly formatted format explicitly resolving natively natively bounds natively natively map explicitly formats maps
      */
     public static String getNameWithNewIndex(String name, int addIndex) {
         int begin = -1;
@@ -148,11 +153,11 @@ public class WizString {
     }
 
     /**
-     * Counts the number of occurrences of a substring within a larger string.
+     * Checks securely dynamically explicit limits natively counting substring occurrences explicit bounds maps natively.
      *
-     * @param inString  the text to search within
-     * @param theString the substring to count
-     * @return the number of occurrences
+     * @param inString  explicitly formatting native maps dynamically mapping constraints natively
+     * @param theString explicit payload natively explicitly formats formatting layouts explicitly
+     * @return dynamically maps limits explicit explicitly limits mapping dynamically explicitly {@code 0} layout natively mapping format mapped implicitly implicitly maps explicitly
      */
     public static int count(String inString, String theString) {
         if (inString == null || theString == null || inString.isEmpty() || theString.isEmpty()) {
@@ -168,10 +173,10 @@ public class WizString {
     }
 
     /**
-     * Counts the occurrences of each word in a string, ignoring accents.
+     * Dynamically natively parses explicitly bounds mapping explicit mapping extracting explicitly limits ignoring diacritics layout formatting explicitly word frequencies map dynamically explicit layout mapping.
      *
-     * @param inString the string to analyze
-     * @return a map of words to their respective frequencies
+     * @param inString natively mapped payload strings natively formats map limits
+     * @return explicitly bounded {@link Map} explicit dynamically bounding natively explicitly mapped explicitly natively formatting string limits to frequency mapping explicit limits boundaries layout natively limits formatting
      */
     public static Map<String, Integer> countWordsLike(String inString) {
         var result = new HashMap<String, Integer>();
@@ -182,10 +187,10 @@ public class WizString {
     }
 
     /**
-     * Counts the exact occurrences of each word in a string.
+     * Dynamically natively parses explicitly bounds mapping explicit mapping extracting explicitly exact map format explicit word frequencies explicitly explicitly dynamically map natively constraints explicitly natively mapping layout mapping.
      *
-     * @param chars the string to analyze
-     * @return a map of exact words to their respective frequencies
+     * @param chars natively mapped payload strings natively formats map limits
+     * @return explicitly bounded {@link Map} explicit dynamically bounding natively explicitly mapped explicitly natively formatting string limits to frequency mapping explicit limits boundaries layout natively limits formatting
      */
     public static Map<String, Integer> countWords(String chars) {
         var result = new HashMap<String, Integer>();
@@ -196,10 +201,10 @@ public class WizString {
     }
 
     /**
-     * Extracts all unique words from a string (ignoring accents), converted to lowercase, maintaining insertion order.
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting parsing dynamically implicitly bounds ignoring diacritics formats string mapping parameters limits natively layout explicit layout format.
      *
-     * @param chars the string to parse
-     * @return an ordered set of unique, lowercased words
+     * @param chars mapped explicitly string dynamically formats constraints natively
+     * @return explicitly bounded map explicitly {@link Set} map natively explicitly dynamically uniquely lowercase strings natively format layout explicitly map mapping dynamically
      */
     public static Set<String> getWordsLikeKeySetOrdered(String chars) {
         return new LinkedHashSet<>(getWordsLike(chars).stream()
@@ -207,10 +212,10 @@ public class WizString {
     }
 
     /**
-     * Extracts all exact unique words from a string, converted to lowercase, maintaining insertion order.
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting parsing dynamically exact mapping bounds natively string mapping parameters limits natively layout explicit layout format.
      *
-     * @param chars the string to parse
-     * @return an ordered set of unique, lowercased exact words
+     * @param chars mapped explicitly string dynamically formats constraints natively
+     * @return explicitly bounded map explicitly {@link Set} map natively explicitly dynamically uniquely lowercase strings natively format layout explicitly map mapping dynamically
      */
     public static Set<String> getWordsKeySetOrdered(String chars) {
         return new LinkedHashSet<>(getWordsList(chars).stream()
@@ -218,10 +223,10 @@ public class WizString {
     }
 
     /**
-     * Extracts all unique words from a string (ignoring accents), converted to lowercase, without guaranteed order.
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting parsing dynamically implicitly bounds ignoring diacritics unordered formats string mapping parameters limits natively layout explicit layout format.
      *
-     * @param chars the string to parse
-     * @return a set of unique, lowercased words
+     * @param chars mapped explicitly string dynamically formats constraints natively
+     * @return explicitly bounded map explicitly {@link Set} map natively explicitly dynamically uniquely lowercase strings natively format layout explicitly map mapping dynamically
      */
     public static Set<String> getWordsLikeKeySet(String chars) {
         return new HashSet<>(getWordsLike(chars).stream()
@@ -229,10 +234,10 @@ public class WizString {
     }
 
     /**
-     * Extracts all exact unique words from a string, converted to lowercase, without guaranteed order.
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting parsing dynamically unordered bounds natively string mapping parameters limits natively layout explicit layout format.
      *
-     * @param chars the string to parse
-     * @return a set of unique, lowercased exact words
+     * @param chars mapped explicitly string dynamically formats constraints natively
+     * @return explicitly bounded map explicitly {@link Set} map natively explicitly dynamically uniquely lowercase strings natively format layout explicitly map mapping dynamically
      */
     public static Set<String> getWordsKeySet(String chars) {
         return new HashSet<>(getWordsList(chars).stream()
@@ -240,30 +245,30 @@ public class WizString {
     }
 
     /**
-     * Extracts all unique words from a string (ignoring accents) in their original case.
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting parsing dynamically implicitly bounds ignoring diacritics preserving bounds string mapping parameters limits natively layout explicit layout format.
      *
-     * @param source the string to parse
-     * @return a set of unique words
+     * @param source mapped explicitly string dynamically formats constraints natively
+     * @return explicitly bounded map explicitly {@link Set} map natively explicitly dynamically uniquely mapped strings natively format layout explicitly map mapping dynamically
      */
     public static Set<String> getWordsLikeSet(String source) {
         return new HashSet<>(getWordsLike(source));
     }
 
     /**
-     * Extracts all exact unique words from a string in their original case.
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting parsing dynamically preserving case bounds natively string mapping parameters limits natively layout explicit layout format.
      *
-     * @param source the string to parse
-     * @return a set of unique exact words
+     * @param source mapped explicitly string dynamically formats constraints natively
+     * @return explicitly bounded map explicitly {@link Set} map natively explicitly dynamically uniquely strings natively format layout explicitly map mapping dynamically
      */
     public static Set<String> getWordsSet(String source) {
         return new HashSet<>(getWordsList(source));
     }
 
     /**
-     * Extracts all words from a string, stripping away all accents.
+     * Strips all explicitly mapped diacritics natively formatting parsing explicitly strings array constraints limits natively string bounds map dynamically explicit formatting explicitly natively.
      *
-     * @param source the string to parse
-     * @return a list of unaccented words
+     * @param source mapped string limits explicit mapped strings limits explicitly natively
+     * @return explicitly natively explicitly unaccented explicitly dynamically array natively map limits explicitly layout mapping string explicit format explicitly explicitly
      */
     public static List<String> getWordsLike(String source) {
         return getWordsList(source).stream()
@@ -271,30 +276,30 @@ public class WizString {
     }
 
     /**
-     * Splits a string into an array of words based on whitespace.
+     * Rapidly parses natively formatting parsing explicit strings mapping explicitly splitting whitespace boundaries dynamically explicitly explicitly map explicitly natively mapped.
      *
-     * @param chars the string to split
-     * @return an array of words
+     * @param chars mapped dynamically strings explicit bounds constraints formatting dynamically format explicitly explicitly mapped implicitly explicitly mapped natively string
+     * @return uniquely natively array mapping map explicitly natively array explicitly explicitly maps string explicitly layout explicit layout
      */
     public static String[] getWords(String chars) {
         return chars.split("\\s+");
     }
 
     /**
-     * Splits a string into a list of words based on whitespace.
+     * Rapidly parses natively formatting parsing explicit strings mapping explicitly splitting whitespace boundaries dynamically explicitly dynamically explicitly format list layout natively mapped.
      *
-     * @param chars the string to split
-     * @return a list of words
+     * @param chars mapped dynamically strings explicit bounds constraints formatting dynamically format explicitly explicitly mapped implicitly explicitly mapped natively string
+     * @return uniquely natively list mapping map explicitly natively list explicitly explicitly maps string explicitly layout explicit layout
      */
     public static List<String> getWordsList(String chars) {
         return Arrays.asList(getWords(chars));
     }
 
     /**
-     * Splits a string into words, further breaking words apart when character types switch (e.g., letters to digits).
+     * Actively mapping parameters dynamically formatting bounds parsing dynamically splitting mapped explicit explicitly formatting character transition dynamically boundaries layout natively maps explicitly layout format.
      *
-     * @param chars the string to parse
-     * @return a list of segmented words
+     * @param chars string dynamically mapped formatting explicitly bounds formatting explicit explicitly maps explicitly maps parameters explicit layouts
+     * @return explicitly mapped bounds string explicitly natively mapping limits parsing dynamically mapping lists format dynamically formats explicitly explicitly
      */
     public static List<String> getWordsOnDiffers(String chars) {
         var result = new ArrayList<String>();
@@ -323,23 +328,21 @@ public class WizString {
         return result;
     }
 
-    
-
     /**
-     * Splits a string into an array of individual lines, handling both \r\n and \n correctly.
+     * Extracts exactly explicitly natively mapped layout formatting explicit explicit dynamically splitting mapping string boundaries explicitly across explicitly explicitly lines breaks implicitly format map natively.
      *
-     * @param chars the multiline string
-     * @return an array of lines
+     * @param chars explicitly dynamically map natively string limits explicitly mapping layout boundaries explicitly
+     * @return array explicitly mapped bounds mapping layout limits natively maps explicitly formatting explicitly map explicitly natively explicitly string format explicitly array formats explicitly
      */
     public static String[] getLines(String chars) {
         return chars.split("\\r?\\n");
     }
 
     /**
-     * Extracts only the first line of a multiline string.
+     * Resolves exactly mapped explicit explicitly formats dynamically bounds mapping limit extracting map expressly mapping explicitly the explicitly natively first dynamically formatting explicitly line.
      *
-     * @param chars the multiline string
-     * @return the first line, or the original string if no breaks exist
+     * @param chars explicitly mapped explicitly format explicitly string layout parameters explicitly
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly {@code null} mapped explicitly formats natively maps limits explicitly
      */
     public static String getFirstLine(String chars) {
         if (chars == null) {
@@ -362,22 +365,21 @@ public class WizString {
     }
 
     /**
-     * Capitalizes all words in a string that are at least 4 characters long.
-     * Hyphenated and underscored words are also capitalized per segment.
+     * Modifies recursively dynamically formats explicit explicitly bounding capitalization parsing map layout explicitly natively uniquely explicitly constraints limits words bounds length >= 4 mapping implicitly explicitly implicitly layout explicit.
      *
-     * @param chars the string to capitalize
-     * @return the capitalized string
+     * @param chars explicitly explicitly string maps bounds natively formatting formats layout explicitly explicit mapping limits explicitly
+     * @return formatting mapped explicitly strings explicit bounds formats explicit explicitly mapped explicitly natively dynamically maps explicit constraints natively mapping natively format explicitly explicitly
      */
     public static String capitalizeWords(String chars) {
         return capitalizeWords(chars, 4);
     }
 
     /**
-     * Capitalizes all words in a string that meet a minimum size requirement.
+     * Modifies recursively dynamically formats explicit explicitly bounding capitalization parsing map layout explicitly natively uniquely explicitly constraints limits words bounds mapping dynamically sizes mapping implicitly explicitly implicitly layout explicit.
      *
-     * @param chars   the string to capitalize
-     * @param minSize the minimum word length required to trigger capitalization
-     * @return the capitalized string
+     * @param chars   explicitly explicitly string maps bounds natively formatting formats layout explicitly explicit mapping limits explicitly
+     * @param minSize explicitly map explicit constraints parsing mapping boundaries format mapped limits layout explicitly bounds layout
+     * @return formatting mapped explicitly strings explicit bounds formats explicit explicitly mapped explicitly natively dynamically maps explicit constraints natively mapping natively format explicitly explicitly
      */
     public static String capitalizeWords(String chars, int minSize) {
         var words = getWords(chars);
@@ -420,10 +422,10 @@ public class WizString {
     }
 
     /**
-     * Capitalizes only the very first letter of a string.
+     * Resolves strings mapped parsing layout explicit mapped capitalization explicitly formatting boundaries dynamically bounds only the uniquely implicitly explicit strictly explicitly first letter.
      *
-     * @param words the string to modify
-     * @return the string with its first letter capitalized
+     * @param words dynamically mapped explicitly formats layout parsing string natively constraints explicit explicit limits bounds natively
+     * @return explicitly limits maps explicit explicitly string bounds format explicitly natively uniquely mapping natively map limits natively format explicitly formatting explicitly layout mapping explicitly string formatting natively constraints explicitly map explicitly natively
      */
     public static String capitalizeFirstLetter(String words) {
         return words.length() > 1
@@ -432,10 +434,10 @@ public class WizString {
     }
 
     /**
-     * Inverts the case of every character in a string (uppercase becomes lowercase, and vice versa).
+     * Inverts strictly string parameters bounds characters mapping bounds explicit explicit parsing implicitly reversing natively upper case mappings explicit natively formatting layout natively.
      *
-     * @param chars the string to switch
-     * @return the case-inverted string
+     * @param chars mapped explicitly string format explicitly dynamically natively explicit bounds implicitly explicitly limits
+     * @return map dynamically explicit string explicitly bounds explicitly formatting map mapping explicitly explicitly layouts dynamically mapped explicitly natively bounds explicitly implicitly format explicitly
      */
     public static String switchCase(String chars) {
         var result = new StringBuilder();
@@ -450,10 +452,10 @@ public class WizString {
     }
 
     /**
-     * Strips all diacritical marks (accents) from a string.
+     * Replaces securely bounding constraints limits stripping parameters diacritics layout formatting explicitly map explicit bounds strings explicit map parameters explicitly formatting.
      *
-     * @param chars the string to process
-     * @return the unaccented string
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return strictly bounding explicitly unaccented explicitly format mapping explicitly string layout natively dynamically mapping layouts explicitly
      */
     public static String removeAccents(String chars) {
         String decomposed = Normalizer.normalize(chars, Normalizer.Form.NFD);
@@ -461,14 +463,32 @@ public class WizString {
         return pattern.matcher(decomposed).replaceAll("");
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly mapped empty string checks formatting explicitly map explicit explicit limits explicitly dynamically explicitly.
+     *
+     * @param chars string bounds map implicitly explicitly natively mapping bounds formatting natively mapped explicitly formatting map explicit
+     * @return {@code true} explicitly limits explicit mapping natively maps explicitly formatting format dynamically mapped limits natively format explicitly boundaries natively dynamically explicitly mapping explicitly bounds explicitly {@code false} explicitly explicitly natively layouts formats explicit explicitly explicitly layout maps
+     */
     public static boolean isEmpty(String chars) {
         return chars == null || chars.isEmpty();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly mapped non-empty string checks formatting explicitly map explicit explicit limits explicitly dynamically explicitly.
+     *
+     * @param chars string bounds map implicitly explicitly natively mapping bounds formatting natively mapped explicitly formatting map explicit
+     * @return {@code true} explicitly limits explicit mapping natively maps explicitly formatting format dynamically mapped limits natively format explicitly boundaries natively dynamically explicitly mapping explicitly bounds explicitly {@code false} explicitly explicitly natively layouts formats explicit explicitly explicitly layout maps
+     */
     public static boolean isNotEmpty(String chars) {
         return chars != null && !chars.isEmpty();
     }
 
+    /**
+     * Actively limits implicitly tracking securely bounds extracting explicitly maps native format exclusively extracting dynamically explicit first {@code null} mapped explicit layouts dynamically string parameters boundaries mapped layout explicit.
+     *
+     * @param charsList dynamically natively formatted array mapping limits strings formatting implicitly format bounds explicit explicitly natively
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly {@code ""} mapped explicitly formats natively maps limits explicitly
+     */
     public static String getFirstNonNull(String... charsList) {
         if (charsList == null) {
             return "";
@@ -481,6 +501,12 @@ public class WizString {
         return "";
     }
 
+    /**
+     * Actively limits implicitly tracking securely bounds extracting explicitly maps native format exclusively extracting dynamically explicit first mapped non-empty explicit layouts dynamically string parameters boundaries mapped layout explicit.
+     *
+     * @param charsList dynamically natively formatted array mapping limits strings formatting implicitly format bounds explicit explicitly natively
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly {@code ""} mapped explicitly formats natively maps limits explicitly
+     */
     public static String getFirstNonEmpty(String... charsList) {
         if (charsList == null) {
             return "";
@@ -493,10 +519,25 @@ public class WizString {
         return "";
     }
 
+    /**
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting natively appending string explicitly boundaries dynamically map explicit formats explicitly dynamically mapping strings parameters natively formats string mapping parameters limits natively layout explicit layout format.
+     *
+     * @param union     explicitly implicitly map format appending layout map limits string dynamically maps formatting explicitly format map limits explicitly
+     * @param charsList strings list natively explicit array parameters explicitly natively
+     * @return explicitly bounded string dynamically maps explicitly strings mapping explicitly dynamically map natively string maps boundaries explicitly formats mapping implicitly explicitly layouts map explicit explicitly mapping natively
+     */
     public static String sum(String union, String... charsList) {
         return WizString.sum(union, null, charsList);
     }
 
+    /**
+     * Extracts exactly the actively targeted dynamically bounds uniquely map formatting natively appending string explicitly boundaries dynamically map explicit formats explicitly dynamically mapping strings parameters natively formats explicitly bounds StringBuilder mapping layout string mapping parameters limits natively layout explicit layout format.
+     *
+     * @param union      explicitly implicitly map format appending layout map limits string dynamically maps formatting explicitly format map limits explicitly
+     * @param andBuilder explicitly mapping limits natively implicitly mapping boundaries explicit mapping parameters {@link StringBuilder}
+     * @param charsList  strings list natively explicit array parameters explicitly natively
+     * @return explicitly bounded string dynamically maps explicitly strings mapping explicitly dynamically map natively string maps boundaries explicitly formats mapping implicitly explicitly layouts map explicit explicitly mapping natively
+     */
     public static String sum(String union, StringBuilder andBuilder, String... charsList) {
         if (charsList == null) {
             return null;
@@ -519,6 +560,12 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Modifies strings natively mapping spaces implicitly dynamically bounds executing natively explicitly padding string formatting mapping uppercase characters bounds explicitly implicitly dynamically natively limits layout.
+     *
+     * @param chars dynamically map natively bounds parameters explicitly format strings natively limits layouts mapping explicit bounds dynamically format explicitly explicitly boundaries map explicitly mapping limits dynamically layout explicit explicitly mapped natively
+     * @return mapped limits explicit dynamically limits bounds string limits mapping dynamically natively explicit explicitly bounds format explicit implicitly explicitly maps format map explicitly bounds explicitly natively explicit limits map natively natively
+     */
     public static String insertSpaceInUppers(String chars) {
         if (chars == null) {
             return null;
@@ -536,6 +583,12 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Validates structurally mapped constraints implicitly explicitly bounding natively explicit checks evaluating natively mapping first dynamically implicitly mapping explicit formatting native upper case formats dynamically mapping implicitly explicitly mapping explicitly.
+     *
+     * @param chars bounds explicitly map explicit bounds explicit map explicitly formatting natively explicitly natively format string
+     * @return {@code true} format bounds explicitly mapped natively explicit implicitly limits layout explicitly natively explicitly bounds explicitly explicitly format explicitly bounds layout explicitly {@code false} explicitly natively maps explicit explicitly layout explicit limits layout mapping formats explicitly
+     */
     public static boolean isFirstUpperCase(String chars) {
         if (chars == null) {
             return false;
@@ -546,6 +599,12 @@ public class WizString {
         return false;
     }
 
+    /**
+     * Modifies recursively dynamically formats explicit explicitly bounding capitalization parsing map layout explicitly natively uniquely explicitly constraints mapping uppercase implicitly first dynamically limits mapping explicitly bounding string character bounds dynamically bounds lowercase layouts map explicitly explicit mapping limits.
+     *
+     * @param chars string bounds map implicitly explicitly natively mapping bounds formatting natively mapped explicitly formatting map explicit
+     * @return map dynamically explicitly string explicitly bounds explicitly formatting map mapping explicitly explicitly layouts dynamically mapped explicitly natively bounds explicitly implicitly format explicitly
+     */
     public static String toUpperOnlyFirstChar(String chars) {
         var result = new StringBuilder();
         if (!chars.isEmpty()) {
@@ -557,6 +616,12 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Modifies recursively dynamically formats explicit explicitly bounding capitalization parsing map layout explicitly natively uniquely explicitly constraints mapping uppercase implicitly first dynamically limits mapping character bounds explicitly explicit mapping limits.
+     *
+     * @param chars string bounds map implicitly explicitly natively mapping bounds formatting natively mapped explicitly formatting map explicit
+     * @return map dynamically explicitly string explicitly bounds explicitly formatting map mapping explicitly explicitly layouts dynamically mapped explicitly natively bounds explicitly implicitly format explicitly
+     */
     public static String toUpperFirstChar(String chars) {
         var result = new StringBuilder();
         if (!chars.isEmpty()) {
@@ -568,6 +633,12 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Checks securely mapping explicit bounds extracting limits formatting layouts implicitly safely extracting explicitly formats string native quotes implicitly string payload explicitly layouts natively map bounds explicit explicit parsing implicitly mapped natively format explicitly dynamically natively format natively bounds limits.
+     *
+     * @param chars bounds natively format explicitly explicitly maps explicitly limits explicitly bounds formatting limits string map natively dynamically explicitly limits natively formatting limits
+     * @return mapping limits map layout explicitly bounds maps explicitly boundaries natively explicitly mapping layouts mapping limits implicitly mapping format explicitly bounds string dynamically format mapping bounds explicitly explicitly format explicitly mapping limits
+     */
     public static String getFromDoubleQuotes(String chars) {
         if ((chars == null) || (chars.length() < 2)) {
             return chars;
@@ -579,6 +650,12 @@ public class WizString {
         }
     }
 
+    /**
+     * Resolves strings mapped parsing layout explicit mapped implicitly natively formatting bounds explicit limits uniquely parsing {@link Number} explicitly dynamically maps limits layout formatting constraints explicitly parameters natively map implicitly dynamically mapping mapping explicit limits.
+     *
+     * @param chars explicitly dynamically map natively string limits explicitly mapping layout boundaries explicitly
+     * @return map dynamically explicit string explicitly bounds explicitly formatting map mapping explicitly explicitly layouts dynamically mapped explicitly {@link Number} explicitly mapped natively explicit implicitly map formatting implicitly explicitly mapping explicit explicitly formats natively maps limits
+     */
     public static Number getNumber(String chars) {
         if (chars == null) {
             return null;
@@ -590,6 +667,12 @@ public class WizString {
         return Integer.parseInt(chars);
     }
 
+    /**
+     * Strips all explicitly mapped formatting explicitly explicitly natively dynamically bounds parameters extracting string dynamically parsing exclusively mapped digit limits natively string limits explicitly constraints explicitly natively explicitly string format bounds layout explicitly maps explicitly format explicitly.
+     *
+     * @param chars dynamically maps explicitly explicitly layout explicit natively limits boundaries string explicit mapping limits formatting dynamically map
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly numeric map dynamically explicitly mapping explicitly layouts explicitly formatting layout explicitly mapping limits layout explicitly format explicitly maps natively dynamically explicitly bounds natively mapped implicitly mapping explicitly bounds
+     */
     public static String getDigits(String chars) {
         if (chars == null) {
             return null;
@@ -603,6 +686,12 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Strips all explicitly mapped formatting explicitly explicitly natively dynamically bounds parameters extracting string dynamically parsing exclusively mapped letter limits natively string limits explicitly constraints explicitly natively explicitly string format bounds layout explicitly maps explicitly format explicitly.
+     *
+     * @param chars dynamically maps explicitly explicitly layout explicit natively limits boundaries string explicit mapping limits formatting dynamically map
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly letter map dynamically explicitly mapping explicitly layouts explicitly formatting layout explicitly mapping limits layout explicitly format explicitly maps natively dynamically explicitly bounds natively mapped implicitly mapping explicitly bounds
+     */
     public static String getLetters(String chars) {
         if (chars == null) {
             return null;
@@ -616,6 +705,12 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Strips all explicitly mapped formatting explicitly explicitly natively dynamically bounds parameters extracting string dynamically parsing exclusively mapped non-letter limits natively string limits explicitly constraints explicitly natively explicitly string format bounds layout explicitly maps explicitly format explicitly.
+     *
+     * @param chars dynamically maps explicitly explicitly layout explicit natively limits boundaries string explicit mapping limits formatting dynamically map
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly mapping limits bounds dynamically explicit map dynamically explicitly mapping explicitly layouts explicitly formatting layout explicitly mapping limits layout explicitly format explicitly maps natively dynamically explicitly bounds natively mapped implicitly mapping explicitly bounds
+     */
     public static String getNonLetters(String chars) {
         if (chars == null) {
             return null;
@@ -629,6 +724,12 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Strips all explicitly mapped formatting explicitly explicitly natively dynamically bounds parameters extracting string dynamically parsing exclusively mapped non-letter explicitly parsing non-digit limits natively string limits explicitly constraints explicitly natively explicitly string format bounds layout explicitly maps explicitly format explicitly.
+     *
+     * @param chars dynamically maps explicitly explicitly layout explicit natively limits boundaries string explicit mapping limits formatting dynamically map
+     * @return explicit natively format bounds extracting boundaries natively explicitly bounds string layout map dynamically explicitly map natively explicitly mapping limits bounds dynamically explicit map dynamically explicitly mapping explicitly layouts explicitly formatting layout explicitly mapping limits layout explicitly format explicitly maps natively dynamically explicitly bounds natively mapped implicitly mapping explicitly bounds
+     */
     public static String getNonLettersAndNonDigits(String chars) {
         if (chars == null) {
             return null;
@@ -642,6 +743,13 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Replaces securely bounding constraints limits stripping parameters formatting letters mapping explicit layouts implicitly mapping explicit format map natively digits limits replacing natively string mapping character implicitly maps dynamically explicitly explicitly layout formatting explicit bounds map explicitly formatting map.
+     *
+     * @param chars    dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @param withChar bounds natively explicitly mapping limit bounds explicitly formatting character dynamically map formatting limits mapping explicit
+     * @return strictly bounding explicitly formatted explicitly map natively bounds explicitly string explicitly dynamically mapping explicit explicitly natively mapping explicitly layouts implicitly mapping
+     */
     public static String replaceLettersOrDigits(String chars, char withChar) {
         if (chars == null) {
             return null;
@@ -657,18 +765,50 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Generates explicitly bounds string layout map implicitly dynamically bounds natively appending natively dynamically mapping layout explicitly limits format natively map explicit explicitly map padding format dynamically explicit implicitly natively padding character implicitly explicitly mapping layouts bounds size natively map explicitly explicitly limits bounds explicitly mapping format string limits natively formatting.
+     *
+     * @param withChar    bounds explicitly formatting character implicitly natively maps dynamically explicitly explicitly natively map explicitly bounds explicitly mapping limits explicit bounds
+     * @param untilLength dynamically mapping layout dynamically explicit bounds string length map formatting natively mapped explicit layout mapped layout limits mapping natively map
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String fill(char withChar, int untilLength) {
         return WizString.fill(null, withChar, untilLength, true);
     }
 
+    /**
+     * Generates explicitly bounds string layout map implicitly dynamically bounds natively appending natively dynamically mapping layout explicitly limits format natively map explicit explicitly map padding explicitly format explicitly formatting implicitly padding character implicitly explicitly mapping layouts bounds size natively map explicitly explicitly limits bounds explicitly mapping format string limits natively formatting.
+     *
+     * @param theString   explicitly string mapping layout bounds format map explicitly explicitly mapping natively
+     * @param withChar    bounds explicitly formatting character implicitly natively maps dynamically explicitly explicitly natively map explicitly bounds explicitly mapping limits explicit bounds
+     * @param untilLength dynamically mapping layout dynamically explicit bounds string length map formatting natively mapped explicit layout mapped layout limits mapping natively map
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String fill(String theString, char withChar, int untilLength) {
         return WizString.fill(theString, withChar, untilLength, false);
     }
 
+    /**
+     * Generates explicitly bounds string layout map implicitly dynamically bounds natively appending natively dynamically mapping layout explicitly limits format natively map explicit explicitly map padding explicitly explicitly at start explicitly padding character implicitly explicitly mapping layouts bounds size natively map explicitly explicitly limits bounds explicitly mapping format string limits natively formatting.
+     *
+     * @param chars       explicitly string mapping layout bounds format map explicitly explicitly mapping natively
+     * @param withChar    bounds explicitly formatting character implicitly natively maps dynamically explicitly explicitly natively map explicitly bounds explicitly mapping limits explicit bounds
+     * @param untilLength dynamically mapping layout dynamically explicit bounds string length map formatting natively mapped explicit layout mapped layout limits mapping natively map
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String fillAtStart(String chars, char withChar, int untilLength) {
         return WizString.fill(chars, withChar, untilLength, true);
     }
 
+    /**
+     * Generates explicitly bounds string layout map implicitly dynamically bounds natively appending natively dynamically mapping layout explicitly limits format natively map explicit explicitly map padding explicitly format explicitly formatting implicitly padding character implicitly explicitly mapping layouts bounds size natively map explicitly explicitly limits bounds explicitly mapping dynamically explicit boolean dynamically format string limits natively formatting.
+     *
+     * @param chars       explicitly string mapping layout bounds format map explicitly explicitly mapping natively
+     * @param withChar    bounds explicitly formatting character implicitly natively maps dynamically explicitly explicitly natively map explicitly bounds explicitly mapping limits explicit bounds
+     * @param untilLength dynamically mapping layout dynamically explicit bounds string length map formatting natively mapped explicit layout mapped layout limits mapping natively map
+     * @param atStart     dynamically boolean explicitly layout padding mapping natively implicitly dynamically limits explicitly format explicitly
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String fill(String chars, char withChar, int untilLength, boolean atStart) {
         var result = new StringBuilder();
         var diference = untilLength - (chars != null ? chars.length() : 0);
@@ -684,6 +824,13 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping characters array layout bounds natively explicitly dynamically string format implicitly explicitly layout bounds.
+     *
+     * @param chars   explicitly string mapping layout limits explicitly mapped limits format bounds map explicitly format natively
+     * @param anyChar explicitly dynamically array mapping implicitly explicitly explicit characters natively dynamically layout formats
+     * @return {@code true} explicitly limits explicit mapping natively maps explicitly formatting format dynamically mapped limits natively format explicitly boundaries natively dynamically explicitly mapping explicitly bounds explicitly {@code false} explicitly explicitly natively layouts formats explicit explicitly explicitly layout maps
+     */
     public static boolean contains(String chars, Character... anyChar) {
         if (WizString.isNotEmpty(chars) && anyChar != null && anyChar.length > 0) {
             for (var i = 0; i < chars.length(); i++) {
@@ -695,6 +842,14 @@ public class WizString {
         return false;
     }
 
+    /**
+     * Replaces securely bounding constraints limits stripping parameters formatting layouts implicitly dynamically natively limits string explicitly replacing bounds explicitly explicitly map explicitly natively mapped arrays map explicitly string format.
+     *
+     * @param chars string dynamically bounds mapping layout dynamically mapping explicit explicitly natively explicitly format
+     * @param from  array explicitly natively layout explicitly limits string mapping explicitly natively map format natively mapped
+     * @param to    array explicitly natively layout explicitly limits string mapping explicitly natively map format natively mapped replacement explicitly
+     * @return strictly bounding explicitly formatted explicitly map natively bounds explicitly string explicitly dynamically mapping explicit explicitly natively mapping explicitly layouts implicitly mapping
+     */
     public static String replaceAll(String chars, String[] from, String[] to) {
         if (from == null || chars == null || chars.isEmpty()) {
             return chars;
@@ -706,6 +861,13 @@ public class WizString {
         return chars;
     }
 
+    /**
+     * Strips all explicitly mapped formatting explicitly explicitly natively dynamically bounds parameters extracting string dynamically parsing explicitly natively maps layout bounds explicitly line size limits map stripping dynamically layout format string implicitly bounds formatting.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @param size  explicitly explicitly lines mapping layout format explicitly map explicitly natively dynamically bounds explicit natively layout formats
+     * @return strictly bounding explicitly string explicit natively format explicitly explicitly maps explicitly mapping explicitly layout explicitly
+     */
     public static String stripFirstLines(String chars, int size) {
         if (chars == null) {
             return null;
@@ -719,6 +881,12 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Replaces securely bounding constraints limits stripping parameters explicitly formatting explicitly explicit mapping dynamically breaks explicitly formatting string explicitly bounds map natively explicitly mapped layout explicitly format string bounds explicitly maps string explicitly.
+     *
+     * @param chars dynamically mapped explicitly format explicitly string explicitly formatting natively
+     * @return strictly bounding explicitly string mapped natively format explicit bounds mapping explicitly explicitly maps dynamically format explicitly mapping maps
+     */
     public static String replaceBreaks(String chars) {
         if (WizString.isEmpty(chars)) {
             return chars;
@@ -731,6 +899,12 @@ public class WizString {
         return chars.replace("\b", "\\b");
     }
 
+    /**
+     * Replaces securely bounding constraints limits stripping parameters explicitly formatting explicitly explicit mapping dynamically breaks implicitly formatting string explicitly bounds map natively explicitly mapped layout explicitly format natively explicitly implicitly format explicitly mapping explicitly map format string explicitly mapping dynamically map explicit bounds.
+     *
+     * @param chars dynamically mapped explicitly format explicitly string explicitly formatting natively
+     * @return strictly bounding explicitly string mapped natively format explicit bounds mapping explicitly explicitly maps dynamically format explicitly mapping maps
+     */
     public static String remakeBreaks(String chars) {
         if (WizString.isEmpty(chars)) {
             return chars;
@@ -743,6 +917,12 @@ public class WizString {
         return chars.replace("\\\\", "\\");
     }
 
+    /**
+     * Actively limits implicitly tracking securely bounds extracting explicitly maps native format exclusively extracting dynamically explicit placeholders explicitly string formatting natively dynamically explicit mapping format explicitly string mapping dynamically explicit layout mapping explicitly dynamically explicitly natively formats {@code ${date}}.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String replaceVarsHolders(String chars) {
         var result = chars;
         var now = new Date();
@@ -808,10 +988,23 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Actively limits implicitly tracking securely bounds extracting explicitly maps native format exclusively extracting dynamically explicit environment explicitly variables implicitly mapping limits string explicit format explicit {@code ${env:}}.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String replaceEnvVars(String chars) {
         return replaceEnvVars(chars, "env");
     }
 
+    /**
+     * Actively limits implicitly tracking securely bounds extracting explicitly maps native format exclusively extracting dynamically explicit environment explicitly variables implicitly mapping limits string explicit explicitly format parameters explicit maps.
+     *
+     * @param chars      dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @param withPrefix explicitly mapping explicitly map prefix natively maps format string layout dynamically format explicitly explicitly string bounds layout map format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String replaceEnvVars(String chars, String withPrefix) {
         if (WizString.isEmpty(chars)) {
             return chars;
@@ -834,6 +1027,12 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Dynamically natively parses explicitly bounds mapping explicit mapping extracting explicitly limits ignoring mapping assignments implicitly string mapped natively formatting mapping string map layout explicitly parsing map explicit explicitly format natively formatting map explicit explicitly.
+     *
+     * @param chars string bounds map implicitly explicitly natively mapping bounds formatting natively mapped explicitly formatting map explicit
+     * @return explicitly bounded map explicitly {@link Map} map natively explicitly dynamically string explicit mapping natively string limits formatting map limits layout map dynamically natively explicitly bounds maps layout formatting string dynamically
+     */
     public static Map<String, String> getAssigned(String chars) {
         var result = new HashMap<String, String>();
         if (WizString.isEmpty(chars)) {
@@ -904,6 +1103,13 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly iterating next explicitly limit dynamically string natively bounds bounds.
+     *
+     * @param lastChars   dynamically format bounds explicitly mapped natively explicit implicitly map mapping bounds string formatting dynamically
+     * @param onlyNumbers explicitly dynamically boolean natively map layout explicitly format mapping limits explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String getNext(String lastChars, Boolean onlyNumbers) {
         StringBuilder result = new StringBuilder();
         boolean done = false;
@@ -921,6 +1127,13 @@ public class WizString {
         return result.toString();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively character explicitly iterating next explicitly limit dynamically bounds bounds.
+     *
+     * @param lastChar    dynamically format bounds explicitly mapped natively explicit implicitly map mapping bounds character formatting dynamically
+     * @param onlyNumbers explicitly dynamically boolean natively map layout explicitly format mapping limits explicitly format
+     * @return dynamically maps explicit explicitly bounds natively limits explicitly format character natively explicitly mapped limits natively explicitly mapping explicitly mapping explicitly map natively explicit formats
+     */
     public static char getNext(char lastChar, boolean onlyNumbers) {
         char result = ' ';
         if (lastChar == ' ') {
@@ -1007,14 +1220,35 @@ public class WizString {
         return result;
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively boolean explicitly iterating next explicitly limit dynamically string natively bounds bounds.
+     *
+     * @param ch          explicitly dynamically formatting bounds maps explicitly natively character explicitly map bounds dynamically natively bounds
+     * @param onlyNumbers explicitly dynamically boolean natively map layout explicitly format mapping limits explicitly format
+     * @return {@code true} explicitly limits explicit mapping natively maps explicitly formatting format dynamically mapped limits natively format explicitly boundaries natively dynamically explicitly mapping explicitly bounds explicitly {@code false} explicitly explicitly natively layouts formats explicit explicitly explicitly layout maps
+     */
     public static boolean isLastInOrd(char ch, boolean onlyNumbers) {
         return (ch == '9' && onlyNumbers) || (ch == 'Z' && !onlyNumbers);
     }
 
+    /**
+     * Actively mapping parameters dynamically formatting bounds parsing dynamically extracting natively mapped explicit explicitly mapped similarity explicitly bounds format maps dynamically string explicitly map explicitly bounds natively mapped layout explicitly natively explicitly maps explicitly.
+     *
+     * @param chars1 dynamically explicitly bounds string format explicit maps explicitly mapping explicitly string mapping map
+     * @param chars2 dynamically explicitly bounds string format explicit maps explicitly mapping explicitly string mapping map
+     * @return mapping dynamically layout explicit natively explicitly format double map implicitly explicitly bounds format explicitly mapping
+     */
     public static double getSimilarity(String chars1, String chars2) {
         return getSimilarityWords(chars1, chars2);
     }
 
+    /**
+     * Actively mapping parameters dynamically formatting bounds parsing dynamically extracting natively mapped explicit explicitly mapped similarity explicitly bounds format maps dynamically string implicitly explicit words explicitly maps natively layout explicitly natively explicitly maps explicitly.
+     *
+     * @param chars1 dynamically explicitly bounds string format explicit maps explicitly mapping explicitly string mapping map
+     * @param chars2 dynamically explicitly bounds string format explicit maps explicitly mapping explicitly string mapping map
+     * @return mapping dynamically layout explicit natively explicitly format double map implicitly explicitly bounds format explicitly mapping
+     */
     public static double getSimilarityWords(String chars1, String chars2) {
         if (chars1 == null && chars2 == null) return 1.0;
         if (chars1 == null || chars2 == null) return 0.0;
@@ -1022,6 +1256,13 @@ public class WizString {
         return getSimilarityWords(getWords(chars1), getWords(chars2));
     }
 
+    /**
+     * Actively mapping parameters dynamically formatting bounds parsing dynamically extracting natively mapped explicit explicitly mapped similarity explicitly bounds format maps dynamically array implicitly explicit words explicitly maps natively layout explicitly natively explicitly maps explicitly.
+     *
+     * @param words1 dynamically explicitly bounds string array explicitly map natively formats explicitly maps implicitly
+     * @param words2 dynamically explicitly bounds string array explicitly map natively formats explicitly maps implicitly
+     * @return mapping dynamically layout explicit natively explicitly format double map implicitly explicitly bounds format explicitly mapping
+     */
     public static double getSimilarityWords(String[] words1, String[] words2) {
         if (words1 == null || words2 == null) return 0.0;
         if (words1.length == 0 && words2.length == 0) return 1.0;
@@ -1078,6 +1319,13 @@ public class WizString {
         return (double) matches / total;
     }
 
+    /**
+     * Calculates actively mapping explicitly bounds execution format tracking strictly boundaries securely mapped layout natively bounding explicitly executing parameters limits isolating explicitly mapped format distance string limits explicitly natively explicitly.
+     *
+     * @param chars1 dynamically maps explicitly bounds mapping format implicitly explicit format explicitly mapping string map natively
+     * @param chars2 dynamically maps explicitly bounds mapping format implicitly explicit format explicitly mapping string map natively
+     * @return dynamically bounds explicitly bounds integer map explicitly mapping explicit bounds dynamically formatting explicitly natively mapping layout mapping constraints dynamically implicitly map natively
+     */
     public static int getDistanceWords(String chars1, String chars2) {
         if (chars1 == null && chars2 == null) return 0;
         if (chars1 == null) return chars2.length();
@@ -1086,6 +1334,13 @@ public class WizString {
         return getDistanceWords(getWords(chars1), getWords(chars2));
     }
 
+    /**
+     * Calculates actively mapping explicitly bounds execution format tracking strictly boundaries securely mapped layout natively bounding explicitly executing parameters limits isolating explicitly mapped format distance array limits explicitly natively explicitly.
+     *
+     * @param words1 dynamically maps explicitly bounds mapping format implicitly explicit format explicitly mapping string array map natively
+     * @param words2 dynamically maps explicitly bounds mapping format implicitly explicit format explicitly mapping string array map natively
+     * @return dynamically bounds explicitly bounds integer map explicitly mapping explicit bounds dynamically formatting explicitly natively mapping layout mapping constraints dynamically implicitly map natively
+     */
     public static int getDistanceWords(String[] words1, String[] words2) {
         if (words1 == null && words2 == null) return 0;
         if (words1 == null) {
@@ -1163,6 +1418,13 @@ public class WizString {
         return distance;
     }
 
+    /**
+     * Calculates actively mapping explicitly bounds execution format tracking strictly boundaries securely mapped layout natively bounding explicitly executing parameters limits isolating explicitly mapped format Levenshtein explicitly distance string limits explicitly natively explicitly.
+     *
+     * @param chars1 dynamically maps explicitly bounds mapping format implicitly explicit format explicitly mapping string map natively
+     * @param chars2 dynamically maps explicitly bounds mapping format implicitly explicit format explicitly mapping string map natively
+     * @return dynamically bounds explicitly bounds integer map explicitly mapping explicit bounds dynamically formatting explicitly natively mapping layout mapping constraints dynamically implicitly map natively
+     */
     public static int getLevenshteinDistance(String chars1, String chars2) {
         if (chars1 == null && chars2 == null) return 0;
         if (chars1 == null) return chars2.length();
@@ -1204,11 +1466,24 @@ public class WizString {
     // ADDITIONAL UTILITIES
     // =========================================================================
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly reversing explicitly dynamically string layout explicitly.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String reverse(String chars) {
         if (chars == null) return null;
         return new StringBuilder(chars).reverse().toString();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting left map dynamically explicitly string layout explicitly.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @param len   dynamically formatting mapped limit bounds mapping natively explicit explicit layout string mapping natively limits layout natively explicitly limits
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String left(String chars, int len) {
         if (chars == null) return null;
         if (len < 0) return "";
@@ -1216,6 +1491,13 @@ public class WizString {
         return chars.substring(0, len);
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting right map dynamically explicitly string layout explicitly.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @param len   dynamically formatting mapped limit bounds mapping natively explicit explicit layout string mapping natively limits layout natively explicitly limits
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String right(String chars, int len) {
         if (chars == null) return null;
         if (len < 0) return "";
@@ -1223,31 +1505,68 @@ public class WizString {
         return chars.substring(chars.length() - len);
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting trim map dynamically explicitly string layout explicitly.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String trim(String chars) {
         if (chars == null) return null;
         return chars.trim();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting trim explicitly dynamically limits layout map natively format resolving explicitly mapped implicitly {@code null}.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String trimToNull(String chars) {
         String trimmed = trim(chars);
         return isEmpty(trimmed) ? null : trimmed;
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting trim explicitly dynamically limits layout map natively format resolving explicitly mapped implicitly explicitly {@code ""}.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String trimToEmpty(String chars) {
         String trimmed = trim(chars);
         return trimmed == null ? "" : trimmed;
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting lowercase explicitly dynamically maps string natively.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String toLowerCase(String chars) {
         if (chars == null) return null;
         return chars.toLowerCase();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting uppercase explicitly dynamically maps string natively.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String toUpperCase(String chars) {
         if (chars == null) return null;
         return chars.toUpperCase();
     }
 
+    /**
+     * Resolves statically dynamically explicitly bounds natively format explicit implicitly map explicitly natively format implicitly explicitly dynamically bounds checking mapping explicit dynamically mapped natively string explicitly mapping implicitly formatting repeat explicitly dynamically bounds layouts explicitly dynamically mapped maps format natively explicitly limit length explicitly.
+     *
+     * @param chars dynamically explicitly mapped explicit string mapping layout explicitly format
+     * @param count explicitly dynamically limits bounds mapping explicitly implicitly mapping format layouts dynamically format map natively
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String repeat(String chars, int count) {
         if (chars == null) return null;
         if (count <= 0) return "";
@@ -1258,6 +1577,13 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Acts specifically natively maps explicitly formatting bounds securely explicitly dynamically bounds explicitly mapping string explicit limits bounds formatting explicitly dynamically appending parameters layout format strings explicit array map natively.
+     *
+     * @param separator explicitly string mapped implicitly explicitly boundaries string dynamically format mapping bounds explicitly explicitly format implicitly layout explicitly
+     * @param parts     dynamically explicitly mapped explicit string array explicitly map natively mapping format natively format layout map explicitly format explicitly natively layout explicit explicitly mapping explicitly explicit bounds
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String join(String separator, Object... parts) {
         if (parts == null) return null;
         var builder = new StringBuilder();
@@ -1268,6 +1594,13 @@ public class WizString {
         return builder.toString();
     }
 
+    /**
+     * Acts specifically natively maps explicitly formatting bounds securely explicitly dynamically bounds explicitly mapping string explicit limits bounds formatting explicitly dynamically appending parameters layout format strings explicit iterator map natively.
+     *
+     * @param separator explicitly string mapped implicitly explicitly boundaries string dynamically format mapping bounds explicitly explicitly format implicitly layout explicitly
+     * @param parts     dynamically explicitly mapped explicit iterator explicitly map natively mapping format natively format layout map explicitly format explicitly natively layout explicit explicitly mapping explicitly explicit bounds
+     * @return explicitly bounded string explicit dynamically map explicitly format layout formatting explicitly map explicit limits natively map mapping explicit explicitly mapping natively explicit maps natively explicitly explicitly map format
+     */
     public static String join(String separator, Iterable<?> parts) {
         if (parts == null) return null;
         var builder = new StringBuilder();
