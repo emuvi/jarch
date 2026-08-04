@@ -1,5 +1,9 @@
 package com.vidlus.jarch.data;
 
+/**
+ * Enumerates supported database presets, including driver class, JDBC URL
+ * template, default port, and ORM implementation.
+ */
 public enum Based {
 
     SQLiteMemory(
@@ -74,11 +78,34 @@ public enum Based {
                     5432,
                     EOrmPostgre.class);
 
+    /**
+     * The JDBC driver class name.
+     */
     public final String driverClazz;
+
+    /**
+     * The JDBC URL template used to build connections.
+     */
     public final String formation;
+
+    /**
+     * The default port, when the preset uses one.
+     */
     public final Integer defaultPort;
+
+    /**
+     * The ORM implementation associated with the preset.
+     */
     public final Class<? extends EOrm> eOrmClazz;
 
+    /**
+     * Creates a preset with its driver, URL template, default port, and ORM type.
+     *
+     * @param driverClazz the JDBC driver class name
+     * @param formation the JDBC URL template
+     * @param defaultPort the default port, or {@code null}
+     * @param eOrmClazz the ORM implementation class
+     */
     private Based(String driverClazz, String formation, Integer defaultPort,
                     Class<? extends EOrm> eOrmClazz) {
         this.driverClazz = driverClazz;
@@ -87,6 +114,12 @@ public enum Based {
         this.eOrmClazz = eOrmClazz;
     }
 
+    /**
+     * Returns the fixed prefix of the JDBC URL template before the first
+     * variable placeholder.
+     *
+     * @return the literal URL prefix, or the full template when no placeholder exists
+     */
     public String getUrlIdentity() {
         var dollarAt = this.formation.indexOf("$");
         if (dollarAt == -1) {
@@ -95,6 +128,12 @@ public enum Based {
         return this.formation.substring(0, dollarAt);
     }
 
+    /**
+     * Finds the first preset whose URL identity matches the given JDBC URL.
+     *
+     * @param jdbc the JDBC URL to inspect
+     * @return the matching preset, or {@code null}
+     */
     public static Based fromURL(String jdbc) {
         for (Based data : Based.values()) {
             if (jdbc.startsWith(data.getUrlIdentity())) {
@@ -104,6 +143,12 @@ public enum Based {
         return null;
     }
 
+    /**
+     * Resolves the ORM class for the preset that matches the given JDBC URL.
+     *
+     * @param jdbc the JDBC URL to inspect
+     * @return the matching ORM class, or {@code null}
+     */
     public static Class<? extends EOrm> getEOrmClassFromURL(String jdbc) {
         for (Based data : Based.values()) {
             if (jdbc.startsWith(data.getUrlIdentity())) {

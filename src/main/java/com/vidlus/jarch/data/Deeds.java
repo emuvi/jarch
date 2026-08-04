@@ -1,5 +1,8 @@
 package com.vidlus.jarch.data;
 
+/**
+ * Describes the supported database actions and whether they mutate data.
+ */
 public enum Deeds {
 
     Select(false), 
@@ -7,8 +10,16 @@ public enum Deeds {
     Update(true), 
     Delete(true);
 
+    /**
+     * Indicates whether the action changes persistent state.
+     */
     public final boolean mutates;
 
+    /**
+     * Creates an action descriptor with its mutation flag.
+     *
+     * @param mutates whether the action modifies data
+     */
     private Deeds(boolean mutates) {
         this.mutates = mutates;
     }
