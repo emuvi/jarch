@@ -17,6 +17,8 @@ import javax.swing.UIManager;
 /**
  * A fluent API abstract wrapper for a text field with a built-in action button on the right.
  * Ideal for complex values (e.g., File, Color, List) that require opening a dialog to edit.
+ *
+ * @param <T> the type of value managed by this component
  */
 public abstract class DEditChange<T> extends DEdit<T> {
 

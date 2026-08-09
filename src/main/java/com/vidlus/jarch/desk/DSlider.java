@@ -271,9 +271,9 @@ public class DSlider extends JSlider {
     }
 
     /**
-     * Sets the UI object which implements the L&F for this component.
+     * Sets the UI object which implements the L&amp;F for this component.
      * 
-     * @param ui the SliderUI L&F object
+     * @param ui the SliderUI L&amp;F object
      * @return This DSlider instance.
      */
     public DSlider ui(SliderUI ui) {

@@ -167,9 +167,9 @@ public class DScroll extends JScrollPane {
     }
 
     /**
-     * Sets the UI object which implements the L&F for this component.
+     * Sets the UI object which implements the L&amp;F for this component.
      * 
-     * @param ui the ScrollPaneUI L&F object
+     * @param ui the ScrollPaneUI L&amp;F object
      * @return This DScroll instance.
      */
     public DScroll ui(ScrollPaneUI ui) {

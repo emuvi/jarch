@@ -597,9 +597,9 @@ public class DSplitter extends JSplitPane {
     }
 
     /**
-     * Sets the UI object which implements the L&F for this component.
+     * Sets the UI object which implements the L&amp;F for this component.
      * 
-     * @param ui the SplitPaneUI L&F object
+     * @param ui the SplitPaneUI L&amp;F object
      * @return This DSplitter instance.
      */
     public DSplitter ui(SplitPaneUI ui) {

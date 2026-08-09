@@ -2,7 +2,19 @@ package com.vidlus.jarch.data;
 
 import java.util.LinkedList;
 
+/**
+ * A LinkedList implementation that implements the Data interface.
+ *
+ * @param <T> the element type
+ */
 public class DataListLinked<T> extends LinkedList<T> implements Data {
+
+    /**
+     * Constructs an empty DataListLinked.
+     */
+    public DataListLinked() {
+        super();
+    }
 
     @Override
     public DataListLinked<T> clone() {
@@ -24,6 +36,12 @@ public class DataListLinked<T> extends LinkedList<T> implements Data {
         return this.toChars();
     }
 
+    /**
+     * Deserializes JSON text into a DataListLinked.
+     *
+     * @param chars the JSON text to parse
+     * @return the parsed DataListLinked
+     */
     public static DataListLinked fromChars(String chars) {
         return Base.fromChars(chars, DataListLinked.class);
     }

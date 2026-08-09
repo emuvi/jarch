@@ -61,7 +61,7 @@ public class DCheckBox extends JCheckBox {
     /**
      * Creates a check box where properties are taken from the Action supplied.
      * 
-     * @param a the {@link Action} used to specify the new check box
+     * @param a the {@link DAction} used to specify the new check box
      */
     public DCheckBox(DAction a) {
         super(a);

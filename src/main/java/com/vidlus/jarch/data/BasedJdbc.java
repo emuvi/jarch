@@ -5,9 +5,13 @@ package com.vidlus.jarch.data;
  */
 public class BasedJdbc implements Data {
 
+    /** The database base name. */
     public String name;
+    /** The JDBC connection URL. */
     public String url;
+    /** The database user name. */
     public String user;
+    /** The database password. */
     public String pass;
 
     /**

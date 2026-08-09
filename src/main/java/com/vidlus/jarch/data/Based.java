@@ -6,72 +6,84 @@ package com.vidlus.jarch.data;
  */
 public enum Based {
 
+    /** SQLite in-memory database preset. */
     SQLiteMemory(
                     "org.sqlite.JDBC",
                     "jdbc:sqlite::memory:",
                     null,
                     EOrmSQLite.class),
 
+    /** SQLite local file database preset. */
     SQLiteLocal(
                     "org.sqlite.JDBC",
                     "jdbc:sqlite:$path",
                     null,
                     EOrmSQLite.class),
 
+    /** HSQLDB in-memory database preset. */
     HSQLDBMemory(
                     "org.hsqldb.jdbcDriver",
                     "jdbc:hsqldb:mem:$data",
                     9000,
                     EOrmHSQL.class),
 
+    /** HSQLDB local file database preset. */
     HSQLDBLocal(
                     "org.hsqldb.jdbcDriver",
                     "jdbc:hsqldb:file:$path;hsqldb.lock_file=true",
                     9000,
                     EOrmHSQL.class),
 
+    /** HSQLDB client database preset. */
     HSQLDBClient(
                     "org.hsqldb.jdbcDriver",
                     "jdbc:hsqldb:hsql://$path:$port/$data",
                     9000,
                     EOrmHSQL.class),
 
+    /** Derby embedded database preset. */
     DerbyInner(
                     "org.apache.derby.jdbc.EmbeddedDriver",
                     "jdbc:derby:$path;create=true",
                     1527,
                     EOrmDerby.class),
 
+    /** Derby client database preset. */
     DerbyClient(
                     "org.apache.derby.jdbc.ClientDriver",
                     "jdbc:derby://$path:$port/$data;create=true",
                     1527,
                     EOrmDerby.class),
 
+    /** Firebird local database preset. */
     FirebirdLocal(
                     "org.firebirdsql.jdbc.FBDriver",
                     "jdbc:firebirdsql:local:$path",
                     3050,
                     EOrmFirebird.class),
 
+    /** Firebird embedded database preset. */
     FirebirdInner(
                     "org.firebirdsql.jdbc.FBDriver",
                     "jdbc:firebirdsql:embedded:$path",
                     3050,
                     EOrmFirebird.class),
 
+    /** Firebird client database preset. */
     FirebirdClient(
                     "org.firebirdsql.jdbc.FBDriver",
                     "jdbc:firebirdsql:$path:$port/$data",
                     3050,
                     EOrmFirebird.class),
 
+    /** MySQL client database preset. */
     MySQLClient(
                     "com.mysql.jdbc.Driver",
                     "jdbc:mysql://$path:$port/$data",
                     3306,
                     EOrmMySQL.class),
 
+    /** PostgreSQL client database preset. */
     PostgreClient(
                     "org.postgresql.Driver",
                     "jdbc:postgresql://$path:$port/$data",

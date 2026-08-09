@@ -9,6 +9,8 @@ import java.awt.Insets;
  * Utilizes the Curiously Recurring Template Pattern (CRTP) to allow subclasses 
  * (like DPaneRow, DPaneColumn, and DPaneForm) to inherit fluent constraint modifiers 
  * without losing their specific subclass type context.
+ *
+ * @param <T> the subclass type for fluent method chaining
  */
 @SuppressWarnings("unchecked")
 public abstract class DPaneGridBag<T extends DPaneGridBag<T>> extends DPane {

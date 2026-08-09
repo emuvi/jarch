@@ -18,6 +18,12 @@ import com.vidlus.jarch.mage.WizString;
 public class CharsSectionsMap extends LinkedHashMap<String, List<String>> {
     
     /**
+     * Constructs an empty CharsSectionsMap.
+     */
+    public CharsSectionsMap() {
+        super();
+    }
+    /**
      * Executes natively formatting explicitly tracking limits securely mapping layout bounds explicitly map explicitly format executing dynamically dynamically mapped {@link List} explicitly mapping bounds formatting explicitly dynamically mapping limits bounds formatting dynamically explicitly tracking explicitly format limit natively.
      * Overwrites explicitly natively bounding limits format layout explicitly mapped natively explicitly string map explicitly.
      * 

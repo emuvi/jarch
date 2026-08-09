@@ -807,65 +807,261 @@ public class DAnime {
      * Built-in math utilities for smooth animation easing and interpolation.
      */
     public static class Easing {
-        /** Linear interpolation between a and b by fraction t (0.0 to 1.0) */
+
+        /**
+         * Private constructor to prevent instantiation of utility class.
+         */
+        private Easing() {}
+
+        /**
+         * Linear interpolation between a and b by fraction t (0.0 to 1.0).
+         *
+         * @param a start value
+         * @param b end value
+         * @param t progress fraction from 0.0 to 1.0
+         * @return interpolated value
+         */
         public static float lerp(float a, float b, float t) { return a + (b - a) * Math.max(0, Math.min(1, t)); }
         
-        /** Quadratic Easing (power of 2) */
+        /**
+         * Quadratic Ease In (power of 2).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInQuad(float t) { return t * t; }
+
+        /**
+         * Quadratic Ease Out (power of 2).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutQuad(float t) { return t * (2 - t); }
+
+        /**
+         * Quadratic Ease In/Out (power of 2).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutQuad(float t) { return t < .5f ? 2 * t * t : -1 + (4 - 2 * t) * t; }
         
-        /** Cubic Easing (power of 3) */
+        /**
+         * Cubic Ease In (power of 3).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInCubic(float t) { return t * t * t; }
+
+        /**
+         * Cubic Ease Out (power of 3).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutCubic(float t) { return (float) (1 - Math.pow(1 - t, 3)); }
+
+        /**
+         * Cubic Ease In/Out (power of 3).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutCubic(float t) { return t < .5f ? 4 * t * t * t : (float) (1 - Math.pow(-2 * t + 2, 3) / 2); }
         
-        /** Quartic Easing (power of 4) */
+        /**
+         * Quartic Ease In (power of 4).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInQuart(float t) { return t * t * t * t; }
+
+        /**
+         * Quartic Ease Out (power of 4).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutQuart(float t) { return (float) (1 - Math.pow(1 - t, 4)); }
+
+        /**
+         * Quartic Ease In/Out (power of 4).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutQuart(float t) { return t < .5f ? 8 * t * t * t * t : (float) (1 - Math.pow(-2 * t + 2, 4) / 2); }
         
-        /** Quintic Easing (power of 5) */
+        /**
+         * Quintic Ease In (power of 5).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInQuint(float t) { return t * t * t * t * t; }
+
+        /**
+         * Quintic Ease Out (power of 5).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutQuint(float t) { return (float) (1 - Math.pow(1 - t, 5)); }
+
+        /**
+         * Quintic Ease In/Out (power of 5).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutQuint(float t) { return t < .5f ? 16 * t * t * t * t * t : (float) (1 - Math.pow(-2 * t + 2, 5) / 2); }
         
-        /** Sine Easing */
+        /**
+         * Sine Ease In.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInSine(float t) { return (float) (1 - Math.cos((t * Math.PI) / 2)); }
+
+        /**
+         * Sine Ease Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutSine(float t) { return (float) Math.sin((t * Math.PI) / 2); }
+
+        /**
+         * Sine Ease In/Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutSine(float t) { return (float) -(Math.cos(Math.PI * t) - 1) / 2; }
         
-        /** Exponential Easing */
+        /**
+         * Exponential Ease In.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInExpo(float t) { return t == 0 ? 0 : (float) Math.pow(2, 10 * t - 10); }
+
+        /**
+         * Exponential Ease Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutExpo(float t) { return t == 1 ? 1 : (float) (1 - Math.pow(2, -10 * t)); }
+
+        /**
+         * Exponential Ease In/Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutExpo(float t) { return t == 0 ? 0 : t == 1 ? 1 : t < 0.5 ? (float) Math.pow(2, 20 * t - 10) / 2 : (float) (2 - Math.pow(2, -20 * t + 10)) / 2; }
 
-        /** Circular Easing */
+        /**
+         * Circular Ease In.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInCirc(float t) { return (float) (1 - Math.sqrt(1 - Math.pow(t, 2))); }
+
+        /**
+         * Circular Ease Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutCirc(float t) { return (float) Math.sqrt(1 - Math.pow(t - 1, 2)); }
+
+        /**
+         * Circular Ease In/Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutCirc(float t) { return t < .5f ? (float) (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2 : (float) (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2; }
         
-        /** Back Easing */
+        /**
+         * Back Ease In.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInBack(float t) { float c1 = 1.70158f; float c3 = c1 + 1; return c3 * t * t * t - c1 * t * t; }
+
+        /**
+         * Back Ease Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutBack(float t) { float c1 = 1.70158f; float c3 = c1 + 1; return (float) (1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2)); }
+
+        /**
+         * Back Ease In/Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutBack(float t) { float c1 = 1.70158f; float c2 = c1 * 1.525f; return t < .5f ? (float) (Math.pow(2 * t, 2) * ((c2 + 1) * 2 * t - c2)) / 2 : (float) (Math.pow(2 * t - 2, 2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2; }
 
-        /** Elastic Easing (Wobble) */
+        /**
+         * Elastic Ease In (Wobble).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInElastic(float t) {
             float c4 = (float) (2 * Math.PI) / 3;
             return t == 0 ? 0 : t == 1 ? 1 : (float) (-Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * c4));
         }
+
+        /**
+         * Elastic Ease Out (Wobble).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutElastic(float t) {
             float c4 = (float) (2 * Math.PI) / 3;
             return t == 0 ? 0 : t == 1 ? 1 : (float) (Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1);
         }
+
+        /**
+         * Elastic Ease In/Out (Wobble).
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutElastic(float t) {
             float c5 = (float) (2 * Math.PI) / 4.5f;
             return t == 0 ? 0 : t == 1 ? 1 : t < 0.5 ? (float) -(Math.pow(2, 20 * t - 10) * Math.sin((20 * t - 11.125) * c5)) / 2 : (float) (Math.pow(2, -20 * t + 10) * Math.sin((20 * t - 11.125) * c5)) / 2 + 1;
         }
 
-        /** Bounce Easing */
+        /**
+         * Bounce Ease In.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInBounce(float t) { return 1 - easeOutBounce(1 - t); }
+
+        /**
+         * Bounce Ease Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeOutBounce(float t) {
             float n1 = 7.5625f, d1 = 2.75f;
             if (t < 1 / d1) { return n1 * t * t; }
@@ -873,6 +1069,13 @@ public class DAnime {
             else if (t < 2.5 / d1) { return n1 * (t -= 2.25f / d1) * t + 0.9375f; }
             else { return n1 * (t -= 2.625f / d1) * t + 0.984375f; }
         }
+
+        /**
+         * Bounce Ease In/Out.
+         *
+         * @param t progress fraction from 0.0 to 1.0
+         * @return eased value
+         */
         public static float easeInOutBounce(float t) { return t < 0.5f ? (1 - easeOutBounce(1 - 2 * t)) / 2 : (1 + easeOutBounce(2 * t - 1)) / 2; }
     }
 }

@@ -52,7 +52,7 @@ public class DButtonRadio extends JRadioButton {
     /**
      * Creates a radio button where properties are taken from the Action supplied.
      * 
-     * @param a the {@link Action} used to specify the new button
+     * @param a the {@link DAction} used to specify the new button
      */
     public DButtonRadio(DAction a) { super(a); }
     

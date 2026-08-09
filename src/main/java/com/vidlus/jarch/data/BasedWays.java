@@ -8,15 +8,20 @@ import com.vidlus.jarch.flow.NotFixNulls;
  */
 public class BasedWays implements Data {
     
+    /** The JDBC connection settings. */
     @NotFixNulls
     public BasedJdbc dataJdbc;
+    /** The link connection settings. */
     @NotFixNulls
     public BasedLink dataLink;
 
+    /** The minimum idle pool size. */
     @FixInt(1) 
     public Integer poolMinIdle;
+    /** The maximum idle pool size. */
     @FixInt(5)
     public Integer poolMaxIdle;
+    /** The maximum total pool size. */
     @FixInt(10)
     public Integer poolMaxTotal;
 

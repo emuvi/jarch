@@ -243,9 +243,9 @@ public class DTabs extends JTabbedPane {
     }
 
     /**
-     * Sets the UI object which implements the L&F for this component.
+     * Sets the UI object which implements the L&amp;F for this component.
      * 
-     * @param ui the TabbedPaneUI L&F object
+     * @param ui the TabbedPaneUI L&amp;F object
      * @return This DTabs instance.
      */
     public DTabs ui(TabbedPaneUI ui) {

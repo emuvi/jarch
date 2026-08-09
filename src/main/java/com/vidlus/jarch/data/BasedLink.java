@@ -14,12 +14,19 @@ import com.vidlus.jarch.mage.WizString;
  */
 public class BasedLink implements Data {
     
+    /** The base name. */
     public String name;
+    /** The database preset. */
     public Based base;
+    /** The host address or file path. */
     public String path;
+    /** The port number. */
     public Integer port;
+    /** The database name. */
     public String data;
+    /** The user name. */
     public String user;
+    /** The password. */
     public String pass;
 
     private transient Connection linked = null;

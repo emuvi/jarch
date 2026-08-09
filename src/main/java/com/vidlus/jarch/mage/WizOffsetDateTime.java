@@ -262,7 +262,7 @@ public class WizOffsetDateTime {
      *
      * @param d1 the first {@link OffsetDateTime}
      * @param d2 the second {@link OffsetDateTime}
-     * @return {@code true} if d1 is after d2; {@code false} if either is null or d1 <= d2
+     * @return {@code true} if d1 is after d2; {@code false} if either is null or {@code d1 <= d2}
      */
     public static boolean isAfter(OffsetDateTime d1, OffsetDateTime d2) {
         if (d1 == null || d2 == null) return false;

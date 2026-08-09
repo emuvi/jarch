@@ -51,7 +51,7 @@ public class DButtonToggle extends JToggleButton {
     /**
      * Creates a toggle button where properties are taken from the Action supplied.
      * 
-     * @param a the {@link Action} used to specify the new button
+     * @param a the {@link DAction} used to specify the new button
      */
     public DButtonToggle(DAction a) { super(a); }
     

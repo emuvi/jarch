@@ -8,7 +8,9 @@ import com.vidlus.jarch.mage.WizData;
  */
 public class DataClazz implements Data {
 
+    /** The serialized data string. */
     public String data;
+    /** The canonical class name. */
     public String clazz;
 
     /**

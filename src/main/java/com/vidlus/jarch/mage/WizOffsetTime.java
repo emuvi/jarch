@@ -241,7 +241,7 @@ public class WizOffsetTime {
      *
      * @param t1 the first {@link OffsetTime}
      * @param t2 the second {@link OffsetTime}
-     * @return {@code true} if t1 is after t2; {@code false} if either is null or t1 <= t2
+     * @return {@code true} if t1 is after t2; {@code false} if either is null or {@code t1 <= t2}
      */
     public static boolean isAfter(OffsetTime t1, OffsetTime t2) {
         if (t1 == null || t2 == null) return false;

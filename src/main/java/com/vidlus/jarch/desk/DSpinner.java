@@ -182,9 +182,9 @@ public class DSpinner extends JSpinner {
     }
 
     /**
-     * Sets the UI object which implements the L&F for this component.
+     * Sets the UI object which implements the L&amp;F for this component.
      * 
-     * @param ui the SpinnerUI L&F object
+     * @param ui the SpinnerUI L&amp;F object
      * @return This DSpinner instance.
      */
     public DSpinner ui(SpinnerUI ui) {

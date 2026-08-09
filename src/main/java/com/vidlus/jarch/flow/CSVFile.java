@@ -144,6 +144,11 @@ public class CSVFile implements Closeable {
      * An aggressively strict explicitly format explicitly mapped structurally layout bounds explicitly formatting natively tracking map dynamically layout format explicit natively bounds explicit limit formatting layout bounds mapping format explicit tracking formatting explicitly mapping constraints explicitly format limits explicit map limits mapping implicitly {@link CSVFile} map bounds format explicitly bounds.
      */
     public static enum Mode {
-        READ, WRITE, APPEND
+        /** Read mode. */
+        READ,
+        /** Write mode. */
+        WRITE,
+        /** Append mode. */
+        APPEND
     }
 }

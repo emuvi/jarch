@@ -39,9 +39,9 @@ public class DButton extends JButton {
     }
 
     /**
-     * Constructs a new {@code DButton} whose properties are taken from the supplied {@link Action}.
+     * Constructs a new {@code DButton} whose properties are taken from the supplied {@link DAction}.
      * 
-     * @param a the {@link Action} used to specify the new button
+     * @param a the {@link DAction} used to specify the new button
      */
     public DButton(DAction a) {
         super(a);
@@ -79,10 +79,10 @@ public class DButton extends JButton {
     }
 
     /**
-     * Sets the {@link Action} for the button.
+     * Sets the {@link DAction} for the button.
      * This automatically configures the button's properties (text, icon, enabled state) from the action.
      * 
-     * @param a the {@link Action} for the button
+     * @param a the {@link DAction} for the button
      * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton action(DAction a) {
@@ -569,7 +569,7 @@ public class DButton extends JButton {
     /**
      * Sets the hideActionText property, which determines whether the button displays text from the Action.
      * 
-     * @param hide if true, the button's text is not updated from the {@link Action}
+     * @param hide if true, the button's text is not updated from the {@link DAction}
      * @return this {@code DButton} instance to allow for method chaining
      */
     public DButton hideActionText(boolean hide) {

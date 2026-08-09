@@ -603,7 +603,7 @@ public class DButtonSwitch extends JToggleButton {
 
     /**
      * Injects a functional action that is triggered when the mouse clicks (press and release) the component.
-     * Note: For standard button functionality, prefer {@link #onAction} when available, as it handles keyboard activation as well.
+     * Note: For standard button functionality, prefer {@link DButton#onAction} when available, as it handles keyboard activation as well.
      * 
      * @param action a {@link Consumer} accepting the {@link MouseEvent}
      * @return this {@code DButtonSwitch} instance to allow for method chaining
