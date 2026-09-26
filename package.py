@@ -63,7 +63,7 @@ def sign_file_with_gpg(file_path):
 
 def prepare_staging_area(group_id, artifact_id, version):
     """Creates the layout required by Maven Central and copies files over."""
-    # Convert groupId to path (e.g., com.vidlus.jarch -> com/vidlus/jarch)
+    # Convert groupId to path (e.g., br.com.pointel.jarch -> com/vidlus/jarch)
     group_path = group_id.replace('.', '/')
     target_path = Path(STAGING_DIR) / group_path / artifact_id / version
     
